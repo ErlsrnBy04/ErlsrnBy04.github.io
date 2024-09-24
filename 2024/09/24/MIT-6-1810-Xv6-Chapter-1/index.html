@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>[MIT 6.1810]Xv6 Chapter 1 - ErlsrnBy04</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ErlsrnBy04"><meta name="msapplication-TileImage" content="/img/Snake.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ErlsrnBy04"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Operating system interfaces"><meta property="og:type" content="blog"><meta property="og:title" content="[MIT 6.1810]Xv6 Chapter 1"><meta property="og:url" content="https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-1/"><meta property="og:site_name" content="ErlsrnBy04"><meta property="og:description" content="Operating system interfaces"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-1/image-20240924132438222.png"><meta property="og:image" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-1/image-20240924132532714.png"><meta property="og:image" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-1/image-20240924153124059.png"><meta property="article:published_time" content="2024-09-24T05:11:40.000Z"><meta property="article:modified_time" content="2024-09-24T07:39:06.816Z"><meta property="article:author" content="ErlsrnBy04"><meta property="article:tag" content="MIT 6.1810"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-1/image-20240924132438222.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-1/"},"headline":"[MIT 6.1810]Xv6 Chapter 1","image":["https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-1/image-20240924132438222.png","https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-1/image-20240924132532714.png","https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-1/image-20240924153124059.png"],"datePublished":"2024-09-24T05:11:40.000Z","dateModified":"2024-09-24T07:39:06.816Z","author":{"@type":"Person","name":"ErlsrnBy04"},"publisher":{"@type":"Organization","name":"ErlsrnBy04","logo":{"@type":"ImageObject","url":"https://erlsrnby04.github.io/img/Snake.svg"}},"description":"Operating system interfaces"}</script><link rel="canonical" href="https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-1/"><link rel="icon" href="/img/Snake.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">主页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="GitHub 主页" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-09-24T05:11:40.000Z" title="2024/9/24 13:11:40">2024-09-24</time></span><span class="level-item"><a class="link-muted" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span><span class="level-item">16 minutes read (About 2373 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">[MIT 6.1810]Xv6 Chapter 1</h1><div class="content"><h1 id="Operating-system-interfaces"><a href="#Operating-system-interfaces" class="headerlink" title="Operating system interfaces"></a>Operating system interfaces</h1><span id="more"></span>
+
+<p>操作系统的工作是：</p>
+<ol>
+<li>在多个程序间共享一台电脑</li>
+<li>提供一套比硬件更有用的服务</li>
+</ol>
+<p>操作系统：</p>
+<ol>
+<li>管理并抽象底层硬件</li>
+<li>在多个程序间共享硬件</li>
+<li>提供一种受控的程序交互方式</li>
+</ol>
+<p>操作系统是通过接口来向程序提供服务的。</p>
+<p>每个进程（运行中的程序），都有指令、数据、栈。</p>
+<p>进程通过系统调用（system call）来使用操作系统提供的服务。</p>
+<p><img src="/../images/MIT-6-1810-Xv6-Chapter-1/image-20240924132438222.png"></p>
+<p><img src="/../images/MIT-6-1810-Xv6-Chapter-1/image-20240924132532714.png"></p>
+<h2 id="1-1-Processes-and-memory"><a href="#1-1-Processes-and-memory" class="headerlink" title="1.1 Processes and memory"></a>1.1 Processes and memory</h2><p>进程由用户空间的内存（指令、数据、栈）和一些状态组成。xv6是分时操作系统，每个进程都有一个唯一的PID来标识。</p>
+<p><strong><code>fork</code> 系统调用</strong></p>
+<p><code>fork</code>系统调用完全复制调用者的内存给新进程，然后在原进程和新进程中返回，原进程中返回值为新进程的PID，新进程中的返回值为0。</p>
+<p>需要注意的是，父子进程之间的内存空间是相互独立的，即每个进程都有一份自己的拷贝。</p>
+<p><strong><code>wait</code> 系统调用</strong></p>
+<p><code>wait</code>系统调用返回当前进程的一个退出的子进程的PID，并且将子进程的退出状态拷贝到指定内存中。如果没有退出的子进程，<code>wait</code>阻塞等待。如果当前进程没有子进程，<code>wait</code>立即返回-1。如果不关心子进程的退出状态，可以传入一个0地址。</p>
+<p><strong><code>exec</code>系统调用</strong></p>
+<p><code>exec</code>系统调用负责用存储在文件系统中的可执行文件加载新的内存镜像，替换调用进程的内存。这个可执行文件必须遵循特定格式，定义了文件的各个部分，例如哪些部分包含指令和数据，以及从哪个指令开始执行。在 xv6 中，使用的是 ELF（可执行与可链接格式），详见第三章。</p>
+<p>通常，这个可执行文件是通过编译程序源代码生成的。当 <code>exec</code> 成功调用时，控制权不会返回到原程序，而是从 ELF 头部指定的入口点开始执行新加载的指令。<code>exec</code> 需要两个参数：可执行文件的名称和一个字符串数组，包含传递给新进程的参数。大多数程序通常会忽略掉字符串数组的第一个参数，一般是程序的名字。</p>
+<p><strong>为什么 <code>fork</code> 和 <code>exec</code> 是分离的</strong></p>
+<p>操作系统利用这种分离机制实现IO重定向。同时，为了避免创建一个子进程然后马上调用 <code>exec</code> 调换掉内存，操作系统通过虚拟内存的一些技巧来优化，例如copy on write。</p>
+<p><strong>申请内存</strong></p>
+<p>xv6大多数时候隐式申请用户空间的内存，但是进程也可以通过调用 <code>sbrk(n)</code> 来申请更多的内存空间，该函数返回申请内存的起始地址。</p>
+<h2 id="1-2-I-O-and-File-descriptors"><a href="#1-2-I-O-and-File-descriptors" class="headerlink" title="1.2 I&#x2F;O and File descriptors"></a>1.2 I&#x2F;O and File descriptors</h2><p>文件描述符是一个整数，代表着一个内核管理的object，进程可以从这个object读，或向这个object写。</p>
+<p>一个进程可以通过</p>
+<ol>
+<li>打开文件、目录、设别</li>
+<li>创建管道；</li>
+<li>duplicating一个文件描述符</li>
+</ol>
+<p>来获得文件描述符。</p>
+<p>文件描述符这种抽象使得我们可以不用关注文件的种类，无论是文件、管道、设备，我们都将他们视为字节流来处理。</p>
+<p>内部，xv6内核将文件描述符用作每个进程的打开文件表的索引。通常，一个进程从文件描述符0读取输入（标准输入），向文件描述符1输出（标准输出），将错误信息输出到文件描述符2（标准错误）。</p>
+<p><strong><code>read(fd, buf, n)</code> 系统调用</strong></p>
+<p>该系统调用从fd指向的object读取至多n个字节，拷贝到buf内，并返回读取的字节数。</p>
+<p>每个文件描述符都有一个关联的偏移量，<code>read</code> 会更新这个偏移量，指向下一个未被读取的字节。</p>
+<p>当没有更多的字节可读时，<code>read</code> 会返回0。</p>
+<p> <strong><code>write(fd, buf, n)</code> 系统调用</strong></p>
+<p>该系统调用向fd写n个字节，返回实际写入的字节数。只有当错误发生的时候，实际写入的字节数才不等于n。</p>
+<p> <strong><code>close(fd)</code> 系统调用</strong></p>
+<p>该系统调用释放一个文件描述符，使之可以为之后的文件使用。</p>
+<p>一个新的文件描述符总是当前进程中最小的未使用的文件描述符。</p>
+<p> <strong><code>fork</code> 和文件描述符</strong></p>
+<p><code>fork</code> 会将父进程的打开文件表复制给子进程，子进程和父进程的打开文件是一样的。</p>
+<p><code>exec</code>  会替换调用进程的内存，但是会保留打开文件表。</p>
+<p>这种行为使得shell可以简单的实现IO重定向。</p>
+<p> <code>cat &lt; input.txt</code> 的简单实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *argv[<span class="number">2</span>];</span><br><span class="line">argv[<span class="number">0</span>] = <span class="string">&quot;cat&quot;</span>;</span><br><span class="line">argv[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> (fork() == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// child</span></span><br><span class="line">    close(<span class="number">0</span>);</span><br><span class="line">    open(<span class="string">&quot;input.txt&quot;</span>, O_RDONLY);</span><br><span class="line">    exec(<span class="string">&quot;/bin/cat&quot;</span>, argv);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关键点是子进程先关闭了文件描述符0，然后再打开input.txt，这是操作系统会将文件描述符0分配给这个文件。</p>
+<p>父进程的文件描述符并不会被改变，因为子进程有一张自己的打开文件表。</p>
+<p>需要注意的是，虽然fork会复制打开文件表，但是每个文件描述符关联的偏移在父子进程间是共享的。</p>
+<p> <strong><code>open</code> 系统调用</strong></p>
+<p>该系统调用打开一个文件，并返回相应的文件描述符。</p>
+<p>第二个参数可以是(kerenl&#x2F;fcntl.h)：</p>
+<ul>
+<li>O_RDONLY</li>
+<li>O_WRONLY</li>
+<li>O_RDWR</li>
+<li>O_CREATE</li>
+<li>O_TRUNC</li>
+</ul>
+<p> <strong><code>dup(fd)</code> 系统调用</strong></p>
+<p>该系统调用复制一个文件描述符，返回一个指向相同object的文件描述符。这两个文件描述符共享偏移，类似fork。</p>
+<blockquote>
+<p>Two file descriptors share an offset if they were derived from the same original file descriptor by a sequence of fork and dup calls. Otherwise file descriptors do not share offsets, even if they resulted from open calls for the same file</p>
+</blockquote>
+<p>通过 <code>fork</code> 和 <code>dup</code> 获得的文件描述符和都共享相同的偏移。</p>
+<h2 id="1-3-Pipes"><a href="#1-3-Pipes" class="headerlink" title="1.3 Pipes"></a>1.3 Pipes</h2><p>管道是内核中的一个小缓冲区，通过一对文件描述符暴露给进程。这是进程间通信的一种方式。</p>
+<p> <strong><code>pipe</code> 系统调用</strong></p>
+<p>该系统调用创建一个新的管道，并将一对文件描述符放到参数指定的整数数组中。</p>
+<p>如果没有可读数据，读一个管道可能会：</p>
+<ul>
+<li>阻塞直到数据到来</li>
+<li>阻塞直到所有对管道写端的文件描述符被关闭</li>
+</ul>
+<p>第二种情况会返回0。</p>
+<p>管道相较临时文件的优势：</p>
+<ol>
+<li>管道会自动清理</li>
+<li>管道可以处理任意长度的数据，而临时文件必须要求硬盘有足够的空间</li>
+<li>管道允许管道的不同阶段并行执行</li>
+</ol>
+<h2 id="1-4-File-system"><a href="#1-4-File-system" class="headerlink" title="1.4 File system"></a>1.4 File system</h2><p>xv6文件系统提供数据文件，包含字节流；提供目录，包含指向数据文件和其他目录文件的引用。</p>
+<p>目录以树的形式组织，以&#x2F;开始的路径以根目录为根，不以&#x2F;开始的路径以当前进程当前的工作目录为根（可以通过<code>chdir</code>系统调用来改变）。</p>
+<p><code>mkdir</code> 系统调用创建一个新的目录，<code>open</code> 系统调用通过指定 <code>O_CREATE</code> 选项来创建一个新的数据文件， <code>mknode</code> 系统调用创建一个新的设备文件。该系统调用通过两个参数来唯一标识一个内核设备（主、副设备号）。</p>
+<p>文件名和文件本身是不同的。同一个文件由一个唯一的inode来标识；同一个文件可以有多个文件名，即链接。</p>
+<p>每个链接由一个目录中的目录项组成，这个目录项包含一个文件名以及一个指向文件inode的指针。</p>
+<p>每个inode保存着文件的元数据，包括种类，长度，磁盘位置，以及链接数等。</p>
+<p> <strong><code>fstat</code> 系统调用</strong></p>
+<p>该系统调用从inode中获取文件的元数据，并将数据填入 <code>stat</code> 结构体中。（kernel&#x2F;stat.h）</p>
+<p><img src="/../images/MIT-6-1810-Xv6-Chapter-1/image-20240924153124059.png"></p>
+<p> <strong><code>link</code> 系统调用</strong></p>
+<p>该系统调用创建一个链接。读写该链接和读写原文件操作的是同一个文件。</p>
+<p> <code>unlink</code> 系统调用</p>
+<p>该系统调用删除一个链接。只有当指向同一个inode的所有链接都被删除的时候，才会真正释放inode和文件内容。</p>
+<p>一种约定俗称的创建一个临时inode方法:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fd = open(<span class="string">&quot;/tmp/xyz&quot;</span>, O_CREATE | O_RDWR);</span><br><span class="line">unlink(<span class="string">&quot;/tmp/xyz&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>当进程调用close或者退出后，这个inode会被自动清理。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>[MIT 6.1810]Xv6 Chapter 1</p><p><a href="https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-1/">https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-1/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>ErlsrnBy04</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2024-09-24</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2024-09-24</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/MIT-6-1810/">MIT 6.1810</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/"><span class="level-item">[C++] 返回值优化</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><script src="https://giscus.app/client.js" repo="ErlsrnBy04/comments" data-repo="ErlsrnBy04/comments" data-repo-id="R_kgDOM1SRGQ" data-category-id="DIC_kwDOM1SRGc4Cirkj" data-category="Announcements" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous" async></script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar1.jpg" alt="ErlsrnBy04"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">ErlsrnBy04</p><p class="is-size-6 is-block">学生</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>北京，中国</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">17</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">3</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ErlsrnBy04" target="_blank" rel="me noopener">Follow</a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#Operating-system-interfaces"><span class="level-left"><span class="level-item">1</span><span class="level-item">Operating system interfaces</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1-1-Processes-and-memory"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">1.1 Processes and memory</span></span></a></li><li><a class="level is-mobile" href="#1-2-I-O-and-File-descriptors"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">1.2 I/O and File descriptors</span></span></a></li><li><a class="level is-mobile" href="#1-3-Pipes"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">1.3 Pipes</span></span></a></li><li><a class="level is-mobile" href="#1-4-File-system"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">1.4 File system</span></span></a></li></ul></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="level-start"><span class="level-item">操作系统</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"><span class="level-start"><span class="level-item">编程语言</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T05:11:40.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/">[MIT 6.1810]Xv6 Chapter 1</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/"><img src="/cover/C++.svg" alt="[C++] 返回值优化"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-09-22T05:17:42.000Z">2024-09-22</time></p><p class="title"><a href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/">[C++] 返回值优化</a></p><p class="categories"><a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2024/09/22/C-C-Primer-Chapter-14/"><img src="/cover/C++.svg" alt="[C++]C++Primer Chapter 14"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-09-22T04:01:27.000Z">2024-09-22</time></p><p class="title"><a href="/2024/09/22/C-C-Primer-Chapter-14/">[C++]C++Primer Chapter 14</a></p><p class="categories"><a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2024/09/22/C-C-Primer-Chapter-13/"><img src="/cover/C++.svg" alt="[C++]C++Primer Chapter 13"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-09-22T04:01:25.000Z">2024-09-22</time></p><p class="title"><a href="/2024/09/22/C-C-Primer-Chapter-13/">[C++]C++Primer Chapter 13</a></p><p class="categories"><a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2024/09/22/C-C-Primer-Chapter-12/"><img src="/cover/C++.svg" alt="[C++]C++Primer Chapter 12"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-09-22T04:01:22.000Z">2024-09-22</time></p><p class="title"><a href="/2024/09/22/C-C-Primer-Chapter-12/">[C++]C++Primer Chapter 12</a></p><p class="categories"><a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">September 2024</span></span><span class="level-end"><span class="level-item tag">17</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/C/"><span class="tag">C++</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-1810/"><span class="tag">MIT 6.1810</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-S081/"><span class="tag">MIT 6.S081</span><span class="tag">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a><p class="is-size-7"><span>&copy; 2024 ErlsrnBy04</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">且陶陶，乐尽天真</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="GitHub" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'folded'
+                }
+            }
+        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
