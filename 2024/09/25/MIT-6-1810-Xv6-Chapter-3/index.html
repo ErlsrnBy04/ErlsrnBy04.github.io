@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>[MIT 6.1810]Xv6 Chapter 3 - ErlsrnBy04</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ErlsrnBy04"><meta name="msapplication-TileImage" content="/img/Snake.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ErlsrnBy04"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Page tables"><meta property="og:type" content="blog"><meta property="og:title" content="[MIT 6.1810]Xv6 Chapter 3"><meta property="og:url" content="https://erlsrnby04.github.io/2024/09/25/MIT-6-1810-Xv6-Chapter-3/"><meta property="og:site_name" content="ErlsrnBy04"><meta property="og:description" content="Page tables"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-3/image-20240925134044836.png"><meta property="og:image" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-3/image-20240925143042508.png"><meta property="og:image" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-3/image-20240925145411714.png"><meta property="og:image" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-3/image-20240925173235081.png"><meta property="article:published_time" content="2024-09-25T03:44:09.000Z"><meta property="article:modified_time" content="2024-09-25T10:33:07.271Z"><meta property="article:author" content="ErlsrnBy04"><meta property="article:tag" content="MIT 6.1810"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-3/image-20240925134044836.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://erlsrnby04.github.io/2024/09/25/MIT-6-1810-Xv6-Chapter-3/"},"headline":"[MIT 6.1810]Xv6 Chapter 3","image":["https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-3/image-20240925134044836.png","https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-3/image-20240925143042508.png","https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-3/image-20240925145411714.png","https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-3/image-20240925173235081.png"],"datePublished":"2024-09-25T03:44:09.000Z","dateModified":"2024-09-25T10:33:07.271Z","author":{"@type":"Person","name":"ErlsrnBy04"},"publisher":{"@type":"Organization","name":"ErlsrnBy04","logo":{"@type":"ImageObject","url":"https://erlsrnby04.github.io/img/Snake.svg"}},"description":"Page tables"}</script><link rel="canonical" href="https://erlsrnby04.github.io/2024/09/25/MIT-6-1810-Xv6-Chapter-3/"><link rel="icon" href="/img/Snake.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">主页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="GitHub 主页" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-09-25T03:44:09.000Z" title="2024/9/25 11:44:09">2024-09-25</time></span><span class="level-item"><a class="link-muted" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span><span class="level-item">24 minutes read (About 3590 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">[MIT 6.1810]Xv6 Chapter 3</h1><div class="content"><h1 id="Page-tables"><a href="#Page-tables" class="headerlink" title="Page tables"></a>Page tables</h1><span id="more"></span>
+
+<h2 id="3-1-Paging-hardware"><a href="#3-1-Paging-hardware" class="headerlink" title="3.1 Paging hardware"></a>3.1 Paging hardware</h2><p>RISC-V的指令操控的是虚拟地址，而物理内存是按照物理地址索引的。页表硬件负责进行虚拟地址和物理地址的转换。</p>
+<p><img src="/../images/MIT-6-1810-Xv6-Chapter-3/image-20240925134044836.png"></p>
+<p>xv6运行在Sv39 RISC-V上，只使用64位虚拟地址的低39位。在这种情况下，页表逻辑上是一个2^27次方的页表项（Page table entrie，PTE）数组，每个PTE包含44位物理页码（Physical page number， PPN）和一些标识位。页表硬件将虚拟地址低39位的高27位作为页表索引，然后将取得的44位PPN作为高44位，虚拟地址的低12位作为页内偏移，获得一个56位的物理地址。</p>
+<p><img src="/../images/MIT-6-1810-Xv6-Chapter-3/image-20240925143042508.png"></p>
+<p>xv6中采取的是三级页表，第一级页表页的物理起始地址由satp寄存器保存，27位的高9位用来索引第一级页表，第一级页表页表项的PPN字段是第二级页表页的起始物理地址，27位的中间9位用来索引第二级页表，其页表项的PPN字段是第三级页表页的起始物理地址，27位的低9位用来索引第三级页表，其页表项的PPN字段是实际访问内存页的物理地址。每级页表页大小为一页，包含512个页表项。</p>
+<p>在上述地址转换过程中，如果某个页表项不存在，都会引发一个页面错误异常（page fault exception），由内核负责处理这个异常。</p>
+<p>采取这种多级页表的好处是节省了内存空间，用不到的页表页将不会占据空间；缺点是在地址转化的时候需要进行多次访问。以三级页表为例，首先需要访问第一级页表获取第二级页表的物理地址，然后需要访问第二级页表获取第三级页表的物理地址，再访问第三级页表获取实际物理页的物理地址，之后才能访问我们实际需要读取的数据。为了解决这个问题，CPU可以将一些页表项缓存到TLB（Translation Look-aside Buffer）中，这样，如果在TLB中命中，则直接可以拿到实际物理页的物理地址，不需要进行额外的访存操作。</p>
+<p>xv6中和页表硬件相关的结构定义在（kernel&#x2F;riscv.h）中。</p>
+<p>每个CPU都有自己的satp寄存器，该寄存器指定了第一级页表的物理地址。</p>
+<h2 id="3-2-Kernel-address-space"><a href="#3-2-Kernel-address-space" class="headerlink" title="3.2 Kernel address space"></a>3.2 Kernel address space</h2><p>xv6为每个进程维护一个页表，并且维护一个单独的页表指明内核地址空间。内核配置内存空间的布局使其可以访问物理内存和各种设备资源，如图3.3所示。内核内存布局用到的常量定义在kernel&#x2F;memlayout.h里。</p>
+<p><img src="/../images/MIT-6-1810-Xv6-Chapter-3/image-20240925145411714.png"></p>
+<p>QEMU 模拟了一个计算机系统，物理内存（RAM）从物理地址 0x80000000 开始，至少延续到 0x88000000，称为 PHYSTOP。QEMU 还包含了 I&#x2F;O 设备，比如磁盘接口。这些设备接口通过内存映射控制寄存器暴露给软件，这些寄存器位于物理地址空间的 0x80000000 之下。内核可以通过读取或写入这些特殊的物理地址与设备进行交互；这样的读写操作是与设备硬件直接通信，而不是与 RAM 进行交互。第 4 章将解释 xv6 如何与这些设备进行交互。</p>
+<p>内核通过“直接映射”访问 RAM 和内存映射的设备寄存器，即将资源映射到与物理地址相同的虚拟地址。例如，内核本身位于虚拟地址空间和物理内存中的  <code>KERNBASE=0x80000000</code> 。直接映射简化了内核读取或写入物理内存的代码。</p>
+<ul>
+<li><p><strong>直接映射</strong>：在直接映射中，虚拟地址与物理地址相等，这意味着内核可以使用相同的地址来访问内存。这种方式使得内核在处理物理内存时更加简便，不需要额外的地址转换。</p>
+</li>
+<li><p><strong>内存分配示例</strong>：例如，在 <code>fork</code> 系统调用中，当为子进程分配用户内存时，分配器返回的是物理内存地址。由于内核采用直接映射，<code>fork</code> 可以直接将这个物理地址作为虚拟地址使用，将父进程的用户内存内容复制到子进程中。这减少了需要进行地址转换的复杂性。</p>
+</li>
+</ul>
+<p>在内核的虚拟地址空间中，有几个地址并不是直接映射的，包括：</p>
+<ol>
+<li><p><strong>Trampoline Page</strong></p>
+<ul>
+<li><p><strong>映射位置</strong>：Trampoline 页位于虚拟地址空间的顶部，并且用户页面表也具有相同的映射。</p>
+</li>
+<li><p><strong>作用</strong>：Trampoline 页用于实现上下文切换等功能。它的物理页面（存放 Trampoline 代码）在内核的虚拟地址空间中被映射了两次：一次在虚拟空间的顶部，另一次是直接映射的地址。</p>
+</li>
+<li><p><strong>特点</strong>：这种设计展示了页面表的灵活使用，能够在需要时同时使用不同的映射。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Kernel Stack Pages</strong></p>
+<ul>
+<li><p><strong>每个进程的内核栈</strong>：每个进程都有自己的内核栈，这些栈映射在高地址，以便在它们下面保留一个未映射的保护页（guard page）。</p>
+</li>
+<li><p><strong>保护页</strong>：保护页的页表项（PTE）是无效的（即 PTE_V 没有设置），因此如果内核栈溢出，它将可能导致异常，从而引发内核恐慌（panic）。没有保护页的情况下，溢出的栈可能会覆盖其他内核内存，导致错误操作。</p>
+</li>
+<li><p><strong>映射设计</strong>：内核通过高内存映射使用这些栈，但也可以通过直接映射的地址访问它们。如果只使用直接映射而不设置保护页，处理保护页将涉及取消映射原本指向物理内存的虚拟地址，这将变得难以使用。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>权限设置</strong></p>
+<ul>
+<li><strong>Trampoline 页和内核文本的映射</strong>：这些页面的权限设置为 PTE_R（可读）和 PTE_X（可执行），内核可以从这些页面读取和执行指令。</li>
+<li><strong>其他页面的映射</strong>：其他页面的权限设置为 PTE_R（可读）和 PTE_W（可写），允许内核读取和写入这些页面的内存。</li>
+<li><strong>保护页的映射</strong>：保护页的映射是无效的，以防止访问。</li>
+</ul>
+<h2 id="3-3-Code-creating-an-address-space"><a href="#3-3-Code-creating-an-address-space" class="headerlink" title="3.3  Code: creating an address space"></a>3.3  Code: creating an address space</h2><p>xv6中大多数操控地址空间和页表的代码在vm.c中。</p>
+<p>核心数据结构是 <code>pagetable_t</code> ，这是一个指向第一级页表的指针，它要么指向内核页表，要么指向进程自己的页表。</p>
+<p>核心函数有：</p>
+<ul>
+<li><code>walk</code> - 找到一个虚拟地址对应的PTE</li>
+<li><code>mappages</code> - 为新的映射设立PTE</li>
+</ul>
+<p>以kvm为前缀的函数操作内核页表；以uvm为前缀的函数操作进程页表；其它函数两者都可以操作。</p>
+<p>在 xv6 操作系统中，<code>copyout</code> 和 <code>copyin</code> 函数用于将数据复制到用户虚拟地址和从用户虚拟地址复制数据，这些地址作为系统调用参数传入。这些函数在 <code>vm.c</code> 文件中实现，因为它们需要显式地转换这些地址以找到对应的物理内存。</p>
+<p><strong>内核的页表创建</strong>：</p>
+<ul>
+<li>在启动序列的早期，<code>main</code> 函数调用 <code>kvminit</code> 来创建内核的页表。此调用发生在 xv6 启用分页之前，因此地址直接指向物理内存。</li>
+<li><code>kvmmake</code> 首先分配一页物理内存，用于存放根页面表。然后，它调用 <code>kvmmap</code> 安装内核所需的地址转换，包括内核的指令和数据、到 PHYSTOP 的物理内存，以及实际上是设备的内存范围。</li>
+</ul>
+<p><strong>分配内核栈</strong>：</p>
+<ul>
+<li><code>proc_mapstacks</code> 为每个进程分配一个内核栈。它调用 <code>kvmmap</code> 将每个栈映射到由 <code>KSTACK</code> 生成的虚拟地址，这样可以为无效的栈保护页留出空间。</li>
+</ul>
+<p><strong>页面映射的安装</strong>：</p>
+<ul>
+<li><code>kvmmap</code> 调用 <code>mappages</code>，将虚拟地址范围映射到相应的物理地址范围。对于范围内的每个虚拟地址，<code>mappages</code> 分别处理，并按页间隔进行映射。</li>
+<li>对于每个需要映射的虚拟地址，<code>mappages</code> 调用 <code>walk</code> 找到该地址的页面表项（PTE）。然后，它初始化 PTE，以保存相关的物理页面编号、所需的权限（PTE_W、PTE_X 和&#x2F;或 PTE_R），并设置 PTE_V 将 PTE 标记为有效。</li>
+</ul>
+<p><strong>PTE 查找</strong></p>
+<ul>
+<li><strong>walk 函数</strong>：<code>walk</code> 函数模拟 RISC-V 的分页硬件，逐级查找虚拟地址的 PTE。它使用每级地址的 9 位虚拟地址索引相关的页面目录页。每一层中，它找到的是下一层页面目录页的 PTE，或者是最终页面的 PTE。</li>
+<li>如果一级或二级页面目录页中的 PTE 无效，则所需的目录页尚未分配；如果 <code>alloc</code> 参数被设置，<code>walk</code> 将分配一个新的页面表页，并将其物理地址放入 PTE 中。它返回树中最低层的 PTE 地址。</li>
+</ul>
+<p><strong>物理内存与虚拟地址的直接映射</strong></p>
+<p>上述代码依赖于物理内存直接映射到内核虚拟地址空间。例如，当 <code>walk</code> 函数向下查找页面表时，它从 PTE 中提取下一层页面表的物理地址，然后将该地址用作虚拟地址以获取下一层的 PTE。所以必须保证是采用直接映射。</p>
+<p><strong>安装内核页表</strong></p>
+<ul>
+<li><code>main</code> 调用 <code>kvminithart</code> 安装内核页面表。它将根页面表的物理地址写入 <code>satp</code> 寄存器。此后，CPU 将使用内核页面表进行地址转换。由于内核使用直接映射，下一条指令的虚拟地址将正确映射到对应的物理内存地址。</li>
+</ul>
+<p><strong>TLB</strong></p>
+<p>在 RISC-V CPU 中，页表项会被缓存到转换后备缓冲区（TLB）中。当 xv6 修改页表时，必须通知 CPU 使对应的 TLB 缓存条目失效。如果不这样做，TLB 可能会在后续使用旧的缓存映射，这可能会导致指向的物理页面被分配给其他进程，从而使一个进程能够访问或篡改另一个进程的内存。</p>
+<p><strong>TLB 失效机制</strong></p>
+<ul>
+<li><p><strong>sfence.vma 指令</strong>：</p>
+<p>RISC-V 提供了 <code>sfence.vma</code> 指令，用于刷新当前 CPU 的 TLB。xv6 在 <code>kvminithart</code> 中重新加载 <code>satp</code> 寄存器后执行此指令，同时在切换到用户页面表的 Trampoline 代码中也会调用它（在 <code>kernel/trampoline.S:89</code> 处）。</p>
+</li>
+<li><p><strong>确保旧表格的完整性</strong>：</p>
+<p>在更改 <code>satp</code> 之前，也需要发出 <code>sfence.vma</code> 指令，以确保所有未完成的加载和存储操作已完成。这一等待过程确保先前对页表的更新完成，同时保证之前的加载和存储使用旧的页表，而不是新的。</p>
+</li>
+</ul>
+<p><strong>地址空间标识符（ASIDs）</strong></p>
+<ul>
+<li>为了避免刷新整个 TLB，RISC-V CPU 可能支持地址空间标识符（ASIDs）。这样，内核可以仅刷新特定地址空间的 TLB 条目，而无需影响其他地址空间。</li>
+<li>然而，xv6 并未使用这一特性，因此每次修改页表时仍需完全刷新 TLB。</li>
+</ul>
+<h2 id="3-4-Physical-memory-allocation"><a href="#3-4-Physical-memory-allocation" class="headerlink" title="3.4 Physical memory allocation"></a>3.4 Physical memory allocation</h2><p>xv6使用介于内核末尾和PHYSTOP直接的物理内存来进行运行时分配。通过页面链表来维护空闲页面，当分配的时候需要从链表中移除分配的页面，当释放的时候需要将页面添加到链表中。</p>
+<h2 id="3-5-Code：Physical-memory-allocator"><a href="#3-5-Code：Physical-memory-allocator" class="headerlink" title="3.5 Code：Physical memory allocator"></a>3.5 Code：Physical memory allocator</h2><p>分配器代码在kalloc.c中。</p>
+<p>分配器的数据结构是空闲页面的链表。链表中的元素是 <code>struct run</code> ，这些结构体保存在相应的空闲页面内。链表被一个自旋锁保护。</p>
+<p> <code>main</code> 调用 <code>kinit</code> 来初始化这个分配器。 <code>kinit</code> 负责初始化链表，维护每个空闲页面。用到了 <code>freerange</code> 和 <code>kfree</code>。</p>
+<h2 id="3-6-Process-address-space"><a href="#3-6-Process-address-space" class="headerlink" title="3.6 Process address space"></a>3.6 Process address space</h2><p>每个进程都有自己的页表，进程切换的时候会更换页表。</p>
+<p><img src="/../images/MIT-6-1810-Xv6-Chapter-3/image-20240925173235081.png"></p>
+<p>内核在用户地址空间的顶部映射了一页包含 trampoline 代码的页面，该页面没有设置用户访问权限（PTE_U）。这样，虽然这页物理内存在所有地址空间中可见，但只有内核能够使用它。</p>
+<p><strong>共享页面</strong>：</p>
+<p>这页物理内存被映射到每个用户进程的地址空间中，但由于没有用户访问权限，用户进程无法访问或修改该页。</p>
+<p><strong>内核的用途</strong>：</p>
+<p>该页面的主要用途是在上下文切换时，内核可以通过 trampoline 代码快速切换到用户模式。这种设计简化了用户与内核之间的切换过程。</p>
+<p><strong>安全性</strong>：</p>
+<p>通过限制用户访问这页内存，内核能够防止潜在的安全问题，确保用户进程无法干扰或篡改关键的内核代码。</p>
+<h2 id="3-7-Code：sbrk"><a href="#3-7-Code：sbrk" class="headerlink" title="3.7 Code：sbrk"></a>3.7 Code：sbrk</h2><h2 id="3-8-Code：exec"><a href="#3-8-Code：exec" class="headerlink" title="3.8 Code：exec"></a>3.8 Code：exec</h2></div><div class="article-licensing box"><div class="licensing-title"><p>[MIT 6.1810]Xv6 Chapter 3</p><p><a href="https://erlsrnby04.github.io/2024/09/25/MIT-6-1810-Xv6-Chapter-3/">https://erlsrnby04.github.io/2024/09/25/MIT-6-1810-Xv6-Chapter-3/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>ErlsrnBy04</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2024-09-25</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2024-09-25</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/MIT-6-1810/">MIT 6.1810</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/09/24/MIT-6-1810-Xv6-Chapter-2/"><span class="level-item">[MIT 6.1810]Xv6 Chapter 2</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><script src="https://giscus.app/client.js" repo="ErlsrnBy04/comments" data-repo="ErlsrnBy04/comments" data-repo-id="R_kgDOM1SRGQ" data-category-id="DIC_kwDOM1SRGc4Cirkj" data-category="Announcements" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous" async></script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar1.jpg" alt="ErlsrnBy04"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">ErlsrnBy04</p><p class="is-size-6 is-block">学生</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>北京，中国</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">19</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">3</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ErlsrnBy04" target="_blank" rel="me noopener">Follow</a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#Page-tables"><span class="level-left"><span class="level-item">1</span><span class="level-item">Page tables</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#3-1-Paging-hardware"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">3.1 Paging hardware</span></span></a></li><li><a class="level is-mobile" href="#3-2-Kernel-address-space"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">3.2 Kernel address space</span></span></a></li><li><a class="level is-mobile" href="#3-3-Code-creating-an-address-space"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">3.3  Code: creating an address space</span></span></a></li><li><a class="level is-mobile" href="#3-4-Physical-memory-allocation"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">3.4 Physical memory allocation</span></span></a></li><li><a class="level is-mobile" href="#3-5-Code：Physical-memory-allocator"><span class="level-left"><span class="level-item">1.5</span><span class="level-item">3.5 Code：Physical memory allocator</span></span></a></li><li><a class="level is-mobile" href="#3-6-Process-address-space"><span class="level-left"><span class="level-item">1.6</span><span class="level-item">3.6 Process address space</span></span></a></li><li><a class="level is-mobile" href="#3-7-Code：sbrk"><span class="level-left"><span class="level-item">1.7</span><span class="level-item">3.7 Code：sbrk</span></span></a></li><li><a class="level is-mobile" href="#3-8-Code：exec"><span class="level-left"><span class="level-item">1.8</span><span class="level-item">3.8 Code：exec</span></span></a></li></ul></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="level-start"><span class="level-item">操作系统</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"><span class="level-start"><span class="level-item">编程语言</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-25T03:44:09.000Z">2024-09-25</time></p><p class="title"><a href="/2024/09/25/MIT-6-1810-Xv6-Chapter-3/">[MIT 6.1810]Xv6 Chapter 3</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T07:43:10.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-2/">[MIT 6.1810]Xv6 Chapter 2</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T05:11:40.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/">[MIT 6.1810]Xv6 Chapter 1</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/"><img src="/cover/C++.svg" alt="[C++] 返回值优化"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-09-22T05:17:42.000Z">2024-09-22</time></p><p class="title"><a href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/">[C++] 返回值优化</a></p><p class="categories"><a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2024/09/22/C-C-Primer-Chapter-14/"><img src="/cover/C++.svg" alt="[C++]C++Primer Chapter 14"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-09-22T04:01:27.000Z">2024-09-22</time></p><p class="title"><a href="/2024/09/22/C-C-Primer-Chapter-14/">[C++]C++Primer Chapter 14</a></p><p class="categories"><a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">September 2024</span></span><span class="level-end"><span class="level-item tag">19</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/C/"><span class="tag">C++</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-1810/"><span class="tag">MIT 6.1810</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-S081/"><span class="tag">MIT 6.S081</span><span class="tag">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a><p class="is-size-7"><span>&copy; 2024 ErlsrnBy04</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">且陶陶，乐尽天真</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="GitHub" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'folded'
+                }
+            }
+        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
