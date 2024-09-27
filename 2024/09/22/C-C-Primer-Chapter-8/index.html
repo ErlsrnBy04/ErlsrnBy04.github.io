@@ -1,38 +1,303 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>[C++]C++Primer Chapter 8 - ErlsrnBy04</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ErlsrnBy04"><meta name="msapplication-TileImage" content="/img/Snake.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ErlsrnBy04"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="IO库"><meta property="og:type" content="blog"><meta property="og:title" content="[C++]C++Primer Chapter 8"><meta property="og:url" content="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-8/"><meta property="og:site_name" content="ErlsrnBy04"><meta property="og:description" content="IO库"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://erlsrnby04.github.io/cover/C++.svg"><meta property="article:published_time" content="2024-09-22T04:01:11.000Z"><meta property="article:modified_time" content="2024-09-22T05:57:56.722Z"><meta property="article:author" content="ErlsrnBy04"><meta property="article:tag" content="C++"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://erlsrnby04.github.io/cover/C++.svg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-8/"},"headline":"[C++]C++Primer Chapter 8","image":[],"datePublished":"2024-09-22T04:01:11.000Z","dateModified":"2024-09-22T05:57:56.722Z","author":{"@type":"Person","name":"ErlsrnBy04"},"publisher":{"@type":"Organization","name":"ErlsrnBy04","logo":{"@type":"ImageObject","url":"https://erlsrnby04.github.io/img/Snake.svg"}},"description":"IO库"}</script><link rel="canonical" href="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-8/"><link rel="icon" href="/img/Snake.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
-  (function () {
-      function switchTab() {
-          if (!location.hash) {
-            return;
-          }
 
-          const id = '#' + CSS.escape(location.hash.substring(1));
-          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
-          if (!$tabMenu) {
-            return;
-          }
 
-          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
-          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
-          Array.from($tabMenuContainer.querySelectorAll('a'))
-              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
-              .forEach($content => $content.classList.add('is-hidden'));
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-          if ($tabMenu) {
-              $tabMenu.parentElement.classList.add('is-active');
-          }
-          const $activeTab = document.querySelector(id);
-          if ($activeTab) {
-              $activeTab.classList.remove('is-hidden');
-          }
-      }
-      switchTab();
-      window.addEventListener('hashchange', switchTab, false);
-  })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">主页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="GitHub 主页" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-09-22T04:01:11.000Z" title="2024/9/22 12:01:11">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></span><span class="level-item">22 minutes read (About 3331 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">[C++]C++Primer Chapter 8</h1><div class="content"><h1 id="IO库"><a href="#IO库" class="headerlink" title="IO库"></a>IO库</h1><span id="more"></span>
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="IO库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[C++]C++Primer Chapter 8">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-8/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="IO库">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=8">
+<meta property="article:published_time" content="2024-09-22T04:01:11.000Z">
+<meta property="article:modified_time" content="2024-09-27T14:09:58.389Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=8">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>[C++]C++Primer Chapter 8 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04的小站</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[C++]C++Primer Chapter 8"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-22 12:01" pubdate>
+          2024年9月22日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[C++]C++Primer Chapter 8</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="IO库"><a href="#IO库" class="headerlink" title="IO库"></a>IO库</h1><span id="more"></span>
 
 <p>C++语言不直接处理输入输出，而是通过一族定义在标准库中的类型来处理IO。这些类型支持从设备读取数据、向设备写入数据的IO操作，设备可以是文件、控制台窗口等。还有一些类型允许内存IO，即，从string读取数据，向string写入数据。</p>
-<h2 id="8-1-IO类"><a href="#8-1-IO类" class="headerlink" title="8.1 IO类"></a>8.1 IO类</h2><p><img src="/../images/C-C-Primer-Chapter-8/1726120413211.png"></p>
+<h2 id="8-1-IO类"><a href="#8-1-IO类" class="headerlink" title="8.1 IO类"></a>8.1 IO类</h2><p><img src="/../images/C-C-Primer-Chapter-8/1726120413211.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>IO类型间的关系</strong></p>
 <p>类型ifstream和istringstream都继承自istream。因此，我们可以像使用istream对象一样来使用ifstream和istringstream对象。也就是说，我们是如何使用cin的，就可以同样地使用这些类型的对象。例如，可以对一个ifstream或istringstream对象调用getline，也可以使用&gt;&gt;从一个ifstream或istringstream对象中读取数据。类似的，类型ofstream和ostringstream都继承自ostream。因此，我们是如何使用cout的，就可以同样地使用这些类型的对象。</p>
 <blockquote>
@@ -40,12 +305,12 @@
 </blockquote>
 <h3 id="8-1-1-IO对象无拷贝或赋值"><a href="#8-1-1-IO对象无拷贝或赋值" class="headerlink" title="8.1.1 IO对象无拷贝或赋值"></a>8.1.1 IO对象无拷贝或赋值</h3><p>我们不能拷贝或对IO对象赋值。</p>
 <p>我们也不能将形参或返回类型设置为流类型（参见6.2.1节，第188页）。进行IO操作的函数通常以引用方式传递和返回流。读写一个IO对象会改变其状态，因此传递和返回的引用不能是const的。</p>
-<h3 id="8-1-2-条件状态"><a href="#8-1-2-条件状态" class="headerlink" title="8.1.2 条件状态"></a>8.1.2 条件状态</h3><p><img src="/../images/C-C-Primer-Chapter-8/1726120976621.png"></p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726120982490.png"></p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726121084201.png"></p>
+<h3 id="8-1-2-条件状态"><a href="#8-1-2-条件状态" class="headerlink" title="8.1.2 条件状态"></a>8.1.2 条件状态</h3><p><img src="/../images/C-C-Primer-Chapter-8/1726120976621.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726120982490.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726121084201.png" srcset="/img/loading.gif" lazyload></p>
 <p>如果我们在标准输入上键入Boo，读操作就会失败。代码中的输入运算符期待读取一个int，但却得到了一个字符B。这样，cin会进入错误状态。类似的，如果我们输入一个文件结束标识，cin也会进入错误状态。</p>
 <p>一个流一旦发生错误，其上后续的IO操作都会失败。只有当一个流处于无错状态时，我们才可以从它读取数据，向它写入数据。由于流可能处于错误状态，因此代码通常应该在使用一个流之前检查它是否处于良好状态。确定一个流对象的状态的最简单的方法是将它当作一个条件来使用</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726121103849.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726121103849.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>查询流的状态</strong></p>
 <p>将流作为条件使用，只能告诉我们流是否有效，而无法告诉我们具体发生了什么。</p>
 <p>IO库定义了一个与机器无关的iostate类型，它提供了表达流状态的完整功能。这个类型应作为一个位集合来使用</p>
@@ -57,9 +322,9 @@
 <p>操作good在所有错误位均未置位的情况下返回true，而bad、fail和eof则在对应错误位被置位时返回true。此外，在badbit被置位时，fail也会返回true。这意味着，使用good或fail是确定流的总体状态的正确方法。实际上，我们将流当作条件使用的代码就等价于！fail（）。而eof和bad操作只能表示特定的错误。</p>
 <p><strong>管理条件状态</strong></p>
 <p>流对象的rdstate成员返回一个iostate值，对应流的当前状态。setstate操作将给定条件位置位，表示发生了对应错误。clear成员是一个重载的成员（参见6.4节，第206页）：它有一个不接受参数的版本，而另一个版本接受一个iostate类型的参数。clear不接受参数的版本清除（复位）所有错误标志位。执行clear（）后，调用good会返回true。我们可以这样使用这些成员：</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726121320970.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726121320970.png" srcset="/img/loading.gif" lazyload></p>
 <p>带参数的clear版本接受一个iostate值，表示流的新状态。为了复位单一的条件状态位，我们首先用rdstate读出当前条件状态，然后用位操作将所需位复位来生成新的状态。例如，下面的代码将failbit和badbit复位，但保持eofbit不变：</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726121388256.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726121388256.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="8-1-3-管理输出缓冲"><a href="#8-1-3-管理输出缓冲" class="headerlink" title="8.1.3 管理输出缓冲"></a>8.1.3 管理输出缓冲</h3><p>每个输出流都管理一个缓冲区，用来保存程序读写的数据。</p>
 <p>导致缓冲刷新（即，数据真正写到输出设备或文件）的原因有很多：</p>
 <ul>
@@ -71,10 +336,10 @@
 </ul>
 <p><strong>刷新输出缓冲区</strong></p>
 <p>我们已经使用过操纵符endl，它完成换行并刷新缓冲区的工作。IO库中还有两个类似的操纵符：flush和ends。flush刷新缓冲区，但不输出任何额外的字符；ends向缓冲区插入一个空字符，然后刷新缓冲区</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726121607348.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726121607348.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>unitbuf操纵符</strong></p>
 <p>如果想在每次输出操作后都刷新缓冲区，我们可以使用unitbuf操纵符。它告诉流在接下来的每次写操作之后都进行一次flush操作。而nounitbuf操纵符则重置流，使其恢复使用正常的系统管理的缓冲区刷新机制</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726121637902.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726121637902.png" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>警告：如果程序崩溃，输出缓冲区不会被刷新</p>
 </blockquote>
@@ -85,27 +350,27 @@
 </blockquote>
 <p>tie有两个重载的版本（参见6.4节，第206页）：一个版本不带参数，返回指向输出流的指针。如果本对象当前关联到一个输出流，则返回的就是指向这个流的指针，如果对象未关联到流，则返回空指针。tie的第二个版本接受一个指向ostream的指针，将自己关联到此ostream。即，x.tie（&amp;o）将流x关联到输出流o。</p>
 <p>我们既可以将一个istream对象关联到另一个ostream，也可以将一个ostream关联到另一个ostream：</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726122679237.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726122679237.png" srcset="/img/loading.gif" lazyload></p>
 <p>每个流同时最多关联到一个流，但多个流可以同时关联到同一个ostream。</p>
 <h2 id="8-2-文件输入输出"><a href="#8-2-文件输入输出" class="headerlink" title="8.2 文件输入输出"></a>8.2 文件输入输出</h2><p>除了继承自iostream类型的行为之外，fstream中定义的类型还增加了一些新的成员来管理与流关联的文件。在表8.3中列出了这些操作，我们可以对fstream、ifstream和ofstream对象调用这些操作，但不能对其他IO类型调用这些操作。</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726122800709.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726122800709.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="8-2-1-使用文件流对象"><a href="#8-2-1-使用文件流对象" class="headerlink" title="8.2.1 使用文件流对象"></a>8.2.1 使用文件流对象</h3><p>当我们想要读写一个文件时，可以定义一个文件流对象，并将对象与文件关联起来。</p>
 <p>创建文件流对象时，我们可以提供文件名（可选的）。如果提供了一个文件名，则open会自动被调用。</p>
 <p><strong>用fstream代替iostream&amp;</strong></p>
 <p>如果有一个函数接受一个ostream&amp;参数，我们在调用这个函数时，可以传递给它一个ofstream对象，对istream&amp;和ifstream也是类似的。</p>
 <p><strong>成员函数open和close</strong></p>
 <p>如果调用open失败，failbit会被置位（参见8.1.2节，第280页）。因为调用open可能失败，进行open是否成功的检测通常是一个好习惯。</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726123055436.png"></p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726123059038.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726123055436.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726123059038.png" srcset="/img/loading.gif" lazyload></p>
 <p>对一个已经打开的文件流调用open会失败，并会导致failbit被置位。随后的试图使用文件流的操作都会失败。为了将文件流关联到另外一个文件，必须首先关闭已经关联的文件。</p>
 <p><strong>自动构造和析构</strong></p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726123162740.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726123162740.png" srcset="/img/loading.gif" lazyload></p>
 <p>当一个fstream对象离开其作用域时，与之关联的文件会自动关闭。在下一步循环中，input会再次被创建。</p>
 <blockquote>
 <p>当一个fstream对象被销毁时，close会自动被调用。</p>
 </blockquote>
 <h3 id="8-2-2-文件模式"><a href="#8-2-2-文件模式" class="headerlink" title="8.2.2 文件模式"></a>8.2.2 文件模式</h3><p>每个流都有一个关联的文件模式（file mode），用来指出如何使用文件。</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726123208713.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726123208713.png" srcset="/img/loading.gif" lazyload></p>
 <p>指定文件模式有如下限制：</p>
 <ul>
 <li>只可以对ofstream或fstream对象设定out模式。</li>
@@ -117,7 +382,7 @@
 </ul>
 <p>每个文件流类型都定义了一个默认的文件模式，当我们未指定文件模式时，就使用此默认模式。与ifstream关联的文件默认以in模式打开；与ofstream关联的文件默认以out模式打开；与fstream关联的文件默认以in和out模式打开。</p>
 <p><strong>以out模式打开文件会丢弃已有数据</strong></p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726123354564.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726123354564.png" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>保留被ofstream打开的文件中已有数据的唯一方法是显式指定app或in模式。</p>
 </blockquote>
@@ -125,53 +390,379 @@
 <p>对于一个给定流，每当打开文件时，都可以改变其文件模式。</p>
 <h2 id="8-3-string流"><a href="#8-3-string流" class="headerlink" title="8.3 string流"></a>8.3 string流</h2><p>istringstream从string读取数据，ostringstream向string写入数据，而头文件stringstream既可从string读数据也可向string写数据。</p>
 <p>除了继承得来的操作，sstream中定义的类型还增加了一些成员来管理与流相关联的string。</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726123827260.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726123827260.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="8-3-1-使用istringstream"><a href="#8-3-1-使用istringstream" class="headerlink" title="8.3.1 使用istringstream"></a>8.3.1 使用istringstream</h3><p>当我们的某些工作是对整行文本进行处理，而其他一些工作是处理行内的单个单词时，通常可以使用istringstream。</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/1726124057228.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-8/1726124057228.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="8-3-2-使用ostringstream"><a href="#8-3-2-使用ostringstream" class="headerlink" title="8.3.2 使用ostringstream"></a>8.3.2 使用ostringstream</h3><p>当我们逐步构造输出，希望最后一起打印时，ostringstream是很有用的。</p>
-<p><img src="/../images/C-C-Primer-Chapter-8/image-20240922130926153.png"></p>
-</div><div class="article-licensing box"><div class="licensing-title"><p>[C++]C++Primer Chapter 8</p><p><a href="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-8/">https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-8/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>ErlsrnBy04</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2024-09-22</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2024-09-22</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/C/">C++</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2024/09/22/C-C-Primer-Chapter-9/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">[C++]C++Primer Chapter 9</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/09/22/C-C-Primer-Chapter-7/"><span class="level-item">[C++]C++Primer Chapter 7</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><script src="https://giscus.app/client.js" repo="ErlsrnBy04/comments" data-repo="ErlsrnBy04/comments" data-repo-id="R_kgDOM1SRGQ" data-category-id="DIC_kwDOM1SRGc4Cirkj" data-category="Announcements" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous" async></script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar1.jpg" alt="ErlsrnBy04"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">ErlsrnBy04</p><p class="is-size-6 is-block">学生</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>北京，中国</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">20</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">3</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ErlsrnBy04" target="_blank" rel="me noopener">Follow</a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#IO库"><span class="level-left"><span class="level-item">1</span><span class="level-item">IO库</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#8-1-IO类"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">8.1 IO类</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#8-1-1-IO对象无拷贝或赋值"><span class="level-left"><span class="level-item">1.1.1</span><span class="level-item">8.1.1 IO对象无拷贝或赋值</span></span></a></li><li><a class="level is-mobile" href="#8-1-2-条件状态"><span class="level-left"><span class="level-item">1.1.2</span><span class="level-item">8.1.2 条件状态</span></span></a></li><li><a class="level is-mobile" href="#8-1-3-管理输出缓冲"><span class="level-left"><span class="level-item">1.1.3</span><span class="level-item">8.1.3 管理输出缓冲</span></span></a></li></ul></li><li><a class="level is-mobile" href="#8-2-文件输入输出"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">8.2 文件输入输出</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#8-2-1-使用文件流对象"><span class="level-left"><span class="level-item">1.2.1</span><span class="level-item">8.2.1 使用文件流对象</span></span></a></li><li><a class="level is-mobile" href="#8-2-2-文件模式"><span class="level-left"><span class="level-item">1.2.2</span><span class="level-item">8.2.2 文件模式</span></span></a></li></ul></li><li><a class="level is-mobile" href="#8-3-string流"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">8.3 string流</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#8-3-1-使用istringstream"><span class="level-left"><span class="level-item">1.3.1</span><span class="level-item">8.3.1 使用istringstream</span></span></a></li><li><a class="level is-mobile" href="#8-3-2-使用ostringstream"><span class="level-left"><span class="level-item">1.3.2</span><span class="level-item">8.3.2 使用ostringstream</span></span></a></li></ul></li></ul></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="level-start"><span class="level-item">操作系统</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"><span class="level-start"><span class="level-item">编程语言</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-26T04:51:28.000Z">2024-09-26</time></p><p class="title"><a href="/2024/09/26/MIT-6-1810-Xv6-Chapter-4/">[MIT 6.1810]Xv6 Chapter 4</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-25T03:44:09.000Z">2024-09-25</time></p><p class="title"><a href="/2024/09/25/MIT-6-1810-Xv6-Chapter-3/">[MIT 6.1810]Xv6 Chapter 3</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T07:43:10.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-2/">[MIT 6.1810]Xv6 Chapter 2</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T05:11:40.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/">[MIT 6.1810]Xv6 Chapter 1</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/"><img src="/cover/C++.svg" alt="[C++] 返回值优化"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-09-22T05:17:42.000Z">2024-09-22</time></p><p class="title"><a href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/">[C++] 返回值优化</a></p><p class="categories"><a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">September 2024</span></span><span class="level-end"><span class="level-item tag">20</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/C/"><span class="tag">C++</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-1810/"><span class="tag">MIT 6.1810</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-S081/"><span class="tag">MIT 6.S081</span><span class="tag">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a><p class="is-size-7"><span>&copy; 2024 ErlsrnBy04</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">且陶陶，乐尽天真</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="GitHub" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
-            article: {
-                highlight: {
-                    clipboard: true,
-                    fold: 'unfolded'
-                }
-            }
-        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
-      window.cookieconsent.initialise({
-        type: "info",
-        theme: "edgeless",
-        static: false,
-        position: "bottom-left",
-        content: {
-          message: "This website uses cookies to improve your experience.",
-          dismiss: "Got it!",
-          allow: "Allow cookies",
-          deny: "Decline",
-          link: "Learn more",
-          policy: "Cookie Policy",
-          href: "https://www.cookiesandyou.com/",
-        },
-        palette: {
-          popup: {
-            background: "#edeff5",
-            text: "#838391"
-          },
-          button: {
-            background: "#4b81e8"
-          },
-        },
-      });
-    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
-            if (typeof $.fn.lightGallery === 'function') {
-                $('.article').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof $.fn.justifiedGallery === 'function') {
-                if ($('.justified-gallery > p > .gallery-item').length) {
-                    $('.justified-gallery > p > .gallery-item').unwrap();
-                }
-                $('.justified-gallery').justifiedGallery();
-            }
-        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
-            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
-        });</script></body></html>
+<p><img src="/../images/C-C-Primer-Chapter-8/image-20240922130926153.png" srcset="/img/loading.gif" lazyload></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[C++]C++Primer Chapter 8</div>
+      <div>https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-8/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/22/C-C-Primer-Chapter-9/" title="[C++]C++Primer Chapter 9">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[C++]C++Primer Chapter 9</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/22/C-C-Primer-Chapter-7/" title="[C++]C++Primer Chapter 7">
+                        <span class="hidden-mobile">[C++]C++Primer Chapter 7</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

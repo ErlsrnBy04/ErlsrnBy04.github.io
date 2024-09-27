@@ -1,43 +1,308 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>[C++]C++Primer Chapter 12 - ErlsrnBy04</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ErlsrnBy04"><meta name="msapplication-TileImage" content="/img/Snake.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ErlsrnBy04"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="动态内存"><meta property="og:type" content="blog"><meta property="og:title" content="[C++]C++Primer Chapter 12"><meta property="og:url" content="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-12/"><meta property="og:site_name" content="ErlsrnBy04"><meta property="og:description" content="动态内存"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://erlsrnby04.github.io/cover/C++.svg"><meta property="article:published_time" content="2024-09-22T04:01:22.000Z"><meta property="article:modified_time" content="2024-09-22T05:58:13.980Z"><meta property="article:author" content="ErlsrnBy04"><meta property="article:tag" content="C++"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://erlsrnby04.github.io/cover/C++.svg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-12/"},"headline":"[C++]C++Primer Chapter 12","image":[],"datePublished":"2024-09-22T04:01:22.000Z","dateModified":"2024-09-22T05:58:13.980Z","author":{"@type":"Person","name":"ErlsrnBy04"},"publisher":{"@type":"Organization","name":"ErlsrnBy04","logo":{"@type":"ImageObject","url":"https://erlsrnby04.github.io/img/Snake.svg"}},"description":"动态内存"}</script><link rel="canonical" href="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-12/"><link rel="icon" href="/img/Snake.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
-  (function () {
-      function switchTab() {
-          if (!location.hash) {
-            return;
-          }
 
-          const id = '#' + CSS.escape(location.hash.substring(1));
-          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
-          if (!$tabMenu) {
-            return;
-          }
 
-          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
-          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
-          Array.from($tabMenuContainer.querySelectorAll('a'))
-              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
-              .forEach($content => $content.classList.add('is-hidden'));
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-          if ($tabMenu) {
-              $tabMenu.parentElement.classList.add('is-active');
-          }
-          const $activeTab = document.querySelector(id);
-          if ($activeTab) {
-              $activeTab.classList.remove('is-hidden');
-          }
-      }
-      switchTab();
-      window.addEventListener('hashchange', switchTab, false);
-  })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">主页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="GitHub 主页" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-09-22T04:01:22.000Z" title="2024/9/22 12:01:22">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></span><span class="level-item">43 minutes read (About 6506 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">[C++]C++Primer Chapter 12</h1><div class="content"><h1 id="动态内存"><a href="#动态内存" class="headerlink" title="动态内存"></a>动态内存</h1><span id="more"></span>
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="动态内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[C++]C++Primer Chapter 12">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-12/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="动态内存">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=12">
+<meta property="article:published_time" content="2024-09-22T04:01:22.000Z">
+<meta property="article:modified_time" content="2024-09-27T14:11:44.561Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=12">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>[C++]C++Primer Chapter 12 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04的小站</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[C++]C++Primer Chapter 12"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-22 12:01" pubdate>
+          2024年9月22日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          49 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[C++]C++Primer Chapter 12</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="动态内存"><a href="#动态内存" class="headerlink" title="动态内存"></a>动态内存</h1><span id="more"></span>
 
 <p>静态内存用来保存局部static对象（参见6.6.1节，第185页）、类static数据成员（参见7.6节，第268页）以及定义在任何函数之外的变量。</p>
 <p>栈内存用来保存定义在函数内的非static对象。分配在静态或栈内存中的对象由编译器自动创建和销毁。</p>
 <p>对于栈对象，仅在其定义的程序块运行时才存在；static对象在使用之前分配，在程序结束时销毁。</p>
 <p>除了静态内存和栈内存，每个程序还拥有一个内存池。这部分内存被称作自由空间（free store）或堆（heap）。程序用堆来存储动态分配（dynamically allocate）的对象——即，那些在程序运行时分配的对象。动态对象的生存期由程序来控制。</p>
 <h2 id="12-1-动态内存与智能指针"><a href="#12-1-动态内存与智能指针" class="headerlink" title="12.1 动态内存与智能指针"></a>12.1 动态内存与智能指针</h2><p>为了更容易（同时也更安全）地使用动态内存，新的标准库提供了两种智能指针（smart pointer）类型来管理动态对象。智能指针的行为类似常规指针，重要的区别是它负责自动释放所指向的对象。新标准库提供的这两种智能指针的区别在于管理底层指针的方式：shared_ptr允许多个指针指向同一个对象；unique_ptr则“独占”所指向的对象。标准库还定义了一个名为weak_ptr的伴随类，它是一种弱引用，指向shared_ptr所管理的对象。这三种类型都定义在memory头文件中。</p>
-<h3 id="12-1-1-shared-ptr类"><a href="#12-1-1-shared-ptr类" class="headerlink" title="12.1.1 shared_ptr类"></a>12.1.1 shared_ptr类</h3><p><img src="/../images/C-C-Primer-Chapter-12/1726455699143.png"></p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726455732235.png"></p>
+<h3 id="12-1-1-shared-ptr类"><a href="#12-1-1-shared-ptr类" class="headerlink" title="12.1.1 shared_ptr类"></a>12.1.1 shared_ptr类</h3><p><img src="/../images/C-C-Primer-Chapter-12/1726455699143.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726455732235.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>make_shared函数</strong></p>
 <p>最安全的分配和使用动态内存的方法是调用一个名为make_shared的标准库函数。此函数在动态内存中分配一个对象并初始化它，返回指向此对象的shared_ptr。</p>
 <p>类似顺序容器的emplace成员（参见9.3.1节，第308页），make_shared用其参数来构造给定类型的对象。</p>
@@ -67,17 +332,17 @@
 <p>默认情况下，动态分配的对象是默认初始化的（参见2.2.1节，第40页），这意味着内置类型或组合类型的对象的值将是未定义的，而类类型对象将用默认构造函数进行初始化。也可以对动态分配的对象进行值初始化（参见3.3.1节，第88页），只需在类型名之后跟一对空括号即可</p>
 <p>对于定义了自己的构造函数（参见7.1.4节，第235页）的类类型（例如string）来说，要求值初始化是没有意义的；不管采用什么形式，对象都会通过默认构造函数来初始化。但对于内置类型，两种形式的差别就很大了；值初始化的内置类型对象有着良好定义的值，而默认初始化的对象的值则是未定义的。类似的，对于类中那些依赖于编译器合成的默认构造函数的内置类型成员，如果它们未在类内被初始化，那么它们的值也是未定义的（参见7.1.4节，第236页）。</p>
 <p>如果我们提供了一个括号包围的初始化器，就可以使用auto（参见2.5.2节，第61页）从此初始化器来推断我们想要分配的对象的类型。但是，由于编译器要用初始化器的类型来推断要分配的类型，只有当括号中仅有单一初始化器时才可以使用auto</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726457710921.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726457710921.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>动态分配的const对象</strong></p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726457753794.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726457753794.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>内存耗尽</strong></p>
 <p>默认情况下，如果new不能分配所要求的内存空间，它会<strong>抛出一个类型为bad_alloc（参见5.6节，第173页）的异常。</strong>我们可以改变使用new的方式来阻止它抛出异常</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726457804949.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726457804949.png" srcset="/img/loading.gif" lazyload></p>
 <p>这种形式的new为定位new（placement new），其原因我们将在19.1.2节（第729页）中解释。定位new表达式允许我们向new传递额外的参数。在此例中，我们传递给它一个由标准库定义的名为nothrow的对象。如果将nothrow传递给new，我们的意图是告诉它不能抛出异常。如果这种形式的new不能分配所需内存，它会返回一个空指针。bad_alloc和nothrow都定义在头文件new中。</p>
 <p><strong>释放动态内存</strong></p>
 <p><strong>指针值和delete</strong></p>
 <p>我们传递给delete的指针必须指向动态分配的内存，或者是一个空指针（参见2.3.2节，第48页）。释放一块并非new分配的内存，或者将相同的指针值释放多次，其行为是未定义的</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726457904246.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726457904246.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>动态对象的生存期直到被释放时为止</strong></p>
 <p>返回指向动态内存的指针（而不是智能指针）的函数给其调用者增加了一个额外负担——调用者必须记得释放内存</p>
 <p><strong>小心：动态内存的管理非常容易出错</strong></p>
@@ -89,13 +354,13 @@
 </ul>
 <p><strong>delete之后重置指针值，这只是提供了有限的保护</strong></p>
 <h3 id="12-1-3-shared-ptr和new结合使用"><a href="#12-1-3-shared-ptr和new结合使用" class="headerlink" title="12.1.3 shared_ptr和new结合使用"></a>12.1.3 shared_ptr和new结合使用</h3><p>如果我们不初始化一个智能指针，它就会被初始化为一个空指针。如表12.3所示，我们还可以用new返回的指针来初始化智能指针</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726459676176.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726459676176.png" srcset="/img/loading.gif" lazyload></p>
 <p>接受指针参数的智能指针构造函数是explicit的（参见7.5.4节，第265页）。因此，我们不能将一个内置指针隐式转换为一个智能指针，必须使用直接初始化形式（参见3.2.1节，第76页）来初始化一个智能指针</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726464938912.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726464938912.png" srcset="/img/loading.gif" lazyload></p>
 <p>默认情况下，一个用来初始化智能指针的普通指针必须指向动态内存，因为智能指针默认使用delete释放它所关联的对象。</p>
 <p>我们可以将智能指针绑定到一个指向其他类型的资源的指针上，但是为了这样做，必须提供自己的操作来替代delete。</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726465035838.png"></p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726465039905.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726465035838.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726465039905.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>不要混合使用普通指针和智能指针</strong></p>
 <p>shared_ptr可以协调对象的析构，但这仅限于其自身的拷贝（也是shared_ptr）之间。这也是为什么我们推荐使用make_shared而不是new的原因。这样，我们就能在分配对象的同时就将shared_ptr与之绑定，从而避免了无意中将同一块内存绑定到多个独立创建的shared_ptr上。</p>
 <p><strong>也不要使用get初始化另一个智能指针或为智能指针赋值</strong></p>
@@ -107,13 +372,13 @@
 <h3 id="12-1-4-智能指针和异常"><a href="#12-1-4-智能指针和异常" class="headerlink" title="12.1.4 智能指针和异常"></a>12.1.4 智能指针和异常</h3><p>一个简单的确保资源被释放的方法是使用智能指针。如果使用智能指针，即使程序块过早结束，智能指针类也能确保在内存不再需要时将其释放</p>
 <p><strong>智能指针和哑类</strong></p>
 <p>包括所有标准库类在内的很多C++类都定义了析构函数（参见12.1.1节，第402页），负责清理对象使用的资源。但是，不是所有的类都是这样良好定义的。特别是那些为C和C++两种语言设计的类，通常都要求用户显式地释放所使用的任何资源。</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726466771589.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726466771589.png" srcset="/img/loading.gif" lazyload></p>
 <p>如果connection有一个析构函数，就可以在f结束时由析构函数自动关闭连接。但是，connection没有析构函数。这个问题与我们上一个程序中使用shared_ptr避免内存泄漏几乎是等价的。使用shared_ptr来保证connection被正确关闭，已被证明是一种有效的方法。</p>
 <p><strong>使用我们自己的释放操作</strong></p>
 <p>默认情况下，shared_ptr假定它们指向的是动态内存。因此，当一个shared_ptr被销毁时，它默认地对它管理的指针进行delete操作。为了用shared_ptr来管理一个connection，我们必须首先定义一个函数来代替delete。这个删除器（deleter）函数必须能够完成对shared_ptr中保存的指针进行释放的操作。在本例中，我们的删除器必须接受单个类型为connection＊的参数</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726466818477.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726466818477.png" srcset="/img/loading.gif" lazyload></p>
 <p>当我们创建一个shared_ptr时，可以传递一个（可选的）指向删除器函数的参数（参见6.7节，第221页）</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726466848414.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726466848414.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>注意：智能指针陷阱</strong></p>
 <p>智能指针可以提供对动态分配的内存安全而又方便的管理，但这建立在正确使用的前提下。为了正确使用智能指针，我们必须坚持一些基本规范：</p>
 <ul>
@@ -124,25 +389,25 @@
 <li>如果你使用智能指针管理的资源不是new分配的内存，记住传递给它一个删除器（参见12.1.4节，第415页和12.1.5节，第419页）。</li>
 </ul>
 <h3 id="12-1-5-unique-ptr"><a href="#12-1-5-unique-ptr" class="headerlink" title="12.1.5 unique_ptr"></a>12.1.5 unique_ptr</h3><p>一个unique_ptr“拥有”它所指向的对象。与shared_ptr不同，某个时刻只能有一个unique_ptr指向一个给定对象。当unique_ptr被销毁时，它所指向的对象也被销毁。</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726467400523.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726467400523.png" srcset="/img/loading.gif" lazyload></p>
 <p>由于一个unique_ptr拥有它指向的对象，因此unique_ptr不支持普通的拷贝或赋值操作</p>
 <p>虽然我们不能拷贝或赋值unique_ptr，但可以通过调用release或reset将指针的所有权从一个（非const）unique_ptr转移给另一个unique</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726467583660.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726467583660.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>传递unique_ptr参数和返回unique_ptr</strong></p>
 <p>不能拷贝unique_ptr的规则有一个例外：我们可以拷贝或赋值一个将要被销毁的unique_ptr。最常见的例子是从函数返回一个unique_ptr</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726467663330.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726467663330.png" srcset="/img/loading.gif" lazyload></p>
 <p>还可以返回一个局部对象的拷贝</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726467672422.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726467672422.png" srcset="/img/loading.gif" lazyload></p>
 <p>对于两段代码，编译器都知道要返回的对象将要被销毁。在此情况下，编译器执行一种特殊的“拷贝”，我们将在13.6.2节（第473页）中介绍它。</p>
 <p><strong>向unique_ptr传递删除器</strong></p>
 <p>unique_ptr管理删除器的方式与shared_ptr不同，其原因我们将在16.1.6节（第599页）中介绍。</p>
 <p>重载一个unique_ptr中的删除器会影响到unique_ptr类型以及如何构造（或reset）该类型的对象。与重载关联容器的比较操作（参见11.2.2节，第378页）类似，我们必须在尖括号中unique_ptr指向类型之后提供删除器类型。在创建或reset一个这种unique_ptr类型的对象时，必须提供一个指定类型的可调用对象（删除器）</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726467975308.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726467975308.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="12-1-6-weak-ptr"><a href="#12-1-6-weak-ptr" class="headerlink" title="12.1.6 weak_ptr"></a>12.1.6 weak_ptr</h3><p>weak_ptr（见表12.5）是一种不控制所指向对象生存期的智能指针，它指向由一个shared_ptr管理的对象。将一个weak_ptr绑定到一个shared_ptr不会改变shared_ptr的引用计数。一旦最后一个指向对象的shared_ptr被销毁，对象就会被释放。即使有weak_ptr指向对象，对象也还是会被释放。</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726468083703.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726468083703.png" srcset="/img/loading.gif" lazyload></p>
 <p>当我们创建一个weak_ptr时，要用一个shared_ptr来初始化它。</p>
 <p>由于对象可能不存在，我们不能使用weak_ptr直接访问对象，而必须调用lock。此函数检查weak_ptr指向的对象是否仍存在。如果存在，lock返回一个指向共享对象的shared_ptr。与任何其他shared_ptr类似，只要此shared_ptr存在，它所指向的底层对象也就会一直存在。</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726468125244.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726468125244.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="12-2-动态数组"><a href="#12-2-动态数组" class="headerlink" title="12.2 动态数组"></a>12.2 动态数组</h2><p>C++语言和标准库提供了两种一次分配一个对象数组的方法。C++语言定义了另一种new表达式语法，可以分配并初始化一个对象数组。标准库中包含一个名为allocator的类，允许我们将分配和初始化分离。使用allocator通常会提供更好的性能和更灵活的内存管理能力，原因我们将在12.2.2节（第427页）中解释。</p>
 <p>使用容器的类可以使用默认版本的拷贝、赋值和析构操作（参见7.1.5节，第239页）。分配动态数组的类则必须定义自己版本的操作，在拷贝、复制以及销毁对象时管理所关联的内存。</p>
 <h3 id="12-2-1-new和数组"><a href="#12-2-1-new和数组" class="headerlink" title="12.2.1 new和数组"></a>12.2.1 new和数组</h3><p>为了让new分配一个对象数组，我们要在类型名之后跟一对方括号，在其中指明要分配的对象的数目。在下例中，new分配要求数量的对象并（假定分配成功后）返回指向第一个对象的指针</p>
@@ -159,25 +424,25 @@
 <p>new返回一个合法的非空指针。此指针保证与new返回的其他任何指针都不相同。对于零长度的数组来说，此指针就像尾后指针一样（参见3.5.3节，第106页），我们可以像使用尾后迭代器一样使用这个指针。可以用此指针进行比较操作，就像上面循环代码中那样。可以向此指针加上（或从此指针减去）0，也可以从此指针减去自身从而得到0。但此指针不能解引用——毕竟它不指向任何元素。</p>
 <p><strong>释放动态数组</strong></p>
 <p>为了释放动态数组，我们使用一种特殊形式的delete——在指针前加上一个空方括号对</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726469237720.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726469237720.png" srcset="/img/loading.gif" lazyload></p>
 <p>数组中的元素按逆序销毁，即，最后一个元素首先被销毁，然后是倒数第二个，依此类推。</p>
 <p>如果我们在delete一个指向数组的指针时忽略了方括号（或者在delete一个指向单一对象的指针时使用了方括号），其行为是未定义的。</p>
 <p><strong>智能指针和动态数组</strong></p>
 <p>标准库提供了一个可以管理new分配的数组的unique_ptr版本。为了用一个unique_ptr管理动态数组，我们必须在对象类型后面跟一对空方括号</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726469303812.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726469303812.png" srcset="/img/loading.gif" lazyload></p>
 <p>指向数组的unique_ptr提供的操作与我们在12.1.5节（第417页）中使用的那些操作有一些不同</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726469328221.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726469328221.png" srcset="/img/loading.gif" lazyload></p>
 <p>与unique_ptr不同，shared_ptr不直接支持管理动态数组。如果希望使用shared_ptr管理一个动态数组，必须提供自己定义的删除器。</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726469386578.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726469386578.png" srcset="/img/loading.gif" lazyload></p>
 <p>shared_ptr未定义下标运算符，而且智能指针类型不支持指针算术运算。因此，为了访问数组中的元素，必须用get获取一个内置指针，然后用它来访问数组元素。</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726469425165.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726469425165.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="12-2-2-allocator类"><a href="#12-2-2-allocator类" class="headerlink" title="12.2.2 allocator类"></a>12.2.2 allocator类</h3><p>new有一些灵活性上的局限，其中一方面表现在它将内存分配和对象构造组合在了一起。类似的，delete将对象析构和内存释放组合在了一起。</p>
 <p>当分配一大块内存时，我们通常计划在这块内存上按需构造对象。在此情况下，我们希望将内存分配和对象构造分离。这意味着我们可以分配大块内存，但只在真正需要时才真正执行对象创建操作（同时付出一定开销）。</p>
 <p><strong>allocator类</strong></p>
 <p>标准库allocator类定义在头文件memory中，它帮助我们将内存分配和对象构造分离开来。它提供一种类型感知的内存分配方法，它分配的内存是原始的、未构造的。</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726475054676.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726475054676.png" srcset="/img/loading.gif" lazyload></p>
 <p>类似vector，allocator是一个模板（参见3.3节，第86页）。为了定义一个allocator对象，我们必须指明这个allocator可以分配的对象类型。当一个allocator对象分配内存时，它会根据给定的对象类型来确定恰当的内存大小和对齐位置</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726475061308.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726475061308.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>allocator分配未构造的内存</strong></p>
 <p>在新标准库中，construct成员函数接受一个指针和零个或多个额外参数，在给定位置构造一个元素。额外参数用来初始化构造的对象。</p>
 <blockquote>
@@ -187,51 +452,377 @@
 <p>我们传递给deallocate的指针不能为空，它必须指向由allocate分配的内存。而且，传递给deallocate的大小参数必须与调用allocated分配内存时提供的大小参数具有一样的值。</p>
 <p><strong>拷贝和填充未初始化内存的算法</strong></p>
 <p>标准库还为allocator类定义了两个伴随算法，可以在未初始化内存中创建对象。表12.8描述了这些函数，它们都定义在头文件memory中。</p>
-<p><img src="/../images/C-C-Primer-Chapter-12/1726475234959.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-12/1726475234959.png" srcset="/img/loading.gif" lazyload></p>
 <p>类似copy，uninitialized_copy返回（递增后的）目的位置迭代器。</p>
 <p>因此，一次uninitialized_copy调用会返回一个指针，指向最后一个构造的元素之后的位置。</p>
-</div><div class="article-licensing box"><div class="licensing-title"><p>[C++]C++Primer Chapter 12</p><p><a href="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-12/">https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-12/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>ErlsrnBy04</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2024-09-22</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2024-09-22</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/C/">C++</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2024/09/22/C-C-Primer-Chapter-13/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">[C++]C++Primer Chapter 13</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/09/22/C-C-Primer-Chapter-11/"><span class="level-item">[C++]C++Primer Chapter 11</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><script src="https://giscus.app/client.js" repo="ErlsrnBy04/comments" data-repo="ErlsrnBy04/comments" data-repo-id="R_kgDOM1SRGQ" data-category-id="DIC_kwDOM1SRGc4Cirkj" data-category="Announcements" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous" async></script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar1.jpg" alt="ErlsrnBy04"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">ErlsrnBy04</p><p class="is-size-6 is-block">学生</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>北京，中国</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">20</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">3</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ErlsrnBy04" target="_blank" rel="me noopener">Follow</a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#动态内存"><span class="level-left"><span class="level-item">1</span><span class="level-item">动态内存</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#12-1-动态内存与智能指针"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">12.1 动态内存与智能指针</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#12-1-1-shared-ptr类"><span class="level-left"><span class="level-item">1.1.1</span><span class="level-item">12.1.1 shared_ptr类</span></span></a></li><li><a class="level is-mobile" href="#12-1-2-直接管理内存"><span class="level-left"><span class="level-item">1.1.2</span><span class="level-item">12.1.2 直接管理内存</span></span></a></li><li><a class="level is-mobile" href="#12-1-3-shared-ptr和new结合使用"><span class="level-left"><span class="level-item">1.1.3</span><span class="level-item">12.1.3 shared_ptr和new结合使用</span></span></a></li><li><a class="level is-mobile" href="#12-1-4-智能指针和异常"><span class="level-left"><span class="level-item">1.1.4</span><span class="level-item">12.1.4 智能指针和异常</span></span></a></li><li><a class="level is-mobile" href="#12-1-5-unique-ptr"><span class="level-left"><span class="level-item">1.1.5</span><span class="level-item">12.1.5 unique_ptr</span></span></a></li><li><a class="level is-mobile" href="#12-1-6-weak-ptr"><span class="level-left"><span class="level-item">1.1.6</span><span class="level-item">12.1.6 weak_ptr</span></span></a></li></ul></li><li><a class="level is-mobile" href="#12-2-动态数组"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">12.2 动态数组</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#12-2-1-new和数组"><span class="level-left"><span class="level-item">1.2.1</span><span class="level-item">12.2.1 new和数组</span></span></a></li><li><a class="level is-mobile" href="#12-2-2-allocator类"><span class="level-left"><span class="level-item">1.2.2</span><span class="level-item">12.2.2 allocator类</span></span></a></li></ul></li></ul></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="level-start"><span class="level-item">操作系统</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"><span class="level-start"><span class="level-item">编程语言</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-26T04:51:28.000Z">2024-09-26</time></p><p class="title"><a href="/2024/09/26/MIT-6-1810-Xv6-Chapter-4/">[MIT 6.1810]Xv6 Chapter 4</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-25T03:44:09.000Z">2024-09-25</time></p><p class="title"><a href="/2024/09/25/MIT-6-1810-Xv6-Chapter-3/">[MIT 6.1810]Xv6 Chapter 3</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T07:43:10.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-2/">[MIT 6.1810]Xv6 Chapter 2</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T05:11:40.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/">[MIT 6.1810]Xv6 Chapter 1</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/"><img src="/cover/C++.svg" alt="[C++] 返回值优化"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-09-22T05:17:42.000Z">2024-09-22</time></p><p class="title"><a href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/">[C++] 返回值优化</a></p><p class="categories"><a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">September 2024</span></span><span class="level-end"><span class="level-item tag">20</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/C/"><span class="tag">C++</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-1810/"><span class="tag">MIT 6.1810</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-S081/"><span class="tag">MIT 6.S081</span><span class="tag">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a><p class="is-size-7"><span>&copy; 2024 ErlsrnBy04</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">且陶陶，乐尽天真</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="GitHub" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
-            article: {
-                highlight: {
-                    clipboard: true,
-                    fold: 'unfolded'
-                }
-            }
-        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
-      window.cookieconsent.initialise({
-        type: "info",
-        theme: "edgeless",
-        static: false,
-        position: "bottom-left",
-        content: {
-          message: "This website uses cookies to improve your experience.",
-          dismiss: "Got it!",
-          allow: "Allow cookies",
-          deny: "Decline",
-          link: "Learn more",
-          policy: "Cookie Policy",
-          href: "https://www.cookiesandyou.com/",
-        },
-        palette: {
-          popup: {
-            background: "#edeff5",
-            text: "#838391"
-          },
-          button: {
-            background: "#4b81e8"
-          },
-        },
-      });
-    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
-            if (typeof $.fn.lightGallery === 'function') {
-                $('.article').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof $.fn.justifiedGallery === 'function') {
-                if ($('.justified-gallery > p > .gallery-item').length) {
-                    $('.justified-gallery > p > .gallery-item').unwrap();
-                }
-                $('.justified-gallery').justifiedGallery();
-            }
-        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
-            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
-        });</script></body></html>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[C++]C++Primer Chapter 12</div>
+      <div>https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-12/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/22/C-C-Primer-Chapter-13/" title="[C++]C++Primer Chapter 13">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[C++]C++Primer Chapter 13</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/22/C-C-Primer-Chapter-11/" title="[C++]C++Primer Chapter 11">
+                        <span class="hidden-mobile">[C++]C++Primer Chapter 11</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

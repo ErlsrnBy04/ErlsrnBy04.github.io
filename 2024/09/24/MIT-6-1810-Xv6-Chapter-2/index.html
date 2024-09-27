@@ -1,35 +1,300 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>[MIT 6.1810]Xv6 Chapter 2 - ErlsrnBy04</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ErlsrnBy04"><meta name="msapplication-TileImage" content="/img/Snake.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ErlsrnBy04"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Operating system organization"><meta property="og:type" content="blog"><meta property="og:title" content="[MIT 6.1810]Xv6 Chapter 2"><meta property="og:url" content="https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-2/"><meta property="og:site_name" content="ErlsrnBy04"><meta property="og:description" content="Operating system organization"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-2/image-20240924200038764.png"><meta property="og:image" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-2/image-20240924200752501.png"><meta property="og:image" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-2/image-20240924202734337.png"><meta property="article:published_time" content="2024-09-24T07:43:10.000Z"><meta property="article:modified_time" content="2024-09-25T12:53:00.840Z"><meta property="article:author" content="ErlsrnBy04"><meta property="article:tag" content="MIT 6.1810"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-2/image-20240924200038764.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-2/"},"headline":"[MIT 6.1810]Xv6 Chapter 2","image":["https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-2/image-20240924200038764.png","https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-2/image-20240924200752501.png","https://erlsrnby04.github.io/images/MIT-6-1810-Xv6-Chapter-2/image-20240924202734337.png"],"datePublished":"2024-09-24T07:43:10.000Z","dateModified":"2024-09-25T12:53:00.840Z","author":{"@type":"Person","name":"ErlsrnBy04"},"publisher":{"@type":"Organization","name":"ErlsrnBy04","logo":{"@type":"ImageObject","url":"https://erlsrnby04.github.io/img/Snake.svg"}},"description":"Operating system organization"}</script><link rel="canonical" href="https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-2/"><link rel="icon" href="/img/Snake.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
-  (function () {
-      function switchTab() {
-          if (!location.hash) {
-            return;
-          }
 
-          const id = '#' + CSS.escape(location.hash.substring(1));
-          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
-          if (!$tabMenu) {
-            return;
-          }
 
-          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
-          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
-          Array.from($tabMenuContainer.querySelectorAll('a'))
-              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
-              .forEach($content => $content.classList.add('is-hidden'));
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-          if ($tabMenu) {
-              $tabMenu.parentElement.classList.add('is-active');
-          }
-          const $activeTab = document.querySelector(id);
-          if ($activeTab) {
-              $activeTab.classList.remove('is-hidden');
-          }
-      }
-      switchTab();
-      window.addEventListener('hashchange', switchTab, false);
-  })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">主页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="GitHub 主页" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-09-24T07:43:10.000Z" title="2024/9/24 15:43:10">2024-09-24</time></span><span class="level-item"><a class="link-muted" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span><span class="level-item">22 minutes read (About 3305 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">[MIT 6.1810]Xv6 Chapter 2</h1><div class="content"><h1 id="Operating-system-organization"><a href="#Operating-system-organization" class="headerlink" title="Operating system organization"></a>Operating system organization</h1><span id="more"></span>
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Operating system organization">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[MIT 6.1810]Xv6 Chapter 2">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-2/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="Operating system organization">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=17">
+<meta property="article:published_time" content="2024-09-24T07:43:10.000Z">
+<meta property="article:modified_time" content="2024-09-27T14:19:09.907Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="MIT 6.1810">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=17">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>[MIT 6.1810]Xv6 Chapter 2 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04的小站</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[MIT 6.1810]Xv6 Chapter 2"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-24 15:43" pubdate>
+          2024年9月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[MIT 6.1810]Xv6 Chapter 2</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Operating-system-organization"><a href="#Operating-system-organization" class="headerlink" title="Operating system organization"></a>Operating system organization</h1><span id="more"></span>
 
 <p>一个操作系统必须满足三个需求：</p>
 <ol>
@@ -53,15 +318,15 @@
 <p>宏内核的优点是不用决定哪部分放在内核；操作系统不同部分合作容易。缺点是系统十分复杂，错误通常会导致整个内核崩溃。</p>
 <p><strong>微内核</strong></p>
 <p>另一种方法是最小化内核的代码，将大部分系统功能实现在用户模式下，称为微内核。</p>
-<p><img src="/../images/MIT-6-1810-Xv6-Chapter-2/image-20240924200038764.png"></p>
+<p><img src="/../images/MIT-6-1810-Xv6-Chapter-2/image-20240924200038764.png" srcset="/img/loading.gif" lazyload></p>
 <p>在微内核模式下，操作系统的有些部分可以运行在用户模式的进程中，称为服务器（server）。操作系统提供一种进程间通信的方法，程序间通过互相发送消息来进行通信。</p>
 <h2 id="2-4-Code：xv6-organization"><a href="#2-4-Code：xv6-organization" class="headerlink" title="2.4 Code：xv6 organization"></a>2.4 Code：xv6 organization</h2><p>xv6 的内核源代码位于 <code>kernel/</code> 子目录中，源代码被分为多个文件，遵循一定的模块化概念。图 2.2 列出了这些文件。模块之间的接口在 <code>defs.h</code>（即 <code>kernel/defs.h</code>）中定义。</p>
-<p><img src="/../images/MIT-6-1810-Xv6-Chapter-2/image-20240924200752501.png"></p>
+<p><img src="/../images/MIT-6-1810-Xv6-Chapter-2/image-20240924200752501.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="2-5-Process-overview"><a href="#2-5-Process-overview" class="headerlink" title="2.5 Process overview"></a>2.5 Process overview</h2><p>xv6中隔离的最小单元是进程。</p>
 <p>内核实现进程的机制包括用户&#x2F;特权模式标志、地址空间以及线程的时间片分配。</p>
 <p>进程给程序提供了一种自己拥有整个地址空间和CPU的假象。</p>
 <p>xv6 使用页表（由硬件实现）为每个进程提供独立的地址空间。RISC-V 页表将虚拟地址（RISC-V 指令操作的地址）转换为物理地址（CPU 发送到主内存的地址）。</p>
-<p><img src="/../images/MIT-6-1810-Xv6-Chapter-2/image-20240924202734337.png"></p>
+<p><img src="/../images/MIT-6-1810-Xv6-Chapter-2/image-20240924202734337.png" srcset="/img/loading.gif" lazyload></p>
 <p>xv6 为每个进程维护一个独立的页表，定义该进程的地址空间。如图 2.3 所示，地址空间从虚拟地址零开始，包括进程的用户内存。首先是指令，然后是全局变量，再是栈，最后是“堆”区域（用于 <code>malloc</code>），该区域可以根据需要扩展。限制进程地址空间最大大小的因素有很多：RISC-V 的指针宽度为 64 位，硬件在查找页表中的虚拟地址时仅使用低 39 位，而 xv6 只使用这 39 位中的 38 位。因此，最大地址为 (2^{38} - 1 &#x3D; 0x3fffffffff)，也就是 <code>MAXVA</code>（定义在 kernel&#x2F;riscv.h:378）。在地址空间的顶部，xv6 放置了一个 4096 字节的 trampoline 页和一个 trapframe 页。xv6 使用这两个页面进行内核的切换；trampoline 页包含切换进出内核的代码，而 trapframe 用于保存进程的用户寄存器，具体内容在第四章中解释。</p>
 <p>内核为每个进程维护各自的状态，存放在proc结构体里（kernel&#x2F;proc.h：85）。</p>
 <p>每个进程都有一个控制线程（简称线程），它保存执行该进程所需的状态。在任何给定时刻，线程可能在 CPU 上执行，或者处于挂起状态（未执行但能够在未来恢复执行）。要在进程之间切换 CPU，内核会挂起当前在该 CPU 上运行的线程并保存其状态，然后恢复另一个进程之前挂起的线程的状态。线程的大部分状态（局部变量、函数调用的返回地址）存储在线程的栈上。</p>
@@ -73,17 +338,17 @@
 <h2 id="2-6-Code：starting-xv6，the-first-process-and-system-call"><a href="#2-6-Code：starting-xv6，the-first-process-and-system-call" class="headerlink" title="2.6 Code：starting xv6，the first process and system call"></a>2.6 Code：starting xv6，the first process and system call</h2><p>当RISC-V计算机上电后，首先会初始化硬件，然后执行一个存放在ROM中的boot loader。bool loader负责把xv6内核装载进内存中。然后，在机器模式下，CPU从_entry(kernel&#x2F;entry.S:7)开始执行xv6。开始时页表装置被关闭，虚拟地址直接被映射到对应的物理地址。</p>
 <p>loader将内核装在到物理地址0x80000000，之所以装载到这里，是因为0x0-0x80000000包含了IO设备。</p>
 <p>从代码中可以看到， <code>_entry.S</code> 为每个CPU都准备了一个栈。通过 <code>csrr</code> 指令取得当前hart的id（通常从0开始），并以该id为偏移，将不同CPU的栈错开。xv6在 <code>start.c</code> （kernel&#x2F;start.c：11）中声明了一个初始栈数组， <code>stack0</code> 。 <code>_entry</code> 中的指令将sp改为 <code>stack0+4096 * hartid</code> （栈顶）。之后 <code>_entry</code> 调用 <code>start</code> （kernel&#x2F;start.c：15）。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">        # qemu -kernel loads the kernel at 0x80000000</span><br><span class="line">        # and causes each hart (i.e. CPU) to jump there.</span><br><span class="line">        # kernel.ld causes the following code to</span><br><span class="line">        # be placed at 0x80000000.</span><br><span class="line">.section .text</span><br><span class="line">.global _entry</span><br><span class="line">_entry:</span><br><span class="line">        # set up a stack for C.</span><br><span class="line">        # stack0 is declared in start.c,</span><br><span class="line">        # with a 4096-byte stack per CPU.</span><br><span class="line">        # sp = stack0 + (hartid * 4096)</span><br><span class="line">        la sp, stack0</span><br><span class="line">        li a0, 1024*4</span><br><span class="line">        csrr a1, mhartid</span><br><span class="line">        addi a1, a1, 1</span><br><span class="line">        mul a0, a0, a1</span><br><span class="line">        add sp, sp, a0</span><br><span class="line">        # jump to start() in start.c</span><br><span class="line">        call start</span><br><span class="line">spin:</span><br><span class="line">        j spin</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs assembly">        # qemu -kernel loads the kernel at 0x80000000<br>        # and causes each hart (i.e. CPU) to jump there.<br>        # kernel.ld causes the following code to<br>        # be placed at 0x80000000.<br>.section .text<br>.global _entry<br>_entry:<br>        # set up a stack for C.<br>        # stack0 is declared in start.c,<br>        # with a 4096-byte stack per CPU.<br>        # sp = stack0 + (hartid * 4096)<br>        la sp, stack0<br>        li a0, 1024*4<br>        csrr a1, mhartid<br>        addi a1, a1, 1<br>        mul a0, a0, a1<br>        add sp, sp, a0<br>        # jump to start() in start.c<br>        call start<br>spin:<br>        j spin<br><br></code></pre></td></tr></table></figure>
 
 <p> <code>start</code> 执行一些只能在机器模式下执行的配置，然后转入内核模式。为了进入内核模式，RISC-V提供了指令 <code>mret</code> ，这条指令通常用来从内核模式到机器模式的调用返回。 <code>start</code> 并不上述的情况，我们可以通过手动设置使之好像是这种情况。首先，设置mstatus寄存器为S态，然后设置mepc寄存器为main的地址，接下来在进行一些相应的配置。在转入内核模式之前， <code>start</code> 还使时钟芯片能够产生时钟中断。之后执行 <code>mret</code> 指令，调转到 <code>main</code> 继续执行（kernel&#x2F;main.c：11）。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;types.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;param.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;memlayout.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;riscv.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;defs.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">timerinit</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// entry.S needs one stack per CPU.</span></span><br><span class="line">__attribute__ ((aligned (<span class="number">16</span>))) <span class="type">char</span> stack0[<span class="number">4096</span> * NCPU];</span><br><span class="line"></span><br><span class="line"><span class="comment">// entry.S jumps here in machine mode on stack0.</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">start</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// set M Previous Privilege mode to Supervisor, for mret.</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">long</span> x = r_mstatus();</span><br><span class="line">  x &amp;= ~MSTATUS_MPP_MASK;</span><br><span class="line">  x |= MSTATUS_MPP_S;</span><br><span class="line">  w_mstatus(x);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// set M Exception Program Counter to main, for mret.</span></span><br><span class="line">  <span class="comment">// requires gcc -mcmodel=medany</span></span><br><span class="line">  w_mepc((uint64)main);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// disable paging for now.</span></span><br><span class="line">  w_satp(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// delegate all interrupts and exceptions to supervisor mode.</span></span><br><span class="line">  w_medeleg(<span class="number">0xffff</span>);</span><br><span class="line">  w_mideleg(<span class="number">0xffff</span>);</span><br><span class="line">  w_sie(r_sie() | SIE_SEIE | SIE_STIE | SIE_SSIE);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// configure Physical Memory Protection to give supervisor mode</span></span><br><span class="line">  <span class="comment">// access to all of physical memory.</span></span><br><span class="line">  w_pmpaddr0(<span class="number">0x3fffffffffffff</span>ull);</span><br><span class="line">  w_pmpcfg0(<span class="number">0xf</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ask for clock interrupts.</span></span><br><span class="line">  timerinit();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// keep each CPU&#x27;s hartid in its tp register, for cpuid().</span></span><br><span class="line">  <span class="type">int</span> id = r_mhartid();</span><br><span class="line">  w_tp(id);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// switch to supervisor mode and jump to main().</span></span><br><span class="line">  <span class="keyword">asm</span> <span class="title function_">volatile</span><span class="params">(<span class="string">&quot;mret&quot;</span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ask each hart to generate timer interrupts.</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">timerinit</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// enable supervisor-mode timer interrupts.</span></span><br><span class="line">  w_mie(r_mie() | MIE_STIE);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// enable the sstc extension (i.e. stimecmp).</span></span><br><span class="line">  w_menvcfg(r_menvcfg() | (<span class="number">1L</span> &lt;&lt; <span class="number">63</span>)); </span><br><span class="line">  </span><br><span class="line">  <span class="comment">// allow supervisor to use stimecmp and time.</span></span><br><span class="line">  w_mcounteren(r_mcounteren() | <span class="number">2</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// ask for the very first timer interrupt.</span></span><br><span class="line">  w_stimecmp(r_time() + <span class="number">1000000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;types.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;param.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;memlayout.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;riscv.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;defs.h&quot;</span></span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">timerinit</span><span class="hljs-params">()</span>;<br><br><span class="hljs-comment">// entry.S needs one stack per CPU.</span><br>__attribute__ ((aligned (<span class="hljs-number">16</span>))) <span class="hljs-type">char</span> stack0[<span class="hljs-number">4096</span> * NCPU];<br><br><span class="hljs-comment">// entry.S jumps here in machine mode on stack0.</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">start</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-comment">// set M Previous Privilege mode to Supervisor, for mret.</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> x = r_mstatus();<br>  x &amp;= ~MSTATUS_MPP_MASK;<br>  x |= MSTATUS_MPP_S;<br>  w_mstatus(x);<br><br>  <span class="hljs-comment">// set M Exception Program Counter to main, for mret.</span><br>  <span class="hljs-comment">// requires gcc -mcmodel=medany</span><br>  w_mepc((uint64)main);<br><br>  <span class="hljs-comment">// disable paging for now.</span><br>  w_satp(<span class="hljs-number">0</span>);<br><br>  <span class="hljs-comment">// delegate all interrupts and exceptions to supervisor mode.</span><br>  w_medeleg(<span class="hljs-number">0xffff</span>);<br>  w_mideleg(<span class="hljs-number">0xffff</span>);<br>  w_sie(r_sie() | SIE_SEIE | SIE_STIE | SIE_SSIE);<br><br>  <span class="hljs-comment">// configure Physical Memory Protection to give supervisor mode</span><br>  <span class="hljs-comment">// access to all of physical memory.</span><br>  w_pmpaddr0(<span class="hljs-number">0x3fffffffffffff</span>ull);<br>  w_pmpcfg0(<span class="hljs-number">0xf</span>);<br><br>  <span class="hljs-comment">// ask for clock interrupts.</span><br>  timerinit();<br><br>  <span class="hljs-comment">// keep each CPU&#x27;s hartid in its tp register, for cpuid().</span><br>  <span class="hljs-type">int</span> id = r_mhartid();<br>  w_tp(id);<br><br>  <span class="hljs-comment">// switch to supervisor mode and jump to main().</span><br>  <span class="hljs-keyword">asm</span> <span class="hljs-title function_">volatile</span><span class="hljs-params">(<span class="hljs-string">&quot;mret&quot;</span>)</span>;<br>&#125;<br><br><span class="hljs-comment">// ask each hart to generate timer interrupts.</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">timerinit</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-comment">// enable supervisor-mode timer interrupts.</span><br>  w_mie(r_mie() | MIE_STIE);<br>  <br>  <span class="hljs-comment">// enable the sstc extension (i.e. stimecmp).</span><br>  w_menvcfg(r_menvcfg() | (<span class="hljs-number">1L</span> &lt;&lt; <span class="hljs-number">63</span>)); <br>  <br>  <span class="hljs-comment">// allow supervisor to use stimecmp and time.</span><br>  w_mcounteren(r_mcounteren() | <span class="hljs-number">2</span>);<br>  <br>  <span class="hljs-comment">// ask for the very first timer interrupt.</span><br>  w_stimecmp(r_time() + <span class="hljs-number">1000000</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><code>main</code> 首先初始化几个设别和子系统，然后通过调用 <code>userinit</code> （kernel&#x2F;proc.c）来创建第一个用户进程。第一个进程执行一个用RISC-V汇编写的小程序，这个小程序执行了xv6中的第一个系统调用。这个小程序在initcode.S中，它实际执行了 <code>exec(init, argv)</code> 。 它将 <code>exec</code> 系统调用号（SYS_EXEC）load进寄存器a7，然后执行 <code>ecall</code> 指令重新进入内核。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;types.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;param.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;memlayout.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;riscv.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;defs.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">static</span> <span class="type">int</span> started = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// start() jumps here in supervisor mode on all CPUs.</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(cpuid() == <span class="number">0</span>)&#123;</span><br><span class="line">    consoleinit();</span><br><span class="line">    printfinit();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;xv6 kernel is booting\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    kinit();         <span class="comment">// physical page allocator</span></span><br><span class="line">    kvminit();       <span class="comment">// create kernel page table</span></span><br><span class="line">    kvminithart();   <span class="comment">// turn on paging</span></span><br><span class="line">    procinit();      <span class="comment">// process table</span></span><br><span class="line">    trapinit();      <span class="comment">// trap vectors</span></span><br><span class="line">    trapinithart();  <span class="comment">// install kernel trap vector</span></span><br><span class="line">    plicinit();      <span class="comment">// set up interrupt controller</span></span><br><span class="line">    plicinithart();  <span class="comment">// ask PLIC for device interrupts</span></span><br><span class="line">    binit();         <span class="comment">// buffer cache</span></span><br><span class="line">    iinit();         <span class="comment">// inode table</span></span><br><span class="line">    fileinit();      <span class="comment">// file table</span></span><br><span class="line">    virtio_disk_init(); <span class="comment">// emulated hard disk</span></span><br><span class="line">    userinit();      <span class="comment">// first user process</span></span><br><span class="line">    __sync_synchronize();</span><br><span class="line">    started = <span class="number">1</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">while</span>(started == <span class="number">0</span>)</span><br><span class="line">      ;</span><br><span class="line">    __sync_synchronize();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hart %d starting\n&quot;</span>, cpuid());</span><br><span class="line">    kvminithart();    <span class="comment">// turn on paging</span></span><br><span class="line">    trapinithart();   <span class="comment">// install kernel trap vector</span></span><br><span class="line">    plicinithart();   <span class="comment">// ask PLIC for device interrupts</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  scheduler();        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;types.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;param.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;memlayout.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;riscv.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;defs.h&quot;</span></span><br><br><span class="hljs-keyword">volatile</span> <span class="hljs-type">static</span> <span class="hljs-type">int</span> started = <span class="hljs-number">0</span>;<br><br><span class="hljs-comment">// start() jumps here in supervisor mode on all CPUs.</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-keyword">if</span>(cpuid() == <span class="hljs-number">0</span>)&#123;<br>    consoleinit();<br>    printfinit();<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;xv6 kernel is booting\n&quot;</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br>    kinit();         <span class="hljs-comment">// physical page allocator</span><br>    kvminit();       <span class="hljs-comment">// create kernel page table</span><br>    kvminithart();   <span class="hljs-comment">// turn on paging</span><br>    procinit();      <span class="hljs-comment">// process table</span><br>    trapinit();      <span class="hljs-comment">// trap vectors</span><br>    trapinithart();  <span class="hljs-comment">// install kernel trap vector</span><br>    plicinit();      <span class="hljs-comment">// set up interrupt controller</span><br>    plicinithart();  <span class="hljs-comment">// ask PLIC for device interrupts</span><br>    binit();         <span class="hljs-comment">// buffer cache</span><br>    iinit();         <span class="hljs-comment">// inode table</span><br>    fileinit();      <span class="hljs-comment">// file table</span><br>    virtio_disk_init(); <span class="hljs-comment">// emulated hard disk</span><br>    userinit();      <span class="hljs-comment">// first user process</span><br>    __sync_synchronize();<br>    started = <span class="hljs-number">1</span>;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">while</span>(started == <span class="hljs-number">0</span>)<br>      ;<br>    __sync_synchronize();<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hart %d starting\n&quot;</span>, cpuid());<br>    kvminithart();    <span class="hljs-comment">// turn on paging</span><br>    trapinithart();   <span class="hljs-comment">// install kernel trap vector</span><br>    plicinithart();   <span class="hljs-comment">// ask PLIC for device interrupts</span><br>  &#125;<br><br>  scheduler();        <br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>内核在 <code>syscall</code> 中使用a7寄存器中的值去调用指定的系统调用，即 <code>exec</code> 。系统调用表（system call table）（kernel&#x2F;syscall.c：107）将SYS_EXEC映射到系统调用 <code>sys_exec</code> 。之后 <code>exec</code> 会把内存和寄存器替换为 <code>init</code> （user&#x2F;init.c：15）的内存镜像。</p>
 <p>当内核完成 <code>exec</code> 调用后，会返回用户空间执行 <code>init</code> 函数。该函数首先创建一个新的控制台设备文件，并通过文件描述符 0、1 和 2 打开它。随后，<code>init</code> 在该控制台上启动 shell，至此，系统已经启动。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// init: The initial user-level program</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/types.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/stat.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/spinlock.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/sleeplock.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/fs.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/file.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;user/user.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/fcntl.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> *argv[] = &#123; <span class="string">&quot;sh&quot;</span>, <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> pid, wpid;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(open(<span class="string">&quot;console&quot;</span>, O_RDWR) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">    mknod(<span class="string">&quot;console&quot;</span>, CONSOLE, <span class="number">0</span>);</span><br><span class="line">    open(<span class="string">&quot;console&quot;</span>, O_RDWR);</span><br><span class="line">  &#125;</span><br><span class="line">  dup(<span class="number">0</span>);  <span class="comment">// stdout</span></span><br><span class="line">  dup(<span class="number">0</span>);  <span class="comment">// stderr</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;init: starting sh\n&quot;</span>);</span><br><span class="line">    pid = fork();</span><br><span class="line">    <span class="keyword">if</span>(pid &lt; <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;init: fork failed\n&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123;</span><br><span class="line">      exec(<span class="string">&quot;sh&quot;</span>, argv);</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;init: exec sh failed\n&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">      <span class="comment">// this call to wait() returns if the shell exits,</span></span><br><span class="line">      <span class="comment">// or if a parentless process exits.</span></span><br><span class="line">      wpid = wait((<span class="type">int</span> *) <span class="number">0</span>);</span><br><span class="line">      <span class="keyword">if</span>(wpid == pid)&#123;</span><br><span class="line">        <span class="comment">// the shell exited; restart it.</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span>(wpid &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;init: wait returned an error\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// it was a parentless process; do nothing.</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// init: The initial user-level program</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/types.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/stat.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/spinlock.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/sleeplock.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/fs.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/file.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;user/user.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/fcntl.h&quot;</span></span><br><br><span class="hljs-type">char</span> *argv[] = &#123; <span class="hljs-string">&quot;sh&quot;</span>, <span class="hljs-number">0</span> &#125;;<br><br><span class="hljs-type">int</span><br><span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int</span> pid, wpid;<br><br>  <span class="hljs-keyword">if</span>(open(<span class="hljs-string">&quot;console&quot;</span>, O_RDWR) &lt; <span class="hljs-number">0</span>)&#123;<br>    mknod(<span class="hljs-string">&quot;console&quot;</span>, CONSOLE, <span class="hljs-number">0</span>);<br>    open(<span class="hljs-string">&quot;console&quot;</span>, O_RDWR);<br>  &#125;<br>  dup(<span class="hljs-number">0</span>);  <span class="hljs-comment">// stdout</span><br>  dup(<span class="hljs-number">0</span>);  <span class="hljs-comment">// stderr</span><br><br>  <span class="hljs-keyword">for</span>(;;)&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;init: starting sh\n&quot;</span>);<br>    pid = fork();<br>    <span class="hljs-keyword">if</span>(pid &lt; <span class="hljs-number">0</span>)&#123;<br>      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;init: fork failed\n&quot;</span>);<br>      <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>    &#125;<br>    <span class="hljs-keyword">if</span>(pid == <span class="hljs-number">0</span>)&#123;<br>      exec(<span class="hljs-string">&quot;sh&quot;</span>, argv);<br>      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;init: exec sh failed\n&quot;</span>);<br>      <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">for</span>(;;)&#123;<br>      <span class="hljs-comment">// this call to wait() returns if the shell exits,</span><br>      <span class="hljs-comment">// or if a parentless process exits.</span><br>      wpid = wait((<span class="hljs-type">int</span> *) <span class="hljs-number">0</span>);<br>      <span class="hljs-keyword">if</span>(wpid == pid)&#123;<br>        <span class="hljs-comment">// the shell exited; restart it.</span><br>        <span class="hljs-keyword">break</span>;<br>      &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(wpid &lt; <span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;init: wait returned an error\n&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// it was a parentless process; do nothing.</span><br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
 
 
 
@@ -95,48 +360,374 @@
 
 
 
-</div><div class="article-licensing box"><div class="licensing-title"><p>[MIT 6.1810]Xv6 Chapter 2</p><p><a href="https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-2/">https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-2/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>ErlsrnBy04</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2024-09-24</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2024-09-25</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/MIT-6-1810/">MIT 6.1810</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2024/09/25/MIT-6-1810-Xv6-Chapter-3/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">[MIT 6.1810]Xv6 Chapter 3</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/"><span class="level-item">[MIT 6.1810]Xv6 Chapter 1</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><script src="https://giscus.app/client.js" repo="ErlsrnBy04/comments" data-repo="ErlsrnBy04/comments" data-repo-id="R_kgDOM1SRGQ" data-category-id="DIC_kwDOM1SRGc4Cirkj" data-category="Announcements" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous" async></script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar1.jpg" alt="ErlsrnBy04"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">ErlsrnBy04</p><p class="is-size-6 is-block">学生</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>北京，中国</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">20</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">3</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ErlsrnBy04" target="_blank" rel="me noopener">Follow</a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#Operating-system-organization"><span class="level-left"><span class="level-item">1</span><span class="level-item">Operating system organization</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#2-1-Abstracting-physical-resources"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">2.1 Abstracting physical resources</span></span></a></li><li><a class="level is-mobile" href="#2-2-User-mode，supervisor-mode，and-system-calls"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">2.2 User mode，supervisor mode，and system calls</span></span></a></li><li><a class="level is-mobile" href="#2-3-Kernel-organization"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">2.3 Kernel organization</span></span></a></li><li><a class="level is-mobile" href="#2-4-Code：xv6-organization"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">2.4 Code：xv6 organization</span></span></a></li><li><a class="level is-mobile" href="#2-5-Process-overview"><span class="level-left"><span class="level-item">1.5</span><span class="level-item">2.5 Process overview</span></span></a></li><li><a class="level is-mobile" href="#2-6-Code：starting-xv6，the-first-process-and-system-call"><span class="level-left"><span class="level-item">1.6</span><span class="level-item">2.6 Code：starting xv6，the first process and system call</span></span></a></li></ul></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="level-start"><span class="level-item">操作系统</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"><span class="level-start"><span class="level-item">编程语言</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-26T04:51:28.000Z">2024-09-26</time></p><p class="title"><a href="/2024/09/26/MIT-6-1810-Xv6-Chapter-4/">[MIT 6.1810]Xv6 Chapter 4</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-25T03:44:09.000Z">2024-09-25</time></p><p class="title"><a href="/2024/09/25/MIT-6-1810-Xv6-Chapter-3/">[MIT 6.1810]Xv6 Chapter 3</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T07:43:10.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-2/">[MIT 6.1810]Xv6 Chapter 2</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T05:11:40.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/">[MIT 6.1810]Xv6 Chapter 1</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/"><img src="/cover/C++.svg" alt="[C++] 返回值优化"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-09-22T05:17:42.000Z">2024-09-22</time></p><p class="title"><a href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/">[C++] 返回值优化</a></p><p class="categories"><a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">September 2024</span></span><span class="level-end"><span class="level-item tag">20</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/C/"><span class="tag">C++</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-1810/"><span class="tag">MIT 6.1810</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-S081/"><span class="tag">MIT 6.S081</span><span class="tag">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a><p class="is-size-7"><span>&copy; 2024 ErlsrnBy04</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">且陶陶，乐尽天真</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="GitHub" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
-            article: {
-                highlight: {
-                    clipboard: true,
-                    fold: 'unfolded'
-                }
-            }
-        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
-      window.cookieconsent.initialise({
-        type: "info",
-        theme: "edgeless",
-        static: false,
-        position: "bottom-left",
-        content: {
-          message: "This website uses cookies to improve your experience.",
-          dismiss: "Got it!",
-          allow: "Allow cookies",
-          deny: "Decline",
-          link: "Learn more",
-          policy: "Cookie Policy",
-          href: "https://www.cookiesandyou.com/",
-        },
-        palette: {
-          popup: {
-            background: "#edeff5",
-            text: "#838391"
-          },
-          button: {
-            background: "#4b81e8"
-          },
-        },
-      });
-    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
-            if (typeof $.fn.lightGallery === 'function') {
-                $('.article').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof $.fn.justifiedGallery === 'function') {
-                if ($('.justified-gallery > p > .gallery-item').length) {
-                    $('.justified-gallery > p > .gallery-item').unwrap();
-                }
-                $('.justified-gallery').justifiedGallery();
-            }
-        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
-            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
-        });</script></body></html>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MIT-6-1810/" class="print-no-link">#MIT 6.1810</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[MIT 6.1810]Xv6 Chapter 2</div>
+      <div>https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/25/MIT-6-1810-Xv6-Chapter-3/" title="[MIT 6.1810]Xv6 Chapter 3">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[MIT 6.1810]Xv6 Chapter 3</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/" title="[MIT 6.1810]Xv6 Chapter 1">
+                        <span class="hidden-mobile">[MIT 6.1810]Xv6 Chapter 1</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,35 +1,300 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>[C++]C++Primer Chapter 13 - ErlsrnBy04</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ErlsrnBy04"><meta name="msapplication-TileImage" content="/img/Snake.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ErlsrnBy04"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="拷贝控制"><meta property="og:type" content="blog"><meta property="og:title" content="[C++]C++Primer Chapter 13"><meta property="og:url" content="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-13/"><meta property="og:site_name" content="ErlsrnBy04"><meta property="og:description" content="拷贝控制"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://erlsrnby04.github.io/cover/C++.svg"><meta property="article:published_time" content="2024-09-22T04:01:25.000Z"><meta property="article:modified_time" content="2024-09-22T17:32:05.984Z"><meta property="article:author" content="ErlsrnBy04"><meta property="article:tag" content="C++"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://erlsrnby04.github.io/cover/C++.svg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-13/"},"headline":"[C++]C++Primer Chapter 13","image":[],"datePublished":"2024-09-22T04:01:25.000Z","dateModified":"2024-09-22T17:32:05.984Z","author":{"@type":"Person","name":"ErlsrnBy04"},"publisher":{"@type":"Organization","name":"ErlsrnBy04","logo":{"@type":"ImageObject","url":"https://erlsrnby04.github.io/img/Snake.svg"}},"description":"拷贝控制"}</script><link rel="canonical" href="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-13/"><link rel="icon" href="/img/Snake.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
-  (function () {
-      function switchTab() {
-          if (!location.hash) {
-            return;
-          }
 
-          const id = '#' + CSS.escape(location.hash.substring(1));
-          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
-          if (!$tabMenu) {
-            return;
-          }
 
-          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
-          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
-          Array.from($tabMenuContainer.querySelectorAll('a'))
-              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
-              .forEach($content => $content.classList.add('is-hidden'));
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-          if ($tabMenu) {
-              $tabMenu.parentElement.classList.add('is-active');
-          }
-          const $activeTab = document.querySelector(id);
-          if ($activeTab) {
-              $activeTab.classList.remove('is-hidden');
-          }
-      }
-      switchTab();
-      window.addEventListener('hashchange', switchTab, false);
-  })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">主页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="GitHub 主页" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-09-22T04:01:25.000Z" title="2024/9/22 12:01:25">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></span><span class="level-item">an hour read (About 12620 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">[C++]C++Primer Chapter 13</h1><div class="content"><h1 id="拷贝控制"><a href="#拷贝控制" class="headerlink" title="拷贝控制"></a>拷贝控制</h1><span id="more"></span>
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="拷贝控制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[C++]C++Primer Chapter 13">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-13/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="拷贝控制">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=13">
+<meta property="article:published_time" content="2024-09-22T04:01:25.000Z">
+<meta property="article:modified_time" content="2024-09-27T14:11:51.675Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=13">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>[C++]C++Primer Chapter 13 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04的小站</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[C++]C++Primer Chapter 13"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-22 12:01" pubdate>
+          2024年9月22日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          98 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[C++]C++Primer Chapter 13</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="拷贝控制"><a href="#拷贝控制" class="headerlink" title="拷贝控制"></a>拷贝控制</h1><span id="more"></span>
 
 <p>一个类通过定义五种特殊的成员函数来控制这些操作，包括：拷贝构造函数（copy constructor）、拷贝赋值运算符（copy-assignment operator）、移动构造函数（move constructor）、移动赋值运算符（move-assignment operator）和析构函数（destructor）。</p>
 <h2 id="13-1-拷贝、赋值与销毁"><a href="#13-1-拷贝、赋值与销毁" class="headerlink" title="13.1 拷贝、赋值与销毁"></a>13.1 拷贝、赋值与销毁</h2><h3 id="13-1-1-拷贝构造函数"><a href="#13-1-1-拷贝构造函数" class="headerlink" title="13.1.1 拷贝构造函数"></a>13.1.1 拷贝构造函数</h3><p>如果一个构造函数的第一个参数是自身类类型的引用，且任何额外参数都有默认值，则此构造函数是拷贝构造函数。</p>
@@ -52,7 +317,7 @@
 <p>拷贝构造函数被用来初始化非引用类类型参数，这一特性解释了为什么拷贝构造函数自己的参数必须是引用类型。</p>
 <p><strong>拷贝初始化的限制</strong></p>
 <p>如果我们使用的初始化值要求通过一个explicit的构造函数来进行类型转换（参见7.5.4节，第265页），那么使用拷贝初始化还是直接初始化就不是无关紧要的了</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921002325205.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921002325205.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>编译器可以绕过拷贝构造函数</strong></p>
 <p>在拷贝初始化过程中，编译器可以（但不是必须）跳过拷贝&#x2F;移动构造函数，直接创建对象。</p>
 <p>但是，即使编译器略过了拷贝&#x2F;移动构造函数，但在这个程序点上，拷贝&#x2F;移动构造函数必须是存在且可访问的（例如，不能是private的）。</p>
@@ -89,7 +354,7 @@
 <p><strong>需要拷贝操作的类也需要赋值操作，反之亦然</strong></p>
 <p>无论是需要拷贝构造函数还是需要拷贝赋值运算符都不必然意味着也需要析构函数。</p>
 <h3 id="13-1-5-使用-default"><a href="#13-1-5-使用-default" class="headerlink" title="13.1.5 使用&#x3D;default"></a>13.1.5 使用&#x3D;default</h3><p>我们可以通过将拷贝控制成员定义为&#x3D;default来显式地要求编译器生成合成的版本（参见7.1.4节，第237页）</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921004332914.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921004332914.png" srcset="/img/loading.gif" lazyload></p>
 <p>当我们在类内用&#x3D;default修饰成员的声明时，合成的函数将隐式地声明为内联的（就像任何其他类内声明的成员函数一样）。如果我们不希望合成的成员是内联函数，应该只对成员的类外定义使用&#x3D;default，就像对拷贝赋值运算符所做的那样。</p>
 <h3 id="13-1-6-阻止拷贝"><a href="#13-1-6-阻止拷贝" class="headerlink" title="13.1.6 阻止拷贝"></a>13.1.6 阻止拷贝</h3><blockquote>
 <p>大多数类应该定义默认构造函数、拷贝构造函数和拷贝赋值运算符，无论是隐式地还是显式地。</p>
@@ -97,7 +362,7 @@
 <p>对某些类来说，这些操作没有合理的意义。在此情况下，定义类时必须采用某种机制阻止拷贝或赋值。例如，iostream类阻止了拷贝，以避免多个对象写入或读取相同的IO缓冲。</p>
 <p><strong>定义删除的函数</strong></p>
 <p>在新标准下，我们可以通过将拷贝构造函数和拷贝赋值运算符定义为删除的函数（deleted function）来阻止拷贝。删除的函数是这样一种函数：我们虽然声明了它们，但不能以任何方式使用它们。在函数的参数列表后面加上&#x3D;delete来指出我们希望将它定义为删除的</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921004625361.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921004625361.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>与&#x3D;default不同，&#x3D;delete必须出现在函数第一次声明的时候</strong></p>
 <p>与&#x3D;default的另一个不同之处是，我们可以对任何函数指定&#x3D;delete（我们只能对编译器可以合成的默认构造函数或拷贝控制成员使用&#x3D;default）。虽然删除函数的主要用途是禁止拷贝控制成员，但当我们希望引导函数匹配过程时，删除函数有时也是有用的。</p>
 <p><strong>析构函数不能是删除的成员</strong></p>
@@ -146,11 +411,11 @@
 <p>计数器不能直接作为HasPtr对象的成员。</p>
 <p>解决此问题的一种方法是<strong>将计数器保存在动态内存中</strong>。当创建一个对象时，我们也分配一个新的计数器。当拷贝或赋值对象时，我们拷贝指向计数器的指针。使用这种方法，副本和原对象都会指向相同的计数器。</p>
 <p><strong>定义一个使用引用计数的类</strong></p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921010258313.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921010258313.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>类指针的拷贝成员“篡改”引用计数</strong></p>
 <p>析构函数不能无条件地delete ps——可能还有其他对象指向这块内存。析构函数应该递减引用计数，指出共享string的对象少了一个。如果计数器变为0，则析构函数释放ps和use指向的内存</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921010338251.png"></p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921010440242.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921010338251.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240921010440242.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="13-3-交换操作"><a href="#13-3-交换操作" class="headerlink" title="13.3 交换操作"></a>13.3 交换操作</h2><p>管理资源的类一般会定义自己的 <code>swap</code> 函数。</p>
 <p>对于会重排元素顺序的算法来说，如果类定义了自己的<code>swap</code>函数，则调用该函数，否则使用标准库定义的<code>swap</code>，该函数会进行一次拷贝两次赋值。</p>
 <p><strong>编写我们自己的swap函数</strong></p>
@@ -158,17 +423,17 @@
 <p>与拷贝控制成员不同，swap并不是必要的。但是，对于分配了资源的类，定义swap可能是一种很重要的优化手段。</p>
 </blockquote>
 <p>一个典型的实现方法，由于swap的存在就是为了优化代码，我们将其声明为inline函数（参见6.5.2节，第213页）。</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240922172223746.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240922172223746.png" srcset="/img/loading.gif" lazyload></p>
 <p>需要注意的是，每个swap调用应该都是未加限定的。即，每个调用都应该是swap，而不是std：：swap。如果存在类型特定的swap版本，其匹配程度会优于std中定义的版本，原因我们将在16.3节（第616页）中进行解释。</p>
 <p><strong>在赋值运算符中使用swap</strong></p>
 <blockquote>
 <p>使用拷贝和交换的赋值运算符自动就是异常安全的，且能正确处理自赋值。</p>
 </blockquote>
 <p>定义swap的类通常用swap来定义它们的赋值运算符。这些运算符使用了一种名为拷贝并交换（copy and swap）的技术。</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240922172705817.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240922172705817.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="13-4-拷贝控制示例"><a href="#13-4-拷贝控制示例" class="headerlink" title="13.4 拷贝控制示例"></a>13.4 拷贝控制示例</h2><p>通常来说分配资源的类更需要拷贝控制，但资源管理并不是一个类需要定义自己的拷贝控制成员的唯一原因。一些类也需要拷贝控制成员的帮助来进行簿记工作或其他操作。</p>
 <p>两个类命名为Message和Folder，分别表示电子邮件（或者其他类型的）消息和消息目录。每个Message对象可以出现在多个Folder中。但是，任意给定的Message的内容只有一个副本。这样，如果一条Message的内容被改变，则我们从它所在的任何Folder来浏览此Message时，都会看到改变后的内容。为了记录Message位于哪些Folder中，每个Message都会保存一个它所在Folder的指针的set，同样的，每个Folder都保存一个它包含的Message的指针的set。</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240922173022597.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240922173022597.png" srcset="/img/loading.gif" lazyload></p>
 <p>Message类会提供save和remove操作，来向一个给定Folder添加一条Message或是从中删除一条Message。为了创建一个新的Message，我们会指明消息内容，但不会指出Folder。为了将一条Message放到一个特定Folder中，我们必须调用save。</p>
 <p>当我们拷贝一个Message时，副本和原对象将是不同的Message对象，但两个Message都出现在相同的Folder中。因此，拷贝Message的操作包括消息内容和Folder指针set的拷贝。而且，我们必须在每个包含此消息的Folder中都添加一个指向新创建的Message的指针。</p>
 <p>当我们销毁一个Message时，它将不复存在。因此，我们必须从包含此消息的所有Folder中删除指向此Message的指针。</p>
@@ -188,7 +453,7 @@
 <li>first_free，指向最后一个实际元素之后的位置</li>
 <li>cap，指向分配的内存末尾之后的位置</li>
 </ul>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240922205725442.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240922205725442.png" srcset="/img/loading.gif" lazyload></p>
 <p>StrVec还有一个名为alloc的静态成员，其类型为<code>allocator&lt;string&gt;</code>。</p>
 <p>还有4个工具函数：</p>
 <ul>
@@ -198,22 +463,22 @@
 <li>reallocate在内存用完时为StrVec分配新内存。</li>
 </ul>
 <p><strong>StrVec类定义</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">StrVec</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">StrVec</span>() :                           <span class="comment">// alloc成员默认初始化</span></span><br><span class="line">        <span class="built_in">elements</span>(<span class="literal">nullptr</span>),</span><br><span class="line">        <span class="built_in">first_free</span>(<span class="literal">nullptr</span>),</span><br><span class="line">        <span class="built_in">cap</span>(<span class="literal">nullptr</span>)</span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="built_in">StrVec</span>(<span class="type">const</span> StrVec &amp;);              <span class="comment">// 拷贝构造</span></span><br><span class="line">    StrVec &amp;<span class="keyword">operator</span>=(<span class="type">const</span> StrVec &amp;);   <span class="comment">// 拷贝赋值</span></span><br><span class="line">    ~<span class="built_in">StrVec</span>();                           <span class="comment">// 析构函数</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">push_back</span><span class="params">(<span class="type">const</span> std::string &amp;)</span></span>; <span class="comment">// 拷贝元素并添加到容器末尾</span></span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">size</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> first_free - elements; &#125;</span><br><span class="line">    <span class="function"><span class="type">size_t</span> <span class="title">capacity</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> cap - elements; &#125;</span><br><span class="line">    <span class="function">std::string *<span class="title">begin</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> elements; &#125;</span><br><span class="line">    <span class="function">std::string *<span class="title">end</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> first_free; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">chk_n_alloc</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">        </span>&#123; <span class="keyword">if</span> (<span class="built_in">size</span>() == <span class="built_in">capacity</span>()) <span class="built_in">reallocate</span>(); &#125;      <span class="comment">// 至少保证容器有一个空闲空间</span></span><br><span class="line">    std::pair&lt;std::string *, std::string *&gt; alloc_n_copy <span class="comment">// 分配内存并拷贝范围内元素</span></span><br><span class="line">        (<span class="type">const</span> std::string *, <span class="type">const</span> std::string *);</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">free</span><span class="params">()</span></span>;                                         <span class="comment">// 销毁元素并释放内存</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">reallocate</span><span class="params">()</span></span>;                                   <span class="comment">// 重新分配内存并拷贝元素</span></span><br><span class="line">    <span class="type">static</span> std::allocator&lt;std::string&gt; alloc;            <span class="comment">// 内存分配器</span></span><br><span class="line">    std::string *elements;                               <span class="comment">// 数组首元素</span></span><br><span class="line">    std::string *first_free;                             <span class="comment">// 数组最后一个元素之后的位置</span></span><br><span class="line">    std::string *cap;                                    <span class="comment">// 数组分配内存之后的位置</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">StrVec</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">StrVec</span>() :                           <span class="hljs-comment">// alloc成员默认初始化</span><br>        <span class="hljs-built_in">elements</span>(<span class="hljs-literal">nullptr</span>),<br>        <span class="hljs-built_in">first_free</span>(<span class="hljs-literal">nullptr</span>),<br>        <span class="hljs-built_in">cap</span>(<span class="hljs-literal">nullptr</span>)<br>    &#123; &#125;<br>    <span class="hljs-built_in">StrVec</span>(<span class="hljs-type">const</span> StrVec &amp;);              <span class="hljs-comment">// 拷贝构造</span><br>    StrVec &amp;<span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> StrVec &amp;);   <span class="hljs-comment">// 拷贝赋值</span><br>    ~<span class="hljs-built_in">StrVec</span>();                           <span class="hljs-comment">// 析构函数</span><br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">push_back</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp;)</span></span>; <span class="hljs-comment">// 拷贝元素并添加到容器末尾</span><br>    <span class="hljs-function"><span class="hljs-type">size_t</span> <span class="hljs-title">size</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> first_free - elements; &#125;<br>    <span class="hljs-function"><span class="hljs-type">size_t</span> <span class="hljs-title">capacity</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> cap - elements; &#125;<br>    <span class="hljs-function">std::string *<span class="hljs-title">begin</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> elements; &#125;<br>    <span class="hljs-function">std::string *<span class="hljs-title">end</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> first_free; &#125;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">chk_n_alloc</span><span class="hljs-params">()</span> </span><br><span class="hljs-function">        </span>&#123; <span class="hljs-keyword">if</span> (<span class="hljs-built_in">size</span>() == <span class="hljs-built_in">capacity</span>()) <span class="hljs-built_in">reallocate</span>(); &#125;      <span class="hljs-comment">// 至少保证容器有一个空闲空间</span><br>    std::pair&lt;std::string *, std::string *&gt; alloc_n_copy <span class="hljs-comment">// 分配内存并拷贝范围内元素</span><br>        (<span class="hljs-type">const</span> std::string *, <span class="hljs-type">const</span> std::string *);<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">free</span><span class="hljs-params">()</span></span>;                                         <span class="hljs-comment">// 销毁元素并释放内存</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">reallocate</span><span class="hljs-params">()</span></span>;                                   <span class="hljs-comment">// 重新分配内存并拷贝元素</span><br>    <span class="hljs-type">static</span> std::allocator&lt;std::string&gt; alloc;            <span class="hljs-comment">// 内存分配器</span><br>    std::string *elements;                               <span class="hljs-comment">// 数组首元素</span><br>    std::string *first_free;                             <span class="hljs-comment">// 数组最后一个元素之后的位置</span><br>    std::string *cap;                                    <span class="hljs-comment">// 数组分配内存之后的位置</span><br>&#125;;<br></code></pre></td></tr></table></figure>
 
 <p><strong>使用construct</strong></p>
 <p>若想使用原始内存，必须调用<code>construct</code>在此原始内存上构造一个对象。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">StrVec::push_back</span><span class="params">(<span class="type">const</span> std::string &amp;ele)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">chk_n_alloc</span>();</span><br><span class="line">    alloc.<span class="built_in">construct</span>(first_free++, ele);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">StrVec::push_back</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp;ele)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">chk_n_alloc</span>();<br>    alloc.<span class="hljs-built_in">construct</span>(first_free++, ele);<br>&#125;<br><br></code></pre></td></tr></table></figure>
 
 <p>push_back首先调用chk_n_alloc确保有足够的原始内存来构造对象，然后用allocator来构造一个对象，construct的第一个参数指向内存的起始地址，其他参数用来决定调用哪个构造函数来构造对象，此例中调用string的拷贝构造函数。</p>
 <p><strong>alloc_n_copy成员</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::pair&lt;std::string *, std::string *&gt; <span class="title">StrVec::alloc_n_copy</span></span></span><br><span class="line"><span class="function">    <span class="params">(<span class="type">const</span> std::string *begin, <span class="type">const</span> std::string *end)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> data = alloc.<span class="built_in">allocate</span>(end - begin);</span><br><span class="line">    <span class="keyword">return</span> &#123;data, std::<span class="built_in">uninitialized_copy</span>(begin, end, data)&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">std::pair&lt;std::string *, std::string *&gt; <span class="hljs-title">StrVec::alloc_n_copy</span></span><br><span class="hljs-function">    <span class="hljs-params">(<span class="hljs-type">const</span> std::string *begin, <span class="hljs-type">const</span> std::string *end)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">auto</span> data = alloc.<span class="hljs-built_in">allocate</span>(end - begin);<br>    <span class="hljs-keyword">return</span> &#123;data, std::<span class="hljs-built_in">uninitialized_copy</span>(begin, end, data)&#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><strong>free成员</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">StrVec::free</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (elements == <span class="literal">nullptr</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> p = elements; p != first_free; ++p)</span><br><span class="line">        alloc.<span class="built_in">destroy</span>(p);</span><br><span class="line">    alloc.<span class="built_in">deallocate</span>(elements, cap - elements);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">StrVec::free</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span> (elements == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> p = elements; p != first_free; ++p)<br>        alloc.<span class="hljs-built_in">destroy</span>(p);<br>    alloc.<span class="hljs-built_in">deallocate</span>(elements, cap - elements);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>注意，deallocate函数不接受空指针，所以必须要先检查指针是否未空。另外，我们必须首先销毁对象，然后再释放内存。</p>
 <p><strong>拷贝控制成员</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">StrVec::<span class="built_in">StrVec</span>(<span class="type">const</span> StrVec &amp;other)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">auto</span> data =  <span class="built_in">alloc_n_copy</span>(other.<span class="built_in">begin</span>(), other.<span class="built_in">end</span>());</span><br><span class="line">    elements = data.first;</span><br><span class="line">    first_free = cap = data.second;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">StrVec &amp;StrVec::<span class="keyword">operator</span>=(<span class="type">const</span> StrVec &amp;other)   </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">auto</span> data = <span class="built_in">alloc_n_copy</span>(other.<span class="built_in">begin</span>(), other.<span class="built_in">end</span>());</span><br><span class="line">    <span class="built_in">free</span>();</span><br><span class="line">    elements = data.first;</span><br><span class="line">    first_free = cap = data.second;</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">StrVec::~<span class="built_in">StrVec</span>()                           </span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">free</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++">StrVec::<span class="hljs-built_in">StrVec</span>(<span class="hljs-type">const</span> StrVec &amp;other)<br>&#123;<br>    <span class="hljs-keyword">auto</span> data =  <span class="hljs-built_in">alloc_n_copy</span>(other.<span class="hljs-built_in">begin</span>(), other.<span class="hljs-built_in">end</span>());<br>    elements = data.first;<br>    first_free = cap = data.second;<br>&#125;<br><br>StrVec &amp;StrVec::<span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> StrVec &amp;other)   <br>&#123;<br>    <span class="hljs-keyword">auto</span> data = <span class="hljs-built_in">alloc_n_copy</span>(other.<span class="hljs-built_in">begin</span>(), other.<span class="hljs-built_in">end</span>());<br>    <span class="hljs-built_in">free</span>();<br>    elements = data.first;<br>    first_free = cap = data.second;<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br><br>StrVec::~<span class="hljs-built_in">StrVec</span>()                           <br>&#123;<br>    <span class="hljs-built_in">free</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>重载赋值运算符在释放内存之前，先调用alloc_n_copy复制一份数据出来，这样可以处理自赋值问题。</p>
 <p><strong>在重新分配内存的过程中移动而不是拷贝元素</strong></p>
@@ -229,14 +494,14 @@
 <p>有一些标准库类，包括string，都定义了所谓的“移动构造函数”。移动构造函数通常是将资源从给定对象“移动”而不是拷贝到正在创建的对象。而且我们知道标准库保证“移后源”（moved-from）string仍然保持一个有效的、可析构的状态。</p>
 <p>move的标准库函数，它定义在utility头文件中。当reallocate在新内存中构造string时，它必须调用move来表示希望使用string的移动构造函数，原因我们将在13.6.1节（第470页）中解释。如果它漏掉了move调用，将会使用string的拷贝构造函数。其次，我们通常不为move提供一个using声明（参见3.1节，第74页），原因将在18.2.3节（第706页）中解释。当我们使用move时，直接调用std：：move而不是move。</p>
 <p><strong>reallocate成员</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">StrVec::reallocate</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> new_size = <span class="built_in">capacity</span>() ? <span class="built_in">capacity</span>() * <span class="number">2</span> : <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">auto</span> new_elements = alloc.<span class="built_in">allocate</span>(new_size);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i != <span class="built_in">size</span>(); ++i)</span><br><span class="line">        alloc.<span class="built_in">construct</span>(new_elements + i, std::<span class="built_in">move</span>(*(elements + i)));</span><br><span class="line">    <span class="built_in">free</span>();</span><br><span class="line">    cap = new_elements + new_size; </span><br><span class="line">    first_free = new_elements + <span class="built_in">size</span>();</span><br><span class="line">    elements = new_elements;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">StrVec::reallocate</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">auto</span> new_size = <span class="hljs-built_in">capacity</span>() ? <span class="hljs-built_in">capacity</span>() * <span class="hljs-number">2</span> : <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">auto</span> new_elements = alloc.<span class="hljs-built_in">allocate</span>(new_size);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">size_t</span> i = <span class="hljs-number">0</span>; i != <span class="hljs-built_in">size</span>(); ++i)<br>        alloc.<span class="hljs-built_in">construct</span>(new_elements + i, std::<span class="hljs-built_in">move</span>(*(elements + i)));<br>    <span class="hljs-built_in">free</span>();<br>    cap = new_elements + new_size; <br>    first_free = new_elements + <span class="hljs-built_in">size</span>();<br>    elements = new_elements;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>注意这里需要处理默认初始化后第一次调用reallocate的情况，需要判断。</p>
 <p><strong>测试</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    StrVec vec;</span><br><span class="line">    vec.<span class="built_in">push_back</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">    vec.<span class="built_in">push_back</span>(<span class="string">&quot;World&quot;</span>);</span><br><span class="line">    vec.<span class="built_in">push_back</span>(<span class="string">&quot;Test&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> printVec = [](<span class="type">const</span> StrVec &amp;vec)</span><br><span class="line">    &#123;</span><br><span class="line">        std::for_each(vec.<span class="built_in">begin</span>(), vec.<span class="built_in">end</span>(), [](<span class="type">const</span> std::string &amp;s)</span><br><span class="line">        &#123;</span><br><span class="line">            std::cout &lt;&lt; s &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">        &#125;);</span><br><span class="line">        std::cout &lt;&lt; std::endl;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Original vec: &quot;</span>;</span><br><span class="line">    <span class="built_in">printVec</span>(vec);</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Size: &quot;</span> &lt;&lt; vec.<span class="built_in">size</span>() &lt;&lt; <span class="string">&quot;, Capacity: &quot;</span> &lt;&lt; vec.<span class="built_in">capacity</span>() &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 测试拷贝构造函数</span></span><br><span class="line">    <span class="function">StrVec <span class="title">vecCopy</span><span class="params">(vec)</span></span>;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Copied vec: &quot;</span>;</span><br><span class="line">    <span class="built_in">printVec</span>(vecCopy);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 测试拷贝赋值操作符</span></span><br><span class="line">    StrVec vecAssign;</span><br><span class="line">    vecAssign = vec;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Assigned vec: &quot;</span>;</span><br><span class="line">    <span class="built_in">printVec</span>(vecAssign);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加更多元素以触发重新分配</span></span><br><span class="line">    vec.<span class="built_in">push_back</span>(<span class="string">&quot;More&quot;</span>);</span><br><span class="line">    vec.<span class="built_in">push_back</span>(<span class="string">&quot;Strings&quot;</span>);</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Original vec after adding more elements: &quot;</span>;</span><br><span class="line">    <span class="built_in">printVec</span>(vec);</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Size: &quot;</span> &lt;&lt; vec.<span class="built_in">size</span>() &lt;&lt; <span class="string">&quot;, Capacity: &quot;</span> &lt;&lt; vec.<span class="built_in">capacity</span>() &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    StrVec vec;<br>    vec.<span class="hljs-built_in">push_back</span>(<span class="hljs-string">&quot;Hello&quot;</span>);<br>    vec.<span class="hljs-built_in">push_back</span>(<span class="hljs-string">&quot;World&quot;</span>);<br>    vec.<span class="hljs-built_in">push_back</span>(<span class="hljs-string">&quot;Test&quot;</span>);<br><br>    <span class="hljs-keyword">auto</span> printVec = [](<span class="hljs-type">const</span> StrVec &amp;vec)<br>    &#123;<br>        std::for_each(vec.<span class="hljs-built_in">begin</span>(), vec.<span class="hljs-built_in">end</span>(), [](<span class="hljs-type">const</span> std::string &amp;s)<br>        &#123;<br>            std::cout &lt;&lt; s &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>        &#125;);<br>        std::cout &lt;&lt; std::endl;<br>    &#125;;<br><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Original vec: &quot;</span>;<br>    <span class="hljs-built_in">printVec</span>(vec);<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Size: &quot;</span> &lt;&lt; vec.<span class="hljs-built_in">size</span>() &lt;&lt; <span class="hljs-string">&quot;, Capacity: &quot;</span> &lt;&lt; vec.<span class="hljs-built_in">capacity</span>() &lt;&lt; std::endl;<br><br>    <span class="hljs-comment">// 测试拷贝构造函数</span><br>    <span class="hljs-function">StrVec <span class="hljs-title">vecCopy</span><span class="hljs-params">(vec)</span></span>;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Copied vec: &quot;</span>;<br>    <span class="hljs-built_in">printVec</span>(vecCopy);<br><br>    <span class="hljs-comment">// 测试拷贝赋值操作符</span><br>    StrVec vecAssign;<br>    vecAssign = vec;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Assigned vec: &quot;</span>;<br>    <span class="hljs-built_in">printVec</span>(vecAssign);<br><br>    <span class="hljs-comment">// 添加更多元素以触发重新分配</span><br>    vec.<span class="hljs-built_in">push_back</span>(<span class="hljs-string">&quot;More&quot;</span>);<br>    vec.<span class="hljs-built_in">push_back</span>(<span class="hljs-string">&quot;Strings&quot;</span>);<br><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Original vec after adding more elements: &quot;</span>;<br>    <span class="hljs-built_in">printVec</span>(vec);<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Size: &quot;</span> &lt;&lt; vec.<span class="hljs-built_in">size</span>() &lt;&lt; <span class="hljs-string">&quot;, Capacity: &quot;</span> &lt;&lt; vec.<span class="hljs-built_in">capacity</span>() &lt;&lt; std::endl;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>结果</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923004848131.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923004848131.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="13-6-对象移动"><a href="#13-6-对象移动" class="headerlink" title="13.6 对象移动"></a>13.6 对象移动</h2><blockquote>
 <p>标准库容器、string和shared_ptr类既支持移动也支持拷贝。IO类和unique_ptr类可以移动但不能拷贝。</p>
 </blockquote>
@@ -244,13 +509,13 @@
 <p>在旧版本的标准库中，容器中所保存的类必须是可拷贝的。但在新标准中，我们可以用容器保存不可拷贝的类型，只要它们能被移动即可。</p>
 <h3 id="13-6-1-右值引用"><a href="#13-6-1-右值引用" class="headerlink" title="13.6.1 右值引用"></a>13.6.1 右值引用</h3><p>为了支持移动操作，新标准引入了一种新的引用类型——右值引用（rvalue reference）。所谓右值引用就是必须绑定到右值的引用。我们通过&amp;&amp;而不是&amp;来获得右值引用。右值引用有一个重要的性质——<strong>只能绑定到一个将要销毁的对象。</strong></p>
 <p>一般而言，一个左值表达式表示的是一个对象的身份，而一个右值表达式表示的是对象的值。</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923005310870.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923005310870.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>左值持久；右值短暂</strong></p>
 <p>左值有持久的状态，而右值要么是字面常量，要么是在表达式求值过程中创建的临时对象。</p>
 <p>因为右值引用的对象即将被销毁，且没有其他用户，因此我们可以自由的接管该对象管理的资源。</p>
 <p><strong>变量是左值</strong></p>
 <p>因此，我们不能将一个右值引用绑定到一个右值引用类型的变量上</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923005534389.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923005534389.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>标准库move函数</strong></p>
 <p>虽然不能将一个右值引用直接绑定到一个左值上，但我们可以显式地将一个左值转换为对应的右值引用类型。我们还可以通过调用一个名为move的新标准库函数来获得绑定到左值上的右值引用，此函数定义在头文件utility中。move函数使用了我们将在16.2.6节（第610页）中描述的机制来返回给定对象的右值引用。</p>
 <p>move调用告诉编译器：我们有一个左值，但我们希望像一个右值一样处理它。我们必须认识到，<strong>调用move就意味着承诺：除了对rr1赋值或销毁它外，我们将不再使用它。</strong>在调用move之后，我们不能对移后源对象的值做任何假设。</p>
@@ -260,7 +525,7 @@
 <p>与大多数标准库名字的使用不同，对move（参见13.5节，第469页）我们不提供using声明（参见3.1节，第74页）。我们直接调用std：：move而不是move，其原因将在18.2.3节（第707页）中解释。</p>
 <h3 id="13-6-2-移动构造函数和移动赋值运算符"><a href="#13-6-2-移动构造函数和移动赋值运算符" class="headerlink" title="13.6.2 移动构造函数和移动赋值运算符"></a>13.6.2 移动构造函数和移动赋值运算符</h3><p>类似拷贝构造函数，移动构造函数的第一个参数是该类类型的一个引用。不同于拷贝构造函数的是，这个引用参数在移动构造函数中是一个右值引用。与拷贝构造函数一样，任何额外的参数都必须有默认实参。</p>
 <p>除了完成资源移动，<strong>移动构造函数还必须确保移后源对象处于这样一个状态——销毁它是无害的。</strong>特别是，一旦资源完成移动，源对象必须不再指向被移动的资源——这些资源的所有权已经归属新创建的对象。</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923005824517.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923005824517.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>移动操作、标准库容器和异常</strong></p>
 <p>由于移动操作“窃取”资源，它通常不分配任何资源。因此，移动操作通常不会抛出任何异常。当编写一个不抛出异常的移动操作时，我们应该将此事通知标准库。我们将看到，除非标准库知道我们的移动构造函数不会抛出异常，否则它会认为移动我们的类对象时可能会抛出异常，并且为了处理这种可能性而做一些额外的工作。</p>
 <p>一种通知标准库的方法是在我们的构造函数中指明noexcept。noexcept是新标准引入的，我们将在18.1.4节（第690页）中讨论更多细节。目前重要的是要知道，noexcept是我们承诺一个函数不抛出异常的一种方法。我们在一个函数的参数列表后指定noexcept。在一个构造函数中，noexcept出现在参数列表和初始化列表开始的冒号之间</p>
@@ -275,7 +540,7 @@
 <p>如果希望在vector重新分配内存这类情况下对我们自定义类型的对象进行移动而不是拷贝，就必须显式地告诉标准库我们的移动构造函数可以安全使用。我们通过将移动构造函数（及移动赋值运算符）标记为noexcept来做到这一点。</p>
 <p><strong>移动赋值运算符</strong></p>
 <p>移动赋值运算符执行与析构函数和移动构造函数相同的工作。与移动构造函数一样，如果我们的移动赋值运算符不抛出任何异常，我们就应该将它标记为noexcept。类似拷贝赋值运算符，移动赋值运算符必须正确处理自赋值</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923010734523.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923010734523.png" srcset="/img/loading.gif" lazyload></p>
 <p>我们费心地去检查自赋值情况看起来有些奇怪。毕竟，移动赋值运算符需要右侧运算对象的一个右值。我们进行检查的原因是此右值可能是move调用的返回结果。与其他任何赋值运算符一样，关键点是我们不能在使用右侧运算对象的资源之前就释放左侧运算对象的资源（可能是相同的资源）。</p>
 <p><strong>移后源对象必须可析构</strong></p>
 <p>除了将移后源对象置为析构安全的状态之外，移动操作还必须保证对象仍然是有效的。一般来说，对象有效就是指可以安全地为其赋予新值或者可以安全地使用而不依赖其当前值。另一方面，移动操作对移后源对象中留下的值没有任何要求。因此，我们的程序不应该依赖于移后源对象中的数据。</p>
@@ -293,7 +558,7 @@
 <p>值得注意的是，用拷贝构造函数代替移动构造函数几乎肯定是安全的（赋值运算符的情况类似）。</p>
 <p><strong>拷贝并交换赋值运算符和移动操作</strong></p>
 <p>我们的HasPtr版本定义了一个拷贝并交换赋值运算符（参见13.3节，第459页），它是函数匹配和移动操作间相互关系的一个很好的示例。如果我们为此类添加一个移动构造函数，它实际上也会获得一个移动赋值运算符</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923011641781.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923011641781.png" srcset="/img/loading.gif" lazyload></p>
 <p>现在让我们观察赋值运算符。此运算符有一个非引用参数，这意味着此参数要进行拷贝初始化（参见13.1.1节，第441页）。依赖于实参的类型，拷贝初始化要么使用拷贝构造函数，要么使用移动构造函数——左值被拷贝，右值被移动。</p>
 <p><strong>建议：更新三&#x2F;五法则</strong></p>
 <p>所有五个拷贝控制成员应该看作一个整体：一般来说，如果一个类定义了任何一个拷贝操作，它就应该定义所有五个操作。如前所述，某些类必须定义拷贝构造函数、拷贝赋值运算符和析构函数才能正确工作（参见13.1.4节，第447页）。这些类通常拥有一个资源，而拷贝成员必须拷贝此资源。一般来说，拷贝一个资源会导致一些额外开销。在这种拷贝并非必要的情况下，定义了移动构造函数和移动赋值运算符的类就可以避免此问题。</p>
@@ -302,75 +567,401 @@
 <p><strong>新标准库中定义了一种移动迭代器（move iterator）适配器（参见10.4节，第358页）。</strong>一个移动迭代器通过改变给定迭代器的解引用运算符的行为来适配此迭代器。一般来说，一个迭代器的解引用运算符返回一个指向元素的左值。与其他迭代器不同，移动迭代器的解引用运算符生成一个右值引用。</p>
 <p><strong>我们通过调用标准库的make_move_iterator函数将一个普通迭代器转换为一个移动迭代器。</strong>此函数接受一个迭代器参数，返回一个移动迭代器。</p>
 <p>原迭代器的所有其他操作在移动迭代器中都照常工作。由于移动迭代器支持正常的迭代器操作，我们可以将一对移动迭代器传递给算法。特别是，可以将移动迭代器传递给uninitialized_copy</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923012046882.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923012046882.png" srcset="/img/loading.gif" lazyload></p>
 <p>值得注意的是，标准库不保证哪些算法适用移动迭代器，哪些不适用。由于移动一个对象可能销毁掉原对象，因此你只有在确信算法在为一个元素赋值或将其传递给一个用户定义的函数后不再访问它时，才能将移动迭代器传递给算法。</p>
 <p><strong>建议：不要随意使用移动操作</strong></p>
 <h3 id="13-6-3-右值引用和成员函数"><a href="#13-6-3-右值引用和成员函数" class="headerlink" title="13.6.3 右值引用和成员函数"></a>13.6.3 右值引用和成员函数</h3><p>除了构造函数和赋值运算符之外，如果一个成员函数同时提供拷贝和移动版本，它也能从中受益。这种允许移动的成员函数通常使用与拷贝&#x2F;移动构造函数和赋值运算符相同的参数模式——<strong>一个版本接受一个指向const的左值引用，第二个版本接受一个指向非const的右值引用。</strong></p>
 <p>例如，定义了push_back的标准库容器提供两个版本：一个版本有一个右值引用参数，而另一个版本有一个const左值引用。假定X是元素类型，那么这些容器就会定义以下两个push_back版本</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923012349761.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923012349761.png" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>区分移动和拷贝的重载函数通常有一个版本接受一个const T&amp;，而另一个版本接受一个T&amp;&amp;。</p>
 </blockquote>
 <p><strong>右值和左值引用成员函数</strong></p>
 <p>通常，我们在一个对象上调用成员函数，而不管该对象是一个左值还是一个右值。例如</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923012527686.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923012527686.png" srcset="/img/loading.gif" lazyload></p>
 <p>有时，右值的使用方式可能令人惊讶：</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923012611035.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923012611035.png" srcset="/img/loading.gif" lazyload></p>
 <p>在旧标准中，我们没有办法阻止这种使用方式。为了维持向后兼容性，新标准库类仍然允许向右值赋值。但是，我们可能希望在自己的类中阻止这种用法。在此情况下，我们希望强制左侧运算对象（即，this指向的对象）是一个左值。</p>
 <p>我们指出this的左值&#x2F;右值属性的方式与定义const成员函数相同（参见7.1.2节，第231页），即，在参数列表后放置一个引用限定符（reference qualifier）</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923012654396.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923012654396.png" srcset="/img/loading.gif" lazyload></p>
 <p>引用限定符可以是&amp;或&amp;&amp;，分别指出this可以指向一个左值或右值。<strong>类似const限定符，引用限定符只能用于（非static）成员函数，且必须同时出现在函数的声明和定义中。</strong></p>
 <p>对于&amp;限定的函数，我们只能将它用于左值；对于&amp;&amp;限定的函数，只能用于右值</p>
 <p>一个函数可以同时用const和引用限定。在此情况下，引用限定符必须跟随在const限定符之后</p>
 <p><strong>重载和引用函数</strong></p>
 <p>就像一个成员函数可以根据是否有const来区分其重载版本一样（参见7.3.2节，第247页），引用限定符也可以区分重载版本。而且，我们可以综合引用限定符和const来区分一个成员函数的重载版本。</p>
 <p>当我们定义const成员函数时，可以定义两个版本，唯一的差别是一个版本有const限定而另一个没有。引用限定的函数则不一样。如果我们定义两个或两个以上具有相同名字和相同参数列表的成员函数，就必须对所有函数都加上引用限定符，或者所有都不加</p>
-<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923013042247.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-13/image-20240923013042247.png" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>如果一个成员函数有引用限定符，则具有相同参数列表的所有版本都必须有引用限定符。</p>
 </blockquote>
-</div><div class="article-licensing box"><div class="licensing-title"><p>[C++]C++Primer Chapter 13</p><p><a href="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-13/">https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-13/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>ErlsrnBy04</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2024-09-22</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2024-09-23</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/C/">C++</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2024/09/22/C-C-Primer-Chapter-14/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">[C++]C++Primer Chapter 14</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/09/22/C-C-Primer-Chapter-12/"><span class="level-item">[C++]C++Primer Chapter 12</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><script src="https://giscus.app/client.js" repo="ErlsrnBy04/comments" data-repo="ErlsrnBy04/comments" data-repo-id="R_kgDOM1SRGQ" data-category-id="DIC_kwDOM1SRGc4Cirkj" data-category="Announcements" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous" async></script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar1.jpg" alt="ErlsrnBy04"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">ErlsrnBy04</p><p class="is-size-6 is-block">学生</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>北京，中国</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">20</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">3</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ErlsrnBy04" target="_blank" rel="me noopener">Follow</a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#拷贝控制"><span class="level-left"><span class="level-item">1</span><span class="level-item">拷贝控制</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#13-1-拷贝、赋值与销毁"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">13.1 拷贝、赋值与销毁</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#13-1-1-拷贝构造函数"><span class="level-left"><span class="level-item">1.1.1</span><span class="level-item">13.1.1 拷贝构造函数</span></span></a></li><li><a class="level is-mobile" href="#13-1-2-拷贝赋值运算符"><span class="level-left"><span class="level-item">1.1.2</span><span class="level-item">13.1.2 拷贝赋值运算符</span></span></a></li><li><a class="level is-mobile" href="#13-1-3-析构函数"><span class="level-left"><span class="level-item">1.1.3</span><span class="level-item">13.1.3 析构函数</span></span></a></li><li><a class="level is-mobile" href="#13-1-4-三-五法则"><span class="level-left"><span class="level-item">1.1.4</span><span class="level-item">13.1.4 三/五法则</span></span></a></li><li><a class="level is-mobile" href="#13-1-5-使用-default"><span class="level-left"><span class="level-item">1.1.5</span><span class="level-item">13.1.5 使用=default</span></span></a></li><li><a class="level is-mobile" href="#13-1-6-阻止拷贝"><span class="level-left"><span class="level-item">1.1.6</span><span class="level-item">13.1.6 阻止拷贝</span></span></a></li></ul></li><li><a class="level is-mobile" href="#13-2-拷贝控制和资源管理"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">13.2 拷贝控制和资源管理</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#13-2-1-行为像值的类"><span class="level-left"><span class="level-item">1.2.1</span><span class="level-item">13.2.1 行为像值的类</span></span></a></li><li><a class="level is-mobile" href="#13-2-2-定义行为像指针的类"><span class="level-left"><span class="level-item">1.2.2</span><span class="level-item">13.2.2 定义行为像指针的类</span></span></a></li></ul></li><li><a class="level is-mobile" href="#13-3-交换操作"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">13.3 交换操作</span></span></a></li><li><a class="level is-mobile" href="#13-4-拷贝控制示例"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">13.4 拷贝控制示例</span></span></a></li><li><a class="level is-mobile" href="#13-5-动态内存管理类"><span class="level-left"><span class="level-item">1.5</span><span class="level-item">13.5 动态内存管理类</span></span></a></li><li><a class="level is-mobile" href="#13-6-对象移动"><span class="level-left"><span class="level-item">1.6</span><span class="level-item">13.6 对象移动</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#13-6-1-右值引用"><span class="level-left"><span class="level-item">1.6.1</span><span class="level-item">13.6.1 右值引用</span></span></a></li><li><a class="level is-mobile" href="#13-6-2-移动构造函数和移动赋值运算符"><span class="level-left"><span class="level-item">1.6.2</span><span class="level-item">13.6.2 移动构造函数和移动赋值运算符</span></span></a></li><li><a class="level is-mobile" href="#13-6-3-右值引用和成员函数"><span class="level-left"><span class="level-item">1.6.3</span><span class="level-item">13.6.3 右值引用和成员函数</span></span></a></li></ul></li></ul></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="level-start"><span class="level-item">操作系统</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"><span class="level-start"><span class="level-item">编程语言</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-26T04:51:28.000Z">2024-09-26</time></p><p class="title"><a href="/2024/09/26/MIT-6-1810-Xv6-Chapter-4/">[MIT 6.1810]Xv6 Chapter 4</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-25T03:44:09.000Z">2024-09-25</time></p><p class="title"><a href="/2024/09/25/MIT-6-1810-Xv6-Chapter-3/">[MIT 6.1810]Xv6 Chapter 3</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T07:43:10.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-2/">[MIT 6.1810]Xv6 Chapter 2</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T05:11:40.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/">[MIT 6.1810]Xv6 Chapter 1</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/"><img src="/cover/C++.svg" alt="[C++] 返回值优化"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-09-22T05:17:42.000Z">2024-09-22</time></p><p class="title"><a href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/">[C++] 返回值优化</a></p><p class="categories"><a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">September 2024</span></span><span class="level-end"><span class="level-item tag">20</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/C/"><span class="tag">C++</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-1810/"><span class="tag">MIT 6.1810</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-S081/"><span class="tag">MIT 6.S081</span><span class="tag">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a><p class="is-size-7"><span>&copy; 2024 ErlsrnBy04</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">且陶陶，乐尽天真</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="GitHub" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
-            article: {
-                highlight: {
-                    clipboard: true,
-                    fold: 'unfolded'
-                }
-            }
-        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
-      window.cookieconsent.initialise({
-        type: "info",
-        theme: "edgeless",
-        static: false,
-        position: "bottom-left",
-        content: {
-          message: "This website uses cookies to improve your experience.",
-          dismiss: "Got it!",
-          allow: "Allow cookies",
-          deny: "Decline",
-          link: "Learn more",
-          policy: "Cookie Policy",
-          href: "https://www.cookiesandyou.com/",
-        },
-        palette: {
-          popup: {
-            background: "#edeff5",
-            text: "#838391"
-          },
-          button: {
-            background: "#4b81e8"
-          },
-        },
-      });
-    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
-            if (typeof $.fn.lightGallery === 'function') {
-                $('.article').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof $.fn.justifiedGallery === 'function') {
-                if ($('.justified-gallery > p > .gallery-item').length) {
-                    $('.justified-gallery > p > .gallery-item').unwrap();
-                }
-                $('.justified-gallery').justifiedGallery();
-            }
-        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
-            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
-        });</script></body></html>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[C++]C++Primer Chapter 13</div>
+      <div>https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-13/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/22/C-C-Primer-Chapter-14/" title="[C++]C++Primer Chapter 14">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[C++]C++Primer Chapter 14</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/22/C-C-Primer-Chapter-12/" title="[C++]C++Primer Chapter 12">
+                        <span class="hidden-mobile">[C++]C++Primer Chapter 12</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

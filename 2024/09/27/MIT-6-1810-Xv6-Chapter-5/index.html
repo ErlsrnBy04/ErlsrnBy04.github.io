@@ -1,0 +1,694 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Interrupts and device drivers">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[MIT 6.1810]Xv6 Chapter 5">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/09/27/MIT-6-1810-Xv6-Chapter-5/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="Interrupts and device drivers">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=20">
+<meta property="article:published_time" content="2024-09-27T05:22:06.000Z">
+<meta property="article:modified_time" content="2024-09-27T14:28:18.835Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="MIT 6.1810">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=20">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>[MIT 6.1810]Xv6 Chapter 5 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04的小站</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[MIT 6.1810]Xv6 Chapter 5"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-27 13:22" pubdate>
+          2024年9月27日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[MIT 6.1810]Xv6 Chapter 5</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Interrupts-and-device-drivers"><a href="#Interrupts-and-device-drivers" class="headerlink" title="Interrupts and device drivers"></a>Interrupts and device drivers</h1><span id="more"></span>
+
+<div class="note note-success">
+            <p>文字 或者 <code>markdown</code> 均可</p>
+          </div>
+
+<p>驱动程序在操作系统中起着管理硬件设备的重要作用。它负责配置设备硬件、启动操作、处理中断，并与可能在等待设备输入&#x2F;输出（I&#x2F;O）的进程进行协调。驱动程序代码比较复杂，因为它需要与它管理的设备并发执行。此外，驱动程序必须理解设备的硬件接口，而这些接口往往比较复杂，甚至文档不全。</p>
+<p>需要操作系统关注的设备通常可以配置为生成中断，中断是一种陷阱（trap）。内核的陷阱处理代码识别出设备触发了中断，并调用驱动程序的中断处理程序。在 <strong>xv6</strong> 操作系统中，这个调度过程发生在 <code>devintr</code>（kernel&#x2F;trap.c:185）中。</p>
+<p>许多设备驱动程序在两种上下文中执行代码：上半部分在进程的内核线程中运行，而下半部分在中断发生时执行。上半部分通常通过系统调用（如 <code>read</code> 和 <code>write</code>）被调用，要求设备执行I&#x2F;O操作。例如，它可能请求硬盘读取一个数据块，并等待操作完成。最终，设备完成操作并触发中断。驱动程序的中断处理程序作为下半部分运行，确定完成了什么操作，必要时唤醒等待的进程，并指示硬件继续处理任何等待的操作。</p>
+<h2 id="5-1-Code-Console-input"><a href="#5-1-Code-Console-input" class="headerlink" title="5.1  Code: Console input"></a>5.1  Code: Console input</h2><p>控制台驱动程序（kernel&#x2F;console.c）是驱动程序结构的简单示例。该驱动程序通过连接到RISC-V的UART串口硬件接收人类输入的字符。控制台驱动程序每次累积一行输入，处理特殊字符如退格键和Control-U。用户进程（如shell）使用<code>read</code>系统调用从控制台获取输入。当你在QEMU中向xv6输入内容时，你的按键通过QEMU模拟的UART硬件传递到xv6。</p>
+<p>驱动程序与UART硬件通信，UART硬件是由QEMU模拟的16550芯片。在真实计算机中，16550芯片管理连接到终端或其他计算机的RS232串行链接。而在QEMU中，它连接到你的键盘和显示器。</p>
+<p>UART硬件通过内存映射的控制寄存器呈现给软件。即，RISC-V硬件将一些物理地址连接到UART设备，因此对这些地址的加载和存储操作将与设备硬件交互，而非与RAM交互。UART的内存映射地址从<code>0x10000000</code>（即<code>UART0</code>）开始（定义在<code>kernel/memlayout.h:21</code>）。UART控制寄存器是宽度为一个字节的一组寄存器，其偏移量定义在<code>kernel/uart.c:22</code>。例如，LSR寄存器包含指示是否有输入字符等待被软件读取的位。这些字符（如果有的话）可从RHR寄存器读取。每次读取一个字符后，UART硬件会从内部FIFO中删除该字符，并在FIFO为空时清除LSR中的“ready”位。UART的发送硬件与接收硬件基本独立；如果软件向THR写入一个字节，UART会发送该字节。</p>
+<p>xv6的<code>main</code>函数通过调用<code>consoleinit</code>（kernel&#x2F;console.c:182）初始化UART硬件。该代码配置UART，以便在每次接收到一个输入字节时生成接收中断，并且在每次完成发送一个输出字节时生成发送完成中断（kernel&#x2F;uart.c:53）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span><br><span class="hljs-title function_">consoleinit</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  initlock(&amp;cons.lock, <span class="hljs-string">&quot;cons&quot;</span>);<br><br>  uartinit();<br><br>  <span class="hljs-comment">// connect read and write system calls</span><br>  <span class="hljs-comment">// to consoleread and consolewrite.</span><br>  devsw[CONSOLE].read = consoleread;<br>  devsw[CONSOLE].write = consolewrite;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>xv6的shell通过<code>init.c</code>打开的文件描述符（user&#x2F;init.c:19）从控制台读取数据。对<code>read</code>系统调用的请求通过内核到达<code>consoleread</code>（kernel&#x2F;console.c:80）。<code>consoleread</code>等待输入通过中断到达并缓存在<code>cons.buf</code>中，将输入复制到用户空间，并在整行到达后返回给用户进程。如果用户没有输入完整的一行，任何正在读取的进程会在<code>sleep</code>调用中等待（kernel&#x2F;console.c:96）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//</span><br><span class="hljs-comment">// user read()s from the console go here.</span><br><span class="hljs-comment">// copy (up to) a whole input line to dst.</span><br><span class="hljs-comment">// user_dist indicates whether dst is a user</span><br><span class="hljs-comment">// or kernel address.</span><br><span class="hljs-comment">//</span><br><span class="hljs-type">int</span><br><span class="hljs-title function_">consoleread</span><span class="hljs-params">(<span class="hljs-type">int</span> user_dst, uint64 dst, <span class="hljs-type">int</span> n)</span><br>&#123;<br>  uint target;<br>  <span class="hljs-type">int</span> c;<br>  <span class="hljs-type">char</span> cbuf;<br><br>  target = n;<br>  acquire(&amp;cons.lock);<br>  <span class="hljs-keyword">while</span>(n &gt; <span class="hljs-number">0</span>)&#123;<br>    <span class="hljs-comment">// wait until interrupt handler has put some</span><br>    <span class="hljs-comment">// input into cons.buffer.</span><br>    <span class="hljs-keyword">while</span>(cons.r == cons.w)&#123;<br>      <span class="hljs-keyword">if</span>(killed(myproc()))&#123;<br>        release(&amp;cons.lock);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>      &#125;<br>      sleep(&amp;cons.r, &amp;cons.lock);<br>    &#125;<br><br>    c = cons.buf[cons.r++ % INPUT_BUF_SIZE];<br><br>    <span class="hljs-keyword">if</span>(c == C(<span class="hljs-string">&#x27;D&#x27;</span>))&#123;  <span class="hljs-comment">// end-of-file</span><br>      <span class="hljs-keyword">if</span>(n &lt; target)&#123;<br>        <span class="hljs-comment">// Save ^D for next time, to make sure</span><br>        <span class="hljs-comment">// caller gets a 0-byte result.</span><br>        cons.r--;<br>      &#125;<br>      <span class="hljs-keyword">break</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// copy the input byte to the user-space buffer.</span><br>    cbuf = c;<br>    <span class="hljs-keyword">if</span>(either_copyout(user_dst, dst, &amp;cbuf, <span class="hljs-number">1</span>) == <span class="hljs-number">-1</span>)<br>      <span class="hljs-keyword">break</span>;<br><br>    dst++;<br>    --n;<br><br>    <span class="hljs-keyword">if</span>(c == <span class="hljs-string">&#x27;\n&#x27;</span>)&#123;<br>      <span class="hljs-comment">// a whole line has arrived, return to</span><br>      <span class="hljs-comment">// the user-level read().</span><br>      <span class="hljs-keyword">break</span>;<br>    &#125;<br>  &#125;<br>  release(&amp;cons.lock);<br><br>  <span class="hljs-keyword">return</span> target - n;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>当用户输入一个字符时，UART硬件请求RISC-V触发中断，从而激活xv6的陷阱处理程序。陷阱处理程序调用<code>devintr</code>（kernel&#x2F;trap.c:185），该函数通过查看RISC-V的<code>scause</code>寄存器发现中断来自外部设备。然后它请求名为PLIC的硬件单元（kernel&#x2F;trap.c:193）告知中断的设备。如果中断来自UART，<code>devintr</code>会调用<code>uartintr</code>。</p>
+<p><code>uartintr</code>（kernel&#x2F;uart.c:177）从UART硬件读取任何等待的输入字符，并将其传递给<code>consoleintr</code>（kernel&#x2F;console.c:136）；它不会等待字符，因为将来输入会触发新的中断。<code>consoleintr</code>的任务是将输入字符累积到<code>cons.buf</code>中，直到一整行到达。<code>consoleintr</code>会特殊处理退格键和其他一些字符。当换行符到达时，<code>consoleintr</code>会唤醒等待的<code>consoleread</code>（如果有的话）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//</span><br><span class="hljs-comment">// the console input interrupt handler.</span><br><span class="hljs-comment">// uartintr() calls this for input character.</span><br><span class="hljs-comment">// do erase/kill processing, append to cons.buf,</span><br><span class="hljs-comment">// wake up consoleread() if a whole line has arrived.</span><br><span class="hljs-comment">//</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">consoleintr</span><span class="hljs-params">(<span class="hljs-type">int</span> c)</span><br>&#123;<br>  acquire(&amp;cons.lock);<br><br>  <span class="hljs-keyword">switch</span>(c)&#123;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title function_">C</span><span class="hljs-params">(<span class="hljs-string">&#x27;P&#x27;</span>)</span>:  <span class="hljs-comment">// Print process list.</span><br>    <span class="hljs-title function_">procdump</span><span class="hljs-params">()</span>;<br>    <span class="hljs-keyword">break</span>;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title function_">C</span><span class="hljs-params">(<span class="hljs-string">&#x27;U&#x27;</span>)</span>:  <span class="hljs-comment">// Kill line.</span><br>    <span class="hljs-title function_">while</span><span class="hljs-params">(cons.e != cons.w &amp;&amp;</span><br><span class="hljs-params">          cons.buf[(cons.e<span class="hljs-number">-1</span>) % INPUT_BUF_SIZE] != <span class="hljs-string">&#x27;\n&#x27;</span>)</span>&#123;<br>      cons.e--;<br>      consputc(BACKSPACE);<br>    &#125;<br>    <span class="hljs-keyword">break</span>;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title function_">C</span><span class="hljs-params">(<span class="hljs-string">&#x27;H&#x27;</span>)</span>: <span class="hljs-comment">// Backspace</span><br>  <span class="hljs-keyword">case</span> &#x27;\x7f&#x27;: <span class="hljs-comment">// Delete key</span><br>    <span class="hljs-title function_">if</span><span class="hljs-params">(cons.e != cons.w)</span>&#123;<br>      cons.e--;<br>      consputc(BACKSPACE);<br>    &#125;<br>    <span class="hljs-keyword">break</span>;<br>  <span class="hljs-keyword">default</span>:<br>    <span class="hljs-keyword">if</span>(c != <span class="hljs-number">0</span> &amp;&amp; cons.e-cons.r &lt; INPUT_BUF_SIZE)&#123;<br>      c = (c == <span class="hljs-string">&#x27;\r&#x27;</span>) ? <span class="hljs-string">&#x27;\n&#x27;</span> : c;<br><br>      <span class="hljs-comment">// echo back to the user.</span><br>      consputc(c);<br><br>      <span class="hljs-comment">// store for consumption by consoleread().</span><br>      cons.buf[cons.e++ % INPUT_BUF_SIZE] = c;<br><br>      <span class="hljs-keyword">if</span>(c == <span class="hljs-string">&#x27;\n&#x27;</span> || c == C(<span class="hljs-string">&#x27;D&#x27;</span>) || cons.e-cons.r == INPUT_BUF_SIZE)&#123;<br>        <span class="hljs-comment">// wake up consoleread() if a whole line (or end-of-file)</span><br>        <span class="hljs-comment">// has arrived.</span><br>        cons.w = cons.e;<br>        wakeup(&amp;cons.r);<br>      &#125;<br>    &#125;<br>    <span class="hljs-keyword">break</span>;<br>  &#125;<br>  <br>  release(&amp;cons.lock);<br>&#125;<br><br><span class="hljs-comment">// handle a uart interrupt, raised because input has</span><br><span class="hljs-comment">// arrived, or the uart is ready for more output, or</span><br><span class="hljs-comment">// both. called from devintr().</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">uartintr</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-comment">// read and process incoming characters.</span><br>  <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)&#123;<br>    <span class="hljs-type">int</span> c = uartgetc();<br>    <span class="hljs-keyword">if</span>(c == <span class="hljs-number">-1</span>)<br>      <span class="hljs-keyword">break</span>;<br>    consoleintr(c);<br>  &#125;<br><br>  <span class="hljs-comment">// send buffered characters.</span><br>  acquire(&amp;uart_tx_lock);<br>  uartstart();<br>  release(&amp;uart_tx_lock);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>一旦被唤醒，<code>consoleread</code>会检测到<code>cons.buf</code>中有一整行，将其复制到用户空间，并通过系统调用机制返回到用户空间。</p>
+<h2 id="5-2-Code-Console-output"><a href="#5-2-Code-Console-output" class="headerlink" title="5.2  Code: Console output"></a>5.2  Code: Console output</h2><p>在控制台连接的文件描述符上进行的<code>write</code>系统调用最终会到达<code>uartputc</code>（kernel&#x2F;uart.c:87）。设备驱动程序维护一个输出缓冲区（<code>uart_tx_buf</code>），这样写入的进程不需要等待UART完成发送操作；相反，<code>uartputc</code>会将每个字符添加到缓冲区中，并调用<code>uartstart</code>来启动设备的传输（如果设备尚未传输），然后立即返回。唯一会导致<code>uartputc</code>等待的情况是缓冲区已满。</p>
+<p>每次UART完成发送一个字节时，它会生成一个中断。<code>uartintr</code>会调用<code>uartstart</code>，该函数检查设备是否确实完成了发送，并将下一个缓冲的输出字符交给设备。因此，如果一个进程向控制台写入多个字节，通常第一个字节会通过<code>uartputc</code>调用<code>uartstart</code>发送，剩余的缓冲字节则由<code>uartstart</code>在UART发送完成中断到来时调用<code>uartintr</code>发送。</p>
+<p>需要注意的一个通用模式是通过缓冲和中断将设备活动与进程活动解耦。即使没有进程在等待读取，控制台驱动程序仍然可以处理输入；之后的读取操作将能够看到这些输入。同样，进程可以发送输出而不必等待设备的响应。这种解耦可以通过允许进程与设备I&#x2F;O并发执行来提高性能，特别是在设备较慢（如UART）或需要立即处理（如回显输入字符）的情况下。这种思想有时被称为I&#x2F;O并发。</p>
+<h2 id="5-3-Concurrency-in-drivers"><a href="#5-3-Concurrency-in-drivers" class="headerlink" title="5.3 Concurrency in drivers"></a>5.3 Concurrency in drivers</h2><p>你可能已经注意到在<code>consoleread</code>和<code>consoleintr</code>中调用了<code>acquire</code>函数。这些调用用于获取锁，以保护控制台驱动程序的数据结构免受并发访问的影响。这里有三种并发的潜在危险：两个进程在不同的CPU上同时调用<code>consoleread</code>；硬件可能请求CPU在该CPU已经在执行<code>consoleread</code>时传递控制台（实际上是UART）的中断；硬件可能在不同的CPU上传递控制台中断，而此时<code>consoleread</code>正在执行。第六章解释了如何使用锁来确保这些并发问题不会导致错误的结果。</p>
+<p>并发对驱动程序的另一个影响是，某个进程可能正在等待设备输入，但输入到来的中断可能发生在另一个进程（甚至是没有进程运行的情况下）。因此，中断处理程序不允许考虑它所中断的进程或代码。例如，中断处理程序不能安全地调用<code>copyout</code>，因为它依赖于当前进程的页表。中断处理程序通常执行的工作相对较少（例如，只是将输入数据复制到缓冲区中），然后唤醒上半部分代码来完成其余工作。</p>
+<h2 id="5-4-Timer-interrupts"><a href="#5-4-Timer-interrupts" class="headerlink" title="5.4 Timer interrupts"></a>5.4 Timer interrupts</h2><p>Xv6 使用定时器中断来维护当前时间的概念，并在计算密集型进程之间进行切换。定时器中断来自连接到每个 RISC-V CPU 的时钟硬件。Xv6 通过编程使每个 CPU 的时钟硬件定期中断 CPU。</p>
+<p><code>start.c</code>中的代码（kernel&#x2F;start.c:53）设置了一些控制位，允许监督模式访问定时器控制寄存器，然后请求第一次定时器中断。定时器控制寄存器包含一个硬件以稳定速率递增的计数，这表示当前时间。<code>stimecmp</code>寄存器则包含 CPU 将触发定时器中断的时间；通过将<code>stimecmp</code>设置为当前时间加上<code>x</code>，可以安排在<code>x</code>个时间单位后触发中断。对于 QEMU 的 RISC-V 模拟，1000000 个时间单位大约等于十分之一秒。</p>
+<p>定时器中断像其他设备中断一样，通过<code>usertrap</code>或<code>kerneltrap</code>和<code>devintr</code>到达。定时器中断到来时，<code>scause</code>寄存器的低位被设置为5；<code>trap.c</code>中的<code>devintr</code>检测到这种情况并调用<code>clockintr</code>（kernel&#x2F;trap.c:164）。该函数递增<code>ticks</code>变量，从而使内核能够跟踪时间的流逝。为避免在多CPU情况下时间流逝加速，递增操作仅发生在一个CPU上。<code>clockintr</code>唤醒任何在<code>sleep</code>系统调用中等待的进程，并通过写入<code>stimecmp</code>来安排下一个定时器中断。</p>
+<p><code>devintr</code>对于定时器中断返回2，以指示<code>kerneltrap</code>或<code>usertrap</code>调用<code>yield</code>，从而使 CPU 可以在可运行的进程之间进行多路复用。</p>
+<p>定时器中断在内核代码中可能会导致上下文切换，这就是为什么<code>usertrap</code>的早期代码在启用中断之前要谨慎保存状态（如<code>sepc</code>）。这些上下文切换意味着内核代码必须以能够在没有警告的情况下从一个 CPU 转移到另一个 CPU 的方式编写。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MIT-6-1810/" class="print-no-link">#MIT 6.1810</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[MIT 6.1810]Xv6 Chapter 5</div>
+      <div>https://erlsrnby04.github.io/2024/09/27/MIT-6-1810-Xv6-Chapter-5/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/26/MIT-6-1810-Xv6-Chapter-4/" title="[MIT 6.1810]Xv6 Chapter 4">
+                        <span class="hidden-mobile">[MIT 6.1810]Xv6 Chapter 4</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

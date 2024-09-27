@@ -1,35 +1,300 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>[C++]C++Primer Chapter 10 - ErlsrnBy04</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="ErlsrnBy04"><meta name="msapplication-TileImage" content="/img/Snake.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ErlsrnBy04"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="泛型算法"><meta property="og:type" content="blog"><meta property="og:title" content="[C++]C++Primer Chapter 10"><meta property="og:url" content="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-10/"><meta property="og:site_name" content="ErlsrnBy04"><meta property="og:description" content="泛型算法"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://erlsrnby04.github.io/cover/C++.svg"><meta property="article:published_time" content="2024-09-22T04:01:17.000Z"><meta property="article:modified_time" content="2024-09-22T05:58:05.393Z"><meta property="article:author" content="ErlsrnBy04"><meta property="article:tag" content="C++"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://erlsrnby04.github.io/cover/C++.svg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-10/"},"headline":"[C++]C++Primer Chapter 10","image":[],"datePublished":"2024-09-22T04:01:17.000Z","dateModified":"2024-09-22T05:58:05.393Z","author":{"@type":"Person","name":"ErlsrnBy04"},"publisher":{"@type":"Organization","name":"ErlsrnBy04","logo":{"@type":"ImageObject","url":"https://erlsrnby04.github.io/img/Snake.svg"}},"description":"泛型算法"}</script><link rel="canonical" href="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-10/"><link rel="icon" href="/img/Snake.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
-  (function () {
-      function switchTab() {
-          if (!location.hash) {
-            return;
-          }
 
-          const id = '#' + CSS.escape(location.hash.substring(1));
-          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
-          if (!$tabMenu) {
-            return;
-          }
 
-          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
-          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
-          Array.from($tabMenuContainer.querySelectorAll('a'))
-              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
-              .forEach($content => $content.classList.add('is-hidden'));
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
-          if ($tabMenu) {
-              $tabMenu.parentElement.classList.add('is-active');
-          }
-          const $activeTab = document.querySelector(id);
-          if ($activeTab) {
-              $activeTab.classList.remove('is-hidden');
-          }
-      }
-      switchTab();
-      window.addEventListener('hashchange', switchTab, false);
-  })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">主页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="GitHub 主页" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-09-22T04:01:17.000Z" title="2024/9/22 12:01:17">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></span><span class="level-item">an hour read (About 9644 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">[C++]C++Primer Chapter 10</h1><div class="content"><h1 id="泛型算法"><a href="#泛型算法" class="headerlink" title="泛型算法"></a>泛型算法</h1><span id="more"></span>
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="泛型算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[C++]C++Primer Chapter 10">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-10/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="泛型算法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=10">
+<meta property="article:published_time" content="2024-09-22T04:01:17.000Z">
+<meta property="article:modified_time" content="2024-09-27T14:10:09.098Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=10">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>[C++]C++Primer Chapter 10 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04的小站</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[C++]C++Primer Chapter 10"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-22 12:01" pubdate>
+          2024年9月22日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          73 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[C++]C++Primer Chapter 10</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="泛型算法"><a href="#泛型算法" class="headerlink" title="泛型算法"></a>泛型算法</h1><span id="more"></span>
 
 <h2 id="10-1-概述"><a href="#10-1-概述" class="headerlink" title="10.1 概述"></a>10.1 概述</h2><p>大多数算法都定义在头文件algorithm中。标准库还在头文件numeric中定义了一组数值泛型算法。</p>
 <p>一般情况下，这些算法并不直接操作容器，而是遍历由两个迭代器指定的一个元素范围（参见9.2.1节，第296页）来进行操作。</p>
@@ -46,7 +311,7 @@
 <p>那些只接受一个单一迭代器来表示第二个序列的算法，都假定第二个序列至少与第一个序列一样长。</p>
 </blockquote>
 <h3 id="10-2-2-写容器元素的算法"><a href="#10-2-2-写容器元素的算法" class="headerlink" title="10.2.2 写容器元素的算法"></a>10.2.2 写容器元素的算法</h3><p>算法fill接受一对迭代器表示一个范围，还接受一个值作为第三个参数。fill将给定的这个值赋予输入序列中的每个元素。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726201288551.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726201288551.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>算法不检查写操作</strong></p>
 <p>函数fill_n接受一个单迭代器、一个计数值和一个值。它将给定值赋予迭代器指向的元素开始的指定个元素。我们可以用fill_n将一个新值赋予vector中的元素。函数fill_n假定写入指定个元素是安全的。</p>
 <p><strong>介绍back_inserter</strong></p>
@@ -59,12 +324,12 @@
 <p>多个算法都提供所谓的“拷贝”版本。这些算法计算新元素的值，但不会将它们放置在输入序列的末尾，而是创建一个新序列保存这些结果。</p>
 <p>replace算法读入一个序列，并将其中所有等于给定值的元素都改为另一个值。此算法接受4个参数：前两个是迭代器，表示输入序列，后两个一个是要搜索的值，另一个是新值。它将所有等于第一个值的元素替换为第二个值</p>
 <p>此调用将序列中所有的0都替换为42。如果我们希望保留原序列不变，可以调用replace_copy。此算法接受额外第三个迭代器参数，指出调整后序列的保存位置</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726228439564.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726228439564.png" srcset="/img/loading.gif" lazyload></p>
 <p>此调用后，ilst并未改变，ivec包含ilst的一份拷贝，不过原来在ilst中值为0的元素在ivec中都变为42。</p>
 <h3 id="10-2-3-重排容器元素的算法"><a href="#10-2-3-重排容器元素的算法" class="headerlink" title="10.2.3 重排容器元素的算法"></a>10.2.3 重排容器元素的算法</h3><p>某些算法会重排容器中元素的顺序，一个明显的例子是sort。调用sort会重排输入序列中的元素，使之有序，它是利用元素类型的&lt;运算符来实现排序的。</p>
 <p><strong>消除重复单词</strong></p>
 <p>为了消除重复单词，首先将vector排序，使得重复的单词都相邻出现。一旦vector排序完毕，我们就可以使用另一个称为unique的标准库算法来重排vector，使得不重复的元素出现在vector的开始部分。由于算法不能执行容器的操作，我们将使用vector的erase成员来完成真正的删除操作</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726228562655.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726228562655.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>使用unique</strong></p>
 <p>unique算法重排输入序列，将相邻的重复项“消除”，并返回一个指向不重复值范围末尾的迭代器。</p>
 <p>unique返回的迭代器指向最后一个不重复元素之后的位置。此位置之后的元素仍然存在，但我们不知道它们的值是什么。</p>
@@ -75,7 +340,7 @@
 <p>接受一个二元谓词参数的sort版本用这个谓词代替&lt;来比较元素。我们提供给sort的谓词必须满足将在11.2.2节（第378页）中所介绍的条件。</p>
 <p><strong>排序算法</strong></p>
 <p>为了保持相同长度的单词按字典序排列，可以使用stable_sort算法。这种稳定排序算法维持相等元素的原有顺序。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726229177622.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726229177622.png" srcset="/img/loading.gif" lazyload></p>
 <p>标准库定义了名为partition的算法，它接受一个谓词，对容器内容进行划分，使得谓词为true的值会排在容器的前半部分，而使谓词为false的值会排在后半部分。算法返回一个迭代器，指向最后一个使谓词为true的元素之后的位置。</p>
 <h3 id="10-3-2-lambda表达式"><a href="#10-3-2-lambda表达式" class="headerlink" title="10.3.2 lambda表达式"></a>10.3.2 lambda表达式</h3><p>我们可以使用标准库find_if算法来查找第一个具有特定大小的元素。类似find（参见10.1节，第336页），find_if算法接受一对迭代器，表示一个范围。但与find不同的是，find_if的第三个参数是一个谓词。find_if算法对输入序列中的每个元素调用给定的这个谓词。它返回第一个使谓词返回非0值的元素，如果不存在这样的元素，则返回尾迭代器。</p>
 <p>find_if接受一元谓词——我们传递给find_if的任何函数都必须严格接受一个参数，以便能用来自输入序列的一个元素调用它。没有任何办法能传递给它第二个参数来表示长度。为了解决此问题，需要使用另外一些语言特性。</p>
@@ -83,7 +348,7 @@
 <p>我们可以向一个算法传递任何类别的<strong>可调用对象（callable object）。</strong>对于一个对象或一个表达式，如果可以对其使用调用运算符（参见1.5.2节，第21页），则称它为可调用的。即，如果e是一个可调用的表达式，则我们可以编写代码e（args），其中args是一个逗号分隔的一个或多个参数的列表。</p>
 <p>我们使用过的仅有的两种可调用对象是函数和函数指针（参见6.7节，第221页）。还有其他两种可调用对象：重载了函数调用运算符的类，我们将在14.8节（第506页）介绍，以及lambda表达式（lambda expression）。</p>
 <p>一个lambda表达式表示一个可调用的代码单元。我们可以将其理解为一个未命名的内联函数。与任何函数类似，一个lambda具有一个返回类型、一个参数列表和一个函数体。但与函数不同，lambda可能定义在函数内部。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726229740080.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726229740080.png" srcset="/img/loading.gif" lazyload></p>
 <p>capture list（捕获列表）是一个lambda所在函数中定义的局部变量的列表（通常为空）；return type、parameter list和function body与任何普通函数一样，分别表示返回类型、参数列表和函数体。但是，与普通函数不同，lambda必须使用尾置返回（参见6.3.3节，第206页）来指定返回类型。我们可以忽略参数列表和返回类型，但必须永远包含捕获列表和函数体</p>
 <blockquote>
 <p>如果lambda的函数体包含任何单一return语句之外的内容，且未指定返回类型，则返回void。</p>
@@ -106,7 +371,7 @@
 <p>默认情况下，从lambda生成的类都包含一个对应该lambda所捕获的变量的数据成员。类似任何普通类的数据成员，lambda的数据成员也在lambda对象创建时被初始化。</p>
 <p><strong>值捕获</strong></p>
 <p>与传值参数类似，采用值捕获的前提是变量可以拷贝。与参数不同，被捕获的变量的值是在lambda创建时拷贝，而不是调用时拷贝</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726231363510.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726231363510.png" srcset="/img/loading.gif" lazyload></p>
 <p>由于被捕获变量的值是在lambda创建时拷贝，因此随后对其修改不会影响到lambda内对应的值。</p>
 <p><strong>引用捕获</strong></p>
 <p>引用捕获与返回引用（参见6.3.2节，第201页）有着相同的问题和限制。如果我们采用引用方式捕获一个变量，就<strong>必须确保被引用的对象在lambda执行的时候是存在的。</strong>lambda捕获的都是局部变量，这些变量在函数结束后就不复存在了。如果lambda可能在函数结束后执行，捕获的引用指向的局部变量已经消失。</p>
@@ -116,41 +381,41 @@
 <p><strong>隐式捕获</strong></p>
 <p>可以让编译器根据lambda体中的代码来推断我们要使用哪些变量。为了指示编译器推断捕获列表，应在捕获列表中写一个&amp;或&#x3D;。&amp;告诉编译器采用捕获引用方式，&#x3D;则表示采用值捕获方式。</p>
 <p>如果我们希望对一部分变量采用值捕获，对其他变量采用引用捕获，可以混合使用隐式捕获和显式捕获</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726231669244.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726231669244.png" srcset="/img/loading.gif" lazyload></p>
 <p>当我们混合使用隐式捕获和显式捕获时，捕获列表中的第一个元素必须是一个&amp;或&#x3D;。此符号指定了默认捕获方式为引用或值。</p>
 <p>当混合使用隐式捕获和显式捕获时，显式捕获的变量必须使用与隐式捕获不同的方式。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726231713032.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726231713032.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>可变lambda</strong></p>
 <p>默认情况下，对于一个值被拷贝的变量，lambda不会改变其值。如果我们希望能改变一个被捕获的变量的值，就必须在参数列表首加上关键字mutable。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726231941506.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726231941506.png" srcset="/img/loading.gif" lazyload></p>
 <p>一个引用捕获的变量是否（如往常一样）可以修改依赖于此引用指向的是一个const类型还是一个非const类型</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726231959765.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726231959765.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>指定lambda返回类型</strong></p>
 <p>函数transform接受三个迭代器和一个可调用对象。前两个迭代器表示输入序列，第三个迭代器表示目的位置。算法对输入序列中每个元素调用可调用对象，并将结果写到目的位置。</p>
 <p>当我们需要为一个lambda定义返回类型时，必须使用尾置返回类型（参见6.3.3节，第206页）</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726232047309.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726232047309.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="10-3-4-参数绑定"><a href="#10-3-4-参数绑定" class="headerlink" title="10.3.4 参数绑定"></a>10.3.4 参数绑定</h3><p>如果lambda的捕获列表为空，通常可以用函数来代替它。</p>
 <p>但是，对于捕获局部变量的lambda，用函数来替换它就不是那么容易了。</p>
 <p><strong>标准库bind函数</strong></p>
 <p>我们可以解决向check_size传递一个长度参数的问题，方法是使用一个新的名为bind的标准库函数，它定义在头文件functional中。可以将bind函数看作一个通用的函数适配器（参见9.6节，第329页），它接受一个可调用对象，生成一个新的可调用对象来“适应”原对象的参数列表。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726233370917.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726233370917.png" srcset="/img/loading.gif" lazyload></p>
 <p>newCallable本身是一个可调用对象，arg_list是一个逗号分隔的参数列表，对应给定的callable的参数。即，当我们调用newCallable时，newCallable会调用callable，并传递给它arg_list中的参数。</p>
 <p>arg_list中的参数可能包含形如_n的名字，其中n是一个整数。这些参数是“占位符”，表示newCallable的参数，它们占据了传递给newCallable的参数的“位置”。数值n表示生成的可调用对象中参数的位置：_1为newCallable的第一个参数，_2为第二个参数，依此类推。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726233503447.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726233503447.png" srcset="/img/loading.gif" lazyload></p>
 <p>此bind调用只有一个占位符，表示check6只接受单一参数。占位符出现在arg_list的第一个位置，表示check6的此参数对应check_size的第一个参数。此参数是一个const string&amp;。因此，调用check6必须传递给它一个string类型的参数，check6会将此参数传递给check_size。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726233561900.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726233561900.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>使用placeholders名字</strong></p>
 <p>名字_n都定义在一个名为placeholders的命名空间中，而这个命名空间本身定义在std命名空间（参见3.1节，第74页）中。为了使用这些名字，两个命名空间都要写上。</p>
 <p><strong>bind的参数</strong></p>
 <p>我们可以用bind修正参数的值。更一般的，可以用bind绑定给定可调用对象中的参数或重新安排其顺序。</p>
 <p>例如，假定f是一个可调用对象，它有5个参数，则下面对bind的调用</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726233710338.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726233710338.png" srcset="/img/loading.gif" lazyload></p>
 <p>生成一个新的可调用对象，它有两个参数，分别用占位符_2和_1表示。这个新的可调用对象将它自己的参数作为第三个和第五个参数传递给f。f的第一个、第二个和第四个参数分别被绑定到给定的值a、b和c上。传递给g的参数按位置绑定到占位符。即，第一个参数绑定到_1，第二个参数绑定到_2。因此，当我们调用g时，其第一个参数将被传递给f作为最后一个参数，第二个参数将被传递给f作为第三个参数。</p>
 <p><strong>用bind重排参数顺序</strong></p>
 <p><strong>绑定引用参数</strong></p>
 <p>默认情况下，bind的那些不是占位符的参数被拷贝到bind返回的可调用对象中。但是，与lambda类似，有时对有些绑定的参数我们希望以引用方式传递，或是要绑定参数的类型无法拷贝。</p>
 <p>如果我们希望传递给bind一个对象而又不拷贝它，就<strong>必须使用标准库ref函数</strong></p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726233958032.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726233958032.png" srcset="/img/loading.gif" lazyload></p>
 <p>函数ref返回一个对象，包含给定的引用，此对象是可以拷贝的。标准库中还有一个cref函数，生成一个保存const引用的类。与bind一样，函数ref和cref也定义在头文件functional中。</p>
 <h2 id="10-4-再探迭代器"><a href="#10-4-再探迭代器" class="headerlink" title="10.4 再探迭代器"></a>10.4 再探迭代器</h2><p>除了为每个容器定义的迭代器之外，标准库在头文件iterator中还定义了额外几种迭代器。这些迭代器包括以下几种。</p>
 <ul>
@@ -160,7 +425,7 @@
 <li>移动迭代器（move iterator）：这些专用的迭代器不是拷贝其中的元素，而是移动它们。我们将在13.6.2节（第480页）介绍移动迭代器。</li>
 </ul>
 <h3 id="10-4-1-插入迭代器"><a href="#10-4-1-插入迭代器" class="headerlink" title="10.4.1 插入迭代器"></a>10.4.1 插入迭代器</h3><p>插入器是一种迭代器适配器（参见9.6节，第329页），它接受一个容器，生成一个迭代器，能实现向给定容器添加元素。当我们通过一个插入迭代器进行赋值时，该迭代器调用容器操作来向给定容器的指定位置插入一个元素。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726234353465.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726234353465.png" srcset="/img/loading.gif" lazyload></p>
 <p>插入器有三种类型，差异在于元素插入的位置：</p>
 <ul>
 <li>back_inserter（参见10.2.2节，第341页）创建一个使用push_back的迭代器</li>
@@ -171,50 +436,50 @@
 <p>只有在容器支持push_front的情况下，我们才可以使用front_inserter。类似的，只有在容器支持push_back的情况下，我们才能使用back_inserter。</p>
 </blockquote>
 <p>当调用inserter（c，iter）时，我们得到一个迭代器，接下来使用它时，会将元素插入到iter原来所指向的元素之前的位置。即，如果it是由inserter生成的迭代器，则下面这样的赋值语句</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726234467621.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726234467621.png" srcset="/img/loading.gif" lazyload></p>
 <p>其效果与下面代码一样</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726234477582.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726234477582.png" srcset="/img/loading.gif" lazyload></p>
 <p>front_inserter生成的迭代器的行为与inserter生成的迭代器完全不一样。当我们使用front_inserter时，元素总是插入到容器第一个元素之前。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726234621651.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726234621651.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="10-4-2-iostream迭代器"><a href="#10-4-2-iostream迭代器" class="headerlink" title="10.4.2 iostream迭代器"></a>10.4.2 iostream迭代器</h3><p>istream_iterator（参见表10.3）读取输入流，ostream_iterator（参见表10.4节，第361页）向一个输出流写数据。这些迭代器将它们对应的流当作一个特定类型的元素序列来处理。通过使用流迭代器，我们可以用泛型算法从流对象读取数据以及向其写入数据。</p>
 <p><strong>istream_iterator操作</strong></p>
 <p>当创建一个流迭代器时，必须指定迭代器将要读写的对象类型。</p>
 <p>一个istream_iterator使用&gt;&gt;来读取流。因此，istream_iterator要读取的类型必须定义了输入运算符。当创建一个istream_iterator时，我们可以将它绑定到一个流。当然，我们还可以默认初始化迭代器，这样就创建了一个可以当作尾后值使用的迭代器。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726234818281.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726234818281.png" srcset="/img/loading.gif" lazyload></p>
 <p>下面是一个用istream_iterator从标准输入读取数据，存入一个vector的例子：</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726234827719.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726234827719.png" srcset="/img/loading.gif" lazyload></p>
 <p>此循环从cin读取int值，保存在vec中。在每个循环步中，循环体代码检查in_iter是否等于eof。eof被定义为空的istream_iterator，从而可以当作尾后迭代器来使用。对于一个绑定到流的迭代器，一旦其关联的流遇到文件尾或遇到IO错误，迭代器的值就与尾后迭代器相等。</p>
 <p>我们可以将程序重写为如下形式，这体现了istream_iterator更有用的地方。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726234885880.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726234885880.png" srcset="/img/loading.gif" lazyload></p>
 <p>这个构造函数从cin中读取数据，直至遇到文件尾或者遇到一个不是int的数据为止。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726234931737.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726234931737.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>使用算法操作流迭代器</strong></p>
 <p>由于算法使用迭代器操作来处理数据，而流迭代器又至少支持某些迭代器操作，因此我们至少可以用某些算法来操作流迭代器。我们在10.5.1节（第365页）会看到如何分辨哪些算法可以用于流迭代器。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726300333345.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726300333345.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>istream_iterator允许使用懒惰求值</strong></p>
 <p>当我们将一个istream_iterator绑定到一个流时，标准库并不保证迭代器立即从流读取数据。具体实现可以推迟从流中读取数据，直到我们使用迭代器时才真正读取。标准库中的实现所保证的是，在我们第一次解引用迭代器之前，从流中读取数据的操作已经完成了。对于大多数程序来说，立即读取还是推迟读取没什么差别。但是，如果我们创建了一个istream_iterator，没有使用就销毁了，或者我们正在从两个不同的对象同步读取同一个流，那么何时读取可能就很重要了。</p>
 <p><strong>ostream_iterator操作</strong></p>
 <p>我们可以对任何具有输出运算符（&lt;&lt;运算符）的类型定义ostream_iterator。当创建一个ostream_iterator时，我们可以提供（可选的）第二参数，它是一个字符串，在输出每个元素后都会打印此字符串。此字符串必须是一个C风格字符串（即，一个字符串字面常量或者一个指向以空字符结尾的字符数组的指针）。必须将ostream_iterator绑定到一个指定的流，不允许空的或表示尾后位置的ostream_iterator。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726300458868.png"></p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726300619260.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726300458868.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726300619260.png" srcset="/img/loading.gif" lazyload></p>
 <p>out_iter++实际不对迭代器做任何操作，但还是推荐第一种形式。在这种写法中，流迭代器的使用与其他迭代器的使用保持一致。如果想将此循环改为操作其他迭代器类型，修改起来非常容易。而且，对于读者来说，此循环的行为也更为清晰。</p>
 <p>可以通过调用copy来打印vec中的元素，这比编写循环更为简单</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726300802026.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726300802026.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>使用流迭代器处理类类型</strong></p>
 <h3 id="10-4-3-反向迭代器"><a href="#10-4-3-反向迭代器" class="headerlink" title="10.4.3 反向迭代器"></a>10.4.3 反向迭代器</h3><p>反向迭代器就是在容器中从尾元素向首元素反向移动的迭代器。对于反向迭代器，递增（以及递减）操作的含义会颠倒过来。递增一个反向迭代器（++it）会移动到前一个元素；递减一个迭代器（–it）会移动到下一个元素。</p>
 <p>除了forward_list之外，其他容器都支持反向迭代器。</p>
 <p>我们可以通过调用rbegin、rend、crbegin和crend成员函数来获得反向迭代器。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726302994585.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726302994585.png" srcset="/img/loading.gif" lazyload></p>
 <p>虽然颠倒递增和递减运算符的含义可能看起来令人混淆，但这样做使我们可以用算法透明地向前或向后处理容器。例如，可以通过向sort传递一对反向迭代器来将vector整理为递减序：</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726303038287.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726303038287.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>反向迭代器需要递减运算符</strong></p>
 <p>流迭代器不支持递减运算，因为不可能在一个流中反向移动。因此，不可能从一个forward_list或一个流迭代器创建反向迭代器。</p>
 <p><strong>反向迭代器和其他迭代器间的关系</strong></p>
 <p>我们使用的是反向迭代器，会反向处理string。因此，上述输出语句从crbegin开始反向打印line中内容。而我们希望按正常顺序打印从rcomma开始到line末尾间的字符。但是，我们不能直接使用rcomma。因为它是一个反向迭代器，意味着它会反向朝着string的开始位置移动。需要做的是，将rcomma转换回一个普通迭代器，能在line中正向移动。我们通过调用reverse_iterator的base成员函数来完成这一转换，此成员函数会返回其对应的普通迭代器：</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726303307514.png"></p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726303318130.png" alt="1726303318130"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726303307514.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726303318130.png" srcset="/img/loading.gif" lazyload alt="1726303318130"></p>
 <h2 id="10-5-泛型算法结构"><a href="#10-5-泛型算法结构" class="headerlink" title="10.5 泛型算法结构"></a>10.5 泛型算法结构</h2><p>任何算法的最基本的特性是它要求其迭代器提供哪些操作。某些算法，如find，只要求通过迭代器访问元素、递增迭代器以及比较两个迭代器是否相等这些能力。其他一些算法，如sort，还要求读、写和随机访问元素的能力。算法所要求的迭代器操作可以分为5个迭代器类别（iterator category），如表10.5所示。每个算法都会对它的每个迭代器参数指明须提供哪类迭代器。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726303617577.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726303617577.png" srcset="/img/loading.gif" lazyload></p>
 <p>第二种算法分类的方式（如我们在本章开始所做的）是按照是否读、写或是重排序列中的元素来分类。附录A按这种分类方法列出了所有算法。</p>
 <h3 id="10-5-1-5类迭代器"><a href="#10-5-1-5类迭代器" class="headerlink" title="10.5.1 5类迭代器"></a>10.5.1 5类迭代器</h3><p><strong>迭代器类别</strong></p>
 <p>1.输入迭代器（input iterator）：可以读取序列中的元素。</p>
@@ -244,7 +509,7 @@
 </ul>
 <p>算法sort要求随机访问迭代器。array、deque、string和vector的迭代器都是随机访问迭代器，用于访问内置数组元素的指针也是。</p>
 <h3 id="10-5-2-算法形参模式"><a href="#10-5-2-算法形参模式" class="headerlink" title="10.5.2 算法形参模式"></a>10.5.2 算法形参模式</h3><p>大多数算法具有如下4种形式之一：</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726307764902.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726307764902.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>接受单个目标迭代器的算法</strong></p>
 <p>dest参数是一个表示算法可以写入的目的位置的迭代器。算法假定（assume）：按其需要写入数据，不管写入多少个元素都是安全的。</p>
 <p><strong>接受第二个输入序列的算法</strong></p>
@@ -252,66 +517,392 @@
 <h3 id="10-5-3-算法命名规范"><a href="#10-5-3-算法命名规范" class="headerlink" title="10.5.3 算法命名规范"></a>10.5.3 算法命名规范</h3><p>算法还遵循一套命名和重载规范。这些规范处理诸如：如何提供一个操作代替默认的&lt;或&#x3D;&#x3D;运算符以及算法是将输出数据写入输入序列还是一个分离的目的位置等问题。</p>
 <p><strong>一些算法使用重载形式传递一个谓词</strong></p>
 <p>接受谓词参数来代替&lt;或&#x3D;&#x3D;运算符的算法，以及那些不接受额外参数的算法，通常都是重载的函数。函数的一个版本用元素类型的运算符来比较元素；另一个版本接受一个额外谓词参数，来代替&lt;或&#x3D;&#x3D;：</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726307944623.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726307944623.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>_if版本的算法</strong></p>
 <p>接受一个元素值的算法通常有另一个不同名的（不是重载的）版本，该版本接受一个谓词（参见10.3.1节，第344页）代替元素值。接受谓词参数的算法都有附加的_if前缀：</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726307986000.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726307986000.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>区分拷贝元素的版本和不拷贝的版本</strong></p>
 <p>默认情况下，重排元素的算法将重排后的元素写回给定的输入序列中。这些算法还提供另一个版本，将元素写到一个指定的输出目的位置。如我们所见，写到额外目的空间的算法都在名字后面附加一个_copy（参见10.2.2节，第341页）：</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726308018039.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726308018039.png" srcset="/img/loading.gif" lazyload></p>
 <p>一些算法同时提供_copy和_if版本。这些版本接受一个目的位置迭代器和一个谓词：</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726308043920.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726308043920.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="10-6-特定容器算法"><a href="#10-6-特定容器算法" class="headerlink" title="10.6 特定容器算法"></a>10.6 特定容器算法</h2><p>与其他容器不同，链表类型list和forward_list定义了几个成员函数形式的算法，如表10.6所示。特别是，它们定义了独有的sort、merge、remove、reverse和unique。通用版本的sort要求随机访问迭代器，因此不能用于list和forward_list，因为这两个类型分别提供双向迭代器和前向迭代器。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726308113330.png"></p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726308167608.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726308113330.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726308167608.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>splice成员</strong></p>
 <p>此算法是链表数据结构所特有的，因此不需要通用版本。</p>
-<p><img src="/../images/C-C-Primer-Chapter-10/1726308197673.png"></p>
+<p><img src="/../images/C-C-Primer-Chapter-10/1726308197673.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>链表特有的操作会改变容器</strong></p>
 <p>链表特有版本与通用版本间的一个至关重要的区别是链表版本会改变底层的容器。例如，remove的链表版本会删除指定的元素。unique的链表版本会删除第二个和后继的重复元素。</p>
 <p>类似的，merge和splice会销毁其参数。例如，通用版本的merge将合并的序列写到一个给定的目的迭代器；两个输入序列是不变的。而链表版本的merge函数会销毁给定的链表——元素从参数指定的链表中删除，被合并到调用merge的链表对象中。在merge之后，来自两个链表中的元素仍然存在，但它们都已在同一个链表中。</p>
-</div><div class="article-licensing box"><div class="licensing-title"><p>[C++]C++Primer Chapter 10</p><p><a href="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-10/">https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-10/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>ErlsrnBy04</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2024-09-22</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2024-09-22</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/C/">C++</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2024/09/22/C-C-Primer-Chapter-11/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">[C++]C++Primer Chapter 11</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/09/22/C-C-Primer-Chapter-9/"><span class="level-item">[C++]C++Primer Chapter 9</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><script src="https://giscus.app/client.js" repo="ErlsrnBy04/comments" data-repo="ErlsrnBy04/comments" data-repo-id="R_kgDOM1SRGQ" data-category-id="DIC_kwDOM1SRGc4Cirkj" data-category="Announcements" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous" async></script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar1.jpg" alt="ErlsrnBy04"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">ErlsrnBy04</p><p class="is-size-6 is-block">学生</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>北京，中国</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">20</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">3</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ErlsrnBy04" target="_blank" rel="me noopener">Follow</a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#泛型算法"><span class="level-left"><span class="level-item">1</span><span class="level-item">泛型算法</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#10-1-概述"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">10.1 概述</span></span></a></li><li><a class="level is-mobile" href="#10-2-初识泛型算法"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">10.2 初识泛型算法</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#10-2-1-只读算法"><span class="level-left"><span class="level-item">1.2.1</span><span class="level-item">10.2.1 只读算法</span></span></a></li><li><a class="level is-mobile" href="#10-2-2-写容器元素的算法"><span class="level-left"><span class="level-item">1.2.2</span><span class="level-item">10.2.2 写容器元素的算法</span></span></a></li><li><a class="level is-mobile" href="#10-2-3-重排容器元素的算法"><span class="level-left"><span class="level-item">1.2.3</span><span class="level-item">10.2.3 重排容器元素的算法</span></span></a></li></ul></li><li><a class="level is-mobile" href="#10-3-定制操作"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">10.3 定制操作</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#10-3-1-向算法传递函数"><span class="level-left"><span class="level-item">1.3.1</span><span class="level-item">10.3.1 向算法传递函数</span></span></a></li><li><a class="level is-mobile" href="#10-3-2-lambda表达式"><span class="level-left"><span class="level-item">1.3.2</span><span class="level-item">10.3.2 lambda表达式</span></span></a></li><li><a class="level is-mobile" href="#10-3-3-lambda捕获和返回"><span class="level-left"><span class="level-item">1.3.3</span><span class="level-item">10.3.3 lambda捕获和返回</span></span></a></li><li><a class="level is-mobile" href="#10-3-4-参数绑定"><span class="level-left"><span class="level-item">1.3.4</span><span class="level-item">10.3.4 参数绑定</span></span></a></li></ul></li><li><a class="level is-mobile" href="#10-4-再探迭代器"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">10.4 再探迭代器</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#10-4-1-插入迭代器"><span class="level-left"><span class="level-item">1.4.1</span><span class="level-item">10.4.1 插入迭代器</span></span></a></li><li><a class="level is-mobile" href="#10-4-2-iostream迭代器"><span class="level-left"><span class="level-item">1.4.2</span><span class="level-item">10.4.2 iostream迭代器</span></span></a></li><li><a class="level is-mobile" href="#10-4-3-反向迭代器"><span class="level-left"><span class="level-item">1.4.3</span><span class="level-item">10.4.3 反向迭代器</span></span></a></li></ul></li><li><a class="level is-mobile" href="#10-5-泛型算法结构"><span class="level-left"><span class="level-item">1.5</span><span class="level-item">10.5 泛型算法结构</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#10-5-1-5类迭代器"><span class="level-left"><span class="level-item">1.5.1</span><span class="level-item">10.5.1 5类迭代器</span></span></a></li><li><a class="level is-mobile" href="#10-5-2-算法形参模式"><span class="level-left"><span class="level-item">1.5.2</span><span class="level-item">10.5.2 算法形参模式</span></span></a></li><li><a class="level is-mobile" href="#10-5-3-算法命名规范"><span class="level-left"><span class="level-item">1.5.3</span><span class="level-item">10.5.3 算法命名规范</span></span></a></li></ul></li><li><a class="level is-mobile" href="#10-6-特定容器算法"><span class="level-left"><span class="level-item">1.6</span><span class="level-item">10.6 特定容器算法</span></span></a></li></ul></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="level-start"><span class="level-item">操作系统</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"><span class="level-start"><span class="level-item">编程语言</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-26T04:51:28.000Z">2024-09-26</time></p><p class="title"><a href="/2024/09/26/MIT-6-1810-Xv6-Chapter-4/">[MIT 6.1810]Xv6 Chapter 4</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-25T03:44:09.000Z">2024-09-25</time></p><p class="title"><a href="/2024/09/25/MIT-6-1810-Xv6-Chapter-3/">[MIT 6.1810]Xv6 Chapter 3</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T07:43:10.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-2/">[MIT 6.1810]Xv6 Chapter 2</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-24T05:11:40.000Z">2024-09-24</time></p><p class="title"><a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/">[MIT 6.1810]Xv6 Chapter 1</a></p><p class="categories"><a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/"><img src="/cover/C++.svg" alt="[C++] 返回值优化"></a></figure><div class="media-content"><p class="date"><time dateTime="2024-09-22T05:17:42.000Z">2024-09-22</time></p><p class="title"><a href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/">[C++] 返回值优化</a></p><p class="categories"><a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">September 2024</span></span><span class="level-end"><span class="level-item tag">20</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/C/"><span class="tag">C++</span><span class="tag">15</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-1810/"><span class="tag">MIT 6.1810</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MIT-6-S081/"><span class="tag">MIT 6.S081</span><span class="tag">1</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/Snake.svg" alt="ErlsrnBy04" height="28"></a><p class="is-size-7"><span>&copy; 2024 ErlsrnBy04</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">且陶陶，乐尽天真</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="GitHub" href="https://github.com/ErlsrnBy04"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
-            article: {
-                highlight: {
-                    clipboard: true,
-                    fold: 'unfolded'
-                }
-            }
-        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
-      window.cookieconsent.initialise({
-        type: "info",
-        theme: "edgeless",
-        static: false,
-        position: "bottom-left",
-        content: {
-          message: "This website uses cookies to improve your experience.",
-          dismiss: "Got it!",
-          allow: "Allow cookies",
-          deny: "Decline",
-          link: "Learn more",
-          policy: "Cookie Policy",
-          href: "https://www.cookiesandyou.com/",
-        },
-        palette: {
-          popup: {
-            background: "#edeff5",
-            text: "#838391"
-          },
-          button: {
-            background: "#4b81e8"
-          },
-        },
-      });
-    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
-            if (typeof $.fn.lightGallery === 'function') {
-                $('.article').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof $.fn.justifiedGallery === 'function') {
-                if ($('.justified-gallery > p > .gallery-item').length) {
-                    $('.justified-gallery > p > .gallery-item').unwrap();
-                }
-                $('.justified-gallery').justifiedGallery();
-            }
-        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
-            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
-        });</script></body></html>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[C++]C++Primer Chapter 10</div>
+      <div>https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-10/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/22/C-C-Primer-Chapter-11/" title="[C++]C++Primer Chapter 11">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[C++]C++Primer Chapter 11</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/22/C-C-Primer-Chapter-9/" title="[C++]C++Primer Chapter 9">
+                        <span class="hidden-mobile">[C++]C++Primer Chapter 9</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
