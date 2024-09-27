@@ -9,13 +9,13 @@
   <meta charset="UTF-8">
 
   <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <meta name="theme-color" content="#2f4154">
+  <meta name="theme-color" content="#000000">
   <meta name="author" content="ErlsrnBy04">
   <meta name="keywords" content="">
   
@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://t.alcy.cc/fj?postId=20">
 <meta property="article:published_time" content="2024-09-27T05:22:06.000Z">
-<meta property="article:modified_time" content="2024-09-27T14:28:18.835Z">
+<meta property="article:modified_time" content="2024-09-27T16:47:33.625Z">
 <meta property="article:author" content="ErlsrnBy04">
 <meta property="article:tag" content="MIT 6.1810">
 <meta name="twitter:card" content="summary_large_image">
@@ -72,11 +72,17 @@
 
 
 
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -92,7 +98,7 @@
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 
-<body>
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
   
 
   <header>
@@ -282,6 +288,19 @@
   <div class="row nomargin-x">
     <div class="side-col d-none d-lg-block col-lg-2">
       
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
 
     </div>
 
@@ -296,9 +315,6 @@
                 
                 <h1 id="Interrupts-and-device-drivers"><a href="#Interrupts-and-device-drivers" class="headerlink" title="Interrupts and device drivers"></a>Interrupts and device drivers</h1><span id="more"></span>
 
-<div class="note note-success">
-            <p>文字 或者 <code>markdown</code> 均可</p>
-          </div>
 
 <p>驱动程序在操作系统中起着管理硬件设备的重要作用。它负责配置设备硬件、启动操作、处理中断，并与可能在等待设备输入&#x2F;输出（I&#x2F;O）的进程进行协调。驱动程序代码比较复杂，因为它需要与它管理的设备并发执行。此外，驱动程序必须理解设备的硬件接口，而这些接口往往比较复杂，甚至文档不全。</p>
 <p>需要操作系统关注的设备通常可以配置为生成中断，中断是一种陷阱（trap）。内核的陷阱处理代码识别出设备触发了中断，并调用驱动程序的中断处理程序。在 <strong>xv6</strong> 操作系统中，这个调度过程发生在 <code>devintr</code>（kernel&#x2F;trap.c:185）中。</p>
@@ -396,9 +412,15 @@
             
               
               
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
                   </span>
                 </a>
               
@@ -433,6 +455,50 @@
             </div>
 
             
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
           </article>
         </div>
       </div>
@@ -440,15 +506,99 @@
 
     <div class="side-col d-none d-lg-block col-lg-2">
       
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
 
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="操作系统"
+        id="heading-30d23ef4f49e85f37f54786ff984032c" role="tab" data-toggle="collapse" href="#collapse-30d23ef4f49e85f37f54786ff984032c"
+        aria-expanded="true"
+      >
+        操作系统
+        <span class="list-group-count">(6)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-30d23ef4f49e85f37f54786ff984032c"
+           role="tabpanel" aria-labelledby="heading-30d23ef4f49e85f37f54786ff984032c">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/" title="[MIT 6.1810]Xv6 Chapter 1"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 1</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-2/" title="[MIT 6.1810]Xv6 Chapter 2"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 2</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/25/MIT-6-1810-Xv6-Chapter-3/" title="[MIT 6.1810]Xv6 Chapter 3"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 3</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/26/MIT-6-1810-Xv6-Chapter-4/" title="[MIT 6.1810]Xv6 Chapter 4"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 4</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/27/MIT-6-1810-Xv6-Chapter-5/" title="[MIT 6.1810]Xv6 Chapter 5"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 5</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/21/MIT-6-S081-Lab1-Xv6-and-Unix-utilities/" title="[MIT 6.S081]Lab1 Xv6 and Unix utilities"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.S081]Lab1 Xv6 and Unix utilities</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
 
 
   </aside>
@@ -525,7 +675,7 @@
     <div class="footer-inner">
   
     <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
     </div>
   
   
@@ -679,6 +829,10 @@
 
 
 
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
 
 <!-- 主题的启动项，将它保持在最底部 -->
 <!-- the boot of the theme, keep it at the bottom -->
@@ -690,5 +844,5 @@
   <noscript>
     <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
-</body>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
 </html>
