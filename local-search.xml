@@ -4,6 +4,60 @@
   
   
   <entry>
+    <title>[算法]分治策略</title>
+    <link href="/2024/09/28/%E7%AE%97%E6%B3%95-%E5%88%86%E6%B2%BB%E7%AD%96%E7%95%A5/"/>
+    <url>/2024/09/28/%E7%AE%97%E6%B3%95-%E5%88%86%E6%B2%BB%E7%AD%96%E7%95%A5/</url>
+    
+    <content type="html"><![CDATA[<h1 id="分治策略"><a href="#分治策略" class="headerlink" title="分治策略"></a>分治策略</h1><span id="more"></span><h2 id="1-基本思想"><a href="#1-基本思想" class="headerlink" title="1 基本思想"></a>1 基本思想</h2><p>将规模为n的原问题规约为规模更小的一个或多个子问题，递归或迭代求解每个子问题，然后把子问题的解进行综合，从而得到原问题的解。</p><p>需要注意：</p><ol><li>子问题与原问题性质完全一致</li><li>子问题之间可以彼此独立的求解</li><li>递归停止时的子问题可以直接求解（常数时间）</li><li>当子问题划分比较均匀的时候，时间复杂度相对较低</li></ol><p><strong>一般分治算法伪代码描述</strong></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs pseudocode">if |P| &lt;= c then S(p)                   // 递归出口 小规模的问题直接求解<br>divide P into P1, P2, ..., Pk// 规约为k个子问题<br>for i = 1 to k do<br>yi &lt;- Divide-and-Conquer(Pi)// 递归求解子问题<br>return Merge(y1, y2, ..., yk)           // 综合子问题的解<br></code></pre></td></tr></table></figure><h2 id="2-分析技术"><a href="#2-分析技术" class="headerlink" title="2 分析技术"></a>2 分析技术</h2><p>分治算法通常是递归算法，分析时间复杂度需要求解递推方程，常见的递推方程有以下两类：<br>$$<br>\begin{aligned}<br>    &amp; T\left(n\right)&#x3D;\sum_{i&#x3D;1}^{k}a_{i}T\left(n-i\right)+f\left(n\right) \\<br>    &amp; T\left(n\right)&#x3D;aT\left(\frac{n}{b}\right)+d\left(n\right)<br>\end{aligned}<br>$$<br>对于第一类方程，可以使用迭代、递归树、尝试法求解；</p><p>对于第二类方程，可以使用迭代、递归树、主定理法求解；</p><h3 id="主定理"><a href="#主定理" class="headerlink" title="主定理"></a>主定理</h3><p>$$<br>\begin{align}<br>    a \geq 1, b &gt; 1 为常数，f(n)为函数，T(n)为非负整数，且T(n)&#x3D;aT(n&#x2F;b)+f(n)<br>\end{align}<br>$$</p><p>$$<br>\begin{align}<br> &amp; \qquad(1)若 f(n)&#x3D;O(n^{\log_ba-\varepsilon}),\varepsilon&gt;0,<br>     则 T(n)&#x3D;\Theta(n^{\log_ba}). \\<br> &amp; \qquad(2)若 f(n)&#x3D;\Theta(n^{\log_ba}),<br>    则 T(n)&#x3D;\Theta(n^{\log_ba}\operatorname{log}n).  \\<br> &amp; \qquad(3)若 f(n)&#x3D;\Omega(n^{\log_ba+\varepsilon}),\varepsilon&gt;0, 且对于某个常数c和所有充分大的n, 有 af(n&#x2F;b)\leqslant cf(n), 则 T(n)&#x3D;\Theta(f(n)).<br>\end{align}<br>$$</p><h2 id="3-改进分治算法的途径"><a href="#3-改进分治算法的途径" class="headerlink" title="3 改进分治算法的途径"></a>3 改进分治算法的途径</h2><p>改进算法主要有两种途径：</p><ol><li>减少子问题个数</li><li>通过预处理减少递归过程中的工作量</li></ol><h3 id="3-1-通过代数变换减少子问题个数"><a href="#3-1-通过代数变换减少子问题个数" class="headerlink" title="3.1 通过代数变换减少子问题个数"></a>3.1 通过代数变换减少子问题个数</h3><p>这种方法主要思想是有的子问题的解可以通过简单的计算由其他子问题的解获得，那么该子问题就不必递归求解，由此减少了子问题的个数。</p><p>例子：</p><ol><li>整数乘法</li><li>Strassen矩阵乘法</li></ol><h3 id="3-2-利用预处理减少递归内部的计算量"><a href="#3-2-利用预处理减少递归内部的计算量" class="headerlink" title="3.2 利用预处理减少递归内部的计算量"></a>3.2 利用预处理减少递归内部的计算量</h3><p>这种方法的主要思想是通过预处理，减少递归内部的计算量，从而达到优化算法的目的。</p><p>例子：平面上最邻近点对</p><h2 id="4-典型实例"><a href="#4-典型实例" class="headerlink" title="4 典型实例"></a>4 典型实例</h2>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法</category>
+      
+      <category>分治算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+      <tag>分治</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[内核赛]系统调用实现</title>
+    <link href="/2024/09/28/%E5%86%85%E6%A0%B8%E8%B5%9B-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/"/>
+    <url>/2024/09/28/%E5%86%85%E6%A0%B8%E8%B5%9B-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%AE%9E%E7%8E%B0/</url>
+    
+    <content type="html"><![CDATA[<h1 id="系统调用实现"><a href="#系统调用实现" class="headerlink" title="系统调用实现"></a>系统调用实现</h1><span id="more"></span>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Xv6</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[MIT 6.1810]Xv6 Chapter 5</title>
     <link href="/2024/09/27/MIT-6-1810-Xv6-Chapter-5/"/>
     <url>/2024/09/27/MIT-6-1810-Xv6-Chapter-5/</url>
@@ -532,7 +586,7 @@
   
   
   <entry>
-    <title>about</title>
+    <title>categories</title>
     <link href="/"/>
     <url>/</url>
     
@@ -543,7 +597,7 @@
   
   
   <entry>
-    <title>categories</title>
+    <title>about</title>
     <link href="/"/>
     <url>/</url>
     
