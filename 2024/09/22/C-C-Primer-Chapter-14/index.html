@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://t.alcy.cc/fj?postId=14">
 <meta property="article:published_time" content="2024-09-22T04:01:27.000Z">
-<meta property="article:modified_time" content="2024-09-28T16:36:39.502Z">
+<meta property="article:modified_time" content="2024-09-29T10:50:28.682Z">
 <meta property="article:author" content="ErlsrnBy04">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.5k 字
+          7.3k 字
         
       </span>
     
@@ -247,7 +247,7 @@
         
         
         
-          30 分钟
+          62 分钟
         
       </span>
     
@@ -434,6 +434,132 @@
 <div class="note note-primary">
             <p>重载的箭头运算符必须返回类的指针或者自定义了箭头运算符的某个类的对象。</p>
           </div>
+
+<h2 id="14-8-函数调用运算符"><a href="#14-8-函数调用运算符" class="headerlink" title="14.8 函数调用运算符"></a>14.8 函数调用运算符</h2><div class="note note-primary">
+            <p>函数调用运算符必须是成员函数。一个类可以定义多个不同版本的调用运算符，相互之间应该在参数数量或类型上有所区别。</p>
+          </div>
+
+<p>如果类重载了函数调用运算符，则我们可以像使用函数一样使用该类的对象。因为这样的类同时也能存储状态，所以与普通函数相比它们更加灵活。</p>
+<p>如果类定义了调用运算符，则该类的对象称作<strong>函数对象（function object）</strong>。因为可以调用这种对象，所以我们说这些对象的“行为像函数一样”。</p>
+<p><strong>含有状态的函数对象类</strong></p>
+<p>函数对象常常作为泛型算法的实参。</p>
+<h3 id="14-8-1-lambda是函数对象"><a href="#14-8-1-lambda是函数对象" class="headerlink" title="14.8.1 lambda是函数对象"></a>14.8.1 lambda是函数对象</h3><p>当我们编写了一个lambda后，编译器将该表达式翻译成一个未命名类的未命名对象（参见10.3.3节，第349页）。在lambda表达式产生的类中含有一个重载的函数调用运算符。</p>
+<p>默认情况下lambda不能改变它捕获的变量。因此在默认情况下，由lambda产生的类当中的函数调用运算符是一个const成员函数。如果lambda被声明为可变的，则调用运算符就不是const的了。</p>
+<p><strong>表示lambda及相应捕获行为的类</strong></p>
+<p>当一个lambda表达式通过引用捕获变量时，将由程序负责确保lambda执行时引用所引的对象确实存在（参见10.3.3节，第350页）。因此，编译器可以直接使用该引用而无须在lambda产生的类中将其存储为数据成员。</p>
+<p>相反，通过值捕获的变量被拷贝到lambda中（参见10.3.3节，第350页）。因此，这种lambda产生的类必须为每个值捕获的变量建立对应的数据成员，同时创建构造函数，令其使用捕获的变量的值来初始化数据成员。</p>
+<h3 id="14-8-2-标准库定义的函数对象"><a href="#14-8-2-标准库定义的函数对象" class="headerlink" title="14.8.2 标准库定义的函数对象"></a>14.8.2 标准库定义的函数对象</h3><p>标准库定义了一组表示算术运算符、关系运算符和逻辑运算符的类，每个类分别定义了一个执行命名操作的调用运算符。</p>
+<p>这些类都被定义成模板的形式，我们可以为其指定具体的应用类型，这里的类型即调用运算符的形参类型。</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929142537414.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>在算法中使用标准库函数对象</strong></p>
+<p>表示运算符的函数对象类常用来替换算法中的默认运算符。</p>
+<p>如我们所知，在默认情况下排序算法使用operator&lt;将序列按照升序排列。如果要执行降序排列的话，我们可以传入一个greater类型的对象。该类将产生一个调用运算符并负责执行待排序类型的大于运算。</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929142624574.png" srcset="/img/loading.gif" lazyload></p>
+<p>标准库规定其函数对象对于指针同样适用。我们之前曾经介绍过比较两个无关指针将产生未定义的行为（参见3.5.3节，第107页），然而我们可能会希望通过比较指针的内存地址来sort指针的vector。直接这么做将产生未定义的行为，因此我们可以使用一个标准库函数对象来实现该目的</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929142713199.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="14-8-3-可调用对象与function"><a href="#14-8-3-可调用对象与function" class="headerlink" title="14.8.3 可调用对象与function"></a>14.8.3 可调用对象与function</h3><p>C++语言中有几种可调用的对象：</p>
+<ul>
+<li>函数</li>
+<li>函数指针</li>
+<li>lambda表达式（参见10.3.2节，第346页）</li>
+<li>bind创建的对象（参见10.3.4节，第354页）</li>
+<li>重载了函数调用运算符的类。</li>
+</ul>
+<p>可调用的对象也有类型。例如，每个lambda有它自己唯一的（未命名）类类型；函数及函数指针的类型则由其返回值类型和实参类型决定，等等。</p>
+<p>然而，两个不同类型的可调用对象却可能共享同一种<strong>调用形式（call signature）</strong>。调用形式指明了调用返回的类型以及传递给调用的实参类型。一种调用形式对应一个函数类型，例如</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929143055617.png" srcset="/img/loading.gif" lazyload></p>
+<p>是一个函数类型，它接受两个int、返回一个int。</p>
+<p><strong>不同类型可能具有相同的调用形式</strong></p>
+<p>对于几个可调用对象共享同一种调用形式的情况，有时我们会希望把它们看成具有相同的类型。</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929143127827.png" srcset="/img/loading.gif" lazyload></p>
+<p>上面这些可调用对象分别对其参数执行了不同的算术运算，尽管它们的类型各不相同，但是共享同一种调用形式。</p>
+<p>我们可能希望使用这些可调用对象构建一个简单的桌面计算器。为了实现这一目的，需要定义一个函数表（function table）用于存储指向这些可调用对象的“指针”。当程序需要执行某个特定的操作时，从表中查找该调用的函数。</p>
+<p>在C++语言中，函数表很容易通过map来实现。</p>
+<p>对于此例来说，我们使用一个表示运算符符号的string对象作为关键字；使用实现运算符的函数作为值。当我们需要求给定运算符的值时，先通过运算符索引map，然后调用找到的那个元素。</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929143258114.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们可以按照下面的形式将add的指针添加到binops中</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929143331235.png" srcset="/img/loading.gif" lazyload></p>
+<p>但是我们不能将mod或者divide存入binops：</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929143340872.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>标准库function类型</strong></p>
+<p>可以使用一个名为<strong>function</strong>的新的标准库类型解决上述问题，function定义在functional头文件中，表14.3列举出了function定义的操作。</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929143407352.png" srcset="/img/loading.gif" lazyload></p>
+<p>function是一个模板，当创建一个具体的function类型时我们必须提供额外的信息，即该function类型能够表示的对象的调用形式。</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929143542124.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>重载的函数与function</strong></p>
+<p>我们不能（直接）将重载函数的名字存入function类型的对象中</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929143643994.png" srcset="/img/loading.gif" lazyload></p>
+<p>解决上述二义性问题的一条途径是存储函数指针（参见6.7节，第221页）而非函数的名字</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929143718359.png" srcset="/img/loading.gif" lazyload></p>
+<p>也能使用lambda来消除二义性</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929143739573.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="14-9-重载、类型转换与运算符"><a href="#14-9-重载、类型转换与运算符" class="headerlink" title="14.9 重载、类型转换与运算符"></a>14.9 重载、类型转换与运算符</h2><p>我们同样能定义对于类类型的类型转换，通过定义类型转换运算符可以做到这一点。转换构造函数和类型转换运算符共同定义了类类型转换（class-type conversions），这样的转换有时也被称作用户定义的类型转换（user-defined conversions）。</p>
+<h3 id="14-9-1-类型转换运算符"><a href="#14-9-1-类型转换运算符" class="headerlink" title="14.9.1 类型转换运算符"></a>14.9.1 类型转换运算符</h3><p>类型转换运算符（conversion operator）是类的一种特殊成员函数，它负责将一个类类型的值转换成其他类型。类型转换函数的一般形式如下所示</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929144114812.png" srcset="/img/loading.gif" lazyload></p>
+<div class="note note-primary">
+            <p>一个类型转换函数必须是类的成员函数；它不能声明返回类型，形参列表也必须为空。类型转换函数通常应该是const。</p>
+          </div>
+
+<p>其中type表示某种类型。类型转换运算符可以面向任意类型（除了void之外）进行定义，只要该类型能作为函数的返回类型（参见6.1节，第184页）。因此，我们不允许转换成数组或者函数类型，但允许转换成指针（包括数组指针及函数指针）或者引用类型。</p>
+<p>类型转换运算符既没有显式的返回类型，也没有形参，而且必须定义成类的成员函数。类型转换运算符通常不应该改变待转换对象的内容，因此，类型转换运算符一般被定义成const成员。</p>
+<p><strong>定义含有类型转换运算符的类</strong></p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929144255208.png" srcset="/img/loading.gif" lazyload></p>
+<p>SmallInt类既定义了向类类型的转换，也定义了从类类型向其他类型的转换。其中，构造函数将算术类型的值转换成SmallInt对象，而类型转换运算符将SmallInt对象转换成int</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929144340414.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>提示：避免过度使用类型转换函数</strong></p>
+<p>和使用重载运算符的经验一样，明智地使用类型转换运算符也能极大地简化类设计者的工作，同时使得使用类更加容易。然而，如果在类类型和转换类型之间不存在明显的映射关系，则这样的类型转换可能具有误导性。</p>
+<p>例如，假设某个类表示Date，我们也许会为它添加一个从Date到int的转换。然而，类型转换函数的返回值应该是什么？一种可能的解释是，函数返回一个十进制数，依次表示年、月、日，例如，July 30，1989可能转换为int值19890730。同时还存在另外一种合理的解释，即类型转换运算符返回的int表示的是从某个时间节点（比如January 1，1970）开始经过的天数。显然这两种理解都合情合理，毕竟从形式上看它们产生的效果都是越靠后的日期对应的整数值越大，而且两种转换都有实际的用处。</p>
+<p>问题在于Date类型的对象和int类型的值之间不存在明确的一对一映射关系。因此在此例中，不定义该类型转换运算符也许会更好。作为替代的手段，类可以定义一个或多个普通的成员函数以从各种不同形式中提取所需的信息。</p>
+<p><strong>类型转换运算符可能产生意外结果</strong></p>
+<p>在实践中，类很少提供类型转换运算符。然而这条经验法则存在一种例外情况：对于类来说，定义向bool的类型转换还是比较普遍的现象。</p>
+<p>在C++标准的早期版本中，如果类想定义一个向bool的类型转换，则它常常遇到一个问题：因为bool是一种算术类型，所以类类型的对象转换成bool后就能被用在任何需要算术类型的上下文中。这样的类型转换可能引发意想不到的结果，特别是当istream含有向bool的类型转换时，下面的代码仍将编译通过</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929144657953.png" srcset="/img/loading.gif" lazyload></p>
+<p>该代码能使用istream的bool类型转换运算符将cin转换成bool，而这个bool值接着会被提升成int并用作内置的左移运算符的左侧运算对象。这样一来，提升后的bool值（1或0）最终会被左移42个位置。这一结果显然与我们的预期大相径庭。</p>
+<p><strong>显式的类型转换运算符</strong></p>
+<p>为了防止这样的异常情况发生，C++11新标准引入了<strong>显式的类型转换运算符（explicit conversion operator）</strong></p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929144747752.png" srcset="/img/loading.gif" lazyload></p>
+<p>和显式的构造函数（参见7.5.4节，第265页）一样，编译器（通常）也不会将一个显式的类型转换运算符用于隐式类型转换</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929144814005.png" srcset="/img/loading.gif" lazyload></p>
+<p>该规定存在一个例外，即如果表达式被用作条件，则编译器会将显式的类型转换自动应用于它。换句话说，当表达式出现在下列位置时，显式的类型转换将被隐式地执行：</p>
+<ul>
+<li>if、while及do语句的条件部分</li>
+<li>for语句头的条件表达式</li>
+<li>逻辑非运算符（！）、逻辑或运算符（||）、逻辑与运算符（&amp;&amp;）的运算对象</li>
+<li>条件运算符（？ ：）的条件表达式。</li>
+</ul>
+<p><strong>转换为bool</strong></p>
+<p>向bool的类型转换通常用在条件部分，因此operator bool一般定义成explicit的。</p>
+<h3 id="14-9-2-避免有二义性的类型转换"><a href="#14-9-2-避免有二义性的类型转换" class="headerlink" title="14.9.2 避免有二义性的类型转换"></a>14.9.2 避免有二义性的类型转换</h3><p>如果类中包含一个或多个类型转换，则必须确保在类类型和目标类型之间只存在唯一一种转换方式。否则的话，我们编写的代码将很可能会具有二义性。</p>
+<p>在两种情况下可能产生多重转换路径</p>
+<ol>
+<li>两个类提供相同的类型转换：例如，当A类定义了一个接受B类对象的转换构造函数，同时B类定义了一个转换目标是A类的类型转换运算符时，我们就说它们提供了相同的类型转换。</li>
+<li>类定义了多个转换规则，而这些转换涉及的类型本身可以通过其他类型转换联系在一起。最典型的例子是算术运算符，对某个给定的类来说，最好只定义最多一个与算术类型有关的转换规则。</li>
+</ol>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929145127895.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>二义性与转换目标为内置类型的多重类型转换</strong></p>
+<p>类当中定义了多个参数都是算术类型的构造函数，或者转换目标都是算术类型的类型转换运算符。</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929145239750.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>提示：类型转换与运算符</strong></p>
+<ul>
+<li>不要令两个类执行相同的类型转换：如果Foo类有一个接受Bar类对象的构造函数，则不要在Bar类中再定义转换目标是Foo类的类型转换运算符。</li>
+<li>避免转换目标是内置算术类型的类型转换。特别是当你已经定义了一个转换成算术类型的类型转换时，接下来<ul>
+<li>不要再定义接受算术类型的重载运算符。如果用户需要使用这样的运算符，则类型转换操作将转换你的类型的对象，然后使用内置的运算符。</li>
+<li>不要定义转换到多种算术类型的类型转换。让标准类型转换完成向其他算术类型转换的工作。</li>
+</ul>
+</li>
+</ul>
+<p>一言以蔽之：除了显式地向bool类型的转换之外，我们应该尽量避免定义类型转换函数并尽可能地限制那些“显然正确”的非显式构造函数。</p>
+<p><strong>重载函数与转换构造函数</strong></p>
+<p>当我们调用重载的函数时，从多个类型转换中进行选择将变得更加复杂。</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929145705735.png" srcset="/img/loading.gif" lazyload></p>
+<div class="note note-warning">
+            <p>如果在调用重载函数时我们需要使用构造函数或者强制类型转换来改变实参的类型，则这通常意味着程序的设计存在不足。在调用重载函数时，如果需要额外的标准类型转换，则该转换的级别只有当所有可行函数都请求同一个用户定义的类型转换时才有用。如果所需的用户定义的类型转换不止一个，则该调用具有二义性。</p>
+          </div>
+
+<p><strong>重载函数与用户定义的类型转换</strong></p>
+<p>当调用重载函数时，如果两个（或多个）用户定义的类型转换都提供了可行匹配，则我们认为这些类型转换一样好。在这个过程中，我们不会考虑任何可能出现的标准类型转换的级别。只有当重载函数能通过同一个类型转换函数得到匹配时，我们才会考虑其中出现的标准类型转换。</p>
+<p><img src="/../images/C-C-Primer-Chapter-14/image-20240929155414735.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="14-9-3-函数匹配与重载运算符"><a href="#14-9-3-函数匹配与重载运算符" class="headerlink" title="14.9.3 函数匹配与重载运算符"></a>14.9.3 函数匹配与重载运算符</h3><p>如果我们对同一个类既提供了转换目标是算术类型的类型转换，也提供了重载的运算符，则将会遇到重载运算符与内置运算符的二义性问题。</p>
 
                 
               </div>
