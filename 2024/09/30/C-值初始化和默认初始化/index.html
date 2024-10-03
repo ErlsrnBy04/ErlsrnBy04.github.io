@@ -19,24 +19,24 @@
   <meta name="author" content="ErlsrnBy04">
   <meta name="keywords" content="">
   
-    <meta name="description" content="语句">
+    <meta name="description" content="在C++中，初始化方式多种多样，其中值初始化（value initialization）和默认初始化（default initialization）是两种常见的初始化方式。它们之间的主要区别在于是否对变量赋初始值以及如何赋值。 1. 值初始化（Value Initialization）值初始化指的是将变量明确地初始化为零或空值。不同类型的数据会根据其类型被赋予“零值”：  数值类型（如int、fl">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[C++]C++Primer Chapter 5">
-<meta property="og:url" content="https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-5/index.html">
+<meta property="og:title" content="[C++]值初始化和默认初始化">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/09/30/C-%E5%80%BC%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E9%BB%98%E8%AE%A4%E5%88%9D%E5%A7%8B%E5%8C%96/index.html">
 <meta property="og:site_name" content="ErlsrnBy04">
-<meta property="og:description" content="语句">
+<meta property="og:description" content="在C++中，初始化方式多种多样，其中值初始化（value initialization）和默认初始化（default initialization）是两种常见的初始化方式。它们之间的主要区别在于是否对变量赋初始值以及如何赋值。 1. 值初始化（Value Initialization）值初始化指的是将变量明确地初始化为零或空值。不同类型的数据会根据其类型被赋予“零值”：  数值类型（如int、fl">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://t.alcy.cc/fj?postId=5">
-<meta property="article:published_time" content="2024-09-22T04:01:00.000Z">
-<meta property="article:modified_time" content="2024-09-27T14:09:42.161Z">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=">
+<meta property="article:published_time" content="2024-09-30T03:13:32.000Z">
+<meta property="article:modified_time" content="2024-09-30T03:29:20.127Z">
 <meta property="article:author" content="ErlsrnBy04">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=5">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=">
   
   
   
-  <title>[C++]C++Primer Chapter 5 - ErlsrnBy04</title>
+  <title>[C++]值初始化和默认初始化 - ErlsrnBy04</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -220,7 +220,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="[C++]C++Primer Chapter 5"></span>
+            <span id="subtitle" data-typed-text="[C++]值初始化和默认初始化"></span>
           
         </div>
 
@@ -236,8 +236,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-09-22 12:01" pubdate>
-          2024年9月22日 中午
+        <time datetime="2024-09-30 11:13" pubdate>
+          2024年9月30日 上午
         </time>
       </span>
     
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.6k 字
+          782 字
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          22 分钟
+          7 分钟
         
       </span>
     
@@ -309,71 +309,48 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">[C++]C++Primer Chapter 5</h1>
+            <h1 id="seo-header">[C++]值初始化和默认初始化</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h1><span id="more"></span>
+                <p>在C++中，初始化方式多种多样，其中<strong>值初始化（value initialization）</strong>和<strong>默认初始化（default initialization）</strong>是两种常见的初始化方式。它们之间的主要区别在于是否对变量赋初始值以及如何赋值。</p>
+<h3 id="1-值初始化（Value-Initialization）"><a href="#1-值初始化（Value-Initialization）" class="headerlink" title="1. 值初始化（Value Initialization）"></a>1. <strong>值初始化（Value Initialization）</strong></h3><p>值初始化指的是将变量明确地初始化为零或空值。不同类型的数据会根据其类型被赋予“零值”：</p>
+<ul>
+<li>数值类型（如<code>int</code>、<code>float</code>、<code>double</code>）：初始化为<code>0</code>。</li>
+<li>指针类型：初始化为<code>nullptr</code>。</li>
+<li>用户自定义类类型：调用其默认构造函数（如果存在）。</li>
+</ul>
+<p>值初始化常通过以下方式实现：</p>
+<ul>
+<li><p>使用空的大括号<code>&#123;&#125;</code>或<code>()</code>初始化一个对象时：</p>
+</li>
+<li><p>对于类类型，如果类没有用户定义的构造函数，则成员会进行值初始化。</p>
+</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">auto</span> printer = [](<span class="hljs-type">int</span> x, <span class="hljs-type">double</span> y, <span class="hljs-type">int</span> *p, A a, B b)&#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;x = &quot;</span> &lt;&lt; x &lt;&lt; <span class="hljs-string">&quot; &quot;</span><br>             &lt;&lt; <span class="hljs-string">&quot;y = &quot;</span> &lt;&lt; y &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; endl<br>             &lt;&lt; <span class="hljs-string">&quot;p = &quot;</span> &lt;&lt; p &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; endl<br>             &lt;&lt; <span class="hljs-string">&quot;a.x = &quot;</span> &lt;&lt; a.x &lt;&lt; <span class="hljs-string">&quot; a.y = &quot;</span> &lt;&lt; a.y &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; endl<br>             &lt;&lt; <span class="hljs-string">&quot;b.x = &quot;</span> &lt;&lt; b.x &lt;&lt; <span class="hljs-string">&quot; b.y = &quot;</span> &lt;&lt; b.y &lt;&lt; endl;<br>    &#125;;<br>    <span class="hljs-comment">// 值初始化</span><br>    <span class="hljs-type">int</span> x&#123;&#125;; <span class="hljs-type">double</span> y&#123;&#125;;<br>    <span class="hljs-type">int</span> *p&#123;&#125;;<br>    A a&#123;&#125;; B b&#123;&#125;;<br>    <span class="hljs-built_in">printer</span>(x, y, p, a, b);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="5-1-简单语句"><a href="#5-1-简单语句" class="headerlink" title="5.1 简单语句"></a>5.1 简单语句</h2><h2 id="5-2-语句作用域"><a href="#5-2-语句作用域" class="headerlink" title="5.2 语句作用域"></a>5.2 语句作用域</h2><h2 id="5-3-条件语句"><a href="#5-3-条件语句" class="headerlink" title="5.3 条件语句"></a>5.3 条件语句</h2><h3 id="5-3-1-if语句"><a href="#5-3-1-if语句" class="headerlink" title="5.3.1 if语句"></a>5.3.1 if语句</h3><h3 id="5-3-2-switch语句"><a href="#5-3-2-switch语句" class="headerlink" title="5.3.2 switch语句"></a>5.3.2 switch语句</h3><p>switch语句（switch statement）提供了一条便利的途径使得我们能够在若干固定选项中做出选择。</p>
-<p><img src="/../images/C-C-Primer-Chapter-5/1725942532319.png" srcset="/img/loading.gif" lazyload></p>
-<p>case关键字和它对应的值一起被称为case标签（case label）。case标签必须是整型常量表达式。</p>
-<p><img src="/../images/C-C-Primer-Chapter-5/1725942502014.png" srcset="/img/loading.gif" lazyload></p>
-<p>即使不准备在default标签下做任何工作，定义一个default标签也是有用的。其目的在于告诉程序的读者，我们已经考虑到了默认的情况，只是目前什么也没做。</p>
-<p><strong>switch内部的变量定义</strong></p>
-<p>switch的执行流程有可能会跨过某些case标签。如果程序跳转到了某个特定的case，则switch结构中该case标签之前的部分会被忽略掉。这种忽略掉一部分代码的行为引出了一个有趣的问题：如果被略过的代码中含有变量的定义该怎么办？</p>
-<p>答案是：如果在某处一个带有初值的变量位于作用域之外，在另一处该变量位于作用域之内，则从前一处跳转到后一处的行为是非法行为。</p>
-<p><img src="/../images/C-C-Primer-Chapter-5/1725942726914.png" srcset="/img/loading.gif" lazyload></p>
-<p>如果需要为某个case分支定义并初始化一个变量，我们应该把变量定义在块内，从而确保后面的所有case标签都在变量的作用域之外。</p>
-<p><img src="/../images/C-C-Primer-Chapter-5/1725942745906.png" srcset="/img/loading.gif" lazyload></p>
-<h2 id="5-4-迭代语句"><a href="#5-4-迭代语句" class="headerlink" title="5.4 迭代语句"></a>5.4 迭代语句</h2><h3 id="5-4-1-while语句"><a href="#5-4-1-while语句" class="headerlink" title="5.4.1 while语句"></a>5.4.1 while语句</h3><p><img src="/../images/C-C-Primer-Chapter-5/1725942801324.png" srcset="/img/loading.gif" lazyload></p>
-<blockquote>
-<p>定义在while条件部分或者while循环体内的变量每次迭代都经历从创建到销毁的过程。</p>
-</blockquote>
-<h3 id="5-4-2-for语句"><a href="#5-4-2-for语句" class="headerlink" title="5.4.2 for语句"></a>5.4.2 for语句</h3><p><img src="/../images/C-C-Primer-Chapter-5/1725942926719.png" srcset="/img/loading.gif" lazyload></p>
-<p>init-statement必须是以下三种形式中的一种：声明语句、表达式语句或者空语句</p>
-<p>init-statement负责初始化一个值，这个值将随着循环的进行而改变。condition作为循环控制的条件，只要condition为真，就执行一次statement。如果condition第一次的求值结果就是false，则statement一次也不会执行。expression负责修改init-statement初始化的变量，这个变量正好就是condition检查的对象，修改发生在每次循环迭代之后。</p>
-<h3 id="5-4-3-范围for语句"><a href="#5-4-3-范围for语句" class="headerlink" title="5.4.3 范围for语句"></a>5.4.3 范围for语句</h3><p><img src="/../images/C-C-Primer-Chapter-5/1725943065748.png" srcset="/img/loading.gif" lazyload></p>
-<p>expression表示的必须是一个序列，比如用花括号括起来的初始值列表（参见3.3.1节，第88页）、数组（参见3.5节，第101页）或者vector或string等类型的对象，这些类型的共同特点是拥有能返回迭代器的begin和end成员（参见3.4节，第95页）。</p>
-<p>在范围for语句中，预存了end（）的值。一旦在序列中添加（删除）元素，end函数的值就可能变得无效了（参见3.4.1节，第98页）。</p>
-<h3 id="5-4-4-do-while语句"><a href="#5-4-4-do-while语句" class="headerlink" title="5.4.4 do while语句"></a>5.4.4 do while语句</h3><p><img src="/../images/C-C-Primer-Chapter-5/1725943185144.png" srcset="/img/loading.gif" lazyload></p>
-<h2 id="5-5-跳转语句"><a href="#5-5-跳转语句" class="headerlink" title="5.5 跳转语句"></a>5.5 跳转语句</h2><p>跳转语句中断当前的执行过程。C++语言提供了4种跳转语句：break、continue、goto和return。</p>
-<h3 id="5-5-1-break语句"><a href="#5-5-1-break语句" class="headerlink" title="5.5.1 break语句"></a>5.5.1 break语句</h3><h3 id="5-5-2-continue语句"><a href="#5-5-2-continue语句" class="headerlink" title="5.5.2 continue语句"></a>5.5.2 continue语句</h3><h3 id="5-5-3-goto语句"><a href="#5-5-3-goto语句" class="headerlink" title="5.5.3 goto语句"></a>5.5.3 goto语句</h3><p><img src="/../images/C-C-Primer-Chapter-5/1725943324855.png" srcset="/img/loading.gif" lazyload></p>
-<p>其中，label是用于标识一条语句的标示符。带标签语句（labeled statement）是一种特殊的语句，在它之前有一个标示符以及一个冒号：</p>
-<p><img src="/../images/C-C-Primer-Chapter-5/1725943337648.png" srcset="/img/loading.gif" lazyload></p>
-<blockquote>
-<p>不要在程序中使用goto语句，因为它使得程序既难理解又难修改。</p>
-</blockquote>
-<h2 id="5-2-try语句块和异常处理"><a href="#5-2-try语句块和异常处理" class="headerlink" title="5.2 try语句块和异常处理"></a>5.2 try语句块和异常处理</h2><p>异常是指存在于运行时的反常行为，这些行为超出了函数正常功能的范围。典型的异常包括失去数据库连接以及遇到意外输入等。处理反常行为可能是设计所有系统最难的一部分。</p>
-<p>在C++语言中，异常处理包括：</p>
-<p><strong>throw表达式（throw expression）</strong>，异常检测部分使用throw表达式来表示它遇到了无法处理的问题。我们说throw引发（raise）了异常。</p>
-<p><strong>try语句块（try block）</strong>，异常处理部分使用try语句块处理异常。try语句块以关键字try开始，并以一个或多个catch子句（catch clause）结束。try语句块中代码抛出的异常通常会被某个catch子句处理。因为catch子句“处理”异常，所以它们也被称作异常处理代码（exception handler）。</p>
-<p><strong>一套异常类（exception class）</strong>，用于在throw表达式和相关的catch子句之间传递异常的具体信息。</p>
-<h3 id="5-6-1-throw表达式"><a href="#5-6-1-throw表达式" class="headerlink" title="5.6.1 throw表达式"></a>5.6.1 throw表达式</h3><p>throw表达式包含关键字throw和紧随其后的一个表达式，其中表达式的类型就是抛出的异常类型。throw表达式后面通常紧跟一个分号，从而构成一条表达式语句。</p>
-<p><img src="/../images/C-C-Primer-Chapter-5/1725943584527.png" srcset="/img/loading.gif" lazyload></p>
-<p>在这段代码中，如果ISBN不一样就抛出一个异常，该异常是类型runtime_error的对象。抛出异常将终止当前的函数，并把控制权转移给能处理该异常的代码。</p>
-<p>类型runtime_error是标准库异常类型的一种，定义在stdexcept头文件中。关于标准库异常类型更多的知识将在5.6.3节（第176页）介绍。我们必须初始化runtime_error的对象，方式是给它提供一个string对象或者一个C风格的字符串（参见3.5.4节，第109页），这个字符串中有一些关于异常的辅助信息。</p>
-<h3 id="5-6-2-try语句块"><a href="#5-6-2-try语句块" class="headerlink" title="5.6.2 try语句块"></a>5.6.2 try语句块</h3><p><img src="/../images/C-C-Primer-Chapter-5/1725943641521.png" srcset="/img/loading.gif" lazyload></p>
-<p>try语句块的一开始是关键字try，随后紧跟着一个块，这个块就像大多数时候那样是花括号括起来的语句序列。</p>
-<p>跟在try块之后的是一个或多个catch子句。catch子句包括三部分：关键字catch、括号内一个（可能未命名的）对象的声明（称作异常声明，exception declaration）以及一个块。当选中了某个catch子句处理异常之后，执行与之对应的块。catch一旦完成，程序跳转到try语句块最后一个catch子句之后的那条语句继续执行。</p>
-<p><img src="/../images/C-C-Primer-Chapter-5/1725943730068.png" srcset="/img/loading.gif" lazyload></p>
-<p>每个标准库异常类都定义了名为what的成员函数，这些函数没有参数，返回值是C风格字符串（即const char＊）。其中，runtime_error的what成员返回的是初始化一个具体对象时所用的string对象的副本。</p>
-<p>在复杂系统中，程序在遇到抛出异常的代码前，其执行路径可能已经经过了多个try语句块。例如，一个try语句块可能调用了包含另一个try语句块的函数，新的try语句块可能调用了包含又一个try语句块的新函数，以此类推。</p>
-<p>寻找处理代码的过程与函数调用链刚好相反。当异常被抛出时，首先搜索抛出该异常的函数。如果没找到匹配的catch子句，终止该函数，并在调用该函数的函数中继续寻找。如果还是没有找到匹配的catch子句，这个新的函数也被终止，继续搜索调用它的函数。以此类推，沿着程序的执行路径逐层回退，直到找到适当类型的catch子句为止。如果最终还是没能找到任何匹配的catch子句，程序转到名为terminate的标准库函数。该函数的行为与系统有关，一般情况下，执行该函数将导致程序非正常退出。</p>
-<p>对于那些没有任何try语句块定义的异常，也按照类似的方式处理：毕竟，没有try语句块也就意味着没有匹配的catch子句。如果一段程序没有try语句块且发生了异常，系统会调用terminate函数并终止当前程序的执行。</p>
-<p><strong>编写异常安全的代码非常困难</strong></p>
-<p>异常中断了程序的正常流程。异常发生时，调用者请求的一部分计算可能已经完成了，另一部分则尚未完成。通常情况下，略过部分程序意味着某些对象处理到一半就戛然而止，从而导致对象处于无效或未完成的状态，或者资源没有正常释放，等等。</p>
-<p>那些在异常发生期间正确执行了“清理”工作的程序被称作异常安全（exception safe）的代码。然而经验表明，编写异常安全的代码非常困难，这部分知识也（远远）超出了本书的范围。对于一些程序来说，当异常发生时只是简单地终止程序。此时，我们不怎么需要担心异常安全的问题。但是对于那些确实要处理异常并继续执行的程序，就要加倍注意了。我们必须时刻清楚异常何时发生，异常发生后程序应如何确保对象有效、资源无泄漏、程序处于合理状态，等等。</p>
-<h3 id="5-6-3-标准异常"><a href="#5-6-3-标准异常" class="headerlink" title="5.6.3 标准异常"></a>5.6.3 标准异常</h3><p>C++标准库定义了一组类，用于报告标准库函数遇到的问题。这些异常类也可以在用户编写的程序中使用，它们分别定义在4个头文件中</p>
-<p>exception头文件定义了最通用的异常类exception。它只报告异常的发生，不提供任何额外信息。</p>
-<p>stdexcept头文件定义了几种常用的异常类，详细信息在表5.1中列出。</p>
-<p><img src="/../images/C-C-Primer-Chapter-5/1725944160121.png" srcset="/img/loading.gif" lazyload></p>
-<p>new头文件定义了bad_alloc异常类型，这种类型将在12.1.2节（第407页）详细介绍。</p>
-<p>type_info头文件定义了bad_cast异常类型，这种类型将在19.2节（第731页）详细介绍。</p>
-<p>我们只能以默认初始化（参见2.2.1节，第40页）的方式初始化exception、bad_alloc和bad_cast对象，不允许为这些对象提供初始值。</p>
-<p>其他异常类型的行为则恰好相反：应该使用string对象或者C风格字符串初始化这些类型的对象，但是不允许使用默认初始化的方式。当创建此类对象时，必须提供初始值，该初始值含有错误相关的信息。</p>
-<p>异常类型只定义了一个名为what的成员函数，该函数没有任何参数，返回值是一个指向C风格字符串（参见3.5.4节，第109页）的const char＊。该字符串的目的是提供关于异常的一些文本信息。</p>
+<p><strong>结果：</strong></p>
+<p><img src="/../images/C-%E5%80%BC%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E9%BB%98%E8%AE%A4%E5%88%9D%E5%A7%8B%E5%8C%96/image-20240930111807883.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-默认初始化（Default-Initialization）"><a href="#2-默认初始化（Default-Initialization）" class="headerlink" title="2. 默认初始化（Default Initialization）"></a>2. <strong>默认初始化（Default Initialization）</strong></h3><p>默认初始化是指在变量定义时，如果没有显式地为其提供初始值，编译器会对它进行默认的处理。</p>
+<ul>
+<li>基本数据类型（如<code>int</code>、<code>float</code>）：不会进行任何初始化，可能包含未定义值（垃圾值）。</li>
+<li>指针类型：也是未定义的，指针没有被初始化到<code>nullptr</code>。</li>
+<li>类类型：如果类定义了默认构造函数，那么对象将调用这个构造函数。</li>
+</ul>
+<p>默认初始化常在以下情况下发生：</p>
+<ul>
+<li><p>通过不加括号或等号的方式声明对象：</p>
+</li>
+<li><p>对于类类型，如果类有用户定义的默认构造函数，则会调用这个构造函数，否则，类成员将默认初始化。</p>
+</li>
+</ul>
+<p>在C++中，默认初始化和值初始化的行为可能在某些情况下看起来相同，但它们的底层机制却有所不同。你遇到的情况是，默认初始化和值初始化的结果相同，通常发生在以下几种场景下：</p>
+<h3 id="3-全局变量和静态变量"><a href="#3-全局变量和静态变量" class="headerlink" title="3. 全局变量和静态变量"></a>3. <strong>全局变量和静态变量</strong></h3><p>在C++中，<strong>全局变量</strong>和<strong>静态变量</strong>总是被<strong>零初始化</strong>，无论你是否显式地对它们进行初始化。这意味着即使你使用默认初始化，它们也会被初始化为零值。</p>
+<h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">int</span> global_var;  <span class="hljs-comment">// 全局变量，默认初始化为0</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">static</span> <span class="hljs-type">int</span> static_var;  <span class="hljs-comment">// 静态局部变量，默认初始化为0</span><br>    <span class="hljs-type">int</span> local_var;  <span class="hljs-comment">// 局部变量，默认初始化，未定义（垃圾值）</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这种情况下，全局变量<code>global_var</code>和静态变量<code>static_var</code>即使没有显式地进行值初始化，默认初始化时也会被设置为0。这是C++标准规定的。</p>
 
                 
               </div>
@@ -419,8 +396,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>[C++]C++Primer Chapter 5</div>
-      <div>https://erlsrnby04.github.io/2024/09/22/C-C-Primer-Chapter-5/</div>
+      <div>[C++]值初始化和默认初始化</div>
+      <div>https://erlsrnby04.github.io/2024/09/30/C-值初始化和默认初始化/</div>
     </div>
     <div class="license-meta">
       
@@ -432,7 +409,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年9月22日</div>
+          <div>2024年9月30日</div>
         </div>
       
       
@@ -470,18 +447,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/09/22/C-C-Primer-Chapter-6/" title="[C++]C++Primer Chapter 6">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">[C++]C++Primer Chapter 6</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/09/22/C-C-Primer-Chapter-4/" title="[C++]C++Primer Chapter 4">
-                        <span class="hidden-mobile">[C++]C++Primer Chapter 4</span>
+                      <a href="/2024/09/29/C-C-Primer-Chapter-15/" title="[C++]C++Primer Chapter 15">
+                        <span class="hidden-mobile">[C++]C++Primer Chapter 15</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
