@@ -19,24 +19,24 @@
   <meta name="author" content="ErlsrnBy04">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在C++中，static变量有不同的用途和作用，取决于它在程序中的声明位置。它可以用于局部变量、类成员变量和全局变量。">
+    <meta name="description" content="在 C++ 中，不同类型有各自的极端值，包括最小值、最大值和表示特殊情况的值（如无穷大、未定义值等）。这些极端值在算法和编程中经常被使用，比如设置边界条件、初始化变量等。下面将介绍各个基本类型的极端值及其使用方法。 1. 整型类型常见的整型类型 int：标准整型 long：较大的整型 long long：更大的整型 unsigned int：无符号整型，不能表示负数 char：字符类型，本质上是一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[C++]static">
-<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/04/C-static/index.html">
+<meta property="og:title" content="[C++]类型极端值">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/06/C-%E7%B1%BB%E5%9E%8B%E6%9E%81%E7%AB%AF%E5%80%BC/index.html">
 <meta property="og:site_name" content="ErlsrnBy04">
-<meta property="og:description" content="在C++中，static变量有不同的用途和作用，取决于它在程序中的声明位置。它可以用于局部变量、类成员变量和全局变量。">
+<meta property="og:description" content="在 C++ 中，不同类型有各自的极端值，包括最小值、最大值和表示特殊情况的值（如无穷大、未定义值等）。这些极端值在算法和编程中经常被使用，比如设置边界条件、初始化变量等。下面将介绍各个基本类型的极端值及其使用方法。 1. 整型类型常见的整型类型 int：标准整型 long：较大的整型 long long：更大的整型 unsigned int：无符号整型，不能表示负数 char：字符类型，本质上是一">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://t.alcy.cc/fj?postId=">
-<meta property="article:published_time" content="2024-10-04T04:57:08.000Z">
-<meta property="article:modified_time" content="2024-10-04T05:00:51.483Z">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=34">
+<meta property="article:published_time" content="2024-10-05T16:17:23.000Z">
+<meta property="article:modified_time" content="2024-10-05T16:18:15.419Z">
 <meta property="article:author" content="ErlsrnBy04">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=34">
   
   
   
-  <title>[C++]static - ErlsrnBy04</title>
+  <title>[C++]类型极端值 - ErlsrnBy04</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -220,7 +220,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="[C++]static"></span>
+            <span id="subtitle" data-typed-text="[C++]类型极端值"></span>
           
         </div>
 
@@ -236,8 +236,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-10-04 12:57" pubdate>
-          2024年10月4日 下午
+        <time datetime="2024-10-06 00:17" pubdate>
+          2024年10月6日 凌晨
         </time>
       </span>
     
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          852 字
+          1.3k 字
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          8 分钟
+          12 分钟
         
       </span>
     
@@ -309,46 +309,76 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">[C++]static</h1>
+            <h1 id="seo-header">[C++]类型极端值</h1>
             
             
               <div class="markdown-body">
                 
-                <p>在C++中，<code>static</code>变量有不同的用途和作用，取决于它在程序中的声明位置。它可以用于局部变量、类成员变量和全局变量。</p>
-<span id="more"></span>
-
-<h3 id="1-局部static变量"><a href="#1-局部static变量" class="headerlink" title="1. 局部static变量"></a>1. <strong>局部<code>static</code>变量</strong></h3><p>局部<code>static</code>变量是在函数或代码块中声明的<code>static</code>变量。它与普通局部变量的主要区别是：</p>
-<ul>
-<li><strong>生命周期</strong>：局部<code>static</code>变量的生命周期从第一次执行到该声明开始，直到程序结束。即使函数多次被调用，它的值也会在不同的调用之间保持不变。</li>
-<li><strong>作用域</strong>：它的作用域仅限于函数或代码块，不能被函数外部直接访问。</li>
+                <p>在 C++ 中，不同类型有各自的极端值，包括最小值、最大值和表示特殊情况的值（如无穷大、未定义值等）。这些极端值在算法和编程中经常被使用，比如设置边界条件、初始化变量等。下面将介绍各个基本类型的极端值及其使用方法。</p>
+<h3 id="1-整型类型"><a href="#1-整型类型" class="headerlink" title="1. 整型类型"></a>1. <strong>整型类型</strong></h3><h4 id="常见的整型类型"><a href="#常见的整型类型" class="headerlink" title="常见的整型类型"></a>常见的整型类型</h4><ul>
+<li><code>int</code>：标准整型</li>
+<li><code>long</code>：较大的整型</li>
+<li><code>long long</code>：更大的整型</li>
+<li><code>unsigned int</code>：无符号整型，不能表示负数</li>
+<li><code>char</code>：字符类型，本质上是一个 1 字节的整数</li>
 </ul>
-<p><strong>示例</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">example</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">static</span> <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 只在第一次调用时初始化</span><br>    count++;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Count: &quot;</span> &lt;&lt; count &lt;&lt; std::endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-built_in">example</span>();  <span class="hljs-comment">// 输出：1</span><br>    <span class="hljs-built_in">example</span>();  <span class="hljs-comment">// 输出：2</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="获取整型极端值"><a href="#获取整型极端值" class="headerlink" title="获取整型极端值"></a>获取整型极端值</h4><p>在 C++ 中，可以通过 <code>limits</code> 头文件中的 <code>std::numeric_limits</code> 类来获取整型（以及其他类型）的极端值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;limits&gt;</span>  <span class="hljs-comment">// 头文件</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;int 的最小值: &quot;</span> &lt;&lt; std::numeric_limits&lt;<span class="hljs-type">int</span>&gt;::<span class="hljs-built_in">min</span>() &lt;&lt; std::endl;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;int 的最大值: &quot;</span> &lt;&lt; std::numeric_limits&lt;<span class="hljs-type">int</span>&gt;::<span class="hljs-built_in">max</span>() &lt;&lt; std::endl;<br>    <br>    std::cout &lt;&lt; <span class="hljs-string">&quot;unsigned int 的最大值: &quot;</span> &lt;&lt; std::numeric_limits&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>&gt;::<span class="hljs-built_in">max</span>() &lt;&lt; std::endl;<br>    <br>    std::cout &lt;&lt; <span class="hljs-string">&quot;long long 的最小值: &quot;</span> &lt;&lt; std::numeric_limits&lt;<span class="hljs-type">long</span> <span class="hljs-type">long</span>&gt;::<span class="hljs-built_in">min</span>() &lt;&lt; std::endl;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;long long 的最大值: &quot;</span> &lt;&lt; std::numeric_limits&lt;<span class="hljs-type">long</span> <span class="hljs-type">long</span>&gt;::<span class="hljs-built_in">max</span>() &lt;&lt; std::endl;<br>    <br>    std::cout &lt;&lt; <span class="hljs-string">&quot;char 的最小值: &quot;</span> &lt;&lt; +std::numeric_limits&lt;<span class="hljs-type">char</span>&gt;::<span class="hljs-built_in">min</span>() &lt;&lt; std::endl;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;char 的最大值: &quot;</span> &lt;&lt; +std::numeric_limits&lt;<span class="hljs-type">char</span>&gt;::<span class="hljs-built_in">max</span>() &lt;&lt; std::endl;  <span class="hljs-comment">// 使用 + 强制转换为 int 类型输出</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h3 id="2-类的static成员变量"><a href="#2-类的static成员变量" class="headerlink" title="2. 类的static成员变量"></a>2. <strong>类的<code>static</code>成员变量</strong></h3><p>类中的<code>static</code>成员变量是属于整个类的，而不是属于某个对象的。它在所有类的实例间共享，同一个类的所有对象都可以访问这个变量，并且它的值对所有对象都是相同的。</p>
-<ul>
-<li><strong>生命周期</strong>：静态成员变量的生命周期从程序开始，到程序结束。</li>
-<li><strong>访问方式</strong>：可以通过类名或类的对象来访问，但推荐使用类名来访问。</li>
-<li><strong>初始化</strong>：静态成员变量必须在类定义体外进行初始化，不能在类内部直接赋值。</li>
+<h4 id="整型类型的极端值总结"><a href="#整型类型的极端值总结" class="headerlink" title="整型类型的极端值总结"></a>整型类型的极端值总结</h4><ul>
+<li><code>std::numeric_limits&lt;int&gt;::min()</code>：返回 <code>int</code> 类型的最小值（例如 <code>-2147483648</code>）。</li>
+<li><code>std::numeric_limits&lt;int&gt;::max()</code>：返回 <code>int</code> 类型的最大值（例如 <code>2147483647</code>）。</li>
+<li><code>std::numeric_limits&lt;unsigned int&gt;::max()</code>：返回无符号整型的最大值（例如 <code>4294967295</code>）。</li>
+<li><code>std::numeric_limits&lt;long long&gt;::min()</code> 和 <code>max()</code>：对于 <code>long long</code> 类型，返回最小和最大值。</li>
+<li><code>std::numeric_limits&lt;char&gt;::min()</code> 和 <code>max()</code>：返回 <code>char</code> 类型的最小值和最大值（-128 到 127）。</li>
 </ul>
-<p><strong>示例</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">static</span> <span class="hljs-type">int</span> staticVar;<br>&#125;;<br><br><span class="hljs-type">int</span> MyClass::staticVar = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 在类定义外初始化</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    MyClass::staticVar = <span class="hljs-number">10</span>;  <span class="hljs-comment">// 通过类名访问</span><br>    MyClass obj1, obj2;<br>    std::cout &lt;&lt; obj<span class="hljs-number">1.</span>staticVar &lt;&lt; std::endl;  <span class="hljs-comment">// 输出：10</span><br>    obj<span class="hljs-number">2.</span>staticVar = <span class="hljs-number">20</span>;<br>    std::cout &lt;&lt; obj<span class="hljs-number">1.</span>staticVar &lt;&lt; std::endl;  <span class="hljs-comment">// 输出：20 (共享变量)</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这些极端值通常用于初始化边界值或限制输入值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">int</span> largest = std::numeric_limits&lt;<span class="hljs-type">int</span>&gt;::<span class="hljs-built_in">min</span>();  <span class="hljs-comment">// 初始化为最小值，保证接下来的数都比它大</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="3-全局static变量或函数"><a href="#3-全局static变量或函数" class="headerlink" title="3. 全局static变量或函数"></a>3. <strong>全局<code>static</code>变量或函数</strong></h3><p>如果在函数外部声明<code>static</code>变量或函数，它的作用域将被限制在定义它的文件中，也就是说，它只能在该文件中访问，不能被其他文件链接或访问。通常，这种用法用于隐藏模块的全局变量，使得它们不会污染其他文件的命名空间。</p>
-<p><strong>示例</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 在file1.cpp中</span><br><span class="hljs-type">static</span> <span class="hljs-type">int</span> globalStaticVar = <span class="hljs-number">100</span>;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">function</span><span class="hljs-params">()</span> </span>&#123;<br>    std::cout &lt;&lt; globalStaticVar &lt;&lt; std::endl;<br>&#125;<br><br><span class="hljs-comment">// 在file2.cpp中</span><br><span class="hljs-function"><span class="hljs-keyword">extern</span> <span class="hljs-type">void</span> <span class="hljs-title">function</span><span class="hljs-params">()</span></span>;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-built_in">function</span>();  <span class="hljs-comment">// 输出：100</span><br>    <span class="hljs-comment">// 不能直接访问globalStaticVar，因为它是file1.cpp的静态变量</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="2-浮点类型"><a href="#2-浮点类型" class="headerlink" title="2. 浮点类型"></a>2. <strong>浮点类型</strong></h3><h4 id="常见的浮点类型"><a href="#常见的浮点类型" class="headerlink" title="常见的浮点类型"></a>常见的浮点类型</h4><ul>
+<li><code>float</code>：单精度浮点数</li>
+<li><code>double</code>：双精度浮点数</li>
+<li><code>long double</code>：扩展精度浮点数</li>
+</ul>
+<h4 id="获取浮点类型的极端值"><a href="#获取浮点类型的极端值" class="headerlink" title="获取浮点类型的极端值"></a>获取浮点类型的极端值</h4><p>浮点类型同样可以使用 <code>std::numeric_limits</code> 来获取其极端值，并且还可以获取特殊值如无穷大和非数值（NaN）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;limits&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;float 的最小值: &quot;</span> &lt;&lt; std::numeric_limits&lt;<span class="hljs-type">float</span>&gt;::<span class="hljs-built_in">min</span>() &lt;&lt; std::endl;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;float 的最大值: &quot;</span> &lt;&lt; std::numeric_limits&lt;<span class="hljs-type">float</span>&gt;::<span class="hljs-built_in">max</span>() &lt;&lt; std::endl;<br>    <br>    std::cout &lt;&lt; <span class="hljs-string">&quot;double 的最小值: &quot;</span> &lt;&lt; std::numeric_limits&lt;<span class="hljs-type">double</span>&gt;::<span class="hljs-built_in">min</span>() &lt;&lt; std::endl;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;double 的最大值: &quot;</span> &lt;&lt; std::numeric_limits&lt;<span class="hljs-type">double</span>&gt;::<span class="hljs-built_in">max</span>() &lt;&lt; std::endl;<br>    <br>    <span class="hljs-comment">// 特殊值</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;float 无穷大: &quot;</span> &lt;&lt; std::numeric_limits&lt;<span class="hljs-type">float</span>&gt;::<span class="hljs-built_in">infinity</span>() &lt;&lt; std::endl;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;float NaN（非数值）: &quot;</span> &lt;&lt; std::numeric_limits&lt;<span class="hljs-type">float</span>&gt;::<span class="hljs-built_in">quiet_NaN</span>() &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h3 id="4-类static成员函数"><a href="#4-类static成员函数" class="headerlink" title="4. 类static成员函数"></a>4. <strong>类<code>static</code>成员函数</strong></h3><p>如果在类中声明一个<code>static</code>成员函数，那么该函数可以在没有对象实例的情况下被调用。<code>static</code>成员函数只能访问类的<code>static</code>成员变量或其他<code>static</code>成员函数，不能访问非静态成员。</p>
-<p><strong>示例</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">static</span> <span class="hljs-type">int</span> staticVar;<br><br>    <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">staticFunction</span><span class="hljs-params">()</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Static variable: &quot;</span> &lt;&lt; staticVar &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-type">int</span> MyClass::staticVar = <span class="hljs-number">42</span>;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    MyClass::<span class="hljs-built_in">staticFunction</span>();  <span class="hljs-comment">// 可以在没有对象的情况下调用</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="浮点类型的极端值总结"><a href="#浮点类型的极端值总结" class="headerlink" title="浮点类型的极端值总结"></a>浮点类型的极端值总结</h4><ul>
+<li><code>std::numeric_limits&lt;float&gt;::min()</code>：返回 <code>float</code> 类型的最小正数（注意是正数）。</li>
+<li><code>std::numeric_limits&lt;float&gt;::max()</code>：返回 <code>float</code> 类型的最大值。</li>
+<li><code>std::numeric_limits&lt;float&gt;::lowest()</code>：返回 <code>float</code> 类型的负数最小值。</li>
+<li><code>std::numeric_limits&lt;float&gt;::infinity()</code>：返回正无穷大。</li>
+<li><code>std::numeric_limits&lt;float&gt;::quiet_NaN()</code>：返回非数值（NaN）。</li>
+</ul>
+<p>浮点数的这些值通常用于数值算法中的边界检测，尤其是 <code>NaN</code> 和 <code>infinity</code>，它们可以用来检测非法操作或溢出情况：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (result == std::numeric_limits&lt;<span class="hljs-type">double</span>&gt;::<span class="hljs-built_in">infinity</span>()) &#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Overflow detected!&quot;</span> &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-布尔类型"><a href="#3-布尔类型" class="headerlink" title="3. 布尔类型"></a>3. <strong>布尔类型</strong></h3><p>布尔类型的极端值相对简单，它只有两个值：</p>
+<ul>
+<li><code>true</code></li>
+<li><code>false</code></li>
+</ul>
+<h3 id="4-特殊的极端值"><a href="#4-特殊的极端值" class="headerlink" title="4. 特殊的极端值"></a>4. <strong>特殊的极端值</strong></h3><h4 id="nullptr"><a href="#nullptr" class="headerlink" title="nullptr"></a><code>nullptr</code></h4><p>对于指针类型，<code>nullptr</code> 表示空指针，作为指针的极端值使用。在 C++11 之前，通常使用 <code>NULL</code>，但 <code>nullptr</code> 是更推荐的方式，因为它具有更好的类型安全性。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">int</span>* ptr = <span class="hljs-literal">nullptr</span>;  <span class="hljs-comment">// 初始化为空指针</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="size-t"><a href="#size-t" class="headerlink" title="size_t"></a><code>size_t</code></h4><p><code>size_t</code> 是一个无符号整数类型，常用于表示数组下标或大小。它的极端值可以通过 <code>std::numeric_limits&lt;size_t&gt;::max()</code> 获取。通常用来表示不存在的索引值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">size_t</span> invalidIndex = std::numeric_limits&lt;<span class="hljs-type">size_t</span>&gt;::<span class="hljs-built_in">max</span>();<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-如何使用极端值"><a href="#5-如何使用极端值" class="headerlink" title="5. 如何使用极端值"></a>5. <strong>如何使用极端值</strong></h3><p>极端值在很多情况下非常有用，比如：</p>
+<h4 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1. 初始化"></a>1. <strong>初始化</strong></h4><p>初始化变量时，可以使用最小值和最大值作为起始条件。例如，寻找最大值时，将变量初始化为最小值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">int</span> maxValue = std::numeric_limits&lt;<span class="hljs-type">int</span>&gt;::<span class="hljs-built_in">min</span>();<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-边界检测"><a href="#2-边界检测" class="headerlink" title="2. 边界检测"></a>2. <strong>边界检测</strong></h4><p>通过判断值是否接近最大或最小值，可以检测出溢出、无效输入等异常情况。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (someValue &gt; std::numeric_limits&lt;<span class="hljs-type">int</span>&gt;::<span class="hljs-built_in">max</span>()) &#123;<br>    <span class="hljs-comment">// 处理溢出</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-浮点数异常处理"><a href="#3-浮点数异常处理" class="headerlink" title="3. 浮点数异常处理"></a>3. <strong>浮点数异常处理</strong></h4><p>在浮点数运算中，检测 <code>NaN</code> 和无穷大是常见的需求：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">double</span> result = <span class="hljs-built_in">someComputation</span>();<br><span class="hljs-keyword">if</span> (std::<span class="hljs-built_in">isnan</span>(result)) &#123;<br>    <span class="hljs-comment">// 处理非数值情况</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li><strong>局部<code>static</code>变量</strong>：初始化一次，生命周期贯穿整个程序，作用域限于函数内。</li>
-<li><strong>类的<code>static</code>成员变量</strong>：在类的所有对象之间共享，必须在类外进行初始化。</li>
-<li><strong>全局<code>static</code>变量</strong>：作用域限制在定义它的文件中，不会被其他文件访问。</li>
-<li><strong>类的<code>static</code>成员函数</strong>：无需创建对象即可调用，只能访问<code>static</code>成员。</li>
+<li>C++ 提供了标准的 <code>std::numeric_limits</code> 类来获取各种数据类型的极端值，包括整型、浮点型、布尔型、指针等。</li>
+<li>这些极端值对于边界检查、初始化和异常处理非常有用，可以帮助编写更健壮的代码。</li>
+<li>了解并善用这些极端值对于编写健壮的算法和处理极端情况非常重要。</li>
 </ul>
-<p>这些特性使得<code>static</code>关键字在C++中广泛用于控制变量和函数的生命周期、作用域和访问权限。</p>
 
                 
               </div>
@@ -394,8 +424,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>[C++]static</div>
-      <div>https://erlsrnby04.github.io/2024/10/04/C-static/</div>
+      <div>[C++]类型极端值</div>
+      <div>https://erlsrnby04.github.io/2024/10/06/C-类型极端值/</div>
     </div>
     <div class="license-meta">
       
@@ -407,7 +437,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年10月4日</div>
+          <div>2024年10月6日</div>
         </div>
       
       
@@ -445,9 +475,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/10/04/MIT-6-1810-Lab2-system-calls/" title="[MIT 6.1810]Lab2 system calls">
+                      <a href="/2024/10/06/LC-53-%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C/" title="[LC]53.最大子数组和">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">[MIT 6.1810]Lab2 system calls</span>
+                        <span class="hidden-mobile">[LC]53.最大子数组和</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -455,8 +485,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/10/04/C-C-Primer-Chapter-16/" title="[C++]C++Primer Chapter 16">
-                        <span class="hidden-mobile">[C++]C++Primer Chapter 16</span>
+                      <a href="/2024/10/05/C-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" title="[C++]优先队列">
+                        <span class="hidden-mobile">[C++]优先队列</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

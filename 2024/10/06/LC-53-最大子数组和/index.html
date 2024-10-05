@@ -19,24 +19,24 @@
   <meta name="author" content="ErlsrnBy04">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在C++中，static变量有不同的用途和作用，取决于它在程序中的声明位置。它可以用于局部变量、类成员变量和全局变量。">
+    <meta name="description" content="题目给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。 子数组是数组中的一个连续部分。 分析遍历用 max 维护最大子数组和，cur_b 维护当前子数组的起始位置，cur 维护当前子数组的和，i 维护当前遍历的位置，每遍历到一个位置，我们将当前位置的值加到 cur 上，然后判断 cur 是否小于 max ，如果大于 max ，则更新 max">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[C++]static">
-<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/04/C-static/index.html">
+<meta property="og:title" content="[LC]53.最大子数组和">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/06/LC-53-%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C/index.html">
 <meta property="og:site_name" content="ErlsrnBy04">
-<meta property="og:description" content="在C++中，static变量有不同的用途和作用，取决于它在程序中的声明位置。它可以用于局部变量、类成员变量和全局变量。">
+<meta property="og:description" content="题目给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。 子数组是数组中的一个连续部分。 分析遍历用 max 维护最大子数组和，cur_b 维护当前子数组的起始位置，cur 维护当前子数组的和，i 维护当前遍历的位置，每遍历到一个位置，我们将当前位置的值加到 cur 上，然后判断 cur 是否小于 max ，如果大于 max ，则更新 max">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://t.alcy.cc/fj?postId=">
-<meta property="article:published_time" content="2024-10-04T04:57:08.000Z">
-<meta property="article:modified_time" content="2024-10-04T05:00:51.483Z">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=35">
+<meta property="article:published_time" content="2024-10-05T16:25:42.000Z">
+<meta property="article:modified_time" content="2024-10-05T17:15:11.180Z">
 <meta property="article:author" content="ErlsrnBy04">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=35">
   
   
   
-  <title>[C++]static - ErlsrnBy04</title>
+  <title>[LC]53.最大子数组和 - ErlsrnBy04</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -220,7 +220,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="[C++]static"></span>
+            <span id="subtitle" data-typed-text="[LC]53.最大子数组和"></span>
           
         </div>
 
@@ -236,8 +236,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-10-04 12:57" pubdate>
-          2024年10月4日 下午
+        <time datetime="2024-10-06 00:25" pubdate>
+          2024年10月6日 凌晨
         </time>
       </span>
     
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          852 字
+          1.2k 字
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          8 分钟
+          11 分钟
         
       </span>
     
@@ -309,46 +309,41 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">[C++]static</h1>
+            <h1 id="seo-header">[LC]53.最大子数组和</h1>
             
             
               <div class="markdown-body">
                 
-                <p>在C++中，<code>static</code>变量有不同的用途和作用，取决于它在程序中的声明位置。它可以用于局部变量、类成员变量和全局变量。</p>
-<span id="more"></span>
+                <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给你一个整数数组 <code>nums</code> ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
+<p>子数组是数组中的一个连续部分。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h4><p>用 <code>max</code> 维护最大子数组和，<code>cur_b</code> 维护当前子数组的起始位置，<code>cur</code> 维护当前子数组的和，<code>i</code> 维护当前遍历的位置，每遍历到一个位置，我们将当前位置的值加到 <code>cur</code> 上，然后判断 <code>cur</code> 是否小于 <code>max</code> ，如果大于 <code>max</code> ，则更新 <code>max</code> ，之后再判断 <code>cur</code> 是否小于 <code>0</code> ，如果 <code>cur</code> 已经小于 <code>0</code> 了，则更新 <code>cur_b</code> 为 <code>i+1</code> ，然后继续遍历。</p>
+<p><strong>代码</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">maxSubArray</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums)</span> </span>&#123;<br>        <span class="hljs-type">int</span> max = numeric_limits&lt;<span class="hljs-type">int</span>&gt;::<span class="hljs-built_in">min</span>(), cur = <span class="hljs-number">0</span>;<br>        <span class="hljs-type">size_t</span> cur_b = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">size_t</span> i = <span class="hljs-number">0</span>; i != nums.<span class="hljs-built_in">size</span>(); ++i)<br>        &#123;<br>            cur += nums[i];<br>            <span class="hljs-keyword">if</span> (cur &gt; max) max = cur;<br>            <span class="hljs-keyword">if</span> (cur &lt; <span class="hljs-number">0</span>) <br>            &#123;<br>                cur_b = i + <span class="hljs-number">1</span>;<br>                cur = <span class="hljs-number">0</span>;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> max;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
-<h3 id="1-局部static变量"><a href="#1-局部static变量" class="headerlink" title="1. 局部static变量"></a>1. <strong>局部<code>static</code>变量</strong></h3><p>局部<code>static</code>变量是在函数或代码块中声明的<code>static</code>变量。它与普通局部变量的主要区别是：</p>
-<ul>
-<li><strong>生命周期</strong>：局部<code>static</code>变量的生命周期从第一次执行到该声明开始，直到程序结束。即使函数多次被调用，它的值也会在不同的调用之间保持不变。</li>
-<li><strong>作用域</strong>：它的作用域仅限于函数或代码块，不能被函数外部直接访问。</li>
-</ul>
-<p><strong>示例</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">example</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">static</span> <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 只在第一次调用时初始化</span><br>    count++;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Count: &quot;</span> &lt;&lt; count &lt;&lt; std::endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-built_in">example</span>();  <span class="hljs-comment">// 输出：1</span><br>    <span class="hljs-built_in">example</span>();  <span class="hljs-comment">// 输出：2</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>时间复杂度</strong>：$O(n)$.</p>
+<h4 id="分治"><a href="#分治" class="headerlink" title="分治"></a>分治</h4><p>参考leetcode官方题解<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-subarray/solutions/228009/zui-da-zi-xu-he-by-leetcode-solution/?envType=problem-list-v2&envId=divide-and-conquer">53. 最大子数组和 - 力扣（LeetCode）</a>。</p>
+<p>首先约定对于区间$[l,r]$，$[l, m]$为它的左子区间，$[m + 1, r]$为它的右子区间，其中$m &#x3D; (l + r) &#x2F; 2$.</p>
+<p>为了求得区间$[l,r]$的最大子数组和，我们可以递归的去求它的左右子区间的最大子数组和，然后想办法获得当前区间的最大子数组和，当前区间的最大子数组和有三种情况：</p>
+<ol>
+<li>区间$[l,r]$的最大子数组和等于其左子区间的最大子数组和。</li>
+<li>区间$[l,r]$的最大子数组和等于其右子区间的最大子数组和。</li>
+<li>区间$[l,r]$的最大子数组和为某个跨越左右子区间的子数组的和。</li>
+</ol>
+<p>为了处理情况3，对于每个区间，我们需要维护两个变量$lsum$和$rsum$，其中$lsum$维护了当前区间以$l$为起点的最大子数组和，$rsum$维护了当前区间以$r$为终点的最大子数组和。</p>
+<p>有了这两个变量，我们就可以很方便的处理情况3了。即当前区间的最大子数组和应该是其左区间的最大子数组和，右区间的最大子数组和，以及左区间的$rsum$加右区间的$lsum$，这三者取大。</p>
+<p> 那我们应该如何维护这两个变量呢？不难发现，区间$[l,r]$的$lsum$应该是其左区间的$lsum$和左区间的和加右区间的$lsum$，这两者取大；同理$rsum$应该是右区间的$rsum$和右区间的和加左区间的$rsum$，这两者取大。为了方便，我们额外维护一个变量$isum$用来记录区间和。同时，我们用变量$msum$来维护当前区间的最大子数组和。<br>$$<br>\begin{align}<br>    &amp; msum &#x3D; max(l.msum, r.msum, l.rsum + r.lsum) \\<br>    &amp; isum &#x3D; l.isum + r.isum \\<br>    &amp; lsum &#x3D; max(l.lsum, l.isum + r.lsum) \\<br>    &amp; rsum &#x3D; max(r.rsum, r.isum + l.rsum)<br>\end{align}<br>$$<br><strong>代码</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">Status</span><br>    &#123;<br>        <span class="hljs-type">int</span> lsum, rsum;<br>        <span class="hljs-type">int</span> isum, msum;<br>    &#125;;<br>    <span class="hljs-function">Status <span class="hljs-title">maxSubArrayHelper</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt; &amp;nums, <span class="hljs-type">size_t</span> l, <span class="hljs-type">size_t</span> r)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (l == r) <span class="hljs-keyword">return</span> &#123;nums[l], nums[l], nums[l], nums[l]&#125;;<br>        <span class="hljs-type">size_t</span> m = l + ((r - l) &gt;&gt; <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">auto</span> lstatus = <span class="hljs-built_in">maxSubArrayHelper</span>(nums, l, m);<br>        <span class="hljs-keyword">auto</span> rstatus = <span class="hljs-built_in">maxSubArrayHelper</span>(nums, m + <span class="hljs-number">1</span>, r);<br>        <span class="hljs-type">int</span> isum = lstatus.isum + rstatus.isum;<br>        <span class="hljs-type">int</span> lsum = <span class="hljs-built_in">max</span>(lstatus.lsum, lstatus.isum + rstatus.lsum);<br>        <span class="hljs-type">int</span> rsum = <span class="hljs-built_in">max</span>(rstatus.rsum, rstatus.isum + lstatus.rsum);<br>        <span class="hljs-type">int</span> msum = <span class="hljs-built_in">max</span>(lstatus.rsum + rstatus.lsum, <br>                       <span class="hljs-built_in">max</span>(lstatus.msum, rstatus.msum));<br>        <span class="hljs-keyword">return</span> &#123;lsum, rsum, isum, msum&#125;;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">maxSubArray</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums)</span> </span>&#123;<br>        <span class="hljs-keyword">auto</span> status = <span class="hljs-built_in">maxSubArrayHelper</span>(nums, <span class="hljs-number">0</span>, nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">return</span> status.msum;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
-<h3 id="2-类的static成员变量"><a href="#2-类的static成员变量" class="headerlink" title="2. 类的static成员变量"></a>2. <strong>类的<code>static</code>成员变量</strong></h3><p>类中的<code>static</code>成员变量是属于整个类的，而不是属于某个对象的。它在所有类的实例间共享，同一个类的所有对象都可以访问这个变量，并且它的值对所有对象都是相同的。</p>
-<ul>
-<li><strong>生命周期</strong>：静态成员变量的生命周期从程序开始，到程序结束。</li>
-<li><strong>访问方式</strong>：可以通过类名或类的对象来访问，但推荐使用类名来访问。</li>
-<li><strong>初始化</strong>：静态成员变量必须在类定义体外进行初始化，不能在类内部直接赋值。</li>
-</ul>
-<p><strong>示例</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">static</span> <span class="hljs-type">int</span> staticVar;<br>&#125;;<br><br><span class="hljs-type">int</span> MyClass::staticVar = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 在类定义外初始化</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    MyClass::staticVar = <span class="hljs-number">10</span>;  <span class="hljs-comment">// 通过类名访问</span><br>    MyClass obj1, obj2;<br>    std::cout &lt;&lt; obj<span class="hljs-number">1.</span>staticVar &lt;&lt; std::endl;  <span class="hljs-comment">// 输出：10</span><br>    obj<span class="hljs-number">2.</span>staticVar = <span class="hljs-number">20</span>;<br>    std::cout &lt;&lt; obj<span class="hljs-number">1.</span>staticVar &lt;&lt; std::endl;  <span class="hljs-comment">// 输出：20 (共享变量)</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="3-全局static变量或函数"><a href="#3-全局static变量或函数" class="headerlink" title="3. 全局static变量或函数"></a>3. <strong>全局<code>static</code>变量或函数</strong></h3><p>如果在函数外部声明<code>static</code>变量或函数，它的作用域将被限制在定义它的文件中，也就是说，它只能在该文件中访问，不能被其他文件链接或访问。通常，这种用法用于隐藏模块的全局变量，使得它们不会污染其他文件的命名空间。</p>
-<p><strong>示例</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 在file1.cpp中</span><br><span class="hljs-type">static</span> <span class="hljs-type">int</span> globalStaticVar = <span class="hljs-number">100</span>;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">function</span><span class="hljs-params">()</span> </span>&#123;<br>    std::cout &lt;&lt; globalStaticVar &lt;&lt; std::endl;<br>&#125;<br><br><span class="hljs-comment">// 在file2.cpp中</span><br><span class="hljs-function"><span class="hljs-keyword">extern</span> <span class="hljs-type">void</span> <span class="hljs-title">function</span><span class="hljs-params">()</span></span>;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-built_in">function</span>();  <span class="hljs-comment">// 输出：100</span><br>    <span class="hljs-comment">// 不能直接访问globalStaticVar，因为它是file1.cpp的静态变量</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="4-类static成员函数"><a href="#4-类static成员函数" class="headerlink" title="4. 类static成员函数"></a>4. <strong>类<code>static</code>成员函数</strong></h3><p>如果在类中声明一个<code>static</code>成员函数，那么该函数可以在没有对象实例的情况下被调用。<code>static</code>成员函数只能访问类的<code>static</code>成员变量或其他<code>static</code>成员函数，不能访问非静态成员。</p>
-<p><strong>示例</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">static</span> <span class="hljs-type">int</span> staticVar;<br><br>    <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">staticFunction</span><span class="hljs-params">()</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Static variable: &quot;</span> &lt;&lt; staticVar &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-type">int</span> MyClass::staticVar = <span class="hljs-number">42</span>;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    MyClass::<span class="hljs-built_in">staticFunction</span>();  <span class="hljs-comment">// 可以在没有对象的情况下调用</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li><strong>局部<code>static</code>变量</strong>：初始化一次，生命周期贯穿整个程序，作用域限于函数内。</li>
-<li><strong>类的<code>static</code>成员变量</strong>：在类的所有对象之间共享，必须在类外进行初始化。</li>
-<li><strong>全局<code>static</code>变量</strong>：作用域限制在定义它的文件中，不会被其他文件访问。</li>
-<li><strong>类的<code>static</code>成员函数</strong>：无需创建对象即可调用，只能访问<code>static</code>成员。</li>
-</ul>
-<p>这些特性使得<code>static</code>关键字在C++中广泛用于控制变量和函数的生命周期、作用域和访问权限。</p>
+<p><strong>时间复杂度</strong>：</p>
+<p>递推方程：$W(n) &#x3D; 2W(n&#x2F;2) + O(1)$</p>
+<p>由主定理，解得$W(n) &#x3D; \Theta(n)$.</p>
+<p><strong>空间复杂度</strong>：</p>
+<p>因为采用了递归，所以空间复杂度为递归深度$O(logn)$.</p>
+<blockquote>
+<p>「方法二」相较于「方法一」来说，时间复杂度相同，但是因为使用了递归，并且维护了四个信息的结构体，运行的时间略长，空间复杂度也不如方法一优秀，而且难以理解。那么这种方法存在的意义是什么呢？</p>
+<p>对于这道题而言，确实是如此的。但是仔细观察「方法二」，它不仅可以解决区间 [0,n−1]，还可以用于解决任意的子区间 [l,r] 的问题。如果我们把 [0,n−1] 分治下去出现的所有子区间的信息都用堆式存储的方式记忆化下来，即建成一棵真正的树之后，我们就可以在 O(logn) 的时间内求到任意区间内的答案，我们甚至可以修改序列中的值，做一些简单的维护，之后仍然可以在 O(logn) 的时间内求到任意区间内的答案，对于大规模查询的情况下，这种方法的优势便体现了出来。这棵树就是上文提及的一种神奇的数据结构——线段树。</p>
+<p>作者：力扣官方题解<br>链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-subarray/solutions/228009/zui-da-zi-xu-he-by-leetcode-solution/">https://leetcode.cn/problems/maximum-subarray/solutions/228009/zui-da-zi-xu-he-by-leetcode-solution/</a><br>来源：力扣（LeetCode）</p>
+</blockquote>
 
                 
               </div>
@@ -394,8 +389,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>[C++]static</div>
-      <div>https://erlsrnby04.github.io/2024/10/04/C-static/</div>
+      <div>[LC]53.最大子数组和</div>
+      <div>https://erlsrnby04.github.io/2024/10/06/LC-53-最大子数组和/</div>
     </div>
     <div class="license-meta">
       
@@ -407,7 +402,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年10月4日</div>
+          <div>2024年10月6日</div>
         </div>
       
       
@@ -445,18 +440,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/10/04/MIT-6-1810-Lab2-system-calls/" title="[MIT 6.1810]Lab2 system calls">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">[MIT 6.1810]Lab2 system calls</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/10/04/C-C-Primer-Chapter-16/" title="[C++]C++Primer Chapter 16">
-                        <span class="hidden-mobile">[C++]C++Primer Chapter 16</span>
+                      <a href="/2024/10/06/C-%E7%B1%BB%E5%9E%8B%E6%9E%81%E7%AB%AF%E5%80%BC/" title="[C++]类型极端值">
+                        <span class="hidden-mobile">[C++]类型极端值</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
