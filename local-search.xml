@@ -4,6 +4,62 @@
   
   
   <entry>
+    <title>[LC]4.寻找两个正序数组的中位数</title>
+    <link href="/2024/10/05/LC-4-%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%AD%A3%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/"/>
+    <url>/2024/10/05/LC-4-%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%AD%A3%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/</url>
+    
+    <content type="html"><![CDATA[<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给定两个大小分别为 <code>m</code> 和 <code>n</code> 的正序（从小到大）数组 <code>nums1</code> 和 <code>nums2</code>。请你找出并返回这两个正序数组的 <strong>中位数</strong> 。</p><p>算法的时间复杂度应该为 <code>O(log (m+n))</code> 。</p><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="暴力解"><a href="#暴力解" class="headerlink" title="暴力解"></a>暴力解</h4><p>直接归并两个有序数组，然后求中位数即可</p><p><strong>时间复杂度</strong> ：$O(m+n)$</p><h4 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h4><p>先考虑更一般的问题，找第$k$小的数。</p><p>为了找到第$k$小的数，先考虑$A[k&#x2F;2 - 1]$和$B[k&#x2F;2 - 1]$，这分为三种情况：</p><ol><li><p>$A[k&#x2F;2 - 1] &lt; B[k&#x2F;2 - 1]$ :</p><p>$命题:A[0,1,…,k&#x2F;2-1]中的数不会是第k小的数$</p><p>$证明:A[k&#x2F;2 - 1]是A[0,1,…,k&#x2F;2-1]中最大的数，$</p><p>$而A[k&#x2F;2-1]之前最多有k&#x2F;2-1+k&#x2F;2-1 &#x3D; k-2个元素,$</p><p>$因此A[k&#x2F;2-1]至多是第k-1小的元素.$</p><p>因此，对于此种情况，我们丢弃$A[0,1,…,k&#x2F;2-1]$中的元素，并相应的更新$k$，求解一个规模更小的子问题.</p></li><li><p>$A[k&#x2F;2 - 1] &gt; B[k &#x2F; 2 -1]$</p><p>同理，对于此种情况，我们丢弃$B[0,1,…,k&#x2F;2-1]$中的元素，并相应的更新$k$.</p></li><li><p>$A[k&#x2F;2-1] &#x3D; B[k&#x2F;2 -1]$</p><p>该情况可以并入情况1.</p></li></ol><p>需要注意的是，我们必须考虑当$k&#x2F;2-1$越界的情况，此时我们取数组最后一个元素即可，更新$k$的时候要相应的修改。</p><p>当$k&#x3D;1$的时候，我们只需要返回两个数组首元素中的较小者即可。</p><p><strong>代码</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// k 从1开始</span><br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">findKthElement</span><span class="hljs-params">(<span class="hljs-type">const</span> vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums1, </span></span><br><span class="hljs-params"><span class="hljs-function">                          <span class="hljs-type">const</span> vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums2, </span></span><br><span class="hljs-params"><span class="hljs-function">                          <span class="hljs-type">size_t</span> k)</span></span><br><span class="hljs-function">    </span>&#123;<br>    <span class="hljs-type">size_t</span> l1 = <span class="hljs-number">0</span>, l2 = <span class="hljs-number">0</span>, m = nums<span class="hljs-number">1.</span><span class="hljs-built_in">size</span>(), n = nums<span class="hljs-number">2.</span><span class="hljs-built_in">size</span>();<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (l1 == m)<br>            <span class="hljs-keyword">return</span> nums2[l2 + k - <span class="hljs-number">1</span>];<br>            <span class="hljs-keyword">if</span> (l2 == n)<br>                <span class="hljs-keyword">return</span> nums1[l1 + k - <span class="hljs-number">1</span>];<br>            <span class="hljs-keyword">if</span> (k == <span class="hljs-number">1</span>)<br>                <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(nums1[l1], nums2[l2]);<br>        <span class="hljs-type">size_t</span> m1 = <span class="hljs-built_in">min</span>(l1 + k/<span class="hljs-number">2</span> - <span class="hljs-number">1</span>, m - <span class="hljs-number">1</span>);<br>            <span class="hljs-type">size_t</span> m2 = <span class="hljs-built_in">min</span>(l2 + k/<span class="hljs-number">2</span> - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>);<br>            <span class="hljs-keyword">if</span> (nums1[m1] &lt;= nums2[m2])<br>            &#123;<br>                k -= (m1 - l1 + <span class="hljs-number">1</span>);<br>                l1 = m1 + <span class="hljs-number">1</span>;<br>            &#125;<br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                k -= (m2 - l2 + <span class="hljs-number">1</span>);<br>                l2 = m2 + <span class="hljs-number">1</span>;<br>            &#125;<br>&#125;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">findMedianSortedArrays</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums1, vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums2)</span> </span>&#123;<br>      <span class="hljs-type">size_t</span> length = nums<span class="hljs-number">1.</span><span class="hljs-built_in">size</span>() + nums<span class="hljs-number">2.</span><span class="hljs-built_in">size</span>();<br>        <span class="hljs-keyword">if</span> (length % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>)<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">findKthElement</span>(nums1, nums2, length / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">else</span><br>            <span class="hljs-built_in">return</span> (<span class="hljs-built_in">findKthElement</span>(nums1, nums2, length / <span class="hljs-number">2</span>) + <br>                    <span class="hljs-built_in">findKthElement</span>(nums1, nums2, length / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>)) / <span class="hljs-number">2.0</span>;<br>    &#125;<br>    <br>&#125;;<br></code></pre></td></tr></table></figure><p><strong>时间复杂度：</strong></p><p>因为每次$k$都会减少一半，所以时间复杂度为$O(logk) &#x3D; O(log(m+n)).$</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法</category>
+      
+      <category>分治算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+      <tag>分治</tag>
+      
+      <tag>leetcode</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[MIT 6.1810]Lab3 page tables</title>
+    <link href="/2024/10/05/MIT-6-1810-Lab3-page-tables/"/>
+    <url>/2024/10/05/MIT-6-1810-Lab3-page-tables/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1-Inspect-a-user-process-page-table-easy"><a href="#1-Inspect-a-user-process-page-table-easy" class="headerlink" title="1 Inspect a user-process page table (easy)"></a>1 Inspect a user-process page table (<a href="https://pdos.csail.mit.edu/6.828/2024/labs/guidance.html">easy</a>)</h2><p><img src="/../images/MIT-6-1810-Lab3-page-tables/image-20241005151513827.png"></p><p><img src="/../images/MIT-6-1810-Lab3-page-tables/image-20241005151435200.png"></p><table><thead><tr><th>PTE</th><th>逻辑内容</th><th>权限位</th></tr></thead><tbody><tr><td>va 0x0 pte 0x21FC885B pa 0x87F22000 perm 0x5B</td><td>text</td><td><del>D</del>A<del>G</del>UX<del>W</del>RV</td></tr><tr><td>va 0x1000 pte 0x21FC7C17 pa 0x87F1F000 perm 0x17</td><td>data</td><td><del>D~~~~A~~~~G</del>U<del>X</del>WRV</td></tr><tr><td>va 0x2000 pte 0x21FC7807 pa 0x87F1E000 perm 0x7</td><td>guard page</td><td><del>DAGUX</del>WRV</td></tr><tr><td>va 0x3000 pte 0x21FC74D7 pa 0x87F1D000 perm 0xD7</td><td>stack</td><td>DA<del>G</del>U<del>X</del>WRV</td></tr><tr><td>va 0x4000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0x5000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0x6000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0x7000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0x8000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0x9000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0xFFFF6000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0xFFFF7000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0xFFFF8000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0xFFFF9000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0xFFFFA000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0xFFFFB000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0xFFFFC000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0xFFFFD000 pte 0x0 pa 0x0 perm 0x0</td><td>unused</td><td><del>DAGUXWRV</del></td></tr><tr><td>va 0xFFFFE000 pte 0x21FD08C7 pa 0x87F42000 perm 0xC7</td><td>trapframe</td><td>DA<del>GU~~~~X</del>WRV</td></tr><tr><td>va 0xFFFFF000 pte 0x2000184B pa 0x80006000 perm 0x4B</td><td>trampoline</td><td><del>D</del>A<del>GU</del>X<del>W</del>RV</td></tr></tbody></table><h2 id="2-Speed-up-system-calls-easy"><a href="#2-Speed-up-system-calls-easy" class="headerlink" title="2 Speed up system calls (easy)"></a>2 Speed up system calls (<a href="https://pdos.csail.mit.edu/6.828/2024/labs/guidance.html">easy</a>)</h2>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>MIT 6.1810</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[MIT 6.1810]Lab2 system calls</title>
     <link href="/2024/10/04/MIT-6-1810-Lab2-system-calls/"/>
     <url>/2024/10/04/MIT-6-1810-Lab2-system-calls/</url>
@@ -751,22 +807,22 @@
   
   
   <entry>
-    <title></title>
+    <title>about</title>
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[// document//   .querySelector('#web_bg')//   .setAttribute('style', `background-image: ${document.querySelector('.banner').style.background.split(' ')[0]};position: fixed;width: 100%;height: 100%;z-index: -1;background-size: cover;`);// document//   .querySelector("#banner")//   .setAttribute('style', 'background-image: url()')// document//   .querySelector("#banner .mask")//   .setAttribute('style', 'background-color:rgba(0,0,0,0)')]]></content>
+    <content type="html"><![CDATA[]]></content>
     
   </entry>
   
   
   
   <entry>
-    <title>about</title>
+    <title></title>
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
     
   </entry>
   
@@ -788,7 +844,7 @@
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
+    <content type="html"><![CDATA[// document//   .querySelector('#web_bg')//   .setAttribute('style', `background-image: ${document.querySelector('.banner').style.background.split(' ')[0]};position: fixed;width: 100%;height: 100%;z-index: -1;background-size: cover;`);// document//   .querySelector("#banner")//   .setAttribute('style', 'background-image: url()')// document//   .querySelector("#banner .mask")//   .setAttribute('style', 'background-color:rgba(0,0,0,0)')]]></content>
     
   </entry>
   
