@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>[LC]23.合并k个升序链表</title>
+    <link href="/2024/10/05/LC-23-%E5%90%88%E5%B9%B6k%E4%B8%AA%E5%8D%87%E5%BA%8F%E9%93%BE%E8%A1%A8/"/>
+    <url>/2024/10/05/LC-23-%E5%90%88%E5%B9%B6k%E4%B8%AA%E5%8D%87%E5%BA%8F%E9%93%BE%E8%A1%A8/</url>
+    
+    <content type="html"><![CDATA[<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给你一个链表数组，每个链表都已经按升序排列。</p><p>请你将所有链表合并到一个升序链表中，返回合并后的链表。</p><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="分治"><a href="#分治" class="headerlink" title="分治"></a>分治</h4><p>将k个链表两两配对合并为一个更长的有序链表，将原问题规约为规模更小的子问题。</p><p><strong>代码</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for singly-linked list.</span><br><span class="hljs-comment"> * struct ListNode &#123;</span><br><span class="hljs-comment"> *     int val;</span><br><span class="hljs-comment"> *     ListNode *next;</span><br><span class="hljs-comment"> *     ListNode() : val(0), next(nullptr) &#123;&#125;</span><br><span class="hljs-comment"> *     ListNode(int x) : val(x), next(nullptr) &#123;&#125;</span><br><span class="hljs-comment"> *     ListNode(int x, ListNode *next) : val(x), next(next) &#123;&#125;</span><br><span class="hljs-comment"> * &#125;;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">ListNode *<span class="hljs-title">mergeTwoLists</span><span class="hljs-params">(ListNode *h1, ListNode *h2)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (h1 == <span class="hljs-literal">nullptr</span> || h2 == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span> h1 ? h1 : h2;<br>        ListNode dummy, *tail = &amp;dummy;<br>        <span class="hljs-keyword">while</span> (h1 &amp;&amp; h2)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (h1-&gt;val &lt;= h2-&gt;val)<br>            &#123;<br>                tail-&gt;next = h1;<br>                h1 = h1-&gt;next;<br>            &#125;<br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                tail-&gt;next = h2;<br>                h2 = h2-&gt;next;<br>            &#125;<br>            tail = tail-&gt;next;<br>        &#125;<br>        tail-&gt;next = h1 ? h1 : h2;<br>        <span class="hljs-keyword">return</span> dummy.next;<br>    &#125;<br>    <span class="hljs-comment">// [l,r]</span><br>    <span class="hljs-function">ListNode *<span class="hljs-title">merge</span><span class="hljs-params">(vector&lt;ListNode*&gt; &amp;lists, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (l == r) <span class="hljs-keyword">return</span> lists[l];<br>        <span class="hljs-keyword">if</span> (l &gt; r) <span class="hljs-keyword">return</span> <span class="hljs-literal">nullptr</span>;<br>        <span class="hljs-type">int</span> mid = l + ((r - l) &gt;&gt; <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">mergeTwoLists</span>(<span class="hljs-built_in">merge</span>(lists, l, mid), <span class="hljs-built_in">merge</span>(lists, mid + <span class="hljs-number">1</span>, r));<br>    &#125;<br>    <span class="hljs-function">ListNode* <span class="hljs-title">mergeKLists</span><span class="hljs-params">(vector&lt;ListNode*&gt;&amp; lists)</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">merge</span>(lists, <span class="hljs-number">0</span>, lists.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure><div class="note note-primary">            <p>注意39行计算中位数的方法，通常的方法是 <code>(l + r) / 2</code> ，这种方法在l和r过大的时候可能会发生溢出的问题，因此更好的方法是 <code>l + ((r - l) &gt;&gt; 1)</code> ，需要特别注意的是注意后面的括号不要省略，因为加法的优先级更高。</p>          </div><p><strong>时间复杂度</strong></p><p>递推方程：$W(k) &#x3D; W(k&#x2F;2) + k&#x2F;2 \times 2n, 其中n为每个链表的平均长度.$</p><p>解这个递推方程可以得到$W(k) &#x3D; O(knlogk).$</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法</category>
+      
+      <category>分治算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+      <tag>分治</tag>
+      
+      <tag>leetcode</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[LC]4.寻找两个正序数组的中位数</title>
     <link href="/2024/10/05/LC-4-%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%AD%A3%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/"/>
     <url>/2024/10/05/LC-4-%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%AD%A3%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/</url>
@@ -796,18 +827,18 @@
   
   
   <entry>
-    <title>categories</title>
+    <title></title>
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[#board {  -webkit-backdrop-filter: blur(5px);  backdrop-filter: blur(5px);}]]></content>
     
   </entry>
   
   
   
   <entry>
-    <title>about</title>
+    <title>categories</title>
     <link href="/"/>
     <url>/</url>
     
@@ -833,18 +864,18 @@
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[#board {  -webkit-backdrop-filter: blur(5px);  backdrop-filter: blur(5px);}]]></content>
+    <content type="html"><![CDATA[// document//   .querySelector('#web_bg')//   .setAttribute('style', `background-image: ${document.querySelector('.banner').style.background.split(' ')[0]};position: fixed;width: 100%;height: 100%;z-index: -1;background-size: cover;`);// document//   .querySelector("#banner")//   .setAttribute('style', 'background-image: url()')// document//   .querySelector("#banner .mask")//   .setAttribute('style', 'background-color:rgba(0,0,0,0)')]]></content>
     
   </entry>
   
   
   
   <entry>
-    <title></title>
+    <title>about</title>
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[// document//   .querySelector('#web_bg')//   .setAttribute('style', `background-image: ${document.querySelector('.banner').style.background.split(' ')[0]};position: fixed;width: 100%;height: 100%;z-index: -1;background-size: cover;`);// document//   .querySelector("#banner")//   .setAttribute('style', 'background-image: url()')// document//   .querySelector("#banner .mask")//   .setAttribute('style', 'background-color:rgba(0,0,0,0)')]]></content>
+    <content type="html"><![CDATA[]]></content>
     
   </entry>
   
