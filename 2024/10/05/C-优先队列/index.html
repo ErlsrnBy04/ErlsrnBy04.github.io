@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://t.alcy.cc/fj?postId=33">
 <meta property="article:published_time" content="2024-10-05T15:52:42.000Z">
-<meta property="article:modified_time" content="2024-10-05T16:05:15.472Z">
+<meta property="article:modified_time" content="2024-10-06T16:48:00.068Z">
 <meta property="article:author" content="ErlsrnBy04">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="数据结构">
@@ -249,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          3.4k 字
         
       </span>
     
@@ -260,7 +260,7 @@
         
         
         
-          17 分钟
+          29 分钟
         
       </span>
     
@@ -377,10 +377,62 @@
 </ul>
 <p>C++ 标准库提供了用于堆操作的算法：</p>
 <ul>
-<li><strong><code>std::make_heap</code></strong>: 将范围内的元素构造成堆。</li>
-<li><strong><code>std::push_heap</code></strong>: 向堆中插入元素。</li>
-<li><strong><code>std::pop_heap</code></strong>: 从堆中删除元素。</li>
-<li><strong><code>std::sort_heap</code></strong>: 对堆中的元素进行排序。</li>
+<li><p><strong><code>std::make_heap</code></strong>: 将范围内的元素构造成堆。</p>
+<ul>
+<li><p><strong>功能</strong>：将一个无序的范围转换为一个堆。默认情况下，它创建一个 <strong>最大堆</strong>（即堆顶是最大值），但也可以通过传递自定义比较器创建最小堆或其他类型的堆。</p>
+</li>
+<li><p><strong>语法</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">make_heap</span><span class="hljs-params">(RandomIt first, RandomIt last)</span></span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>参数</strong>：</p>
+<p><code>first</code> 和 <code>last</code> 指向范围的起始和结束，表示要构建堆的范围。</p>
+</li>
+<li><p><strong>示例</strong>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::vector&lt;<span class="hljs-type">int</span>&gt; v = &#123;<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>&#125;;<br>    <br>    <span class="hljs-comment">// 构建一个最大堆</span><br>    std::<span class="hljs-built_in">make_heap</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>());<br>    <br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Max heap: &quot;</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i : v) &#123;<br>        std::cout &lt;&lt; i &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;  <span class="hljs-comment">// 输出: 9 6 5 5 1 4 2 1 3</span><br>    &#125;<br>    std::cout &lt;&lt; std::endl;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong><code>std::push_heap</code></strong>: 向堆中插入元素。</p>
+<ul>
+<li><p><strong>功能</strong>：在一个堆中插入新元素（即将新元素添加到容器末尾后，通过 <code>push_heap</code> 调整容器使其重新成为合法的堆结构）。使用时，必须先把新元素手动插入到容器末尾，再调用 <code>push_heap</code>。</p>
+</li>
+<li><p><strong>语法</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">push_heap</span><span class="hljs-params">(RandomIt first, RandomIt last)</span></span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>参数</strong>：</p>
+<p><code>first</code> 和 <code>last</code> 指向堆的起始和结束，其中 <code>last</code> 为新插入的元素的下一个位置。</p>
+</li>
+<li><p><strong>示例</strong>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::vector&lt;<span class="hljs-type">int</span>&gt; v = &#123;<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>&#125;;<br>    std::<span class="hljs-built_in">make_heap</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>());<br>    <br>    <span class="hljs-comment">// 移除堆顶元素</span><br>    std::<span class="hljs-built_in">pop_heap</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>());  <span class="hljs-comment">// 9 被移动到末尾</span><br>    v.<span class="hljs-built_in">pop_back</span>();  <span class="hljs-comment">// 实际移除该元素</span><br><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Heap after pop: &quot;</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i : v) &#123;<br>        std::cout &lt;&lt; i &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;  <span class="hljs-comment">// 输出: 6 5 5 3 1 4 2 1</span><br>    &#125;<br>    std::cout &lt;&lt; std::endl;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong><code>std::pop_heap</code></strong>: 从堆中删除元素。</p>
+<ul>
+<li><p><strong>功能</strong>：将堆顶元素移到容器的末尾，同时保持其他元素的堆结构（即重新调整剩余元素成为一个合法的堆）。注意，<code>pop_heap</code> 只是将堆顶元素移到末尾，不会从容器中移除它，必须手动使用 <code>container.pop_back()</code>。</p>
+</li>
+<li><p><strong>语法</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pop_heap</span><span class="hljs-params">(RandomIt first, RandomIt last)</span></span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>参数</strong>：</p>
+<p><code>first</code> 和 <code>last</code> 指向堆的起始和结束，<code>last</code> 指向的元素将是新堆顶元素后的第一个非堆元素（即末尾元素）。</p>
+</li>
+<li><p><strong>示例</strong>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::vector&lt;<span class="hljs-type">int</span>&gt; v = &#123;<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>&#125;;<br>    std::<span class="hljs-built_in">make_heap</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>());<br>    <br>    <span class="hljs-comment">// 移除堆顶元素</span><br>    std::<span class="hljs-built_in">pop_heap</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>());  <span class="hljs-comment">// 9 被移动到末尾</span><br>    v.<span class="hljs-built_in">pop_back</span>();  <span class="hljs-comment">// 实际移除该元素</span><br><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Heap after pop: &quot;</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i : v) &#123;<br>        std::cout &lt;&lt; i &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;  <span class="hljs-comment">// 输出: 6 5 5 3 1 4 2 1</span><br>    &#125;<br>    std::cout &lt;&lt; std::endl;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong><code>std::sort_heap</code></strong>: 对堆中的元素进行排序。</p>
+<ul>
+<li><p><strong>功能</strong>：对一个堆进行排序。注意，调用 <code>sort_heap</code> 后，堆结构将被破坏，但数组会按升序排序（默认情况下）。这就是堆排序的关键步骤。</p>
+</li>
+<li><p><strong>语法</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">sort_heap</span><span class="hljs-params">(RandomIt first, RandomIt last)</span></span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>参数</strong>：</p>
+<p><code>first</code> 和 <code>last</code> 指向堆的起始和结束。</p>
+</li>
+<li><p><strong>示例</strong>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::vector&lt;<span class="hljs-type">int</span>&gt; v = &#123;<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>&#125;;<br>    std::<span class="hljs-built_in">make_heap</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>());<br>    <br>    <span class="hljs-comment">// 对堆进行排序</span><br>    std::<span class="hljs-built_in">sort_heap</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>());<br><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Sorted heap: &quot;</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i : v) &#123;<br>        std::cout &lt;&lt; i &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;  <span class="hljs-comment">// 输出: 1 1 2 3 4 5 5 6 9</span><br>    &#125;<br>    std::cout &lt;&lt; std::endl;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
 </ul>
 <h3 id="5-性能分析"><a href="#5-性能分析" class="headerlink" title="5. 性能分析"></a>5. <strong>性能分析</strong></h3><p><code>priority_queue</code> 的时间复杂度与其底层堆实现直接相关。由于使用堆结构，以下是常见操作的时间复杂度：</p>
 <ul>
@@ -389,6 +441,56 @@
 <li><strong>删除最大&#x2F;最小元素（pop）</strong>: O(log n)，因为需要进行下沉操作。</li>
 </ul>
 <p>由于 <code>priority_queue</code> 是基于二叉堆的实现，因此它具有较高的效率，适合用于需要频繁插入和删除最大（最小）元素的场景。</p>
+<p>在分析 C++ 中与堆操作相关的 <code>make_heap</code>、<code>pop_heap</code>、<code>push_heap</code> 和 <code>sort_heap</code> 函数的性能时，主要考虑堆的性质和这些操作的时间复杂度。堆是一棵完全二叉树，通常使用数组来实现，堆的高度是 <code>O(log n)</code>，其中 <code>n</code> 是堆中元素的个数。</p>
+<ol>
+<li><strong><code>make_heap</code> 的性能分析</strong></li>
+</ol>
+<ul>
+<li><strong>功能</strong>：<code>make_heap</code> 函数将一个无序的序列转化为一个合法的堆。</li>
+<li><strong>时间复杂度</strong>：<code>O(n)</code>。</li>
+</ul>
+<p>虽然每次插入一个元素到堆的复杂度为 <code>O(log n)</code>，看似将 <code>n</code> 个元素插入到堆中会导致 <code>O(n log n)</code> 的时间复杂度。然而，<code>make_heap</code> 使用了一种自底向上的建堆方法，其时间复杂度为 <code>O(n)</code>。</p>
+<p><strong>分析</strong>：</p>
+<ul>
+<li>自顶向下插入的复杂度为 <code>O(n log n)</code>，但 <code>make_heap</code> 采用的是自底向上的建堆方法，它从堆的最后一个非叶子节点开始，逐步调整子堆的顺序，最终构建出一个完整的堆。</li>
+<li>每个节点的调整最多移动 <code>log n</code> 步，但较低层的节点数量多，且调整所需的移动步数较少，因此整体复杂度是线性的，即 <code>O(n)</code>。</li>
+</ul>
+<ol start="2">
+<li><strong><code>pop_heap</code> 的性能分析</strong></li>
+</ol>
+<ul>
+<li><strong>功能</strong>：<code>pop_heap</code> 将堆顶元素（最大或最小值）移动到序列的末尾，同时保持剩余序列的堆结构。</li>
+<li><strong>时间复杂度</strong>：<code>O(log n)</code>。</li>
+</ul>
+<p><strong>分析</strong>：</p>
+<ul>
+<li><code>pop_heap</code> 先将堆顶元素与最后一个元素交换，然后对交换后的堆（除去最后一个元素）进行下沉操作（即调整堆），从根节点开始逐层向下调整，以保持堆的性质。</li>
+<li>下沉操作的最坏情况下需要进行 <code>log n</code> 次比较和交换操作，因此时间复杂度为 <code>O(log n)</code>。</li>
+</ul>
+<ol start="3">
+<li><strong><code>push_heap</code> 的性能分析</strong></li>
+</ol>
+<ul>
+<li><strong>功能</strong>：<code>push_heap</code> 在序列的末尾插入一个新元素，并调整序列使其仍然满足堆的性质。</li>
+<li><strong>时间复杂度</strong>：<code>O(log n)</code>。</li>
+</ul>
+<p><strong>分析</strong>：</p>
+<ul>
+<li>当将一个新元素添加到堆中时，它首先被插入到堆的末尾。然后通过上浮操作，将该元素向上移动，直到满足堆的性质。</li>
+<li>上浮操作在最坏情况下可能需要从堆的底部移动到根节点，这需要最多 <code>log n</code> 步操作，因此时间复杂度为 <code>O(log n)</code>。</li>
+</ul>
+<ol start="4">
+<li><strong><code>sort_heap</code> 的性能分析</strong></li>
+</ol>
+<ul>
+<li><strong>功能</strong>：<code>sort_heap</code> 将堆排序为一个有序数组。它通过依次调用 <code>pop_heap</code>，将堆顶元素移到序列末尾，并调整剩余序列为一个合法的堆，最终完成排序。</li>
+<li><strong>时间复杂度</strong>：<code>O(n log n)</code>。</li>
+</ul>
+<p><strong>分析</strong>：</p>
+<ul>
+<li>堆排序是通过重复调用 <code>pop_heap</code> 实现的，<code>pop_heap</code> 每次将堆顶元素移动到末尾，然后调整剩余的堆，复杂度为 <code>O(log n)</code>。</li>
+<li>因为 <code>sort_heap</code> 需要对 <code>n</code> 个元素依次调用 <code>pop_heap</code>，因此总的时间复杂度为 <code>O(n log n)</code>。</li>
+</ul>
 <h3 id="6-使用场景"><a href="#6-使用场景" class="headerlink" title="6. 使用场景"></a>6. <strong>使用场景</strong></h3><p>优先队列广泛用于以下场景：</p>
 <ul>
 <li><strong>任务调度</strong>：根据优先级安排任务执行顺序。</li>

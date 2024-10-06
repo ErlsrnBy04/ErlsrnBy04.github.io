@@ -19,26 +19,26 @@
   <meta name="author" content="ErlsrnBy04">
   <meta name="keywords" content="">
   
-    <meta name="description" content="题目给你一个链表数组，每个链表都已经按升序排列。 请你将所有链表合并到一个升序链表中，返回合并后的链表。 分析分治将k个链表两两配对合并为一个更长的有序链表，将原问题规约为规模更小的子问题。 代码 123456789101112131415161718192021222324252627282930313233343536373839404142434445&#x2F;** * Definition for">
+    <meta name="description" content="题目颠倒给定的 32 位无符号整数的二进制位。 分析按位颠倒我们从低到高依次取给定数的每一个二进制位$i$，将其放置在$31 - i$的位置上即可。 代码 1234567891011class Solution &#123;public:    uint32_t reverseBits(uint32_t n) &#123;        uint32_t ans &#x3D; 0;        for (">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[LC]23.合并k个升序链表">
-<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/05/LC-23-%E5%90%88%E5%B9%B6k%E4%B8%AA%E5%8D%87%E5%BA%8F%E9%93%BE%E8%A1%A8/index.html">
+<meta property="og:title" content="[LC]190.颠倒二进制位">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/06/LC-190-%E9%A2%A0%E5%80%92%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D/index.html">
 <meta property="og:site_name" content="ErlsrnBy04">
-<meta property="og:description" content="题目给你一个链表数组，每个链表都已经按升序排列。 请你将所有链表合并到一个升序链表中，返回合并后的链表。 分析分治将k个链表两两配对合并为一个更长的有序链表，将原问题规约为规模更小的子问题。 代码 123456789101112131415161718192021222324252627282930313233343536373839404142434445&#x2F;** * Definition for">
+<meta property="og:description" content="题目颠倒给定的 32 位无符号整数的二进制位。 分析按位颠倒我们从低到高依次取给定数的每一个二进制位$i$，将其放置在$31 - i$的位置上即可。 代码 1234567891011class Solution &#123;public:    uint32_t reverseBits(uint32_t n) &#123;        uint32_t ans &#x3D; 0;        for (">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://t.alcy.cc/fj?postId=32">
-<meta property="article:published_time" content="2024-10-05T12:52:35.000Z">
-<meta property="article:modified_time" content="2024-10-05T16:12:01.686Z">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=38">
+<meta property="article:published_time" content="2024-10-06T11:12:23.000Z">
+<meta property="article:modified_time" content="2024-10-06T11:26:00.429Z">
 <meta property="article:author" content="ErlsrnBy04">
 <meta property="article:tag" content="algorithm">
 <meta property="article:tag" content="分治">
 <meta property="article:tag" content="leetcode">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=32">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=38">
   
   
   
-  <title>[LC]23.合并k个升序链表 - ErlsrnBy04</title>
+  <title>[LC]190.颠倒二进制位 - ErlsrnBy04</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -222,7 +222,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="[LC]23.合并k个升序链表"></span>
+            <span id="subtitle" data-typed-text="[LC]190.颠倒二进制位"></span>
           
         </div>
 
@@ -238,8 +238,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-10-05 20:52" pubdate>
-          2024年10月5日 晚上
+        <time datetime="2024-10-06 19:12" pubdate>
+          2024年10月6日 晚上
         </time>
       </span>
     
@@ -250,7 +250,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          626 字
+          329 字
         
       </span>
     
@@ -261,7 +261,7 @@
         
         
         
-          6 分钟
+          3 分钟
         
       </span>
     
@@ -311,30 +311,26 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">[LC]23.合并k个升序链表</h1>
+            <h1 id="seo-header">[LC]190.颠倒二进制位</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给你一个链表数组，每个链表都已经按升序排列。</p>
-<p>请你将所有链表合并到一个升序链表中，返回合并后的链表。</p>
-<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="分治"><a href="#分治" class="headerlink" title="分治"></a>分治</h4><p>将k个链表两两配对合并为一个更长的有序链表，将原问题规约为规模更小的子问题。</p>
+                <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>颠倒给定的 32 位无符号整数的二进制位。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="按位颠倒"><a href="#按位颠倒" class="headerlink" title="按位颠倒"></a>按位颠倒</h4><p>我们从低到高依次取给定数的每一个二进制位$i$，将其放置在$31 - i$的位置上即可。</p>
 <p><strong>代码</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for singly-linked list.</span><br><span class="hljs-comment"> * struct ListNode &#123;</span><br><span class="hljs-comment"> *     int val;</span><br><span class="hljs-comment"> *     ListNode *next;</span><br><span class="hljs-comment"> *     ListNode() : val(0), next(nullptr) &#123;&#125;</span><br><span class="hljs-comment"> *     ListNode(int x) : val(x), next(nullptr) &#123;&#125;</span><br><span class="hljs-comment"> *     ListNode(int x, ListNode *next) : val(x), next(next) &#123;&#125;</span><br><span class="hljs-comment"> * &#125;;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">ListNode *<span class="hljs-title">mergeTwoLists</span><span class="hljs-params">(ListNode *h1, ListNode *h2)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (h1 == <span class="hljs-literal">nullptr</span> || h2 == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span> h1 ? h1 : h2;<br>        ListNode dummy, *tail = &amp;dummy;<br>        <span class="hljs-keyword">while</span> (h1 &amp;&amp; h2)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (h1-&gt;val &lt;= h2-&gt;val)<br>            &#123;<br>                tail-&gt;next = h1;<br>                h1 = h1-&gt;next;<br>            &#125;<br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                tail-&gt;next = h2;<br>                h2 = h2-&gt;next;<br>            &#125;<br>            tail = tail-&gt;next;<br>        &#125;<br>        tail-&gt;next = h1 ? h1 : h2;<br>        <span class="hljs-keyword">return</span> dummy.next;<br>    &#125;<br>    <span class="hljs-comment">// [l,r]</span><br>    <span class="hljs-function">ListNode *<span class="hljs-title">merge</span><span class="hljs-params">(vector&lt;ListNode*&gt; &amp;lists, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (l == r) <span class="hljs-keyword">return</span> lists[l];<br>        <span class="hljs-keyword">if</span> (l &gt; r) <span class="hljs-keyword">return</span> <span class="hljs-literal">nullptr</span>;<br>        <span class="hljs-type">int</span> mid = l + ((r - l) &gt;&gt; <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">mergeTwoLists</span>(<span class="hljs-built_in">merge</span>(lists, l, mid), <span class="hljs-built_in">merge</span>(lists, mid + <span class="hljs-number">1</span>, r));<br>    &#125;<br>    <span class="hljs-function">ListNode* <span class="hljs-title">mergeKLists</span><span class="hljs-params">(vector&lt;ListNode*&gt;&amp; lists)</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">merge</span>(lists, <span class="hljs-number">0</span>, lists.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">reverseBits</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> n)</span> </span>&#123;<br>        <span class="hljs-type">uint32_t</span> ans = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">size_t</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">32</span> &amp;&amp; n &gt; <span class="hljs-number">0</span>; ++i, n &gt;&gt;= <span class="hljs-number">1</span>)<br>        &#123;<br>            ans = ans | ((n &amp; <span class="hljs-number">1</span>) &lt;&lt; (<span class="hljs-number">31</span> - i));<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
-<div class="note note-primary">
-            <p>注意39行计算中位数的方法，通常的方法是 <code>(l + r) / 2</code> ，这种方法在l和r过大的时候可能会发生溢出的问题，因此更好的方法是 <code>l + ((r - l) &gt;&gt; 1)</code> ，需要特别注意的是注意后面的括号不要省略，因为加法的优先级更高。</p>
-          </div>
+<p><strong>时间复杂度</strong>：</p>
+<p>因为每次$n$都减小为原来的一半，所以时间复杂度为$O(logn).$</p>
+<p><strong>空间复杂度：</strong></p>
+<p>$O(1).$</p>
+<h4 id="分治"><a href="#分治" class="headerlink" title="分治"></a>分治</h4><p>分治只需要分别将左半和右半颠倒，然后左半和右半在整体颠倒即可。采用自底向上的方式，首先两两一组，交换相邻的两位，然后四个四个一组，交换相邻的左半和右半，依次类推。</p>
+<p>编码的时候，我们采用掩码的技巧进行编码，方便我们进行颠倒操作。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-type">const</span> <span class="hljs-type">uint32_t</span> M1 = <span class="hljs-number">0x55555555</span>;<br>    <span class="hljs-type">const</span> <span class="hljs-type">uint32_t</span> M2 = <span class="hljs-number">0x33333333</span>;<br>    <span class="hljs-type">const</span> <span class="hljs-type">uint32_t</span> M3 = <span class="hljs-number">0x0f0f0f0f</span>;<br>    <span class="hljs-type">const</span> <span class="hljs-type">uint32_t</span> M4 = <span class="hljs-number">0x00ff00ff</span>;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">reverseBits</span><span class="hljs-params">(<span class="hljs-type">uint32_t</span> n)</span> </span>&#123;<br>        n = (n &gt;&gt; <span class="hljs-number">1</span>) &amp; M1 | (n &amp; M1) &lt;&lt; <span class="hljs-number">1</span>;<br>        n = (n &gt;&gt; <span class="hljs-number">2</span>) &amp; M2 | (n &amp; M2) &lt;&lt; <span class="hljs-number">2</span>;<br>        n = (n &gt;&gt; <span class="hljs-number">4</span>) &amp; M3 | (n &amp; M3) &lt;&lt; <span class="hljs-number">4</span>;<br>        n = (n &gt;&gt; <span class="hljs-number">8</span>) &amp; M4 | (n &amp; M4) &lt;&lt; <span class="hljs-number">8</span>;<br>        <span class="hljs-keyword">return</span> (n &gt;&gt; <span class="hljs-number">16</span>) | (n &lt;&lt; <span class="hljs-number">16</span>);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
-<p><strong>时间复杂度</strong></p>
-<p>递推方程：$W(k) &#x3D; W(k&#x2F;2) + k&#x2F;2 \times 2n, 其中n为每个链表的平均长度.$</p>
-<p>解这个递推方程可以得到$W(k) &#x3D; O(knlogk).$</p>
-<h4 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a><a href="https://erlsrnby04.github.io/2024/10/05/C-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">优先队列</a></h4><p>另一种思路是将k个链表的头结点通过一个小顶堆来维护，每次取出最小的结点，然后将该结点下一个结点重新插入小顶堆中。</p>
-<p><strong>代码</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for singly-linked list.</span><br><span class="hljs-comment"> * struct ListNode &#123;</span><br><span class="hljs-comment"> *     int val;</span><br><span class="hljs-comment"> *     ListNode *next;</span><br><span class="hljs-comment"> *     ListNode() : val(0), next(nullptr) &#123;&#125;</span><br><span class="hljs-comment"> *     ListNode(int x) : val(x), next(nullptr) &#123;&#125;</span><br><span class="hljs-comment"> *     ListNode(int x, ListNode *next) : val(x), next(next) &#123;&#125;</span><br><span class="hljs-comment"> * &#125;;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">ListNode* <span class="hljs-title">mergeKLists</span><span class="hljs-params">(vector&lt;ListNode*&gt;&amp; lists)</span> </span>&#123;<br>        <span class="hljs-keyword">auto</span> cmp = [](<span class="hljs-type">const</span> ListNode *lhs, <span class="hljs-type">const</span> ListNode *rhs)<br>        &#123;<br>            <span class="hljs-keyword">return</span> lhs-&gt;val &gt; rhs-&gt;val;<br>        &#125;;<br>        priority_queue&lt;ListNode*, vector&lt;ListNode*&gt;, <span class="hljs-keyword">decltype</span>(cmp)&gt; <span class="hljs-built_in">pq</span>(cmp);<br>        ListNode dummy, *tail = &amp;dummy;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> list : lists) <br>            <span class="hljs-keyword">if</span> (list) pq.<span class="hljs-built_in">push</span>(list);<br>        <span class="hljs-keyword">while</span> (!pq.<span class="hljs-built_in">empty</span>())<br>        &#123;<br>            tail-&gt;next = pq.<span class="hljs-built_in">top</span>(); pq.<span class="hljs-built_in">pop</span>();<br>            tail = tail-&gt;next;<br>            <span class="hljs-keyword">if</span> (tail-&gt;next) pq.<span class="hljs-built_in">push</span>(tail-&gt;next);<br>        &#125;<br>        <span class="hljs-keyword">return</span> dummy.next;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
-
-<p><strong>时间复杂度</strong></p>
-<p>小顶堆中插入和删除操作的时间复杂度都是$O(logk)$，所有结点都需要进队一次，出队一次，因此算法的时间复杂度是$O(knlogk)$，和分治算法的时间复杂度一样。</p>
+<p><strong>时间复杂度：</strong>$O(1).$</p>
+<p><strong>空间复杂度：</strong>$O(1)$.</p>
 
                 
               </div>
@@ -391,8 +387,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>[LC]23.合并k个升序链表</div>
-      <div>https://erlsrnby04.github.io/2024/10/05/LC-23-合并k个升序链表/</div>
+      <div>[LC]190.颠倒二进制位</div>
+      <div>https://erlsrnby04.github.io/2024/10/06/LC-190-颠倒二进制位/</div>
     </div>
     <div class="license-meta">
       
@@ -404,7 +400,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年10月5日</div>
+          <div>2024年10月6日</div>
         </div>
       
       
@@ -442,9 +438,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/10/05/C-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" title="[C++]优先队列">
+                      <a href="/2024/10/06/LC-191-%E4%BD%8D1%E7%9A%84%E4%B8%AA%E6%95%B0/" title="[LC]191.位1的个数">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">[C++]优先队列</span>
+                        <span class="hidden-mobile">[LC]191.位1的个数</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -452,8 +448,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/10/05/LC-4-%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%AD%A3%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" title="[LC]4.寻找两个正序数组的中位数">
-                        <span class="hidden-mobile">[LC]4.寻找两个正序数组的中位数</span>
+                      <a href="/2024/10/06/LC-109-%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8%E8%BD%AC%E6%8D%A2%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/" title="[LC]109.有序链表转换二叉搜索树">
+                        <span class="hidden-mobile">[LC]109.有序链表转换二叉搜索树</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -614,7 +610,7 @@
       
         <a href="/2024/10/06/LC-190-%E9%A2%A0%E5%80%92%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D/" title="[LC]190.颠倒二进制位"
            class="list-group-item list-group-item-action
-           ">
+           active">
           <span class="category-post">[LC]190.颠倒二进制位</span>
         </a>
       
@@ -632,7 +628,7 @@
       
         <a href="/2024/10/05/LC-23-%E5%90%88%E5%B9%B6k%E4%B8%AA%E5%8D%87%E5%BA%8F%E9%93%BE%E8%A1%A8/" title="[LC]23.合并k个升序链表"
            class="list-group-item list-group-item-action
-           active">
+           ">
           <span class="category-post">[LC]23.合并k个升序链表</span>
         </a>
       
