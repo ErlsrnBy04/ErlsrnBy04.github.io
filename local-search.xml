@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>[LC]109.有序链表转换二叉搜索树</title>
+    <link href="/2024/10/06/LC-109-%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8%E8%BD%AC%E6%8D%A2%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/"/>
+    <url>/2024/10/06/LC-109-%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8%E8%BD%AC%E6%8D%A2%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/</url>
+    
+    <content type="html"><![CDATA[<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给定一个单链表的头节点  <code>head</code> ，其中的元素 <strong>按升序排序</strong> ，将其转换为平衡二叉搜索树。</p><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="分治"><a href="#分治" class="headerlink" title="分治"></a>分治</h4><p>我们将链表中间偏左的结点$m*$作为根节点构建BST，由此将原问题规约为两个规模更小的子问题，分别递归求解，得到左子树和右子树，将其和根结点组合后返回即可。</p><p><strong>代码</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">ListNode *<span class="hljs-title">findMid</span><span class="hljs-params">(ListNode *head, ListNode *end)</span></span><br><span class="hljs-function">    </span>&#123;<br>        ListNode *slow = head, *fast = head;<br>        <span class="hljs-keyword">while</span> (fast-&gt;next != end &amp;&amp; fast-&gt;next-&gt;next != end)<br>        &#123;<br>            slow = slow-&gt;next;<br>            fast = fast-&gt;next-&gt;next;<br>        &#125;<br>        <span class="hljs-keyword">return</span> slow;<br>    &#125;<br>    <span class="hljs-function">TreeNode *<span class="hljs-title">buildBST</span><span class="hljs-params">(ListNode *head, ListNode *end)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (head == end) <span class="hljs-keyword">return</span> <span class="hljs-literal">nullptr</span>;<br>        <span class="hljs-keyword">auto</span> mid = <span class="hljs-built_in">findMid</span>(head, end);<br>        TreeNode *root = <span class="hljs-keyword">new</span> <span class="hljs-built_in">TreeNode</span>(mid-&gt;val);<br>        root-&gt;left = <span class="hljs-built_in">buildBST</span>(head, mid);<br>        root-&gt;right = <span class="hljs-built_in">buildBST</span>(mid-&gt;next, end);<br>        <span class="hljs-keyword">return</span> root;<br>    &#125;<br>    <span class="hljs-function">TreeNode* <span class="hljs-title">sortedListToBST</span><span class="hljs-params">(ListNode* head)</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">buildBST</span>(head, <span class="hljs-literal">nullptr</span>);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure><p><strong>时间复杂度</strong></p><p>每次递归的时候，为了找到中间的结点，我们需要$O(n)$的时间。</p><p>由此得到递推方程$W(n) &#x3D; 2W(n&#x2F;2) + O(n).$</p><p>由主定理，解得$W(n) &#x3D; \Theta(nlogn).$</p><p><strong>空间复杂度</strong></p><p>空间复杂度为递归深度$O(logn).$</p><h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><p>可以看到，由于链表不具有随机访问的能力，我们为了找到中间结点，需要花费$O(n)$的时间。</p><p>为了减少这个时间，一种可能的方法是以空间换时间，将链表中的元素存储进数组中，这样就可以在$O(1)$的时间内访问到中间结点了，但是这样会导致空间复杂度变为$O(n)$.</p><p>那有什么办法可以既保证空间复杂度不改变，又能够降低时间复杂度呢？</p><p>观察建树的过程，我们先初始化根结点，然后去递归的建立左子树和右子树，但建立左子树的过程中，根结点的唯一作用就是作为边界，实际只会用到根节点左边的结点。因此，我们可以用下标来代替根节点，先建立左子树，然后建立根结点，之后再建立右子树。这个过程很类似中序遍历的过程，因此我们可以再每次递归的时候，将头结点后移，这样在递归处理完左子树之后，头结点的位置刚好指向我们需要的中间结点的位置，从而无需花费$O(n)$的时间复杂度去定位中间节点。</p><p><strong>代码：</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">getLength</span><span class="hljs-params">(ListNode *head)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-type">int</span> length = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span> (head) <br>        &#123;<br>            ++length;<br>            head = head-&gt;next;<br>        &#125;<br>        <span class="hljs-keyword">return</span> length;<br>    &#125;<br>    <span class="hljs-comment">// [l, r]</span><br>    <span class="hljs-function">TreeNode *<span class="hljs-title">buildBST</span><span class="hljs-params">(ListNode *&amp;head, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (l &gt; r) <span class="hljs-keyword">return</span> <span class="hljs-literal">nullptr</span>;<br>        <span class="hljs-keyword">auto</span> root = <span class="hljs-keyword">new</span> <span class="hljs-built_in">TreeNode</span>();<br>        <span class="hljs-type">int</span> m = l + ((r - l) &gt;&gt; <span class="hljs-number">1</span>);<br>        root-&gt;left = <span class="hljs-built_in">buildBST</span>(head, l, m - <span class="hljs-number">1</span>);<br>        root-&gt;val = head-&gt;val;<br>        head = head-&gt;next;<br>        root-&gt;right = <span class="hljs-built_in">buildBST</span>(head, m + <span class="hljs-number">1</span>, r);<br>        <span class="hljs-keyword">return</span> root;<br>    &#125;<br>    <span class="hljs-function">TreeNode* <span class="hljs-title">sortedListToBST</span><span class="hljs-params">(ListNode* head)</span> </span>&#123;<br>        <span class="hljs-type">int</span> length = <span class="hljs-built_in">getLength</span>(head);<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">buildBST</span>(head, <span class="hljs-number">0</span>, length - <span class="hljs-number">1</span>);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure><p><strong>时间复杂度</strong></p><p>递推方程$W(n) &#x3D; 2W(n&#x2F;2) + O(1).$</p><p>由主定理，$W(n) &#x3D; \Theta(n).$</p><p><strong>空间复杂度</strong> </p><p>空间复杂度等于递归深度$O(logn).$</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法</category>
+      
+      <category>分治算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+      <tag>leetcode</tag>
+      
+      <tag>分治</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[LC]105.从前序与中序遍历序列构造二叉树</title>
     <link href="/2024/10/06/LC-105-%E4%BB%8E%E5%89%8D%E5%BA%8F%E4%B8%8E%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86%E5%BA%8F%E5%88%97%E6%9E%84%E9%80%A0%E4%BA%8C%E5%8F%89%E6%A0%91/"/>
     <url>/2024/10/06/LC-105-%E4%BB%8E%E5%89%8D%E5%BA%8F%E4%B8%8E%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86%E5%BA%8F%E5%88%97%E6%9E%84%E9%80%A0%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
@@ -24,9 +55,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -53,9 +84,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -136,9 +167,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -167,9 +198,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -939,6 +970,28 @@
   
   
   <entry>
+    <title>about</title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>categories</title>
     <link href="/"/>
     <url>/</url>
@@ -965,40 +1018,18 @@
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[// document//   .querySelector('#web_bg')//   .setAttribute('style', `background-image: ${document.querySelector('.banner').style.background.split(' ')[0]};position: fixed;width: 100%;height: 100%;z-index: -1;background-size: cover;`);// document//   .querySelector("#banner")//   .setAttribute('style', 'background-image: url()')// document//   .querySelector("#banner .mask")//   .setAttribute('style', 'background-color:rgba(0,0,0,0)')]]></content>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title></title>
-    <link href="/"/>
-    <url>/</url>
-    
-    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>about</title>
-    <link href="/"/>
-    <url>/</url>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title></title>
-    <link href="/"/>
-    <url>/</url>
-    
     <content type="html"><![CDATA[const cards = document.querySelectorAll('.index-card')if (cards.length) {  document.querySelector('.row').setAttribute('style', 'overflow: hidden;')  const coefficient = document.documentElement.clientWidth > 768 ? .5 : .3  const origin = document.documentElement.clientHeight - cards[0].getBoundingClientRect().height * coefficient  function throttle(fn, wait) {    let timer = null;    return function () {      const context = this;      const args = arguments;      if (!timer) {        timer = setTimeout(function () {          fn.apply(context, args);          timer = null;        }, wait)      }    }  }  function handle() {    cards.forEach(card => {      card.setAttribute('style', `--state: ${(card.getBoundingClientRect().top - origin) < 0 ? 1 : 0};`)    })    console.log(1)  }  document.addEventListener("scroll", throttle(handle, 100));}]]></content>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[// document//   .querySelector('#web_bg')//   .setAttribute('style', `background-image: ${document.querySelector('.banner').style.background.split(' ')[0]};position: fixed;width: 100%;height: 100%;z-index: -1;background-size: cover;`);// document//   .querySelector("#banner")//   .setAttribute('style', 'background-image: url()')// document//   .querySelector("#banner .mask")//   .setAttribute('style', 'background-color:rgba(0,0,0,0)')]]></content>
     
   </entry>
   
