@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>[LC]912.排序数组</title>
+    <link href="/2024/10/07/LC-912-%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/"/>
+    <url>/2024/10/07/LC-912-%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/</url>
+    
+    <content type="html"><![CDATA[<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给你一个整数数组 <code>nums</code>，请你将该数组升序排列。</p><p>你必须在 <strong>不使用任何内置函数</strong> 的情况下解决问题，时间复杂度为 <code>O(nlog(n))</code>，并且空间复杂度尽可能小。</p><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h4><p><strong>代码</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">sortArray</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums)</span> </span>&#123;<br>        <span class="hljs-built_in">buildHeap</span>(nums);<br>        <span class="hljs-type">int</span> n = nums.<span class="hljs-built_in">size</span>();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">1</span>; ++i)<br>        &#123;<br>            <span class="hljs-built_in">swap</span>(nums[<span class="hljs-number">0</span>], nums[n - <span class="hljs-number">1</span> - i]);<br>            <span class="hljs-built_in">heapAdjust</span>(nums, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span> - i);<br>        &#125;<br>        <span class="hljs-keyword">return</span> nums;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">heapAdjust</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt; &amp;nums, <span class="hljs-type">int</span> k, <span class="hljs-type">int</span> n)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-type">int</span> i = <span class="hljs-built_in">left</span>(k);<br>        <span class="hljs-keyword">while</span> (i &lt; n)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (i + <span class="hljs-number">1</span> &lt; n &amp;&amp; nums[i] &lt; nums[i<span class="hljs-number">+1</span>])++i;<br>            <span class="hljs-keyword">if</span> (nums[k] &gt;= nums[i]) <span class="hljs-keyword">break</span>;<br>            <span class="hljs-built_in">swap</span>(nums[k], nums[i]);<br>            k = i;<br>            i = <span class="hljs-built_in">left</span>(k);<br>        &#125;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">buildHeap</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt; &amp;nums)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = nums.<span class="hljs-built_in">size</span>() / <span class="hljs-number">2</span> - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; --i)<br>        &#123;<br>            <span class="hljs-built_in">heapAdjust</span>(nums, i, nums.<span class="hljs-built_in">size</span>());<br>        &#125;<br>    &#125;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">left</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * i + <span class="hljs-number">1</span>; &#125;<br>&#125;;<br></code></pre></td></tr></table></figure><p><strong>时间复杂度：</strong>$O(nlogn).$</p><p><strong>空间复杂度：</strong>$O(1).$</p><h4 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h4><p><strong>代码</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">sortArray</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums)</span> </span>&#123;<br>        <span class="hljs-built_in">quickSort</span>(nums, <span class="hljs-number">0</span>, nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">return</span> nums;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">quickSort</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (low &gt;= high) <span class="hljs-keyword">return</span>;<br>        <span class="hljs-type">int</span> pivot_idx = <span class="hljs-built_in">partition</span>(nums, low, high);<br>        <span class="hljs-built_in">quickSort</span>(nums, low, pivot_idx - <span class="hljs-number">1</span>);<br>        <span class="hljs-built_in">quickSort</span>(nums, pivot_idx + <span class="hljs-number">1</span>, high);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">partition</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-built_in">swap</span>(nums[low], nums[low + <span class="hljs-built_in">rand</span>() % (high - low + <span class="hljs-number">1</span>)]);<br>        <span class="hljs-type">int</span> pivot = nums[low];<br>        <span class="hljs-type">int</span> l = low + <span class="hljs-number">1</span>, r = high;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)<br>        &#123;<br>            <span class="hljs-keyword">while</span> (l &lt;= r &amp;&amp; nums[l] &lt; pivot) ++l;<br>            <span class="hljs-keyword">while</span> (l &lt;= r &amp;&amp; nums[r] &gt; pivot) --r;<br>            <span class="hljs-keyword">if</span> (l &gt;= r) <span class="hljs-keyword">break</span>;<br>            <span class="hljs-built_in">swap</span>(nums[l], nums[r]);<br>            ++l; --r;<br>        &#125;<br>        <span class="hljs-built_in">swap</span>(nums[low], nums[r]);<br>        <span class="hljs-keyword">return</span> r;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure><p><strong>时间复杂度：</strong>$平均O(nlogn),最坏O(n^2).$</p><p><strong>空间复杂度：</strong>$平均O(logn)，最坏O(n).$</p><h4 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h4><p><strong>代码</strong></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">sortArray</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums)</span> </span>&#123;<br>        <span class="hljs-built_in">mergeSort</span>(nums, <span class="hljs-number">0</span>, nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">return</span> nums;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">mergeSort</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (low &gt;= high) <span class="hljs-keyword">return</span>;<br>        <span class="hljs-type">int</span> m = low + ((high - low) &gt;&gt; <span class="hljs-number">1</span>);<br>        <span class="hljs-built_in">mergeSort</span>(nums, low, m);<br>        <span class="hljs-built_in">mergeSort</span>(nums, m<span class="hljs-number">+1</span>, high);<br>        <span class="hljs-built_in">merge</span>(nums, low, m, high);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> mid, <span class="hljs-type">int</span> high)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">buffer</span><span class="hljs-params">(nums.begin() + low, nums.begin() + mid + <span class="hljs-number">1</span>)</span></span>;<br>        <span class="hljs-type">int</span> i, j, k;<br>        <span class="hljs-keyword">for</span> (k = low, i = <span class="hljs-number">0</span>, j = mid + <span class="hljs-number">1</span>; i &lt; buffer.<span class="hljs-built_in">size</span>() &amp;&amp; j &lt;= high; ++k)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (buffer[i] &lt;= nums[j]) nums[k] = buffer[i++];<br>            <span class="hljs-keyword">else</span> nums[k] = nums[j++];<br>        &#125;<br>        <span class="hljs-keyword">while</span> (i &lt; buffer.<span class="hljs-built_in">size</span>()) nums[k++] = buffer[i++];<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure><p><strong>时间复杂度：</strong>$O(nlogn).$</p><p><strong>空间复杂度：</strong>$O(n).$</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+      <tag>leetcode</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[LC]215.数组中的第k个最大元素</title>
     <link href="/2024/10/06/LC-215-%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E7%AC%ACk%E4%B8%AA%E6%9C%80%E5%A4%A7%E5%85%83%E7%B4%A0/"/>
     <url>/2024/10/06/LC-215-%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E7%AC%ACk%E4%B8%AA%E6%9C%80%E5%A4%A7%E5%85%83%E7%B4%A0/</url>
@@ -24,9 +51,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -82,9 +109,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -113,9 +140,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -144,9 +171,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -173,9 +200,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -256,9 +283,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -287,9 +314,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -1063,7 +1090,7 @@
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[const cards = document.querySelectorAll('.index-card')if (cards.length) {  document.querySelector('.row').setAttribute('style', 'overflow: hidden;')  const coefficient = document.documentElement.clientWidth > 768 ? .5 : .3  const origin = document.documentElement.clientHeight - cards[0].getBoundingClientRect().height * coefficient  function throttle(fn, wait) {    let timer = null;    return function () {      const context = this;      const args = arguments;      if (!timer) {        timer = setTimeout(function () {          fn.apply(context, args);          timer = null;        }, wait)      }    }  }  function handle() {    cards.forEach(card => {      card.setAttribute('style', `--state: ${(card.getBoundingClientRect().top - origin) < 0 ? 1 : 0};`)    })    console.log(1)  }  document.addEventListener("scroll", throttle(handle, 100));}]]></content>
+    <content type="html"><![CDATA[// document//   .querySelector('#web_bg')//   .setAttribute('style', `background-image: ${document.querySelector('.banner').style.background.split(' ')[0]};position: fixed;width: 100%;height: 100%;z-index: -1;background-size: cover;`);// document//   .querySelector("#banner")//   .setAttribute('style', 'background-image: url()')// document//   .querySelector("#banner .mask")//   .setAttribute('style', 'background-color:rgba(0,0,0,0)')]]></content>
     
   </entry>
   
@@ -1081,18 +1108,7 @@
   
   
   <entry>
-    <title></title>
-    <link href="/"/>
-    <url>/</url>
-    
-    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>about</title>
+    <title>categories</title>
     <link href="/"/>
     <url>/</url>
     
@@ -1107,14 +1123,25 @@
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[// document//   .querySelector('#web_bg')//   .setAttribute('style', `background-image: ${document.querySelector('.banner').style.background.split(' ')[0]};position: fixed;width: 100%;height: 100%;z-index: -1;background-size: cover;`);// document//   .querySelector("#banner")//   .setAttribute('style', 'background-image: url()')// document//   .querySelector("#banner .mask")//   .setAttribute('style', 'background-color:rgba(0,0,0,0)')]]></content>
+    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
     
   </entry>
   
   
   
   <entry>
-    <title>categories</title>
+    <title></title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[const cards = document.querySelectorAll('.index-card')if (cards.length) {  document.querySelector('.row').setAttribute('style', 'overflow: hidden;')  const coefficient = document.documentElement.clientWidth > 768 ? .5 : .3  const origin = document.documentElement.clientHeight - cards[0].getBoundingClientRect().height * coefficient  function throttle(fn, wait) {    let timer = null;    return function () {      const context = this;      const args = arguments;      if (!timer) {        timer = setTimeout(function () {          fn.apply(context, args);          timer = null;        }, wait)      }    }  }  function handle() {    cards.forEach(card => {      card.setAttribute('style', `--state: ${(card.getBoundingClientRect().top - origin) < 0 ? 1 : 0};`)    })    console.log(1)  }  document.addEventListener("scroll", throttle(handle, 100));}]]></content>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>about</title>
     <link href="/"/>
     <url>/</url>
     
