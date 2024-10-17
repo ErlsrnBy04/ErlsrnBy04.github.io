@@ -19,26 +19,28 @@
   <meta name="author" content="ErlsrnBy04">
   <meta name="keywords" content="">
   
-    <meta name="description" content="题目给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。 算法的时间复杂度应该为 O(log (m+n)) 。 分析暴力解直接归并两个有序数组，然后求中位数即可 时间复杂度 ：$O(m+n)$ 二分查找先考虑更一般的问题，找第$k$小的数。 为了找到第$k$小的数，先考虑$A[k&#x2F;2 - 1]$和$B[k&amp;#x2F">
+    <meta name="description" content="题目给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。 分析暴力对于每个位置 i ，分别找到其左右的最大高度$leftMax$和$rightMax$，那么该点能接的雨水值为$min(leftMax, rightMax) - height_i$.  时间复杂度: $O(n^2)$ 动态规划观察暴力算法，我们不难发现，时间复杂度高的原因主要是因为对于每个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[LC]4.寻找两个正序数组的中位数">
-<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/05/LC-4-%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%AD%A3%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/index.html">
+<meta property="og:title" content="[LC]24.接雨水">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/18/LC-24-%E6%8E%A5%E9%9B%A8%E6%B0%B4/index.html">
 <meta property="og:site_name" content="ErlsrnBy04">
-<meta property="og:description" content="题目给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。 算法的时间复杂度应该为 O(log (m+n)) 。 分析暴力解直接归并两个有序数组，然后求中位数即可 时间复杂度 ：$O(m+n)$ 二分查找先考虑更一般的问题，找第$k$小的数。 为了找到第$k$小的数，先考虑$A[k&#x2F;2 - 1]$和$B[k&amp;#x2F">
+<meta property="og:description" content="题目给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。 分析暴力对于每个位置 i ，分别找到其左右的最大高度$leftMax$和$rightMax$，那么该点能接的雨水值为$min(leftMax, rightMax) - height_i$.  时间复杂度: $O(n^2)$ 动态规划观察暴力算法，我们不难发现，时间复杂度高的原因主要是因为对于每个">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://t.alcy.cc/fj?postId=31">
-<meta property="article:published_time" content="2024-10-05T09:57:21.000Z">
-<meta property="article:modified_time" content="2024-10-05T12:08:21.719Z">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=45">
+<meta property="article:published_time" content="2024-10-17T16:36:20.000Z">
+<meta property="article:modified_time" content="2024-10-17T17:09:54.955Z">
 <meta property="article:author" content="ErlsrnBy04">
 <meta property="article:tag" content="algorithm">
 <meta property="article:tag" content="leetcode">
-<meta property="article:tag" content="分治">
+<meta property="article:tag" content="dp">
+<meta property="article:tag" content="单调栈">
+<meta property="article:tag" content="双指针">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=31">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=45">
   
   
   
-  <title>[LC]4.寻找两个正序数组的中位数 - ErlsrnBy04</title>
+  <title>[LC]24.接雨水 - ErlsrnBy04</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -222,7 +224,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="[LC]4.寻找两个正序数组的中位数"></span>
+            <span id="subtitle" data-typed-text="[LC]24.接雨水"></span>
           
         </div>
 
@@ -238,8 +240,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-10-05 17:57" pubdate>
-          2024年10月5日 下午
+        <time datetime="2024-10-18 00:36" pubdate>
+          2024年10月18日 凌晨
         </time>
       </span>
     
@@ -250,7 +252,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          588 字
+          963 字
         
       </span>
     
@@ -261,7 +263,7 @@
         
         
         
-          5 分钟
+          9 分钟
         
       </span>
     
@@ -311,39 +313,33 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">[LC]4.寻找两个正序数组的中位数</h1>
+            <h1 id="seo-header">[LC]24.接雨水</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给定两个大小分别为 <code>m</code> 和 <code>n</code> 的正序（从小到大）数组 <code>nums1</code> 和 <code>nums2</code>。请你找出并返回这两个正序数组的 <strong>中位数</strong> 。</p>
-<p>算法的时间复杂度应该为 <code>O(log (m+n))</code> 。</p>
-<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="暴力解"><a href="#暴力解" class="headerlink" title="暴力解"></a>暴力解</h4><p>直接归并两个有序数组，然后求中位数即可</p>
-<p><strong>时间复杂度</strong> ：$O(m+n)$</p>
-<h4 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h4><p>先考虑更一般的问题，找第$k$小的数。</p>
-<p>为了找到第$k$小的数，先考虑$A[k&#x2F;2 - 1]$和$B[k&#x2F;2 - 1]$，这分为三种情况：</p>
-<ol>
-<li><p>$A[k&#x2F;2 - 1] &lt; B[k&#x2F;2 - 1]$ :</p>
-<p>$命题:A[0,1,…,k&#x2F;2-1]中的数不会是第k小的数$</p>
-<p>$证明:A[k&#x2F;2 - 1]是A[0,1,…,k&#x2F;2-1]中最大的数，$</p>
-<p>$而A[k&#x2F;2-1]之前最多有k&#x2F;2-1+k&#x2F;2-1 &#x3D; k-2个元素,$</p>
-<p>$因此A[k&#x2F;2-1]至多是第k-1小的元素.$</p>
-<p>因此，对于此种情况，我们丢弃$A[0,1,…,k&#x2F;2-1]$中的元素，并相应的更新$k$，求解一个规模更小的子问题.</p>
-</li>
-<li><p>$A[k&#x2F;2 - 1] &gt; B[k &#x2F; 2 -1]$</p>
-<p>同理，对于此种情况，我们丢弃$B[0,1,…,k&#x2F;2-1]$中的元素，并相应的更新$k$.</p>
-</li>
-<li><p>$A[k&#x2F;2-1] &#x3D; B[k&#x2F;2 -1]$</p>
-<p>该情况可以并入情况1.</p>
-</li>
-</ol>
-<p>需要注意的是，我们必须考虑当$k&#x2F;2-1$越界的情况，此时我们取数组最后一个元素即可，更新$k$的时候要相应的修改。</p>
-<p>当$k&#x3D;1$的时候，我们只需要返回两个数组首元素中的较小者即可。</p>
+                <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给定 <code>n</code> 个非负整数表示每个宽度为 <code>1</code> 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="暴力"><a href="#暴力" class="headerlink" title="暴力"></a>暴力</h4><p>对于每个位置 <code>i</code> ，分别找到其左右的最大高度$leftMax$和$rightMax$，那么该点能接的雨水值为$min(leftMax, rightMax) - height_i$. </p>
+<p><strong>时间复杂度</strong>: $O(n^2)$</p>
+<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><p>观察暴力算法，我们不难发现，时间复杂度高的原因主要是因为对于每个位置，寻找其左右的最大值需要$O(n)$的时间复杂度，我们可以用数组$leftMax$来维护每个位置左边的最大值，这样在遍历的时候只需要$O(1)$就能找到其左边的最大值，对于右边的最大值同理。</p>
+<p>为了求得每个位置左边的最大值，规定$leftMax[i]$表示位置$i$左边的最大值，由此可以得到状态转移方程：<br>$$<br>\begin{align}<br>    &amp; leftMax[i] &#x3D; max(leftMax[i - 1], height[i]) \\<br>    &amp; rightMax[i] &#x3D; max(rightMax[i + 1], height[i])<br>\end{align}<br>$$<br>我们只需要从前往后遍历一遍数组，就可以得到$leftMax$，从后往前遍历一遍数组，就可以得到$rightMax$.时间复杂度为$O(n)$.</p>
 <p><strong>代码</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// k 从1开始</span><br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">findKthElement</span><span class="hljs-params">(<span class="hljs-type">const</span> vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums1, </span></span><br><span class="hljs-params"><span class="hljs-function">                          <span class="hljs-type">const</span> vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums2, </span></span><br><span class="hljs-params"><span class="hljs-function">                          <span class="hljs-type">size_t</span> k)</span></span><br><span class="hljs-function">    </span>&#123;<br>    	<span class="hljs-type">size_t</span> l1 = <span class="hljs-number">0</span>, l2 = <span class="hljs-number">0</span>, m = nums<span class="hljs-number">1.</span><span class="hljs-built_in">size</span>(), n = nums<span class="hljs-number">2.</span><span class="hljs-built_in">size</span>();<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (l1 == m)<br>            	<span class="hljs-keyword">return</span> nums2[l2 + k - <span class="hljs-number">1</span>];<br>            <span class="hljs-keyword">if</span> (l2 == n)<br>                <span class="hljs-keyword">return</span> nums1[l1 + k - <span class="hljs-number">1</span>];<br>            <span class="hljs-keyword">if</span> (k == <span class="hljs-number">1</span>)<br>                <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(nums1[l1], nums2[l2]);<br>        	<span class="hljs-type">size_t</span> m1 = <span class="hljs-built_in">min</span>(l1 + k/<span class="hljs-number">2</span> - <span class="hljs-number">1</span>, m - <span class="hljs-number">1</span>);<br>            <span class="hljs-type">size_t</span> m2 = <span class="hljs-built_in">min</span>(l2 + k/<span class="hljs-number">2</span> - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>);<br>            <span class="hljs-keyword">if</span> (nums1[m1] &lt;= nums2[m2])<br>            &#123;<br>                k -= (m1 - l1 + <span class="hljs-number">1</span>);<br>                l1 = m1 + <span class="hljs-number">1</span>;<br>            &#125;<br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                k -= (m2 - l2 + <span class="hljs-number">1</span>);<br>                l2 = m2 + <span class="hljs-number">1</span>;<br>            &#125;<br>		&#125;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">findMedianSortedArrays</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums1, vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums2)</span> </span>&#123;<br>      	<span class="hljs-type">size_t</span> length = nums<span class="hljs-number">1.</span><span class="hljs-built_in">size</span>() + nums<span class="hljs-number">2.</span><span class="hljs-built_in">size</span>();<br>        <span class="hljs-keyword">if</span> (length % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>)<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">findKthElement</span>(nums1, nums2, length / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">else</span><br>            <span class="hljs-built_in">return</span> (<span class="hljs-built_in">findKthElement</span>(nums1, nums2, length / <span class="hljs-number">2</span>) + <br>                    <span class="hljs-built_in">findKthElement</span>(nums1, nums2, length / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>)) / <span class="hljs-number">2.0</span>;<br>    &#125;<br>    <br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">trap</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; height)</span> </span>&#123;<br>        <span class="hljs-type">int</span> n = height.<span class="hljs-built_in">size</span>();<br>        <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">leftMax</span><span class="hljs-params">(n, height[<span class="hljs-number">0</span>])</span></span>;<br>        <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">rightMax</span><span class="hljs-params">(n, height[n - <span class="hljs-number">1</span>])</span></span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; n; ++i)<br>        &#123;<br>            leftMax[i] = <span class="hljs-built_in">max</span>(leftMax[i - <span class="hljs-number">1</span>], height[i]);<br>            rightMax[n - i - <span class="hljs-number">1</span>] = <span class="hljs-built_in">max</span>(rightMax[n - i], height[n - i - <span class="hljs-number">1</span>]);<br>        &#125;<br>        <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i)<br>        &#123;<br>            ans += (<span class="hljs-built_in">min</span>(leftMax[i], rightMax[i]) - height[i]); <br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
-<p><strong>时间复杂度：</strong></p>
-<p>因为每次$k$都会减少一半，所以时间复杂度为$O(logk) &#x3D; O(log(m+n)).$</p>
+<p><strong>时间复杂度：</strong>$O(n)$</p>
+<p><strong>空间复杂度：</strong>$O(n)$</p>
+<h4 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h4><p>观察动态规划算法，我们可以发现，$leftMax$和$rightMax$数组是单调的，而且每个位置$i$的能接的雨水只取决于左边和右边最大值中较小的一个。如果我们使用双指针来做，边遍历边维护左右最大值。左指针指向的位置的左边最大值就是当前位置$i$的左边的最大值，右指针指向的位置的右边最大值就是当前位置$i$的右边的最大值。即，左指针的左边最大值是确定的，而右边的最大值有可能会增大，右指针的右边最大值是确定的，而左边的最大值可能会增大。此时，如果左边的最大值小于右边的最大值，那么左指针指向位置的值就可以计算了，因为其只取决于左边的最大值，如果右边的最大值小于左边的最大值，那么右指针指向位置的值就可以计算了。</p>
+<p><strong>代码</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">trap</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; height)</span> </span>&#123;<br>        <span class="hljs-type">int</span> n = height.<span class="hljs-built_in">size</span>();<br>        <span class="hljs-type">int</span> left = <span class="hljs-number">0</span>, right = n - <span class="hljs-number">1</span>;<br>        <span class="hljs-type">int</span> leftMax = height[<span class="hljs-number">0</span>], rightMax = height[n - <span class="hljs-number">1</span>];<br>        <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span> (left &lt;= right)<br>        &#123;<br>            leftMax = <span class="hljs-built_in">max</span>(leftMax, height[left]);<br>            rightMax = <span class="hljs-built_in">max</span>(rightMax, height[right]);<br>            <span class="hljs-keyword">if</span> (leftMax &lt;= rightMax)<br>                ans += (leftMax - height[left++]);<br>            <span class="hljs-keyword">else</span> <br>                ans += (rightMax - height[right--]);<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p><strong>时间复杂度：</strong>$O(n)$</p>
+<p><strong>空间复杂度：</strong>$O(1)$</p>
+<h4 id="单调栈"><a href="#单调栈" class="headerlink" title="单调栈"></a>单调栈</h4><p>用一个单调栈来维护数组下标，保证靠近栈底的高度不小于靠近栈顶的高度。当遇到一个位置$i$的高度大于栈顶高度的时候，当前位置$i$，栈顶的位置$top$，栈顶第二个位置$left$，三者就可能构成一个凹槽，能够接雨水($height[left] &gt;&#x3D; height[top], height[i] &gt; height[top], left &lt; top &lt; i$).接的雨水量等于$(min(height[left], height[i]) - height[top]) \times (i - left - 1)$.</p>
+<p><strong>代码</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">trap</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; height)</span> </span>&#123;<br>        stack&lt;<span class="hljs-type">int</span>&gt; s;<br>        <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; height.<span class="hljs-built_in">size</span>(); ++i)<br>        &#123;<br>            <span class="hljs-keyword">while</span> (!s.<span class="hljs-built_in">empty</span>() &amp;&amp; height[s.<span class="hljs-built_in">top</span>()] &lt; height[i])<br>            &#123;<br>                <span class="hljs-type">int</span> top = s.<span class="hljs-built_in">top</span>(); s.<span class="hljs-built_in">pop</span>();<br>                <span class="hljs-keyword">if</span> (s.<span class="hljs-built_in">empty</span>()) <span class="hljs-keyword">break</span>;<br>                <span class="hljs-type">int</span> left = s.<span class="hljs-built_in">top</span>();<br>                ans += ((<span class="hljs-built_in">min</span>(height[left], height[i]) - height[top]) *<br>                        (i - left - <span class="hljs-number">1</span>));<br>            &#125;<br>            s.<span class="hljs-built_in">push</span>(i);<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p><strong>时间复杂度：</strong>$O(n)$.</p>
+<p><strong>空间复杂度：</strong>$O(n)$.</p>
 
                 
               </div>
@@ -365,13 +361,6 @@
   <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
   
   
-    <span>></span>
-    
-  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/" class="category-chain-item">分治算法</a>
-  
-  
-
-  
 
       </span>
     
@@ -388,7 +377,11 @@
       
         <a href="/tags/leetcode/" class="print-no-link">#leetcode</a>
       
-        <a href="/tags/%E5%88%86%E6%B2%BB/" class="print-no-link">#分治</a>
+        <a href="/tags/dp/" class="print-no-link">#dp</a>
+      
+        <a href="/tags/%E5%8D%95%E8%B0%83%E6%A0%88/" class="print-no-link">#单调栈</a>
+      
+        <a href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" class="print-no-link">#双指针</a>
       
     </div>
   
@@ -400,8 +393,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>[LC]4.寻找两个正序数组的中位数</div>
-      <div>https://erlsrnby04.github.io/2024/10/05/LC-4-寻找两个正序数组的中位数/</div>
+      <div>[LC]24.接雨水</div>
+      <div>https://erlsrnby04.github.io/2024/10/18/LC-24-接雨水/</div>
     </div>
     <div class="license-meta">
       
@@ -413,7 +406,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年10月5日</div>
+          <div>2024年10月18日</div>
         </div>
       
       
@@ -451,9 +444,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/10/05/LC-23-%E5%90%88%E5%B9%B6k%E4%B8%AA%E5%8D%87%E5%BA%8F%E9%93%BE%E8%A1%A8/" title="[LC]23.合并k个升序链表">
+                      <a href="/2024/10/18/LC-46-%E5%85%A8%E6%8E%92%E5%88%97/" title="[LC]46.全排列">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">[LC]23.合并k个升序链表</span>
+                        <span class="hidden-mobile">[LC]46.全排列</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -461,8 +454,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/10/05/MIT-6-1810-Lab3-page-tables/" title="[MIT 6.1810]Lab3 page tables">
-                        <span class="hidden-mobile">[MIT 6.1810]Lab3 page tables</span>
+                      <a href="/2024/10/18/LC-146-LRU%E7%BC%93%E5%AD%98/" title="[LC]146.LRU缓存">
+                        <span class="hidden-mobile">[LC]146.LRU缓存</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -588,7 +581,7 @@
       
         <a href="/2024/10/18/LC-24-%E6%8E%A5%E9%9B%A8%E6%B0%B4/" title="[LC]24.接雨水"
            class="list-group-item list-group-item-action
-           ">
+           active">
           <span class="category-post">[LC]24.接雨水</span>
         </a>
       
@@ -637,17 +630,17 @@
     
     
     <div class="category-sub row nomargin-x">
-      <a class="category-subitem 
+      <a class="category-subitem collapsed
           list-group-item category-item-action col-10 col-md-11 col-xm-11" title="分治算法"
         id="heading-eee59e469f6661a3f40fe663a5021935" role="tab" data-toggle="collapse" href="#collapse-eee59e469f6661a3f40fe663a5021935"
-        aria-expanded="true"
+        aria-expanded="false"
       >
         分治算法
         <span class="list-group-count">(8)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse show" id="collapse-eee59e469f6661a3f40fe663a5021935"
+      <div class="category-collapse collapse " id="collapse-eee59e469f6661a3f40fe663a5021935"
            role="tabpanel" aria-labelledby="heading-eee59e469f6661a3f40fe663a5021935">
         
         
@@ -704,7 +697,7 @@
       
         <a href="/2024/10/05/LC-4-%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%AD%A3%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" title="[LC]4.寻找两个正序数组的中位数"
            class="list-group-item list-group-item-action
-           active">
+           ">
           <span class="category-post">[LC]4.寻找两个正序数组的中位数</span>
         </a>
       

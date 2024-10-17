@@ -19,16 +19,16 @@
   <meta name="author" content="ErlsrnBy04">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1 Inspect a user-process page table (easy)     PTE 逻辑内容 权限位    va 0x0 pte 0x21FC885B pa 0x87F22000 perm 0x5B text DAGUXWRV   va 0x1000 pte 0x21FC7C17 pa 0x87F1F000 perm 0x17 data D~~~~A~~~~GUXWRV   va">
+    <meta name="description" content="1 Inspect a user-process page table (easy)     PTE 逻辑内容 权限位    va 0x0 pte 0x21FC885B pa 0x87F22000 perm 0x5B text AUXRV   va 0x1000 pte 0x21FC7C17 pa 0x87F1F000 perm 0x17 data UWRV   va 0x2000 pte 0x2">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[MIT 6.1810]Lab3 page tables">
 <meta property="og:url" content="https://erlsrnby04.github.io/2024/10/05/MIT-6-1810-Lab3-page-tables/index.html">
 <meta property="og:site_name" content="ErlsrnBy04">
-<meta property="og:description" content="1 Inspect a user-process page table (easy)     PTE 逻辑内容 权限位    va 0x0 pte 0x21FC885B pa 0x87F22000 perm 0x5B text DAGUXWRV   va 0x1000 pte 0x21FC7C17 pa 0x87F1F000 perm 0x17 data D~~~~A~~~~GUXWRV   va">
+<meta property="og:description" content="1 Inspect a user-process page table (easy)     PTE 逻辑内容 权限位    va 0x0 pte 0x21FC885B pa 0x87F22000 perm 0x5B text AUXRV   va 0x1000 pte 0x21FC7C17 pa 0x87F1F000 perm 0x17 data UWRV   va 0x2000 pte 0x2">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://t.alcy.cc/fj?postId=30">
 <meta property="article:published_time" content="2024-10-05T07:01:27.000Z">
-<meta property="article:modified_time" content="2024-10-09T18:04:44.449Z">
+<meta property="article:modified_time" content="2024-10-10T07:49:12.903Z">
 <meta property="article:author" content="ErlsrnBy04">
 <meta property="article:tag" content="MIT 6.1810">
 <meta name="twitter:card" content="summary_large_image">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          645 字
+          608 字
         
       </span>
     
@@ -327,102 +327,102 @@
 <tbody><tr>
 <td>va 0x0 pte 0x21FC885B pa 0x87F22000 perm 0x5B</td>
 <td>text</td>
-<td><del>D</del>A<del>G</del>UX<del>W</del>RV</td>
+<td>AUXRV</td>
 </tr>
 <tr>
 <td>va 0x1000 pte 0x21FC7C17 pa 0x87F1F000 perm 0x17</td>
 <td>data</td>
-<td><del>D~~~~A~~~~G</del>U<del>X</del>WRV</td>
+<td>UWRV</td>
 </tr>
 <tr>
 <td>va 0x2000 pte 0x21FC7807 pa 0x87F1E000 perm 0x7</td>
 <td>guard page</td>
-<td><del>DAGUX</del>WRV</td>
+<td>WRV</td>
 </tr>
 <tr>
 <td>va 0x3000 pte 0x21FC74D7 pa 0x87F1D000 perm 0xD7</td>
 <td>stack</td>
-<td>DA<del>G</del>U<del>X</del>WRV</td>
+<td>DAUWRV</td>
 </tr>
 <tr>
 <td>va 0x4000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0x5000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0x6000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0x7000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0x8000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0x9000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0xFFFF6000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0xFFFF7000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0xFFFF8000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0xFFFF9000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0xFFFFA000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0xFFFFB000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0xFFFFC000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0xFFFFD000 pte 0x0 pa 0x0 perm 0x0</td>
 <td>unused</td>
-<td><del>DAGUXWRV</del></td>
+<td></td>
 </tr>
 <tr>
 <td>va 0xFFFFE000 pte 0x21FD08C7 pa 0x87F42000 perm 0xC7</td>
 <td>trapframe</td>
-<td>DA<del>GU~~~~X</del>WRV</td>
+<td>DAWRV</td>
 </tr>
 <tr>
 <td>va 0xFFFFF000 pte 0x2000184B pa 0x80006000 perm 0x4B</td>
 <td>trampoline</td>
-<td><del>D</del>A<del>GU</del>X<del>W</del>RV</td>
+<td>AXRV</td>
 </tr>
 </tbody></table>
 <h2 id="2-Speed-up-system-calls-easy"><a href="#2-Speed-up-system-calls-easy" class="headerlink" title="2 Speed up system calls (easy)"></a>2 Speed up system calls (<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.828/2024/labs/guidance.html">easy</a>)</h2><p>Some operating systems (e.g., Linux) speed up certain system calls by sharing data in a read-only region between userspace and the kernel. This eliminates the need for kernel crossings when performing these system calls. To help you learn how to insert mappings into a page table, your first task is to implement this optimization for the <code>getpid()</code> system call in xv6.</p>
@@ -453,10 +453,10 @@
             <p>We added a system call <code>kpgtbl()</code>, which calls <code>vmprint()</code> in <code>vm.c</code>. It takes a <code>pagetable_t</code> argument, and your job is to print that pagetable in the format described below.</p>
           </div>
 
-<p>这题通过递归实现，参考freewalk。注意虚拟地址va，当遍历3级页表的时候，每遍历一个页表项，va变化$512<em>512</em>PGSIZE$，遍历2级页表的时候，每遍历一个页表项，va变化$512*PGSIZE$，遍历一级页表的时候，每遍历一个页表项，va变化$PGSIZE$.</p>
+<p>这题通过递归实现，参考freewalk。注意虚拟地址va，当遍历3级页表的时候，每遍历一个页表项，va变化<code>512*512*PGSIZE</code>，2级1级以此类推。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span><br><span class="hljs-title function_">vmprinthelper</span><span class="hljs-params">(<span class="hljs-type">pagetable_t</span> pagetable, <span class="hljs-type">int</span> level, uint64 va)</span><br>&#123;<br>  uint64 sz = <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">if</span> (level == <span class="hljs-number">2</span>) sz = <span class="hljs-number">512</span> * <span class="hljs-number">512</span> * PGSIZE;<br>  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (level == <span class="hljs-number">1</span>) sz = <span class="hljs-number">512</span> * PGSIZE;<br>  <span class="hljs-keyword">else</span> sz = PGSIZE;<br>  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">512</span>; i++, va += sz)&#123;<br>    <span class="hljs-type">pte_t</span> pte = pagetable[i];<br>    <span class="hljs-keyword">if</span> ((pte &amp; PTE_V) == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">3</span> - level; ++j) <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot; ..&quot;</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%p: &quot;</span>, (<span class="hljs-type">void</span>*)va);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;pte %p pa %p\n&quot;</span>, (<span class="hljs-type">void</span>*)pte, (<span class="hljs-type">void</span>*)PTE2PA(pte));<br>    <span class="hljs-keyword">if</span> ((pte &amp; (PTE_R|PTE_W|PTE_X)) == <span class="hljs-number">0</span>)<br>      vmprinthelper((<span class="hljs-type">void</span>*)PTE2PA(pte), level - <span class="hljs-number">1</span>, va);<br>  &#125;<br>&#125;<br><br><span class="hljs-type">void</span><br><span class="hljs-title function_">vmprint</span><span class="hljs-params">(<span class="hljs-type">pagetable_t</span> pagetable)</span> &#123;<br>  <span class="hljs-comment">// your code here</span><br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;page table %p\n&quot;</span>, pagetable);<br>  vmprinthelper(pagetable, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-
+<h2 id="4"><a href="#4" class="headerlink" title="4"></a>4</h2>
                 
               </div>
             
