@@ -19,24 +19,24 @@
   <meta name="author" content="ErlsrnBy04">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Operating system interfaces">
+    <meta name="description" content="Interlude: Process API">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[MIT 6.1810]Xv6 Chapter 1">
-<meta property="og:url" content="https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-1/index.html">
+<meta property="og:title" content="[OS]Three Easy Pieces Chapter 5">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/18/OS-Three-Easy-Pieces-Chapter-5/index.html">
 <meta property="og:site_name" content="ErlsrnBy04">
-<meta property="og:description" content="Operating system interfaces">
+<meta property="og:description" content="Interlude: Process API">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://t.alcy.cc/fj?postId=16">
-<meta property="article:published_time" content="2024-09-24T05:11:40.000Z">
-<meta property="article:modified_time" content="2024-09-27T14:19:05.440Z">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=49">
+<meta property="article:published_time" content="2024-10-18T07:38:10.000Z">
+<meta property="article:modified_time" content="2024-10-18T08:33:48.861Z">
 <meta property="article:author" content="ErlsrnBy04">
-<meta property="article:tag" content="MIT 6.1810">
+<meta property="article:tag" content="OS">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=16">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=49">
   
   
   
-  <title>[MIT 6.1810]Xv6 Chapter 1 - ErlsrnBy04</title>
+  <title>[OS]Three Easy Pieces Chapter 5 - ErlsrnBy04</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -220,7 +220,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="[MIT 6.1810]Xv6 Chapter 1"></span>
+            <span id="subtitle" data-typed-text="[OS]Three Easy Pieces Chapter 5"></span>
           
         </div>
 
@@ -236,8 +236,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-09-24 13:11" pubdate>
-          2024年9月24日 下午
+        <time datetime="2024-10-18 15:38" pubdate>
+          2024年10月18日 下午
         </time>
       </span>
     
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.1k 字
+          1.1k 字
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          18 分钟
+          10 分钟
         
       </span>
     
@@ -309,119 +309,29 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">[MIT 6.1810]Xv6 Chapter 1</h1>
+            <h1 id="seo-header">[OS]Three Easy Pieces Chapter 5</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="Operating-system-interfaces"><a href="#Operating-system-interfaces" class="headerlink" title="Operating system interfaces"></a>Operating system interfaces</h1><span id="more"></span>
+                <h1 id="Interlude-Process-API"><a href="#Interlude-Process-API" class="headerlink" title="Interlude: Process API"></a>Interlude: Process API</h1><span id="more"></span>
 
-<p>操作系统的工作是：</p>
-<ol>
-<li>在多个程序间共享一台电脑</li>
-<li>提供一套比硬件更有用的服务</li>
-</ol>
-<p>操作系统：</p>
-<ol>
-<li>管理并抽象底层硬件</li>
-<li>在多个程序间共享硬件</li>
-<li>提供一种受控的程序交互方式</li>
-</ol>
-<p>操作系统是通过接口来向程序提供服务的。</p>
-<p>每个进程（运行中的程序），都有指令、数据、栈。</p>
-<p>进程通过系统调用（system call）来使用操作系统提供的服务。</p>
-<p><img src="/../images/MIT-6-1810-Xv6-Chapter-1/image-20240924132438222.png" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/../images/MIT-6-1810-Xv6-Chapter-1/image-20240924132532714.png" srcset="/img/loading.gif" lazyload></p>
-<h2 id="1-1-Processes-and-memory"><a href="#1-1-Processes-and-memory" class="headerlink" title="1.1 Processes and memory"></a>1.1 Processes and memory</h2><p>进程由用户空间的内存（指令、数据、栈）和一些状态组成。xv6是分时操作系统，每个进程都有一个唯一的PID来标识。</p>
-<p><strong><code>fork</code> 系统调用</strong></p>
-<p><code>fork</code>系统调用完全复制调用者的内存给新进程，然后在原进程和新进程中返回，原进程中返回值为新进程的PID，新进程中的返回值为0。</p>
-<p>需要注意的是，父子进程之间的内存空间是相互独立的，即每个进程都有一份自己的拷贝。</p>
-<p><strong><code>wait</code> 系统调用</strong></p>
-<p><code>wait</code>系统调用返回当前进程的一个退出的子进程的PID，并且将子进程的退出状态拷贝到指定内存中。如果没有退出的子进程，<code>wait</code>阻塞等待。如果当前进程没有子进程，<code>wait</code>立即返回-1。如果不关心子进程的退出状态，可以传入一个0地址。</p>
-<p><strong><code>exec</code>系统调用</strong></p>
-<p><code>exec</code>系统调用负责用存储在文件系统中的可执行文件加载新的内存镜像，替换调用进程的内存。这个可执行文件必须遵循特定格式，定义了文件的各个部分，例如哪些部分包含指令和数据，以及从哪个指令开始执行。在 xv6 中，使用的是 ELF（可执行与可链接格式），详见第三章。</p>
-<p>通常，这个可执行文件是通过编译程序源代码生成的。当 <code>exec</code> 成功调用时，控制权不会返回到原程序，而是从 ELF 头部指定的入口点开始执行新加载的指令。<code>exec</code> 需要两个参数：可执行文件的名称和一个字符串数组，包含传递给新进程的参数。大多数程序通常会忽略掉字符串数组的第一个参数，一般是程序的名字。</p>
-<p><strong>为什么 <code>fork</code> 和 <code>exec</code> 是分离的</strong></p>
-<p>操作系统利用这种分离机制实现IO重定向。同时，为了避免创建一个子进程然后马上调用 <code>exec</code> 调换掉内存，操作系统通过虚拟内存的一些技巧来优化，例如copy on write。</p>
-<p><strong>申请内存</strong></p>
-<p>xv6大多数时候隐式申请用户空间的内存，但是进程也可以通过调用 <code>sbrk(n)</code> 来申请更多的内存空间，该函数返回申请内存的起始地址。</p>
-<h2 id="1-2-I-O-and-File-descriptors"><a href="#1-2-I-O-and-File-descriptors" class="headerlink" title="1.2 I&#x2F;O and File descriptors"></a>1.2 I&#x2F;O and File descriptors</h2><p>文件描述符是一个整数，代表着一个内核管理的object，进程可以从这个object读，或向这个object写。</p>
-<p>一个进程可以通过</p>
-<ol>
-<li>打开文件、目录、设别</li>
-<li>创建管道；</li>
-<li>duplicating一个文件描述符</li>
-</ol>
-<p>来获得文件描述符。</p>
-<p>文件描述符这种抽象使得我们可以不用关注文件的种类，无论是文件、管道、设备，我们都将他们视为字节流来处理。</p>
-<p>内部，xv6内核将文件描述符用作每个进程的打开文件表的索引。通常，一个进程从文件描述符0读取输入（标准输入），向文件描述符1输出（标准输出），将错误信息输出到文件描述符2（标准错误）。</p>
-<p><strong><code>read(fd, buf, n)</code> 系统调用</strong></p>
-<p>该系统调用从fd指向的object读取至多n个字节，拷贝到buf内，并返回读取的字节数。</p>
-<p>每个文件描述符都有一个关联的偏移量，<code>read</code> 会更新这个偏移量，指向下一个未被读取的字节。</p>
-<p>当没有更多的字节可读时，<code>read</code> 会返回0。</p>
-<p> <strong><code>write(fd, buf, n)</code> 系统调用</strong></p>
-<p>该系统调用向fd写n个字节，返回实际写入的字节数。只有当错误发生的时候，实际写入的字节数才不等于n。</p>
-<p> <strong><code>close(fd)</code> 系统调用</strong></p>
-<p>该系统调用释放一个文件描述符，使之可以为之后的文件使用。</p>
-<p>一个新的文件描述符总是当前进程中最小的未使用的文件描述符。</p>
-<p> <strong><code>fork</code> 和文件描述符</strong></p>
-<p><code>fork</code> 会将父进程的打开文件表复制给子进程，子进程和父进程的打开文件是一样的。</p>
-<p><code>exec</code>  会替换调用进程的内存，但是会保留打开文件表。</p>
-<p>这种行为使得shell可以简单的实现IO重定向。</p>
-<p> <code>cat &lt; input.txt</code> 的简单实现</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">char</span> *argv[<span class="hljs-number">2</span>];<br>argv[<span class="hljs-number">0</span>] = <span class="hljs-string">&quot;cat&quot;</span>;<br>argv[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">if</span> (fork() == <span class="hljs-number">0</span>)<br>&#123;<br>    <span class="hljs-comment">// child</span><br>    close(<span class="hljs-number">0</span>);<br>    open(<span class="hljs-string">&quot;input.txt&quot;</span>, O_RDONLY);<br>    exec(<span class="hljs-string">&quot;/bin/cat&quot;</span>, argv);<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>关键点是子进程先关闭了文件描述符0，然后再打开input.txt，这是操作系统会将文件描述符0分配给这个文件。</p>
-<p>父进程的文件描述符并不会被改变，因为子进程有一张自己的打开文件表。</p>
-<p>需要注意的是，虽然fork会复制打开文件表，但是每个文件描述符关联的偏移在父子进程间是共享的。</p>
-<p> <strong><code>open</code> 系统调用</strong></p>
-<p>该系统调用打开一个文件，并返回相应的文件描述符。</p>
-<p>第二个参数可以是(kerenl&#x2F;fcntl.h)：</p>
+<h2 id="1-The-fork-System-Call"><a href="#1-The-fork-System-Call" class="headerlink" title="1 The fork() System Call"></a>1 The <code>fork()</code> System Call</h2><p><code>fork</code> 系统调用创建一个新的进程，新的进程几乎和原来的进程完全一样，具体来说，它返回给 <code>fork</code> 调用的返回值和父进程是不同的。在父进程中，返回值是子进程的PID，而在子进程中，返回值是0. 新进程不会从 <code>main</code> 开始执行，而是从调用 <code>fork</code> 的指令的下一条指令开始执行。</p>
+<p>需要注意的是，当创建好进程之后，此时系统中就有两个就绪的进程（父进程和子进程），二者谁先运行是不确定的，我们不能对此做任何假设。</p>
+<h2 id="2-The-wait-System-Call"><a href="#2-The-wait-System-Call" class="headerlink" title="2 The wait() System Call"></a>2 The <code>wait()</code> System Call</h2><p>有时候，父进程等待子进程完成是很有必要的，可以使用 <code>wait</code> 或者 <code>waitpid</code> 系统调用来实现。父进程调用 <code>wait</code> 阻塞等待子进程执行并完成，只有在子进程退出后，父进程才会从 <code>wait</code> 系统调用返回，继续执行。</p>
+<h2 id="3-Finally-The-exec-System-Call"><a href="#3-Finally-The-exec-System-Call" class="headerlink" title="3 Finally, The exec() System Call"></a>3 Finally, The exec() System Call</h2><p><code>exec</code> 系统调用用另一个可执行程序的代码和静态数据覆盖当前进程的代码和可执行数据，堆栈等内存空间都被重新初始化，之后操作系统运行这个新的程序。</p>
+<p>成功的 <code>exec</code> 调用不会返回。</p>
+<h2 id="4-Why-Motivating-The-API"><a href="#4-Why-Motivating-The-API" class="headerlink" title="4 Why? Motivating The API"></a>4 Why? Motivating The API</h2><p>之所以要这样设计 <code>fork</code> 和 <code>exec</code> ，是因为这种设计可以允许shell在 <code>fork</code> 之后，<code>exec</code> 之前执行一些代码。这样可以让我们简单的实现一些有用的特性。</p>
+<p>例如IO重定向（<code>wc p3.c &gt; p3.output</code>），我们可以在子进程执行 <code>exec</code> 之前，关闭标准输出，然后打开p3.output文件，这样之后子进程运行的任何本来应该输出到标准输出的内容都会写入p3.output中。之所以会这样是因为在 <code>exec</code> 系统调用中，文件描述符是不会发生改变的，并且unix分配文件描述符是从0开始寻找第一个尚未分配的文件描述符，当我们关闭标准输出之后，子进程的1号文件描述符就可用了，这时如果我们打开一个文件，操作系统会将1号文件描述符分配给该文件。</p>
+<h2 id="5-Process-Control-And-Users"><a href="#5-Process-Control-And-Users" class="headerlink" title="5 Process Control And Users"></a>5 Process Control And Users</h2><p>除了 fork()、exec() 和 wait()，UNIX 系统中还有很多与进程交互的接口。例如，kill() 系统调用用于向进程发送信号，包括暂停、死亡和其他有用的指令。在大多数 UNIX shell 中，某些按键组合被配置为向当前运行的进程发送特定信号；例如，control-c 会向进程发送 SIGINT（中断）信号（通常会终止进程），而 control-z 则会发送 SIGTSTP（停止）信号，从而使进程在执行中途暂停（可以稍后使用命令恢复进程，例如许多 shell 中的 fg 内置命令）</p>
+<p>整个信号系统提供了丰富的基础设施，用于向进程发送外部事件，包括在单个进程内接收和处理这些信号的方法，以及向单个进程和整个进程组发送信号的方法。要使用这种通信方式，进程应使用 signal() 系统调用来 “捕获 ”各种信号；这样做可确保当特定信号传送到进程时，进程将暂停其正常执行，并运行特定代码来响应该信号。</p>
+<p>这自然会引出一个问题：谁能向进程发送信号，谁不能？一般来说，我们使用的系统可能会有多人同时使用；如果其中一人可以任意发送 SIGINT 等信号（中断进程，很可能终止进程），那么系统的可用性和安全性就会受到影响。因此，现代系统中包含了强烈的用户概念。用户在输入密码建立凭证后，登录以访问系统资源。然后，用户可以启动一个或多个进程，并对它们进行完全控制（暂停、杀死等）。用户通常只能控制自己的进程。</p>
+<h2 id="6-Useful-Tools"><a href="#6-Useful-Tools" class="headerlink" title="6 Useful Tools"></a>6 Useful Tools</h2><p>还有许多命令行工具也很有用。</p>
 <ul>
-<li>O_RDONLY</li>
-<li>O_WRONLY</li>
-<li>O_RDWR</li>
-<li>O_CREATE</li>
-<li>O_TRUNC</li>
+<li>例如，使用 ps 命令可以查看正在运行的进程；</li>
+<li>top 工具也很有用，它可以显示系统进程及其占用的 CPU 和其他资源。</li>
+<li>kill 命令可以用来向进程发送任意信号。</li>
 </ul>
-<p> <strong><code>dup(fd)</code> 系统调用</strong></p>
-<p>该系统调用复制一个文件描述符，返回一个指向相同object的文件描述符。这两个文件描述符共享偏移，类似fork。</p>
-<blockquote>
-<p>Two file descriptors share an offset if they were derived from the same original file descriptor by a sequence of fork and dup calls. Otherwise file descriptors do not share offsets, even if they resulted from open calls for the same file</p>
-</blockquote>
-<p>通过 <code>fork</code> 和 <code>dup</code> 获得的文件描述符和都共享相同的偏移。</p>
-<h2 id="1-3-Pipes"><a href="#1-3-Pipes" class="headerlink" title="1.3 Pipes"></a>1.3 Pipes</h2><p>管道是内核中的一个小缓冲区，通过一对文件描述符暴露给进程。这是进程间通信的一种方式。</p>
-<p> <strong><code>pipe</code> 系统调用</strong></p>
-<p>该系统调用创建一个新的管道，并将一对文件描述符放到参数指定的整数数组中。</p>
-<p>如果没有可读数据，读一个管道可能会：</p>
-<ul>
-<li>阻塞直到数据到来</li>
-<li>阻塞直到所有对管道写端的文件描述符被关闭</li>
-</ul>
-<p>第二种情况会返回0。</p>
-<p>管道相较临时文件的优势：</p>
-<ol>
-<li>管道会自动清理</li>
-<li>管道可以处理任意长度的数据，而临时文件必须要求硬盘有足够的空间</li>
-<li>管道允许管道的不同阶段并行执行</li>
-</ol>
-<h2 id="1-4-File-system"><a href="#1-4-File-system" class="headerlink" title="1.4 File system"></a>1.4 File system</h2><p>xv6文件系统提供数据文件，包含字节流；提供目录，包含指向数据文件和其他目录文件的引用。</p>
-<p>目录以树的形式组织，以&#x2F;开始的路径以根目录为根，不以&#x2F;开始的路径以当前进程当前的工作目录为根（可以通过<code>chdir</code>系统调用来改变）。</p>
-<p><code>mkdir</code> 系统调用创建一个新的目录，<code>open</code> 系统调用通过指定 <code>O_CREATE</code> 选项来创建一个新的数据文件， <code>mknode</code> 系统调用创建一个新的设备文件。该系统调用通过两个参数来唯一标识一个内核设备（主、副设备号）。</p>
-<p>文件名和文件本身是不同的。同一个文件由一个唯一的inode来标识；同一个文件可以有多个文件名，即链接。</p>
-<p>每个链接由一个目录中的目录项组成，这个目录项包含一个文件名以及一个指向文件inode的指针。</p>
-<p>每个inode保存着文件的元数据，包括种类，长度，磁盘位置，以及链接数等。</p>
-<p> <strong><code>fstat</code> 系统调用</strong></p>
-<p>该系统调用从inode中获取文件的元数据，并将数据填入 <code>stat</code> 结构体中。（kernel&#x2F;stat.h）</p>
-<p><img src="/../images/MIT-6-1810-Xv6-Chapter-1/image-20240924153124059.png" srcset="/img/loading.gif" lazyload></p>
-<p> <strong><code>link</code> 系统调用</strong></p>
-<p>该系统调用创建一个链接。读写该链接和读写原文件操作的是同一个文件。</p>
-<p> <code>unlink</code> 系统调用</p>
-<p>该系统调用删除一个链接。只有当指向同一个inode的所有链接都被删除的时候，才会真正释放inode和文件内容。</p>
-<p>一种约定俗称的创建一个临时inode方法:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">fd = open(<span class="hljs-string">&quot;/tmp/xyz&quot;</span>, O_CREATE | O_RDWR);<br>unlink(<span class="hljs-string">&quot;/tmp/xyz&quot;</span>);<br></code></pre></td></tr></table></figure>
-
-<p>当进程调用close或者退出后，这个inode会被自动清理。</p>
 
                 
               </div>
@@ -455,7 +365,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/MIT-6-1810/" class="print-no-link">#MIT 6.1810</a>
+        <a href="/tags/OS/" class="print-no-link">#OS</a>
       
     </div>
   
@@ -467,8 +377,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>[MIT 6.1810]Xv6 Chapter 1</div>
-      <div>https://erlsrnby04.github.io/2024/09/24/MIT-6-1810-Xv6-Chapter-1/</div>
+      <div>[OS]Three Easy Pieces Chapter 5</div>
+      <div>https://erlsrnby04.github.io/2024/10/18/OS-Three-Easy-Pieces-Chapter-5/</div>
     </div>
     <div class="license-meta">
       
@@ -480,7 +390,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年9月24日</div>
+          <div>2024年10月18日</div>
         </div>
       
       
@@ -518,18 +428,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-2/" title="[MIT 6.1810]Xv6 Chapter 2">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">[MIT 6.1810]Xv6 Chapter 2</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/" title="[C++] 返回值优化">
-                        <span class="hidden-mobile">[C++] 返回值优化</span>
+                      <a href="/2024/10/18/OS-Three-Easy-Pieces-Chapter-4/" title="[OS]Three Easy Pieces Chapter 4">
+                        <span class="hidden-mobile">[OS]Three Easy Pieces Chapter 4</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -645,7 +549,7 @@
       
         <a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/" title="[MIT 6.1810]Xv6 Chapter 1"
            class="list-group-item list-group-item-action
-           active">
+           ">
           <span class="category-post">[MIT 6.1810]Xv6 Chapter 1</span>
         </a>
       
@@ -708,7 +612,7 @@
       
         <a href="/2024/10/18/OS-Three-Easy-Pieces-Chapter-5/" title="[OS]Three Easy Pieces Chapter 5"
            class="list-group-item list-group-item-action
-           ">
+           active">
           <span class="category-post">[OS]Three Easy Pieces Chapter 5</span>
         </a>
       

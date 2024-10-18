@@ -4,6 +4,56 @@
   
   
   <entry>
+    <title>[OS]Three Easy Pieces Chapter 5</title>
+    <link href="/2024/10/18/OS-Three-Easy-Pieces-Chapter-5/"/>
+    <url>/2024/10/18/OS-Three-Easy-Pieces-Chapter-5/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Interlude-Process-API"><a href="#Interlude-Process-API" class="headerlink" title="Interlude: Process API"></a>Interlude: Process API</h1><span id="more"></span><h2 id="1-The-fork-System-Call"><a href="#1-The-fork-System-Call" class="headerlink" title="1 The fork() System Call"></a>1 The <code>fork()</code> System Call</h2><p><code>fork</code> 系统调用创建一个新的进程，新的进程几乎和原来的进程完全一样，具体来说，它返回给 <code>fork</code> 调用的返回值和父进程是不同的。在父进程中，返回值是子进程的PID，而在子进程中，返回值是0. 新进程不会从 <code>main</code> 开始执行，而是从调用 <code>fork</code> 的指令的下一条指令开始执行。</p><p>需要注意的是，当创建好进程之后，此时系统中就有两个就绪的进程（父进程和子进程），二者谁先运行是不确定的，我们不能对此做任何假设。</p><h2 id="2-The-wait-System-Call"><a href="#2-The-wait-System-Call" class="headerlink" title="2 The wait() System Call"></a>2 The <code>wait()</code> System Call</h2><p>有时候，父进程等待子进程完成是很有必要的，可以使用 <code>wait</code> 或者 <code>waitpid</code> 系统调用来实现。父进程调用 <code>wait</code> 阻塞等待子进程执行并完成，只有在子进程退出后，父进程才会从 <code>wait</code> 系统调用返回，继续执行。</p><h2 id="3-Finally-The-exec-System-Call"><a href="#3-Finally-The-exec-System-Call" class="headerlink" title="3 Finally, The exec() System Call"></a>3 Finally, The exec() System Call</h2><p><code>exec</code> 系统调用用另一个可执行程序的代码和静态数据覆盖当前进程的代码和可执行数据，堆栈等内存空间都被重新初始化，之后操作系统运行这个新的程序。</p><p>成功的 <code>exec</code> 调用不会返回。</p><h2 id="4-Why-Motivating-The-API"><a href="#4-Why-Motivating-The-API" class="headerlink" title="4 Why? Motivating The API"></a>4 Why? Motivating The API</h2><p>之所以要这样设计 <code>fork</code> 和 <code>exec</code> ，是因为这种设计可以允许shell在 <code>fork</code> 之后，<code>exec</code> 之前执行一些代码。这样可以让我们简单的实现一些有用的特性。</p><p>例如IO重定向（<code>wc p3.c &gt; p3.output</code>），我们可以在子进程执行 <code>exec</code> 之前，关闭标准输出，然后打开p3.output文件，这样之后子进程运行的任何本来应该输出到标准输出的内容都会写入p3.output中。之所以会这样是因为在 <code>exec</code> 系统调用中，文件描述符是不会发生改变的，并且unix分配文件描述符是从0开始寻找第一个尚未分配的文件描述符，当我们关闭标准输出之后，子进程的1号文件描述符就可用了，这时如果我们打开一个文件，操作系统会将1号文件描述符分配给该文件。</p><h2 id="5-Process-Control-And-Users"><a href="#5-Process-Control-And-Users" class="headerlink" title="5 Process Control And Users"></a>5 Process Control And Users</h2><p>除了 fork()、exec() 和 wait()，UNIX 系统中还有很多与进程交互的接口。例如，kill() 系统调用用于向进程发送信号，包括暂停、死亡和其他有用的指令。在大多数 UNIX shell 中，某些按键组合被配置为向当前运行的进程发送特定信号；例如，control-c 会向进程发送 SIGINT（中断）信号（通常会终止进程），而 control-z 则会发送 SIGTSTP（停止）信号，从而使进程在执行中途暂停（可以稍后使用命令恢复进程，例如许多 shell 中的 fg 内置命令）</p><p>整个信号系统提供了丰富的基础设施，用于向进程发送外部事件，包括在单个进程内接收和处理这些信号的方法，以及向单个进程和整个进程组发送信号的方法。要使用这种通信方式，进程应使用 signal() 系统调用来 “捕获 ”各种信号；这样做可确保当特定信号传送到进程时，进程将暂停其正常执行，并运行特定代码来响应该信号。</p><p>这自然会引出一个问题：谁能向进程发送信号，谁不能？一般来说，我们使用的系统可能会有多人同时使用；如果其中一人可以任意发送 SIGINT 等信号（中断进程，很可能终止进程），那么系统的可用性和安全性就会受到影响。因此，现代系统中包含了强烈的用户概念。用户在输入密码建立凭证后，登录以访问系统资源。然后，用户可以启动一个或多个进程，并对它们进行完全控制（暂停、杀死等）。用户通常只能控制自己的进程。</p><h2 id="6-Useful-Tools"><a href="#6-Useful-Tools" class="headerlink" title="6 Useful Tools"></a>6 Useful Tools</h2><p>还有许多命令行工具也很有用。</p><ul><li>例如，使用 ps 命令可以查看正在运行的进程；</li><li>top 工具也很有用，它可以显示系统进程及其占用的 CPU 和其他资源。</li><li>kill 命令可以用来向进程发送任意信号。</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[OS]Three Easy Pieces Chapter 4</title>
+    <link href="/2024/10/18/OS-Three-Easy-Pieces-Chapter-4/"/>
+    <url>/2024/10/18/OS-Three-Easy-Pieces-Chapter-4/</url>
+    
+    <content type="html"><![CDATA[<h1 id="The-Abstraction-The-Process"><a href="#The-Abstraction-The-Process" class="headerlink" title="The Abstraction: The Process"></a>The Abstraction: The Process</h1><span id="more"></span><p>进程的定义，简单来说，就是运行的程序。</p><p><strong>主要的挑战</strong>：</p><p>即使我们只有几个实际的物理CPU，操作系统如何提供一个有无限CPU的假象。</p><p>操作系统通过<strong>虚拟化</strong>来提供这种假象。为了实现这种虚拟化，我们需要：</p><ul><li>低级硬件支持：上下文切换</li><li>高级策略：调度策略（根据历史信息、工作负载、性能指标等）</li></ul><h2 id="1-The-Abstraction-A-Process"><a href="#1-The-Abstraction-A-Process" class="headerlink" title="1 The Abstraction: A Process"></a>1 The Abstraction: A Process</h2><p>操作系统对运行中程序的抽象，称之为进程。进程只是一个运行中的程序；在任何时间，我们都可以通过盘点进程在执行过程中访问或影响的系统的不同部分来概括进程</p><p>在任何时候，一个进程都可以通过以下状态来描述：</p><ul><li>内存空间中的内容</li><li>寄存器中的值</li><li>交互的IO设备</li></ul><h2 id="2-Process-API"><a href="#2-Process-API" class="headerlink" title="2 Process API"></a>2 Process API</h2><p>抽象的来看，任何操作系统至少要提供一下API</p><ul><li><p>Create</p></li><li><p>Destroy</p></li><li><p>Wait</p></li><li><p>Miscel Control</p><p>例如，OS希望可以暂停某个进程的执行，之后再继续执行它</p></li><li><p>Status</p><p>获取进程的一些状态信息</p></li></ul><h2 id="3-Process-Creation-A-Little-More-Detail"><a href="#3-Process-Creation-A-Little-More-Detail" class="headerlink" title="3 Process Creation: A Little More Detail"></a>3 Process Creation: A Little More Detail</h2><p>为了执行一个程序，操作系统：</p><ul><li><p>首先，将硬盘中的程序（指令、静态数据等）装载进内存中。</p><p>硬盘中的程序必须符合某种<strong>可执行格式</strong>。早期的操作系统装载时将整个程序装载进内存，现代操作系统通常采用懒装载，即，只将需要的内容装载到内存中。</p></li><li><p>之后，操作系统需要分配栈内存，并用参数初始化这个栈（argc，argv）</p></li><li><p>分配堆内存</p></li><li><p>处理IO相关的初始化</p><p>Unix中，每个进程初始有三个打开的文件描述符（标准输入，标准输出，标准错误）</p></li><li><p>最后，操作系统跳转到新进程的entry point（main()）开始执行。</p></li></ul><h2 id="4-Process-States"><a href="#4-Process-States" class="headerlink" title="4 Process States"></a>4 Process States</h2><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-4/image-20241018151951494.png" alt="进程三状态模型"></p><h2 id="5-Data-Structures"><a href="#5-Data-Structures" class="headerlink" title="5 Data Structures"></a>5 Data Structures</h2><p>操作系统需要记录所有就绪进程，运行进程，阻塞进程，并且能够正确的转换进程的状态。比如，当某个IO事件完成了，需要将任何等待该事件的进程从阻塞队列移动到就绪队列中。</p><p>在xv6内核中，操作系统需要跟踪并记录如下内容。当一个进程将要进行上下文切换的时候，将其寄存器的值保存到 <code>context</code> 结构体中，之后将下一个要调度的进程的 <code>context</code> 结构体中的值装载到实际的寄存器中，完成上下文切换。</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Saved registers for kernel context switches.</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">context</span> &#123;</span><br>  uint64 ra;<br>  uint64 sp;<br><br>  <span class="hljs-comment">// callee-saved</span><br>  uint64 s0;<br>  uint64 s1;<br>  uint64 s2;<br>  uint64 s3;<br>  uint64 s4;<br>  uint64 s5;<br>  uint64 s6;<br>  uint64 s7;<br>  uint64 s8;<br>  uint64 s9;<br>  uint64 s10;<br>  uint64 s11;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">procstate</span> &#123;</span> UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE &#125;;<br><br><span class="hljs-comment">// Per-process state</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> &#123;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">spinlock</span> <span class="hljs-title">lock</span>;</span><br><br>  <span class="hljs-comment">// p-&gt;lock must be held when using these:</span><br>  <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">procstate</span> <span class="hljs-title">state</span>;</span>        <span class="hljs-comment">// Process state</span><br>  <span class="hljs-type">void</span> *chan;                  <span class="hljs-comment">// If non-zero, sleeping on chan</span><br>  <span class="hljs-type">int</span> killed;                  <span class="hljs-comment">// If non-zero, have been killed</span><br>  <span class="hljs-type">int</span> xstate;                  <span class="hljs-comment">// Exit status to be returned to parent&#x27;s wait</span><br>  <span class="hljs-type">int</span> pid;                     <span class="hljs-comment">// Process ID</span><br><br>  <span class="hljs-comment">// wait_lock must be held when using this:</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">parent</span>;</span>         <span class="hljs-comment">// Parent process</span><br><br>  <span class="hljs-comment">// these are private to the process, so p-&gt;lock need not be held.</span><br>  uint64 kstack;               <span class="hljs-comment">// Virtual address of kernel stack</span><br>  uint64 sz;                   <span class="hljs-comment">// Size of process memory (bytes)</span><br>  <span class="hljs-type">pagetable_t</span> pagetable;       <span class="hljs-comment">// User page table</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">trapframe</span> *<span class="hljs-title">trapframe</span>;</span> <span class="hljs-comment">// data page for trampoline.S</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">usyscall</span> *<span class="hljs-title">usyscall</span>;</span>   <span class="hljs-comment">// shared data between kernel and user</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">context</span> <span class="hljs-title">context</span>;</span>      <span class="hljs-comment">// swtch() here to run process</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">file</span> *<span class="hljs-title">ofile</span>[<span class="hljs-title">NOFILE</span>];</span>  <span class="hljs-comment">// Open files</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">inode</span> *<span class="hljs-title">cwd</span>;</span>           <span class="hljs-comment">// Current directory</span><br>  <span class="hljs-type">char</span> name[<span class="hljs-number">16</span>];               <span class="hljs-comment">// Process name (debugging)</span><br>&#125;;<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[LC]47.全排列Ⅱ</title>
     <link href="/2024/10/18/LC-47-%E5%85%A8%E6%8E%92%E5%88%97%E2%85%A1/"/>
     <url>/2024/10/18/LC-47-%E5%85%A8%E6%8E%92%E5%88%97%E2%85%A1/</url>
@@ -221,9 +271,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -279,9 +329,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -310,9 +360,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -341,9 +391,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -370,9 +420,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -453,9 +503,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -484,9 +534,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
