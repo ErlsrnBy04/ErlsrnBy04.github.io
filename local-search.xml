@@ -8,7 +8,7 @@
     <link href="/2024/10/20/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-6/"/>
     <url>/2024/10/20/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-6/</url>
     
-    <content type="html"><![CDATA[<h1 id="右值引用（C-11-C-17-C-20）"><a href="#右值引用（C-11-C-17-C-20）" class="headerlink" title="右值引用（C++11 C++17 C++20）"></a>右值引用（C++11 C++17 C++20）</h1><h2 id="1-左值和右值"><a href="#1-左值和右值" class="headerlink" title="1 左值和右值"></a>1 左值和右值</h2><p>在C++中</p><ul><li><strong>左值</strong>一般是指一个指向特定内存的具有名称的值（具名对象），它有一个相对稳定的内存地址，并且有一段较长的生命周期。</li><li><strong>右值</strong>则是不指向稳定内存地址的匿名值（不具名对象），它的生命周期很短，通常是暂时性的。</li></ul><p>基于这一特征，可以用取地址符&amp;来判断左值和右值，能取到内存地址的值为左值，否则为右值。</p><div class="note note-primary">            <p>除字符串字面量以外的字面量，通常都是右值。编译器会将字符串字面量存储到程序的数据段中，程序加载的时候也会为其开辟内存空间，所以我们可以使用取地址符&amp;来获取字符串字面量的内存地址。</p>          </div><h2 id="2-左值引用"><a href="#2-左值引用" class="headerlink" title="2 左值引用"></a>2 左值引用</h2><p>左值引用在传参的时候经常使用，可以免去创建一个临时对象的操作。</p><p>非常量左值引用的引用对象必须是一个左值</p><p>常量左值引用的引用对象可以引用右值。这个特性很有用，在作为参数的时候，可以接受一个右值，但是这会导致参数的常量性，需要右值引用来解决。</p><h2 id="3-右值引用"><a href="#3-右值引用" class="headerlink" title="3 右值引用"></a>3 右值引用</h2><p>右值引用是一种引用右值且只能引用右值的方法。在语法方面右值引用可以对比左值引用，在左值引用声明中，需要在类型后添加&amp;，而右值引用则是在类型后添加&amp;&amp;</p><p>右值引用的特点之一是可以延长右值的生命周期。以此达到减少复制，提升性能的效果。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">X</span> &#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-built_in">X</span>() &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;X ctor&quot;</span> &lt;&lt; std::endl; &#125;<br>  <span class="hljs-built_in">X</span>(<span class="hljs-type">const</span> X&amp;x) &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;X copy ctor&quot;</span> &lt;&lt; std::endl; &#125;<br>  ~<span class="hljs-built_in">X</span>() &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;X dtor&quot;</span> &lt;&lt; std::endl; &#125;<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;show X&quot;</span> &lt;&lt; std::endl; &#125;<br>&#125;;<br><br><span class="hljs-function">X <span class="hljs-title">make_x</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  X x1;<br>  <span class="hljs-keyword">return</span> x1;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  X &amp;&amp;x2 = <span class="hljs-built_in">make_x</span>();<br>  x<span class="hljs-number">2.</span><span class="hljs-built_in">show</span>();<br>&#125;<br></code></pre></td></tr></table></figure><p>如果执行 <code>X x2 = make_x();</code>，在没有任何优化的情况下，会执行三次构造函数，首先构造x1，然后return的时候执行拷贝构造函数构造一个临时对象，最后赋值的时候调用拷贝构造函数。</p><p>如果执行 <code>X &amp;&amp;x2 = make_x();</code>，则只会执行两次构造函数，前两次和上面一样，但是最后由于x2右值引用了临时对象，因此这个临时对象的生命期得以延长。</p><h2 id="4-移动语义"><a href="#4-移动语义" class="headerlink" title="4 移动语义"></a>4 移动语义</h2><p>c++11标准提供了移动语义，可以将资源在对象中进行转移，即进行浅拷贝的工作。</p><p>使用的时候有两点需要注意：</p><ol><li>同复制构造函数一样，编译器在一些条件下会生成一份移动构造函数，这些条件包括：没有任何的复制函数，包括复制构造函数和复制赋值函数；没有任何的移动函数，包括移动构造函数和移动赋值函数；也没有析构函数。虽然这些条件严苛得让人有些不太愉快，但是我们也不必对生成的移动构造函数有太多期待，因为编译器生成的移动构造函数和复制构造函数并没有什么区别。</li><li>虽然使用移动语义在性能上有很大收益，但是却也有一些风险，这些风险来自异常。试想一下，在一个移动构造函数中，如果当一个对象的资源移动到另一个对象时发生了异常，也就是说对象的一部分发生了转移而另一部分没有，这就会造成源对象和目标对象都不完整的情况发生，这种情况的后果是无法预测的。所以在编写移动语义的函数时建议确保函数不会抛出异常，与此同时，如果无法保证移动构造函数不会抛出异常，可以使用noexcept说明符限制该函数。这样当函数抛出异常的时候，程序不会再继续执行而是调用std::terminate中止执行以免造成其他不良影响。</li></ol><h2 id="5-值类别"><a href="#5-值类别" class="headerlink" title="5 值类别"></a>5 值类别</h2><p>值类别是C++11标准中新引入的概念，具体来说它是表达式的一种属性，该属性将表达式分为3个类别，它们分别是左值（lvalue）、纯右值（prvalue）和将亡值（xvalue）。</p><p><img src="/../images/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-6/image-20241020202812151.png"></p><p>实际上，这里的左值（lvalue）就是上文中描述的C++98的左值，而这里的纯右值（prvalue）则对应上文中描述的C++98的右值。</p><p>将亡值（<strong>Xvalue</strong>，Expiring value）是表示即将“被销毁”的值，通常是<strong>资源可以被移动的对象</strong>。将亡值允许资源被“移动”，即允许将其内部的资源转移到另一个对象中，而不是拷贝。</p><p><strong>特点：</strong></p><ul><li>可以被移动构造或移动赋值。</li><li>典型的将亡值包括：返回右值引用的表达式、<code>std::move</code> 转换后的对象。</li></ul><h2 id="6-将左值转换为右值"><a href="#6-将左值转换为右值" class="headerlink" title="6 将左值转换为右值"></a>6 将左值转换为右值</h2><p>在c++11中，我们可以使用 <code>static_cast&lt;Foo&amp;&amp;&gt;(foo)</code> 将一个左值转换为一个将亡值，然后将右值引用绑定到这个将亡值上。此外，我们可以通过这种方式让左值使用移动语义。需要注意的是，转换前后，对象具有相同的内存地址和生命周期。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">move_pool</span><span class="hljs-params">(BigMemoryPool &amp;&amp;pool)</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-string">&quot;call move_pool&quot;</span> &lt;&lt; std::endl;<br>  <span class="hljs-function">BigMemoryPool <span class="hljs-title">my_pool</span><span class="hljs-params">(pool)</span></span>; <span class="hljs-comment">// 调用拷贝构造函数</span><br>  <span class="hljs-function">BigMemoryPool <span class="hljs-title">my_pool1</span><span class="hljs-params">(<span class="hljs-keyword">static_cast</span>&lt;BigMemoryPool&amp;&amp;&gt;(pool))</span></span>; <span class="hljs-comment">// 调用移动构造函数</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">move_pool</span>(<span class="hljs-built_in">make_pool</span>());<br>&#125;<br></code></pre></td></tr></table></figure><p>在这个代码中，虽然 <code>make_pool</code> 返回的是一个临时对象，且 <code>move_pool</code> 的形参是一个右值引用，但是在构造 <code>my_pool</code> 的时候还是会执行拷贝构造函数。这是因为无论一个函数的实参是左值还是右值，即使形参是一个右值引用，这个形参本身也是一个左值。</p><p>c++11的标准库中提供了一个函数模板 <code>std::move</code> 来将左值转换为右值，本质也是用 <code>static_cast</code> 来做的转换，推荐使用 <code>std::move</code> 。</p><h2 id="7-万能引用和引用折叠"><a href="#7-万能引用和引用折叠" class="headerlink" title="7 万能引用和引用折叠"></a>7 万能引用和引用折叠</h2><p>含有 <code>T&amp;&amp;</code> 和 <code>auto&amp;&amp;</code> 的是万能引用。在这个推导过程中，初始化的源对象如果是一个左值，则目标对象会推导出左值引用；反之如果源对象是一个右值，则会推导出右值引用，不过无论如何都会是一个引用类型。</p><p>万能引用能如此灵活地引用对象，实际上是因为在C++11中添加了一套引用叠加推导的规则——引用折叠。</p><p><img src="/../images/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-6/image-20241020211329825.png"></p>]]></content>
+    <content type="html"><![CDATA[<h1 id="右值引用（C-11-C-17-C-20）"><a href="#右值引用（C-11-C-17-C-20）" class="headerlink" title="右值引用（C++11 C++17 C++20）"></a>右值引用（C++11 C++17 C++20）</h1><h2 id="1-左值和右值"><a href="#1-左值和右值" class="headerlink" title="1 左值和右值"></a>1 左值和右值</h2><p>在C++中</p><ul><li><strong>左值</strong>一般是指一个指向特定内存的具有名称的值（具名对象），它有一个相对稳定的内存地址，并且有一段较长的生命周期。</li><li><strong>右值</strong>则是不指向稳定内存地址的匿名值（不具名对象），它的生命周期很短，通常是暂时性的。</li></ul><p>基于这一特征，可以用取地址符&amp;来判断左值和右值，能取到内存地址的值为左值，否则为右值。</p><div class="note note-primary">            <p>除字符串字面量以外的字面量，通常都是右值。编译器会将字符串字面量存储到程序的数据段中，程序加载的时候也会为其开辟内存空间，所以我们可以使用取地址符&amp;来获取字符串字面量的内存地址。</p>          </div><h2 id="2-左值引用"><a href="#2-左值引用" class="headerlink" title="2 左值引用"></a>2 左值引用</h2><p>左值引用在传参的时候经常使用，可以免去创建一个临时对象的操作。</p><p>非常量左值引用的引用对象必须是一个左值</p><p>常量左值引用的引用对象可以引用右值。这个特性很有用，在作为参数的时候，可以接受一个右值，但是这会导致参数的常量性，需要右值引用来解决。</p><h2 id="3-右值引用"><a href="#3-右值引用" class="headerlink" title="3 右值引用"></a>3 右值引用</h2><p>右值引用是一种引用右值且只能引用右值的方法。在语法方面右值引用可以对比左值引用，在左值引用声明中，需要在类型后添加&amp;，而右值引用则是在类型后添加&amp;&amp;</p><p>右值引用的特点之一是可以延长右值的生命周期。以此达到减少复制，提升性能的效果。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">X</span> &#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-built_in">X</span>() &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;X ctor&quot;</span> &lt;&lt; std::endl; &#125;<br>  <span class="hljs-built_in">X</span>(<span class="hljs-type">const</span> X&amp;x) &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;X copy ctor&quot;</span> &lt;&lt; std::endl; &#125;<br>  ~<span class="hljs-built_in">X</span>() &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;X dtor&quot;</span> &lt;&lt; std::endl; &#125;<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;show X&quot;</span> &lt;&lt; std::endl; &#125;<br>&#125;;<br><br><span class="hljs-function">X <span class="hljs-title">make_x</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  X x1;<br>  <span class="hljs-keyword">return</span> x1;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  X &amp;&amp;x2 = <span class="hljs-built_in">make_x</span>();<br>  x<span class="hljs-number">2.</span><span class="hljs-built_in">show</span>();<br>&#125;<br></code></pre></td></tr></table></figure><p>如果执行 <code>X x2 = make_x();</code>，在没有任何优化的情况下，会执行三次构造函数，首先构造x1，然后return的时候执行拷贝构造函数构造一个临时对象，最后赋值的时候调用拷贝构造函数。</p><p>如果执行 <code>X &amp;&amp;x2 = make_x();</code>，则只会执行两次构造函数，前两次和上面一样，但是最后由于x2右值引用了临时对象，因此这个临时对象的生命期得以延长。</p><h2 id="4-移动语义"><a href="#4-移动语义" class="headerlink" title="4 移动语义"></a>4 移动语义</h2><p>c++11标准提供了移动语义，可以将资源在对象中进行转移，即进行浅拷贝的工作。</p><p>使用的时候有两点需要注意：</p><ol><li>同复制构造函数一样，编译器在一些条件下会生成一份移动构造函数，这些条件包括：没有任何的复制函数，包括复制构造函数和复制赋值函数；没有任何的移动函数，包括移动构造函数和移动赋值函数；也没有析构函数。虽然这些条件严苛得让人有些不太愉快，但是我们也不必对生成的移动构造函数有太多期待，因为编译器生成的移动构造函数和复制构造函数并没有什么区别。</li><li>虽然使用移动语义在性能上有很大收益，但是却也有一些风险，这些风险来自异常。试想一下，在一个移动构造函数中，如果当一个对象的资源移动到另一个对象时发生了异常，也就是说对象的一部分发生了转移而另一部分没有，这就会造成源对象和目标对象都不完整的情况发生，这种情况的后果是无法预测的。所以在编写移动语义的函数时建议确保函数不会抛出异常，与此同时，如果无法保证移动构造函数不会抛出异常，可以使用noexcept说明符限制该函数。这样当函数抛出异常的时候，程序不会再继续执行而是调用std::terminate中止执行以免造成其他不良影响。</li></ol><h2 id="5-值类别"><a href="#5-值类别" class="headerlink" title="5 值类别"></a>5 值类别</h2><p>值类别是C++11标准中新引入的概念，具体来说它是表达式的一种属性，该属性将表达式分为3个类别，它们分别是左值（lvalue）、纯右值（prvalue）和将亡值（xvalue）。</p><p><img src="/../images/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-6/image-20241020202812151.png"></p><p>实际上，这里的左值（lvalue）就是上文中描述的C++98的左值，而这里的纯右值（prvalue）则对应上文中描述的C++98的右值。</p><p>将亡值（<strong>Xvalue</strong>，Expiring value）是表示即将“被销毁”的值，通常是<strong>资源可以被移动的对象</strong>。将亡值允许资源被“移动”，即允许将其内部的资源转移到另一个对象中，而不是拷贝。</p><p><strong>特点：</strong></p><ul><li>可以被移动构造或移动赋值。</li><li>典型的将亡值包括：返回右值引用的表达式、<code>std::move</code> 转换后的对象。</li></ul><h2 id="6-将左值转换为右值"><a href="#6-将左值转换为右值" class="headerlink" title="6 将左值转换为右值"></a>6 将左值转换为右值</h2><p>在c++11中，我们可以使用 <code>static_cast&lt;Foo&amp;&amp;&gt;(foo)</code> 将一个左值转换为一个将亡值，然后将右值引用绑定到这个将亡值上。此外，我们可以通过这种方式让左值使用移动语义。需要注意的是，转换前后，对象具有相同的内存地址和生命周期。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">move_pool</span><span class="hljs-params">(BigMemoryPool &amp;&amp;pool)</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-string">&quot;call move_pool&quot;</span> &lt;&lt; std::endl;<br>  <span class="hljs-function">BigMemoryPool <span class="hljs-title">my_pool</span><span class="hljs-params">(pool)</span></span>; <span class="hljs-comment">// 调用拷贝构造函数</span><br>  <span class="hljs-function">BigMemoryPool <span class="hljs-title">my_pool1</span><span class="hljs-params">(<span class="hljs-keyword">static_cast</span>&lt;BigMemoryPool&amp;&amp;&gt;(pool))</span></span>; <span class="hljs-comment">// 调用移动构造函数</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">move_pool</span>(<span class="hljs-built_in">make_pool</span>());<br>&#125;<br></code></pre></td></tr></table></figure><p>在这个代码中，虽然 <code>make_pool</code> 返回的是一个临时对象，且 <code>move_pool</code> 的形参是一个右值引用，但是在构造 <code>my_pool</code> 的时候还是会执行拷贝构造函数。这是因为无论一个函数的实参是左值还是右值，即使形参是一个右值引用，这个形参本身也是一个左值。</p><p>c++11的标准库中提供了一个函数模板 <code>std::move</code> 来将左值转换为右值，本质也是用 <code>static_cast</code> 来做的转换，推荐使用 <code>std::move</code> 。</p><h2 id="7-万能引用和引用折叠"><a href="#7-万能引用和引用折叠" class="headerlink" title="7 万能引用和引用折叠"></a>7 万能引用和引用折叠</h2><p>含有 <code>T&amp;&amp;</code> 和 <code>auto&amp;&amp;</code> 的是万能引用。在这个推导过程中，初始化的源对象如果是一个左值，则目标对象会推导出左值引用；反之如果源对象是一个右值，则会推导出右值引用，不过无论如何都会是一个引用类型。</p><p>万能引用能如此灵活地引用对象，实际上是因为在C++11中添加了一套引用叠加推导的规则——引用折叠。</p><p><img src="/../images/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-6/image-20241020211329825.png"></p><h2 id="8-完美转发"><a href="#8-完美转发" class="headerlink" title="8 完美转发"></a>8 完美转发</h2><p>万能引用最典型的用途被称为完美转发。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_type</span><span class="hljs-params">(T t)</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-built_in">typeid</span>(t).<span class="hljs-built_in">name</span>() &lt;&lt; std::endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">normal_forwarding</span><span class="hljs-params">(T t)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">show_type</span>(t);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  std::string s = <span class="hljs-string">&quot;hello world&quot;</span>;<br>  <span class="hljs-built_in">normal_forwarding</span>(s);<br>&#125;<br></code></pre></td></tr></table></figure><p>在上面这个例子中，当调用 <code>normal_forwarding</code> 的时候，会拷贝一次字符串，然后调用 <code>show_type</code> 的时候，又将拷贝一次字符串。我们可以将 <code>normal_forwarding</code> 的形参声明为引用来减少一次拷贝，但是这会导致函数无法接受右值。这个问题也可以通过常量左值引用来解决，但是这就会导致无法修改字符串。</p><p>有了万能引用，就可以解决这个问题。需要注意的是，因为形参t一定是一个左值，为了让转发能够将左右值属性带到目标函数中去（<code>show_type</code>），这里需要进行类型转换，同样用到了引用折叠的概念。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_type</span><span class="hljs-params">(T t)</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-built_in">typeid</span>(t).<span class="hljs-built_in">name</span>() &lt;&lt; std::endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">perfect_forwarding</span><span class="hljs-params">(T &amp;&amp;t)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">show_type</span>(<span class="hljs-built_in">static_cast</span>&lt;T&amp;&amp;&gt;(t));<br>&#125;<br><br><span class="hljs-function">std::string <span class="hljs-title">get_string</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hi world&quot;</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  std::string s = <span class="hljs-string">&quot;hello world&quot;</span>;<br>  <span class="hljs-built_in">perfect_forwarding</span>(s);<br>  <span class="hljs-built_in">perfect_forwarding</span>(<span class="hljs-built_in">get_string</span>());<br>&#125;<br></code></pre></td></tr></table></figure><p>在c++11标准库中提供了 <code>std::forward</code> 函数模板，其内部也是使用 <code>static_cast</code> 进行的类型转换，但是采用 <code>std::forward</code> 使语义更加清楚。</p><p>注意 <code>std::move</code> 和 <code>std::forward</code> 的区别：</p><ul><li>其中 <code>std::move</code> 一定会将实参转换为一个右值引用，并且使用 <code>std::move</code> 不需要指定模板实参，模板实参是由函数调用推导出来的。</li><li>而 <code>std::forward</code> 会根据左值和右值的实际情况进行转发，在使用的时候<strong>需要指定模板实参</strong>。</li></ul>]]></content>
     
     
     <categories>
@@ -421,9 +421,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -479,9 +479,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -510,9 +510,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -541,9 +541,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -570,9 +570,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -653,9 +653,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -684,9 +684,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -1456,6 +1456,28 @@
   
   
   <entry>
+    <title>categories</title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>about</title>
     <link href="/"/>
     <url>/</url>
@@ -1478,33 +1500,11 @@
   
   
   <entry>
-    <title>categories</title>
-    <link href="/"/>
-    <url>/</url>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title></title>
     <link href="/"/>
     <url>/</url>
     
     <content type="html"><![CDATA[// document//   .querySelector('#web_bg')//   .setAttribute('style', `background-image: ${document.querySelector('.banner').style.background.split(' ')[0]};position: fixed;width: 100%;height: 100%;z-index: -1;background-size: cover;`);// document//   .querySelector("#banner")//   .setAttribute('style', 'background-image: url()')// document//   .querySelector("#banner .mask")//   .setAttribute('style', 'background-color:rgba(0,0,0,0)')]]></content>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title></title>
-    <link href="/"/>
-    <url>/</url>
-    
-    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
     
   </entry>
   
