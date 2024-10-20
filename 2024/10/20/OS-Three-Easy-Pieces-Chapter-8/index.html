@@ -1,0 +1,959 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Scheduling: The Multi-Level Feedback Queue多级反馈队列（Multi-level Feedback Queue，MLFQ）需要解决两个问题：  优化周转时间 通过SJF或者STCT可以优化周转时间，但是这需要提前知道一个任务的运行时间。  优化响应时间 RR可以优化响应时间，但是周转时间很差。   1 MLFQ: Basic Rules多级反馈队列有多个队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[OS]Three Easy Pieces Chapter 8">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/20/OS-Three-Easy-Pieces-Chapter-8/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="Scheduling: The Multi-Level Feedback Queue多级反馈队列（Multi-level Feedback Queue，MLFQ）需要解决两个问题：  优化周转时间 通过SJF或者STCT可以优化周转时间，但是这需要提前知道一个任务的运行时间。  优化响应时间 RR可以优化响应时间，但是周转时间很差。   1 MLFQ: Basic Rules多级反馈队列有多个队列">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=2">
+<meta property="article:published_time" content="2024-10-20T08:11:31.000Z">
+<meta property="article:modified_time" content="2024-10-20T08:50:48.444Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="OS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=2">
+  
+  
+  
+  <title>[OS]Three Easy Pieces Chapter 8 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[OS]Three Easy Pieces Chapter 8"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-20 16:11" pubdate>
+          2024年10月20日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          762 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[OS]Three Easy Pieces Chapter 8</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Scheduling-The-Multi-Level-Feedback-Queue"><a href="#Scheduling-The-Multi-Level-Feedback-Queue" class="headerlink" title="Scheduling: The Multi-Level Feedback Queue"></a>Scheduling: The Multi-Level Feedback Queue</h1><p>多级反馈队列（Multi-level Feedback Queue，MLFQ）需要解决两个问题：</p>
+<ol>
+<li><p>优化周转时间</p>
+<p>通过SJF或者STCT可以优化周转时间，但是这需要提前知道一个任务的运行时间。</p>
+</li>
+<li><p>优化响应时间</p>
+<p>RR可以优化响应时间，但是周转时间很差。</p>
+</li>
+</ol>
+<h2 id="1-MLFQ-Basic-Rules"><a href="#1-MLFQ-Basic-Rules" class="headerlink" title="1 MLFQ: Basic Rules"></a>1 MLFQ: Basic Rules</h2><p>多级反馈队列有多个队列，每个队列的优先级不同。总是让优先级高的任务先运行，如果两个任务在同一个队列（优先级相同），则使用RR策略。</p>
+<ul>
+<li>规则1：如果$Priority(A) &gt; Priority(b)$，那么A运行</li>
+<li>规则2：如果$Priority(A) &#x3D; Priority(B)$，那么A，B用RR策略</li>
+</ul>
+<p>多级反馈队列根据任务的历史行为来预测任务的未来行为，并以此调整任务的优先级。如果一个任务频繁的放弃CPU，申请IO，那么维持这个任务的高优先级（IO密集型），因为该任务可能需要较强的交互性；反之，如果一个任务使用CPU很长一段时间（CPU密集型），那么降低任务的优先级。</p>
+<p><img src="/../images/OS-Three-Easy-Pieces-Chapter-8/image-20241020162512090.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="2-Attempt-1-How-To-Change-Priority"><a href="#2-Attempt-1-How-To-Change-Priority" class="headerlink" title="2 Attempt #1: How To Change Priority"></a>2 Attempt #1: How To Change Priority</h2><p><strong>任务的配额</strong>：即一个给定任务在当前优先级的队列能运行的时间，如果时间用完了，那么就会降低其优先级。</p>
+<ul>
+<li><strong>规则3</strong>：作业进入系统时，会被置于最高优先级（最顶队列）。</li>
+<li><strong>规则4a</strong>：如果作业在运行过程中用完了分配资源，其优先级就会降低（即向下移动一个队列）。</li>
+<li><strong>规则4b</strong>：如果作业在分配时间结束前放弃 CPU（如执行 I&#x2F;O 操作），则其优先级保持不变（即其分配时间被重置）。</li>
+</ul>
+<p><strong>问题</strong></p>
+<ol>
+<li><p>饥饿问题</p>
+<p>如果一直有短作业到来，那么优先级低的任务将永远无法运行。</p>
+</li>
+<li><p>恶意程序</p>
+<p>如果一个任务在用完自己的时间片之前，申请一个IO操作，那么它将永远维持高优先级，导致分配不公平。</p>
+</li>
+<li><p>任务变动</p>
+<p>如果一个任务从CPU密集型转变为IO密集型，如何处理</p>
+</li>
+</ol>
+<h2 id="3-Attempt-2-The-Priority-Boost"><a href="#3-Attempt-2-The-Priority-Boost" class="headerlink" title="3 Attempt #2: The Priority Boost"></a>3 Attempt #2: The Priority Boost</h2><ul>
+<li><strong>规则5</strong>：在经过一段时间S后，将所有的任务重新放置在最高优先级队列中。</li>
+</ul>
+<p>通过这么做，解决了上述的问题1和问题2。</p>
+<p>S的值很难确定，如果太长，会导致低优先级的任务饥饿；如果太短，会导致交互性降低。</p>
+<h2 id="4-Attempt-3-Better-Accounting"><a href="#4-Attempt-3-Better-Accounting" class="headerlink" title="4 Attempt #3: Better Accounting"></a>4 Attempt #3: Better Accounting</h2><p>调度器应该记录每个任务在当前队列的运行时间，只要用完了时间片，就降低其优先级。所以，规则4修改为</p>
+<ul>
+<li><strong>规则4</strong>：一旦某项作业用完了给定级别的时间分配（无论它让出 CPU 多少次），其优先级就会降低（即向下移动一个队列）。</li>
+</ul>
+<p><img src="/../images/OS-Three-Easy-Pieces-Chapter-8/image-20241020164719536.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="5-Tuning-MLFQ-And-Other-Issues"><a href="#5-Tuning-MLFQ-And-Other-Issues" class="headerlink" title="5 Tuning MLFQ And Other Issues"></a>5 Tuning MLFQ And Other Issues</h2><p>大多数实现允许不同优先级的队列有不同的时间片大小，高优先级的通常小一点，低优先级的通常高一些。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/OS/" class="print-no-link">#OS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[OS]Three Easy Pieces Chapter 8</div>
+      <div>https://erlsrnby04.github.io/2024/10/20/OS-Three-Easy-Pieces-Chapter-8/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/20/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-4/" title="[C++]现代C++语言核心特性解析 Chapter 4">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[C++]现代C++语言核心特性解析 Chapter 4</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/20/OS-Three-Easy-Pieces-Chapter-7/" title="[OS]Three Easy Pieces Chapter 7">
+                        <span class="hidden-mobile">[OS]Three Easy Pieces Chapter 7</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="操作系统"
+        id="heading-30d23ef4f49e85f37f54786ff984032c" role="tab" data-toggle="collapse" href="#collapse-30d23ef4f49e85f37f54786ff984032c"
+        aria-expanded="true"
+      >
+        操作系统
+        <span class="list-group-count">(14)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-30d23ef4f49e85f37f54786ff984032c"
+           role="tabpanel" aria-labelledby="heading-30d23ef4f49e85f37f54786ff984032c">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2024/10/04/MIT-6-1810-Lab2-system-calls/" title="[MIT 6.1810]Lab2 system calls"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Lab2 system calls</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/10/05/MIT-6-1810-Lab3-page-tables/" title="[MIT 6.1810]Lab3 page tables"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Lab3 page tables</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/" title="[MIT 6.1810]Xv6 Chapter 1"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 1</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-2/" title="[MIT 6.1810]Xv6 Chapter 2"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 2</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/25/MIT-6-1810-Xv6-Chapter-3/" title="[MIT 6.1810]Xv6 Chapter 3"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 3</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/26/MIT-6-1810-Xv6-Chapter-4/" title="[MIT 6.1810]Xv6 Chapter 4"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 4</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/27/MIT-6-1810-Xv6-Chapter-5/" title="[MIT 6.1810]Xv6 Chapter 5"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 5</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/21/MIT-6-S081-Lab1-Xv6-and-Unix-utilities/" title="[MIT 6.S081]Lab1 Xv6 and Unix utilities"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.S081]Lab1 Xv6 and Unix utilities</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/10/18/OS-Three-Easy-Pieces-Chapter-4/" title="[OS]Three Easy Pieces Chapter 4"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[OS]Three Easy Pieces Chapter 4</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/10/18/OS-Three-Easy-Pieces-Chapter-5/" title="[OS]Three Easy Pieces Chapter 5"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[OS]Three Easy Pieces Chapter 5</span>
+        </a>
+      
+    
+      
+      
+        <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="list-group-item list-group-item-action">
+          <span class="category-post">More...</span>
+        </a>
+        
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
