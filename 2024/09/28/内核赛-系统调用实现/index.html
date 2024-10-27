@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://t.alcy.cc/fj?postId=22">
 <meta property="article:published_time" content="2024-09-28T05:10:15.000Z">
-<meta property="article:modified_time" content="2024-10-18T12:21:03.713Z">
+<meta property="article:modified_time" content="2024-10-26T07:00:45.992Z">
 <meta property="article:author" content="ErlsrnBy04">
 <meta property="article:tag" content="Xv6">
 <meta name="twitter:card" content="summary_large_image">
@@ -325,7 +325,7 @@
 <li>在syscall.c中添加函数的声明，并更新系统调用表</li>
 <li>根据功能，选择一个合适的内核模块，进行实现。</li>
 </ol>
-<h2 id="文件系统相关"><a href="#文件系统相关" class="headerlink" title="文件系统相关"></a>文件系统相关</h2><h3 id="define-SYS-getcwd-17"><a href="#define-SYS-getcwd-17" class="headerlink" title="#define SYS_getcwd 17"></a>#define SYS_getcwd 17</h3><p>功能：获取当前工作目录；</p>
+<h2 id="文件系统相关"><a href="#文件系统相关" class="headerlink" title="文件系统相关"></a>文件系统相关</h2><h3 id="define-SYS-getcwd-17（10-17）"><a href="#define-SYS-getcwd-17（10-17）" class="headerlink" title="#define SYS_getcwd 17（10.17）"></a>#define SYS_getcwd 17（10.17）</h3><p>功能：获取当前工作目录；</p>
 <p>输入：</p>
 <ul>
 <li><p>char *buf：一块缓存区，用于保存当前工作目录的字符串。当buf设为NULL，由系统来分配缓存区。</p>
@@ -335,8 +335,6 @@
 </ul>
 <p>返回值：成功执行，则返回当前工作目录的字符串的指针。失败，则返回NULL。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">char</span> *buf, <span class="hljs-type">size_t</span> size;<br><span class="hljs-type">long</span> ret = syscall(SYS_getcwd, buf, size);<br></code></pre></td></tr></table></figure>
-
-
 
 <h3 id="define-SYS-pipe2-59"><a href="#define-SYS-pipe2-59" class="headerlink" title="#define SYS_pipe2 59"></a>#define SYS_pipe2 59</h3><p>功能：创建管道；</p>
 <p>输入：</p>
@@ -496,7 +494,7 @@
 </ul>
 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">int</span> fd<span class="hljs-comment">;</span><br>struct kstat kst<span class="hljs-comment">;</span><br><span class="hljs-keyword">int</span> <span class="hljs-keyword">ret</span> = <span class="hljs-keyword">syscall</span>(SYS_fstat, fd, &amp;kst)<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
-<h2 id="进程管理相关"><a href="#进程管理相关" class="headerlink" title="进程管理相关"></a>进程管理相关</h2><h3 id="define-SYS-clone-220"><a href="#define-SYS-clone-220" class="headerlink" title="#define SYS_clone 220"></a>#define SYS_clone 220</h3><ul>
+<h2 id="进程管理相关"><a href="#进程管理相关" class="headerlink" title="进程管理相关"></a>进程管理相关</h2><h3 id="define-SYS-clone-220-（10-26）"><a href="#define-SYS-clone-220-（10-26）" class="headerlink" title="#define SYS_clone 220 （10.26）"></a>#define SYS_clone 220 （10.26）</h3><ul>
 <li>功能：创建一个子进程；</li>
 <li>输入：<ul>
 <li>flags: 创建的标志，如SIGCHLD；</li>
@@ -510,7 +508,7 @@
 </ul>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">pid_t</span> ret = <span class="hljs-built_in">syscall</span>(SYS_clone, flags, stack, ptid, tls, ctid)<br></code></pre></td></tr></table></figure>
 
-<h3 id="define-SYS-execve-221"><a href="#define-SYS-execve-221" class="headerlink" title="#define SYS_execve 221"></a>#define SYS_execve 221</h3><ul>
+<h3 id="define-SYS-execve-221-（10-26）"><a href="#define-SYS-execve-221-（10-26）" class="headerlink" title="#define SYS_execve 221 （10.26）"></a>#define SYS_execve 221 （10.26）</h3><ul>
 <li>功能：执行一个指定的程序；</li>
 <li>输入：<ul>
 <li>path: 待执行程序路径名称，</li>
@@ -522,7 +520,7 @@
 </ul>
 <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-type">const</span> <span class="hljs-type">char</span> *path, <span class="hljs-type">char</span> *<span class="hljs-type">const</span> argv[], <span class="hljs-type">char</span> *<span class="hljs-type">const</span> envp[];<br><span class="hljs-type">int</span> ret = <span class="hljs-built_in">syscall</span>(SYS_execve, path, argv, envp);<br></code></pre></td></tr></table></figure>
 
-<h3 id="define-SYS-wait4-260"><a href="#define-SYS-wait4-260" class="headerlink" title="#define SYS_wait4 260"></a>#define SYS_wait4 260</h3><ul>
+<h3 id="define-SYS-wait4-260（10-26）"><a href="#define-SYS-wait4-260（10-26）" class="headerlink" title="#define SYS_wait4 260（10.26）"></a>#define SYS_wait4 260（10.26）</h3><ul>
 <li>功能：等待进程改变状态;</li>
 <li>输入：<ul>
 <li>pid: 指定进程ID，可为-1等待任何子进程；</li>
@@ -534,28 +532,28 @@
 </ul>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">pid_t</span> pid, <span class="hljs-type">int</span> *status, <span class="hljs-type">int</span> options;<br><span class="hljs-type">pid_t</span> ret = <span class="hljs-built_in">syscall</span>(SYS_wait4, pid, status, options);<br></code></pre></td></tr></table></figure>
 
-<h3 id="define-SYS-exit-93"><a href="#define-SYS-exit-93" class="headerlink" title="#define SYS_exit 93"></a>#define SYS_exit 93</h3><ul>
+<h3 id="define-SYS-exit-93-（10-26）"><a href="#define-SYS-exit-93-（10-26）" class="headerlink" title="#define SYS_exit 93 （10.26）"></a>#define SYS_exit 93 （10.26）</h3><ul>
 <li>功能：触发进程终止，无返回值；</li>
 <li>输入：终止状态值；</li>
 <li>返回值：无返回值；</li>
 </ul>
 <figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-keyword">int</span> ec;<br><span class="hljs-keyword">syscall</span>(SYS_exit, ec);<br></code></pre></td></tr></table></figure>
 
-<h3 id="define-SYS-getppid-173"><a href="#define-SYS-getppid-173" class="headerlink" title="#define SYS_getppid 173"></a>#define SYS_getppid 173</h3><ul>
+<h3 id="define-SYS-getppid-173-（10-25）"><a href="#define-SYS-getppid-173-（10-25）" class="headerlink" title="#define SYS_getppid 173 （10.25）"></a>#define SYS_getppid 173 （10.25）</h3><ul>
 <li>功能：获取父进程ID；</li>
 <li>输入：系统调用ID；</li>
 <li>返回值：成功返回父进程ID；</li>
 </ul>
 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">pid_t ret <span class="hljs-operator">=</span> syscall(SYS_getppid)<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="define-SYS-getpid-172"><a href="#define-SYS-getpid-172" class="headerlink" title="#define SYS_getpid 172"></a>#define SYS_getpid 172</h3><ul>
+<h3 id="define-SYS-getpid-172-（10-25）"><a href="#define-SYS-getpid-172-（10-25）" class="headerlink" title="#define SYS_getpid 172 （10.25）"></a>#define SYS_getpid 172 （10.25）</h3><ul>
 <li>功能：获取进程ID；</li>
 <li>输入：系统调用ID；</li>
 <li>返回值：成功返回进程ID；</li>
 </ul>
 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">pid_t ret <span class="hljs-operator">=</span> syscall(SYS_getpid)<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
 
-<h2 id="内存管理相关"><a href="#内存管理相关" class="headerlink" title="内存管理相关"></a>内存管理相关</h2><h3 id="define-SYS-brk-214"><a href="#define-SYS-brk-214" class="headerlink" title="#define SYS_brk 214"></a>#define SYS_brk 214</h3><ul>
+<h2 id="内存管理相关"><a href="#内存管理相关" class="headerlink" title="内存管理相关"></a>内存管理相关</h2><h3 id="define-SYS-brk-214-（10-26）"><a href="#define-SYS-brk-214-（10-26）" class="headerlink" title="#define SYS_brk 214 （10.26）"></a>#define SYS_brk 214 （10.26）</h3><ul>
 <li>功能：修改数据段的大小；</li>
 <li>输入：指定待修改的地址；</li>
 <li>返回值：成功返回0，失败返回-1;</li>
@@ -814,7 +812,7 @@
         aria-expanded="true"
       >
         操作系统
-        <span class="list-group-count">(14)</span>
+        <span class="list-group-count">(15)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -891,6 +889,15 @@
     
       
       
+        <a href="/2024/10/27/MIT-6-1810-Xv6-Chapter-8/" title="[MIT 6.1810]Xv6 Chapter 8"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 8</span>
+        </a>
+      
+    
+      
+      
         <a href="/2024/09/21/MIT-6-S081-Lab1-Xv6-and-Unix-utilities/" title="[MIT 6.S081]Lab1 Xv6 and Unix utilities"
            class="list-group-item list-group-item-action
            ">
@@ -904,15 +911,6 @@
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">[OS]Three Easy Pieces Chapter 4</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2024/10/18/OS-Three-Easy-Pieces-Chapter-5/" title="[OS]Three Easy Pieces Chapter 5"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">[OS]Three Easy Pieces Chapter 5</span>
         </a>
       
     

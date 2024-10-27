@@ -1,0 +1,989 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Git 是一个分布式版本控制系统，用于跟踪文件的更改，协助团队协作开发软件项目。 1. 初始化 Git 仓库要使用 Git 跟踪项目，首先需要将项目目录初始化为 Git 仓库。 1git init  这会在当前目录下创建一个隐藏的 .git 文件夹，用于存储版本控制相关的数据。 2. 克隆远程仓库如果已有远程仓库，可以通过 git clone 命令将其复制到本地： 1git clone https">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[GIT]常用基本操作">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/21/GIT-%E5%B8%B8%E7%94%A8%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="Git 是一个分布式版本控制系统，用于跟踪文件的更改，协助团队协作开发软件项目。 1. 初始化 Git 仓库要使用 Git 跟踪项目，首先需要将项目目录初始化为 Git 仓库。 1git init  这会在当前目录下创建一个隐藏的 .git 文件夹，用于存储版本控制相关的数据。 2. 克隆远程仓库如果已有远程仓库，可以通过 git clone 命令将其复制到本地： 1git clone https">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=7">
+<meta property="article:published_time" content="2024-10-21T06:59:47.000Z">
+<meta property="article:modified_time" content="2024-10-21T07:07:39.307Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=7">
+  
+  
+  
+  <title>[GIT]常用基本操作 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[GIT]常用基本操作"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-21 14:59" pubdate>
+          2024年10月21日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[GIT]常用基本操作</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Git 是一个分布式版本控制系统，用于跟踪文件的更改，协助团队协作开发软件项目。</p>
+<h3 id="1-初始化-Git-仓库"><a href="#1-初始化-Git-仓库" class="headerlink" title="1. 初始化 Git 仓库"></a>1. <strong>初始化 Git 仓库</strong></h3><p>要使用 Git 跟踪项目，首先需要将项目目录初始化为 Git 仓库。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git init<br></code></pre></td></tr></table></figure>
+
+<p>这会在当前目录下创建一个隐藏的 <code>.git</code> 文件夹，用于存储版本控制相关的数据。</p>
+<h3 id="2-克隆远程仓库"><a href="#2-克隆远程仓库" class="headerlink" title="2. 克隆远程仓库"></a>2. <strong>克隆远程仓库</strong></h3><p>如果已有远程仓库，可以通过 <code>git clone</code> 命令将其复制到本地：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/username/repo.git<br></code></pre></td></tr></table></figure>
+
+<p>这会将远程仓库下载到当前目录，并创建一个同名文件夹。</p>
+<h3 id="3-查看仓库状态"><a href="#3-查看仓库状态" class="headerlink" title="3. 查看仓库状态"></a>3. <strong>查看仓库状态</strong></h3><p>使用 <code>git status</code> 查看当前仓库的状态，比如哪些文件被修改了、哪些文件处于暂存区等。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git status<br></code></pre></td></tr></table></figure>
+
+<p>这会显示未跟踪文件、已修改文件和暂存区的文件。</p>
+<h3 id="4-跟踪新文件"><a href="#4-跟踪新文件" class="headerlink" title="4. 跟踪新文件"></a>4. <strong>跟踪新文件</strong></h3><p>要将新文件添加到 Git 的跟踪列表中，使用 <code>git add</code> 命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git add &lt;filename&gt;<br></code></pre></td></tr></table></figure>
+
+<p>也可以一次性添加所有文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git add .<br></code></pre></td></tr></table></figure>
+
+<p>这会将当前目录下的所有修改和新文件添加到暂存区。</p>
+<h3 id="5-提交更改"><a href="#5-提交更改" class="headerlink" title="5. 提交更改"></a>5. <strong>提交更改</strong></h3><p>一旦添加了文件到暂存区，可以使用 <code>git commit</code> 来提交这些更改。每次提交都会记录一条历史记录，可以随时查看和恢复。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git commit -m <span class="hljs-string">&quot;Commit message describing the changes&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p><code>-m</code> 后跟的消息应简要描述这次提交的更改内容。</p>
+<h3 id="6-查看提交历史"><a href="#6-查看提交历史" class="headerlink" title="6. 查看提交历史"></a>6. <strong>查看提交历史</strong></h3><p>使用 <code>git log</code> 命令可以查看仓库的提交历史：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure>
+
+<p>这会显示提交的哈希值、作者、日期和提交消息。如果想查看简化的日志，可以使用 <code>--oneline</code> 选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">log</span> --oneline<br></code></pre></td></tr></table></figure>
+
+<h3 id="7-创建分支"><a href="#7-创建分支" class="headerlink" title="7. 创建分支"></a>7. <strong>创建分支</strong></h3><p>在 Git 中，分支用于并行开发不同的功能。可以创建一个新的分支来开发一个新功能：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git checkout -b &lt;branch-name&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这会创建并切换到一个新的分支。如果你只想切换分支而不创建新分支，可以使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git checkout &lt;branch-name&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="8-推送到远程仓库"><a href="#8-推送到远程仓库" class="headerlink" title="8. 推送到远程仓库"></a>8. <strong>推送到远程仓库</strong></h3><p>将本地的提交推送到远程仓库，以便与团队成员共享代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git push origin &lt;branch-name&gt;<br></code></pre></td></tr></table></figure>
+
+<p>例如，如果想将 <code>main</code> 分支的更改推送到远程仓库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git push origin main<br></code></pre></td></tr></table></figure>
+
+<h3 id="9-拉取远程仓库的更改"><a href="#9-拉取远程仓库的更改" class="headerlink" title="9. 拉取远程仓库的更改"></a>9. <strong>拉取远程仓库的更改</strong></h3><p>使用 <code>git pull</code> 从远程仓库拉取最新的更改并合并到当前分支：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git pull origin &lt;branch-name&gt;<br></code></pre></td></tr></table></figure>
+
+<p>例如，从 <code>main</code> 分支拉取远程仓库的最新更改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git pull origin main<br></code></pre></td></tr></table></figure>
+
+<h3 id="10-暂存工作（Stashing）"><a href="#10-暂存工作（Stashing）" class="headerlink" title="10. 暂存工作（Stashing）"></a>10. <strong>暂存工作（Stashing）</strong></h3><p>如果正在处理一些代码更改，但还不想提交这些更改，而又想切换到另一个分支或做其他事情，可以使用 <code>git stash</code> 将工作区的更改暂存起来：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git stash<br></code></pre></td></tr></table></figure>
+
+<p>之后可以使用 <code>git stash apply</code> 恢复暂存的工作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git stash apply<br></code></pre></td></tr></table></figure>
+
+<h3 id="11-查看差异"><a href="#11-查看差异" class="headerlink" title="11. 查看差异"></a>11. <strong>查看差异</strong></h3><p>要查看文件的更改内容，可以使用 <code>git diff</code> 命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git diff<br></code></pre></td></tr></table></figure>
+
+<p>这会显示自上次提交以来的更改内容。</p>
+<h3 id="12-还原更改"><a href="#12-还原更改" class="headerlink" title="12. 还原更改"></a>12. <strong>还原更改</strong></h3><p>在 Git 中，还原代码或撤销更改是非常常见的操作，无论是恢复某个文件的状态，还是撤销某次提交，Git 都提供了多个方式来安全、灵活地操作项目历史。以下是 Git 中常用的还原和撤销操作的详细介绍。</p>
+<h4 id="12-1-撤销未提交的更改"><a href="#12-1-撤销未提交的更改" class="headerlink" title="12.1 撤销未提交的更改"></a>12.1 <strong>撤销未提交的更改</strong></h4><h5 id="还原工作区的修改"><a href="#还原工作区的修改" class="headerlink" title="还原工作区的修改"></a><strong>还原工作区的修改</strong></h5><p>如果修改了文件，但还没有提交（即文件还未加入暂存区或已经暂存但未提交），可以将它们恢复到上次提交时的状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git checkout -- &lt;filename&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这个命令会丢弃文件中的所有未提交的更改，恢复为上一次提交时的版本。如果想还原多个文件，也可以直接用 <code>.</code> 表示当前目录下的所有文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git checkout -- .<br></code></pre></td></tr></table></figure>
+
+<h5 id="撤销已暂存的更改"><a href="#撤销已暂存的更改" class="headerlink" title="撤销已暂存的更改"></a><strong>撤销已暂存的更改</strong></h5><p>如果已经通过 <code>git add</code> 将文件添加到暂存区，但你想撤销这个操作，可以使用 <code>git reset</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git reset &lt;filename&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这会将文件从暂存区移出，但保留文件的更改。此时，可以再次编辑文件或选择不提交这些更改。</p>
+<h5 id="还原整个工作目录"><a href="#还原整个工作目录" class="headerlink" title="还原整个工作目录"></a><strong>还原整个工作目录</strong></h5><p>如果想撤销所有未提交的更改（包括暂存区和未暂存的文件），可以使用 <code>git reset</code> 和 <code>git checkout</code> 的组合：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git reset --hard HEAD<br></code></pre></td></tr></table></figure>
+
+<p>这会将整个工作区还原为最后一次提交的状态，所有未提交的更改都会丢失。</p>
+<h4 id="12-2-撤销已提交的更改"><a href="#12-2-撤销已提交的更改" class="headerlink" title="12.2 撤销已提交的更改"></a>12.2 <strong>撤销已提交的更改</strong></h4><h5 id="修改最近的提交"><a href="#修改最近的提交" class="headerlink" title="修改最近的提交"></a><strong>修改最近的提交</strong></h5><p>如果已经提交了更改，但发现提交信息有误或文件遗漏，可以使用 <code>git commit --amend</code> 来修改最近一次的提交：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git commit --amend<br></code></pre></td></tr></table></figure>
+
+<p>这会打开编辑器，允许修改提交消息，或者可以添加更多的文件到该提交。如果想改动的是最近一次提交的内容而不是消息，可以先用 <code>git add</code> 再执行 <code>git commit --amend</code>。</p>
+<h5 id="回滚到指定提交"><a href="#回滚到指定提交" class="headerlink" title="回滚到指定提交"></a><strong>回滚到指定提交</strong></h5><p>如果想撤销一个或多个提交，可以使用 <code>git reset</code> 命令。<code>git reset</code> 有多个选项，根据需要选择合适的方式：</p>
+<ul>
+<li><p><strong>软重置（<code>--soft</code>）</strong>：只移动提交指针，保留所有文件的修改状态和暂存状态。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git reset --soft &lt;commit&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这样可以回到某个提交，但保留所有更改在暂存区，之后可以重新提交。</p>
+</li>
+<li><p><strong>混合重置（<code>--mixed</code>，默认）</strong>：回到指定的提交，但保留文件的更改，只是将其移出暂存区。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git reset --mixed &lt;commit&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>硬重置（<code>--hard</code>）</strong>：彻底回滚到指定的提交，删除所有未提交的更改，工作目录会与指定的提交完全一致。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git reset --hard &lt;commit&gt;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="撤销某次提交但保留更改"><a href="#撤销某次提交但保留更改" class="headerlink" title="撤销某次提交但保留更改"></a><strong>撤销某次提交但保留更改</strong></h5><p>有时候不想彻底回到之前的某个提交，而只是想撤销某个提交的影响，但保留它的内容供重新修改。这种情况下可以使用 <code>git revert</code>。</p>
+<ul>
+<li><p><strong>回滚单个提交</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git revert &lt;commit&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这会生成一个新的提交，撤销指定提交的内容，但不会改变提交历史。</p>
+</li>
+</ul>
+<h5 id="删除最近的提交"><a href="#删除最近的提交" class="headerlink" title="删除最近的提交"></a><strong>删除最近的提交</strong></h5><p>如果想删除最新的一个或多个提交（且不保留更改），可以使用 <code>git reset</code> 的硬重置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git reset --hard HEAD~1<br></code></pre></td></tr></table></figure>
+
+<p>这会删除最近的提交，<code>HEAD~1</code> 表示倒退一个提交。如果删除多个提交，可以使用 <code>HEAD~n</code>，其中 <code>n</code> 是想删除的提交数。</p>
+<h4 id="12-3-还原已删除的文件"><a href="#12-3-还原已删除的文件" class="headerlink" title="12.3 还原已删除的文件"></a>12.3 <strong>还原已删除的文件</strong></h4><p>如果不小心删除了一个文件，但没有提交这个删除操作，可以使用 <code>git checkout</code> 恢复文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git checkout -- &lt;filename&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这个命令会将文件恢复到上一次提交时的状态。</p>
+<p>如果已经提交了文件删除操作，但想恢复该文件，可以通过 <code>git reset</code> 或 <code>git revert</code> 撤销删除操作，或者通过以下命令恢复特定的已删除文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git checkout &lt;commit&gt; -- &lt;filename&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这个命令会将文件恢复到指定提交时的状态。</p>
+<h4 id="12-4-暂存工作并稍后恢复"><a href="#12-4-暂存工作并稍后恢复" class="headerlink" title="12.4 暂存工作并稍后恢复"></a>12.4 <strong>暂存工作并稍后恢复</strong></h4><p>当在进行某些更改时，突然需要切换到其他分支或处理其他任务，但不想提交当前的更改，可以使用 <code>git stash</code> 暂存这些未完成的工作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git stash<br></code></pre></td></tr></table></figure>
+
+<p>这会将当前的所有未提交更改（包括暂存和未暂存的内容）暂存起来，工作目录会恢复到干净状态。</p>
+<p>当想恢复这些工作时，使用 <code>git stash apply</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git stash apply<br></code></pre></td></tr></table></figure>
+
+<p>这会将暂存的更改恢复到工作目录。</p>
+<h4 id="12-5-查看提交的历史记录"><a href="#12-5-查看提交的历史记录" class="headerlink" title="12.5 查看提交的历史记录"></a>12.5 <strong>查看提交的历史记录</strong></h4><p>可以使用 <code>git log</code> 命令查看仓库的历史提交记录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure>
+
+<p>如果需要查看某个文件在不同提交间的变动，可以使用 <code>git log</code> 加上文件名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">log</span> &lt;filename&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这会显示与该文件相关的所有提交。</p>
+<h4 id="12-6-查看文件差异"><a href="#12-6-查看文件差异" class="headerlink" title="12.6 查看文件差异"></a>12.6 <strong>查看文件差异</strong></h4><p>使用 <code>git diff</code> 可以查看工作区和暂存区的文件差异：</p>
+<ul>
+<li><p><strong>查看工作区和暂存区的差异</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git diff<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>查看暂存区和上次提交的差异</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git diff --cached<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>查看某次提交的更改</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git diff &lt;commit&gt;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="12-7-强制推送还原"><a href="#12-7-强制推送还原" class="headerlink" title="12.7 强制推送还原"></a>12.7 <strong>强制推送还原</strong></h4><p>如果已经推送了错误的提交到远程仓库，并且需要还原远程仓库的状态，可以使用 <code>git push</code> 的强制推送选项（<strong>注意：这会覆盖远程仓库的历史，需要谨慎使用</strong>）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git push --force<br></code></pre></td></tr></table></figure>
+
+<p>这种操作适用于紧急情况下的错误修复，且需要团队协作时的额外沟通，以避免其他开发者的工作被覆盖。</p>
+<h3 id="13-克隆、推送和拉取常用流程"><a href="#13-克隆、推送和拉取常用流程" class="headerlink" title="13. 克隆、推送和拉取常用流程"></a>13. <strong>克隆、推送和拉取常用流程</strong></h3><ol>
+<li><p><strong>克隆仓库</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/username/repo.git<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>拉取最新代码</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git pull origin main<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>进行开发、提交</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">git add .<br>git commit -m <span class="hljs-string">&quot;Add new feature&quot;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>推送到远程仓库</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git push origin main<br></code></pre></td></tr></table></figure></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E5%85%B7/" class="category-chain-item">工具</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/git/" class="print-no-link">#git</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[GIT]常用基本操作</div>
+      <div>https://erlsrnby04.github.io/2024/10/21/GIT-常用基本操作/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/27/MIT-6-1810-Xv6-Chapter-8/" title="[MIT 6.1810]Xv6 Chapter 8">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[MIT 6.1810]Xv6 Chapter 8</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/21/GIT-%E5%88%86%E6%94%AF%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" title="[GIT]分支常用操作">
+                        <span class="hidden-mobile">[GIT]分支常用操作</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="工具"
+        id="heading-20dce2c6fa909a5cd62526615fe2788a" role="tab" data-toggle="collapse" href="#collapse-20dce2c6fa909a5cd62526615fe2788a"
+        aria-expanded="true"
+      >
+        工具
+        <span class="list-group-count">(2)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-20dce2c6fa909a5cd62526615fe2788a"
+           role="tabpanel" aria-labelledby="heading-20dce2c6fa909a5cd62526615fe2788a">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2024/10/21/GIT-%E5%88%86%E6%94%AF%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" title="[GIT]分支常用操作"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[GIT]分支常用操作</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/10/21/GIT-%E5%B8%B8%E7%94%A8%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" title="[GIT]常用基本操作"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">[GIT]常用基本操作</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
