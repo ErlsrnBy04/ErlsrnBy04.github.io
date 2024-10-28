@@ -1,0 +1,880 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="什么是面向对象编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[OOP]C++面向对象高效编程 Chapter 1">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/28/OOP-C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B-Chapter-1/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="什么是面向对象编程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=9">
+<meta property="article:published_time" content="2024-10-28T10:23:24.000Z">
+<meta property="article:modified_time" content="2024-10-28T10:56:26.901Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="OOP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=9">
+  
+  
+  
+  <title>[OOP]C++面向对象高效编程 Chapter 1 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[OOP]C++面向对象高效编程 Chapter 1"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-28 18:23" pubdate>
+          2024年10月28日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[OOP]C++面向对象高效编程 Chapter 1</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="什么是面向对象编程"><a href="#什么是面向对象编程" class="headerlink" title="什么是面向对象编程"></a>什么是面向对象编程</h1><span id="more"></span>
+
+<h2 id="1-理解对象模型"><a href="#1-理解对象模型" class="headerlink" title="1 理解对象模型"></a>1 理解对象模型</h2><p>OOP中的基本实体是类。对象是类的实例。</p>
+<p>在OOP中，函数通过对象调用。</p>
+<h2 id="2-理解消息、方法和实例变量"><a href="#2-理解消息、方法和实例变量" class="headerlink" title="2 理解消息、方法和实例变量"></a>2 理解消息、方法和实例变量</h2><p>类的任何用户（另一个程序、另一个类等）都是类的客户。客户通过类的对象使用成员函数（消息）进行有用的操作。</p>
+<p>消息只是客户所见的一个名称，该名称可能在运行期被绑定在正确的实现上（方法）。类的每个示例都包含实例变量的单独副本。</p>
+<h2 id="3-什么可以作为类"><a href="#3-什么可以作为类" class="headerlink" title="3 什么可以作为类"></a>3 什么可以作为类</h2><p>类拥有一组对象的共同属性（或者特性）。</p>
+<p>类不只是容器，不能认为它仅仅用于存储被函数修改的数据。类为客户提供了复杂实体的简化版本，并允许客户通过操作类的对象完成有用的工作。类不只是将它的各个部分简单地组合起来而已。类决定如何完成任务，它清楚地陈述了该类的对象可以做什么。</p>
+<h2 id="4-什么不是类"><a href="#4-什么不是类" class="headerlink" title="4 什么不是类"></a>4 什么不是类</h2><p>一个 C“结构”不能直接成为一个类。不能将结构修改成类，让所有数据成为私有数据，然后添加一组函数来获得和设置数据成员，这不是类。类不只是一组允许客户获取和设置数据成员值的函数。数据封装隐藏了类中的数据，而且通过成员函数提供更高层次的抽象。如果只是让函数读写结构中的数据，其实并未简化任何东西。只包含获值函数（getter）和设值函数（setter）的类是糟糕的设计。</p>
+<h2 id="5-类的目的"><a href="#5-类的目的" class="headerlink" title="5 类的目的"></a>5 类的目的</h2><p>设计类的目的必须非常明确。一个优秀的类应该易于理解和使用，必须清楚地向客户说明其目的。每个类都是为特定领域的某种用途而设计的。</p>
+<p>类（实际上是类的对象）负责履行其功能。当设计出类后，它（实际上是类的设计人员）便对客户承诺了它的功能。程序在执行时，类会负责管理一些细节，因此客户不用担心。</p>
+<h2 id="6-深入了解对象"><a href="#6-深入了解对象" class="headerlink" title="6 深入了解对象"></a>6 深入了解对象</h2><p>区别类和对象是一个逻辑问题。简单地说，对象是带有状态和行为的活的实体。所有类对象的行为都定义在类中，而状态则由对象单独维护。</p>
+<h3 id="6-1-对象的状态"><a href="#6-1-对象的状态" class="headerlink" title="6.1 对象的状态"></a>6.1 对象的状态</h3><p>每个BankAccount类对象中都有一个balance数据成员。假设我们不允许客户的账户透支，那么，只需声明账户中的余额不允许小于0。这是任何银行账户对象的已知性质（property），我们不必检查对象的状态来确认这个属性。也就是说，这是每个银行账户对象的<strong>静态性质（static property）</strong>。然而，在BankAccout类对象生存期内的任何时候，账户中的余额都是balance数据成员中的值。该数据成员的值随着账户的存款、转账、取款不断变化。因此，账户余额是一个动态变化的值。换言之，balance 数据成员是一个动态值。<strong>对象的状态是所有静态性质以及这些静态性质的动态值的集合。</strong></p>
+<h3 id="6-2-对象状态的重要性"><a href="#6-2-对象状态的重要性" class="headerlink" title="6.2 对象状态的重要性"></a>6.2 对象状态的重要性</h3><p>对象如何响应我们的命令（操作）以及对其他对象（客户）做什么，都直接依赖于对象的状态；执行某方法所得的结果也直接依赖于对象的状态。</p>
+<h3 id="6-3-谁控制对象的状态"><a href="#6-3-谁控制对象的状态" class="headerlink" title="6.3 谁控制对象的状态"></a>6.3 谁控制对象的状态</h3><p>对象的状态通过成员函数修改。类假定无法从外部修改对象的状态。所有不让普通客户访问的数据都应封装在类的private区域中。这也称为<strong>数据封装（data encapsulation）</strong>。</p>
+<h3 id="6-4-对象的行为"><a href="#6-4-对象的行为" class="headerlink" title="6.4 对象的行为"></a>6.4 对象的行为</h3><p>对象的行为在某种方式上是对客户调用消息的响应。行为是对象对消息采取的行动和做出的反应。消息会引起状态的变化，也会引起发送更多的消息至其他对象，或两者兼有之。</p>
+<h2 id="7-面向对象软件开发的阶段"><a href="#7-面向对象软件开发的阶段" class="headerlink" title="7 面向对象软件开发的阶段"></a>7 面向对象软件开发的阶段</h2><h3 id="7-1-面向对象分析OOA"><a href="#7-1-面向对象分析OOA" class="headerlink" title="7.1 面向对象分析OOA"></a>7.1 面向对象分析OOA</h3><p>从简单描述问题开始（大多数都不完整），这是面向对象软件开发过程的起点。在这一阶段中，我们要找到合适的类。</p>
+<p>面向对象分析（Object-Oriented Analysis，缩写OOA）涉及从类和对象的角度分析问题，这些类和对象都要从问题领域（problem domain）中找出。但是，这些类并不是在最终实现中能直接使用的类。整个过程基本上是一个建模练习，即尝试建立问题领域的模型。本阶段的任务主要是，彻底地分析问题和明确地指定要求。要在客户的问题领域找出类和对象，并用其完整地描述什么方案可行，什么方案不可行。换言之，我们应采用客户能够理解的类和对象来描述问题。这些类和对象都可以直接在问题领域中找到。</p>
+<p>在OOA阶段中，我们应该将注意力放在问题领域中使用的类，而非实现中使用的类。实现的细节将在面向对象设计（OOD）阶段实现。</p>
+<h3 id="7-2-面向对象设计OOD"><a href="#7-2-面向对象设计OOD" class="headerlink" title="7.2 面向对象设计OOD"></a>7.2 面向对象设计OOD</h3><p>OOD（面向对象设计）阶段在OOA（面向对象分析）阶段之后，在本阶段中，我们将在OOA阶段开发的框架中加入细节，待解决的问题将被分解为类和对象用于实现中。本阶段需要完成的任务包括<strong>定义类之间的关系</strong>、<strong>描述对象如何才能适应系统的进程模型</strong>、<strong>如何跨地址空间划分对象</strong>、<strong>系统如何完成动态行为</strong>等。</p>
+<p><strong>找到那些难以琢磨的对象</strong></p>
+<p>一般情况下，可将问题中的下列实体转化为类：</p>
+<ul>
+<li>人，位置和东西；</li>
+<li>事件——鼠标输入、出生、死亡等；</li>
+<li>交易——同意贷款、汽车销售等；</li>
+<li>人所扮演的角色——父亲、母亲等。</li>
+</ul>
+<h3 id="7-3-面向对象编程OOP"><a href="#7-3-面向对象编程OOP" class="headerlink" title="7.3 面向对象编程OOP"></a>7.3 面向对象编程OOP</h3><p>这是面向对象软件开发环节的最后一个阶段。将 OOD 阶段的成果输出，将其输入至OOP 阶段中。</p>
+<h2 id="8-对象模型的关键要素"><a href="#8-对象模型的关键要素" class="headerlink" title="8 对象模型的关键要素"></a>8 对象模型的关键要素</h2><p>建立对象模型的关键要素：</p>
+<ul>
+<li>数据抽象</li>
+<li>封装</li>
+<li>层次</li>
+</ul>
+<p><strong>数据抽象（data abstraction）</strong>是为了强调对象的相似性，忽略其差异性来定义类。在表现类（抽象）的主要特性时，应避免展现那些不重要的和分散注意力的元素。实际上，类就是一个抽象。顺带一提，抽象将重点放在对象的外部视图上，并将对象必不可少的行为从内部的实现细节中分离出来。</p>
+<p><strong>封装（encapsulation）</strong>是为了隐藏抽象的内部实现细节。它将抽象的外部接口从内部实现细节中分离出来。封装和抽象彼此互补。一个设计良好的抽象会封装一些成员，而被封装的实体则帮助抽象保持完整性。需要注意的是：抽象先于封装。另外，只有在开始实现时，才应该将注意力放在封装上。</p>
+<p><strong>层次（hierarchy）</strong>是为了支持抽象的有序。抽象很强大很有用。但是，在绝大多数重大问题中，我们最终都会由于创建了太多的抽象，以至于无法统观大局。虽然封装和模块在一定程度上能缓解这一局面，但是，我们仍陷入了不计其数的抽象迷雾中。人的思维一次只能理解一组有限的抽象，提出太多抽象对读者而言简直就是一次信息保留测试，实在让人难以消化。为了避免这些不利因素，我们可以将这些抽象安排在不同的层次，这样即便尚未充分理解抽象的主要特性，也可完全明白某层次中的所有抽象。</p>
+<p>在OOP中普遍存在两种层次。<strong>继承关系</strong>支持类层次（class hierarchy）（is-a关系，见图1-6）；聚集关系（aggregation relation）（has-a关系，见图1-7）支持部分-整体概念。继承用于描述一般-特殊关系，而聚集用于描述涉及包含（containment）和共享的关系。</p>
+<p><img src="/../images/OOP-C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B-Chapter-1/image-20241028185457489.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../images/OOP-C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B-Chapter-1/image-20241028185508195.png" srcset="/img/loading.gif" lazyload></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" class="category-chain-item">面向对象</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C++</a>
+      
+        <a href="/tags/OOP/" class="print-no-link">#OOP</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[OOP]C++面向对象高效编程 Chapter 1</div>
+      <div>https://erlsrnby04.github.io/2024/10/28/OOP-C-面向对象高效编程-Chapter-1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/28/OOP-C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B-Chapter-2/" title="[OOP]C++面向对象高效编程 Chapter 2">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[OOP]C++面向对象高效编程 Chapter 2</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/27/MIT-6-1810-Xv6-Chapter-8/" title="[MIT 6.1810]Xv6 Chapter 8">
+                        <span class="hidden-mobile">[MIT 6.1810]Xv6 Chapter 8</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="面向对象"
+        id="heading-659b5af5e2e704e0c13662544042138f" role="tab" data-toggle="collapse" href="#collapse-659b5af5e2e704e0c13662544042138f"
+        aria-expanded="true"
+      >
+        面向对象
+        <span class="list-group-count">(2)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-659b5af5e2e704e0c13662544042138f"
+           role="tabpanel" aria-labelledby="heading-659b5af5e2e704e0c13662544042138f">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2024/10/28/OOP-C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B-Chapter-1/" title="[OOP]C++面向对象高效编程 Chapter 1"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">[OOP]C++面向对象高效编程 Chapter 1</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/10/28/OOP-C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E9%AB%98%E6%95%88%E7%BC%96%E7%A8%8B-Chapter-2/" title="[OOP]C++面向对象高效编程 Chapter 2"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[OOP]C++面向对象高效编程 Chapter 2</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
