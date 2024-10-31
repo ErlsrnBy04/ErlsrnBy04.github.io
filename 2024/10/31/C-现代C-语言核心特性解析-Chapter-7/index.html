@@ -1,0 +1,1005 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="lambda表达式（C++11～C++20）1 lambda表达式语法语法： 1[ captures ] ( params ) specifiers exception -&gt; ret &#123; body &#125;   [ captures ] —— 捕获列表，它可以捕获当前函数作用域的零个或多个变量，变量之间用逗号分隔。捕获列表的捕获方式有两种：按值捕获和引用捕获。 ( params">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[C++]现代C++语言核心特性解析 Chapter 7">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/10/31/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-7/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="lambda表达式（C++11～C++20）1 lambda表达式语法语法： 1[ captures ] ( params ) specifiers exception -&gt; ret &#123; body &#125;   [ captures ] —— 捕获列表，它可以捕获当前函数作用域的零个或多个变量，变量之间用逗号分隔。捕获列表的捕获方式有两种：按值捕获和引用捕获。 ( params">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=12">
+<meta property="article:published_time" content="2024-10-31T08:21:58.000Z">
+<meta property="article:modified_time" content="2024-10-31T09:26:41.220Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=12">
+  
+  
+  
+  <title>[C++]现代C++语言核心特性解析 Chapter 7 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[C++]现代C++语言核心特性解析 Chapter 7"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-31 16:21" pubdate>
+          2024年10月31日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[C++]现代C++语言核心特性解析 Chapter 7</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="lambda表达式（C-11～C-20）"><a href="#lambda表达式（C-11～C-20）" class="headerlink" title="lambda表达式（C++11～C++20）"></a>lambda表达式（C++11～C++20）</h1><h2 id="1-lambda表达式语法"><a href="#1-lambda表达式语法" class="headerlink" title="1 lambda表达式语法"></a>1 lambda表达式语法</h2><p>语法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">[ captures ] ( params ) specifiers exception -&gt; ret &#123; body &#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>[ captures ] —— 捕获列表，它可以捕获当前函数作用域的零个或多个变量，变量之间用逗号分隔。捕获列表的捕获方式有两种：按值捕获和引用捕获。</li>
+<li>( params ) —— 可选参数列表，语法和普通函数的参数列表一样，在不需要参数的时候可以忽略参数列表。</li>
+<li>specifiers —— 可选限定符，C++11中可以用mutable，它允许我们在lambda表达式函数体内改变按值捕获的变量，或者调用非const的成员函数。</li>
+<li>exception —— 可选异常说明符，我们可以使用noexcept来指明lambda是否会抛出异常。</li>
+<li>ret —— 可选返回值类型，不同于普通函数，lambda表达式使用返回类型后置的语法来表示返回类型，如果没有返回值（void类型），可以忽略包括-&gt;在内的整个部分。另外，我们也可以在有返回值的情况下不指定返回类型，这时编译器会为我们推导出一个返回类型。</li>
+<li>{ body } —— lambda表达式的函数体，这个部分和普通函数的函数体一样。</li>
+</ul>
+<h2 id="2-捕获列表"><a href="#2-捕获列表" class="headerlink" title="2 捕获列表"></a>2 捕获列表</h2><h3 id="2-1-作用域"><a href="#2-1-作用域" class="headerlink" title="2.1 作用域"></a>2.1 作用域</h3><p>捕获列表中的变量存在于两个作用域</p>
+<ul>
+<li>lambda表达式定义的函数作用域</li>
+<li>lambda表达式函数体的作用域。</li>
+</ul>
+<p>前者是为了捕获变量，后者是为了使用变量。</p>
+<p>标准规定能捕获的变量必须是一个<strong>自动存储类型</strong>。简单来说就是<strong>非静态的局部变量</strong>。</p>
+<p>如果想使用全局变量或者局部静态变量，直接使用就可以，无需捕获。</p>
+<h3 id="2-2-捕获值和捕获引用"><a href="#2-2-捕获值和捕获引用" class="headerlink" title="2.2 捕获值和捕获引用"></a>2.2 捕获值和捕获引用</h3><p><strong>捕获值</strong></p>
+<p>直接在捕获列表中写入变量名即可，多个变量用逗号分隔。</p>
+<p>捕获值是将函数作用域的x和y的值复制到lambda表达式对象的内部，就如同lambda表达式的成员变量一样。</p>
+<p><strong>捕获引用</strong></p>
+<p>捕获引用的语法与捕获值只有一个&amp;的区别，要表达捕获引用我们只需要在捕获变量之前加上&amp;。</p>
+<p><strong>改变捕获值</strong></p>
+<p>lambda表达式捕获的变量默认为常量，或者说lambda是一个常量函数（类似于常量成员函数）。所以，值捕获的变量无法在lambda表达式内部修改，而引用捕获的变量可以修改（这是因为修改引用捕获的变量，实际是修改引用绑定的变量，而引用本身并没有被修改）。</p>
+<p>为了修改值捕获的变量，需要用到 <code>mutable</code> 说明符。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">bar3</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> x = <span class="hljs-number">5</span>, y = <span class="hljs-number">8</span>;<br>    <span class="hljs-keyword">auto</span> foo = [x, y] () <span class="hljs-keyword">mutable</span> &#123;<br>        x += <span class="hljs-number">1</span>;<br>        y += <span class="hljs-number">2</span>;<br>        <span class="hljs-keyword">return</span> x * y;<br>    &#125;;<br>    std::cout &lt;&lt; <span class="hljs-built_in">foo</span>() &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意事项</strong></p>
+<ul>
+<li>值捕获的变量是原本变量的一个副本，修改不会影响原本的变量，但是引用捕获的变量会影响原本的变量。</li>
+<li>在lambda表达式内部修改某个按值捕获的变量，每一次调用lambda表达式造成的修改，都会影响下一次的调用。</li>
+<li>捕获值的变量在lambda表达式定义的时候已经固定下来了，无论函数在lambda表达式定义后如何修改外部变量的值，lambda表达式捕获的值都不会变化</li>
+</ul>
+<h3 id="2-3-特殊的捕获方法"><a href="#2-3-特殊的捕获方法" class="headerlink" title="2.3 特殊的捕获方法"></a>2.3 特殊的捕获方法</h3><p>lambda表达式的捕获列表除了指定捕获变量之外还有3种特殊的捕获方法</p>
+<ul>
+<li>[this] —— 捕获this指针，捕获this指针可以让我们使用this类型的成员变量和函数。</li>
+<li>[&#x3D;] —— 捕获lambda表达式定义作用域的全部变量的值，包括this。</li>
+<li>[&amp;] —— 捕获lambda表达式定义作用域的全部变量的引用，包括this。</li>
+</ul>
+<h2 id="3-lambda表达式的实现原理"><a href="#3-lambda表达式的实现原理" class="headerlink" title="3 lambda表达式的实现原理"></a>3 lambda表达式的实现原理</h2><p>在C++11标准中，lambda表达式的优势在于书写简单方便且易于维护，而函数对象的优势在于使用更加灵活不受限制，但总的来说它们非常相似。实际上这也正是lambda表达式的实现原理。</p>
+<p>lambda表达式在编译期会由编译器自动生成一个闭包类，在运行时由这个闭包类产生一个对象，我们称它为闭包。在C++中，所谓的闭包可以简单地理解为一个匿名且可以包含定义时作用域上下文的函数对象。</p>
+<h2 id="4-无状态lambda表达式"><a href="#4-无状态lambda表达式" class="headerlink" title="4 无状态lambda表达式"></a>4 无状态lambda表达式</h2><p>C++标准对于无状态的lambda表达式有着特殊的照顾，即它可以隐式转换为函数指针</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">void</span>(*)())</span> </span>&#123;&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">f</span>([] &#123;&#125;); &#125; <span class="hljs-comment">// 编译成功</span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">void</span>(&amp;)())</span> </span>&#123;&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">f</span>(*[] &#123;&#125;); &#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="5-在STL中使用lambda表达式"><a href="#5-在STL中使用lambda表达式" class="headerlink" title="5 在STL中使用lambda表达式"></a>5 在STL中使用lambda表达式</h2><p>STL中常常会见到这样一些算法函数，它们的形参需要传入一个函数指针或函数对象从而完成整个算法，例如std::sort、std::find_if等。</p>
+<p>使用lambda表达式直接在传参时定义了辅助函数。无论是编写还是阅读代码，直接定义lambda表达式都比定义辅助函数更加简洁且容易理解。</p>
+<h2 id="6-广义捕获-C-14-（后续再看）"><a href="#6-广义捕获-C-14-（后续再看）" class="headerlink" title="6 广义捕获 C++14 （后续再看）"></a>6 广义捕获 C++14 （后续再看）</h2><p>C++14标准中定义了广义捕获，所谓广义捕获实际上是两种捕获方式，</p>
+<ol>
+<li><p>简单捕获，这种捕获就是前文中提到的捕获方法，即[identifier]、[&amp;identifier]以及[this]等。</p>
+</li>
+<li><p>初始化捕获，这种捕获方式是在C++14标准中引入的，它解决了简单捕获的一个重要问题，即只能捕获lambda表达式定义上下文的变量，而无法捕获表达式结果以及自定义捕获变量名，比如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> x = <span class="hljs-number">5</span>;<br>    <span class="hljs-keyword">auto</span> foo = [r = x + <span class="hljs-number">1</span>]&#123; <span class="hljs-keyword">return</span> r; &#125;;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>初始化捕获在某些场景下是非常实用的</p>
+<ol>
+<li><p>使用移动操作减少代码运行的开销，例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    std::string x = <span class="hljs-string">&quot;hello c++ &quot;</span>;<br>    <span class="hljs-keyword">auto</span> foo = [x = std::<span class="hljs-built_in">move</span>(x)]&#123; <span class="hljs-keyword">return</span> x + <span class="hljs-string">&quot;world&quot;</span>; &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在异步调用时复制this对象，防止lambda表达式被调用时因原始this对象被析构造成未定义的行为，比如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Work</span><br>&#123;<br>  <span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span> value;<br><br>  <span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Work</span>() : <span class="hljs-built_in">value</span>(<span class="hljs-number">42</span>) &#123;&#125;<br>    <span class="hljs-function">std::future&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">spawn</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">async</span>([=, tmp = *<span class="hljs-keyword">this</span>]() -&gt; <span class="hljs-type">int</span> &#123; <span class="hljs-keyword">return</span> tmp.value; &#125;);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="7-泛型lambda表达式-C-14"><a href="#7-泛型lambda表达式-C-14" class="headerlink" title="7 泛型lambda表达式 C++14"></a>7 泛型lambda表达式 C++14</h2><p>C++14标准让lambda表达式具备了模版函数的能力，即<strong>泛型lambda表达式</strong>。泛型lambda表达式语法只需要使用auto占位符即可，例如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">auto</span> foo = [](<span class="hljs-keyword">auto</span> a) &#123; <span class="hljs-keyword">return</span> a; &#125;;<br>    <span class="hljs-type">int</span> three = <span class="hljs-built_in">foo</span>(<span class="hljs-number">3</span>);<br>    <span class="hljs-type">char</span> <span class="hljs-type">const</span>* hello = <span class="hljs-built_in">foo</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="8-常量lambda表达式和捕获-this-C-17"><a href="#8-常量lambda表达式和捕获-this-C-17" class="headerlink" title="8 常量lambda表达式和捕获*this C++17"></a>8 常量lambda表达式和捕获*this C++17</h2><p>C++17标准对lambda表达式同样有两处增强</p>
+<ul>
+<li><p>常量lambda表达式</p>
+</li>
+<li><p>对捕获*this的增强。</p>
+<p><code>[*this]</code> 的语法让程序生成了一个*this对象的副本并存储在lambda表达式内，可以在lambda表达式内直接访问这个复制对象的成员，消除了之前lambda表达式需要通过tmp访问对象成员的尴尬。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Work</span><br>&#123;<br>  <span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span> value;<br><br>  <span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Work</span>() : <span class="hljs-built_in">value</span>(<span class="hljs-number">42</span>) &#123;&#125;<br>    <span class="hljs-function">std::future&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">spawn</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">async</span>([=, *<span class="hljs-keyword">this</span>]() -&gt; <span class="hljs-type">int</span> &#123; <span class="hljs-keyword">return</span> value; &#125;);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="9-捕获-this-C-20"><a href="#9-捕获-this-C-20" class="headerlink" title="9 捕获[&#x3D;, this] C++20"></a>9 捕获[&#x3D;, this] C++20</h2><p>[&#x3D;] 可以捕获this指针，相似的，<code>[=,*this]</code> 会捕获this对象的副本。但是在代码中大量出现[&#x3D;]和 <code>[=,*this]</code> 的时候我们可能很容易忘记前者与后者的区别。为了解决这个问题，在C++20标准中引入了[&#x3D;, this]捕获this指针的语法，它实际上表达的意思和[&#x3D;]相同，目的是让程序员们区分它与 <code>[=,*this]</code> 的不同</p>
+<p>在C++20标准中还特别强调了要用[&#x3D;, this]代替[&#x3D;]</p>
+<p>同时用两种语法捕获this指针是不允许的，比如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">[<span class="hljs-keyword">this</span>, *<span class="hljs-keyword">this</span>]&#123;&#125;;<br></code></pre></td></tr></table></figure>
+
+<h2 id="10-模板语法的泛型lambda表达式-C-20"><a href="#10-模板语法的泛型lambda表达式-C-20" class="headerlink" title="10 模板语法的泛型lambda表达式 C++20"></a>10 模板语法的泛型lambda表达式 C++20</h2><p>C++20中添加模板对lambda的支持，语法非常简单：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++">[]&lt;<span class="hljs-keyword">typename</span> T&gt;(T t) &#123;&#125;<br><br><span class="hljs-keyword">auto</span> f = []&lt;<span class="hljs-keyword">typename</span> T&gt;(std::vector&lt;T&gt; vector) &#123;<br><span class="hljs-comment">// …</span><br>&#125;;<br><br><span class="hljs-keyword">auto</span> f = []&lt;<span class="hljs-keyword">typename</span> T&gt;(T <span class="hljs-type">const</span>&amp; x) &#123;<br>T copy = x;<br><span class="hljs-keyword">using</span> Iterator = <span class="hljs-keyword">typename</span> T::iterator;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h2 id="11-可构造和可赋值的无状态lambda表达式-C-20"><a href="#11-可构造和可赋值的无状态lambda表达式-C-20" class="headerlink" title="11 可构造和可赋值的无状态lambda表达式 C++20"></a>11 可构造和可赋值的无状态lambda表达式 C++20</h2><p>在C++20标准之前无状态的lambda表达式类型既不能构造也无法赋值，这阻碍了许多应用的实现。</p>
+<p>举例来说，我们已经了解了像std::sort和std::find_if这样的函数需要一个函数对象或函数指针来辅助排序和查找，这种情况我们可以使用lambda表达式完成任务。但是如果遇到std::map这种容器类型就不好办了，因为std::map的比较函数对象是通过模板参数确定的，这个时候我们需要的是一个类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">auto</span> greater = [](<span class="hljs-keyword">auto</span> x, <span class="hljs-keyword">auto</span> y) &#123; <span class="hljs-keyword">return</span> x &gt; y; &#125;;<br>std::map&lt;std::string, <span class="hljs-type">int</span>, <span class="hljs-keyword">decltype</span>(greater)&gt; mymap;<br><br><span class="hljs-keyword">auto</span> greater = [](<span class="hljs-keyword">auto</span> x, <span class="hljs-keyword">auto</span> y) &#123; <span class="hljs-keyword">return</span> x &gt; y; &#125;;<br>std::map&lt;std::string, <span class="hljs-type">int</span>, <span class="hljs-keyword">decltype</span>(greater)&gt; mymap1, mymap2;<br>mymap1 = mymap2;<br></code></pre></td></tr></table></figure>
+
+<p>上述代码在C++17中不可行，因为lambda表达式类型无法构造也无法赋值。</p>
+<p>在C++17中要想让上述代码通过编译，需要明确的将greater对象传递给mymap</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">auto</span> greater = [](<span class="hljs-keyword">auto</span> x, <span class="hljs-keyword">auto</span> y) &#123; <span class="hljs-keyword">return</span> x &gt; y; &#125;;<br><span class="hljs-function">std::map&lt;std::string, <span class="hljs-type">int</span>, <span class="hljs-title">decltype</span><span class="hljs-params">(greater)</span>&gt; <span class="hljs-title">mymap</span><span class="hljs-params">(greater)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<p>C++20标准允许了无状态lambda表达式类型的构造和赋值，所以使用C++20标准的编译环境来编译上面的代码是可行的。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[C++]现代C++语言核心特性解析 Chapter 7</div>
+      <div>https://erlsrnby04.github.io/2024/10/31/C-现代C-语言核心特性解析-Chapter-7/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月31日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/31/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-8/" title="[C++]现代C++语言核心特性解析 Chapter 8">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[C++]现代C++语言核心特性解析 Chapter 8</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/31/LC-2140-%E8%A7%A3%E5%86%B3%E6%99%BA%E5%8A%9B%E9%97%AE%E9%A2%98/" title="[LC]2140.解决智力问题">
+                        <span class="hidden-mobile">[LC]2140.解决智力问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="编程语言"
+        id="heading-3bf8a523aea21a3a0f6c53b0f43429bb" role="tab" data-toggle="collapse" href="#collapse-3bf8a523aea21a3a0f6c53b0f43429bb"
+        aria-expanded="true"
+      >
+        编程语言
+        <span class="list-group-count">(27)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3bf8a523aea21a3a0f6c53b0f43429bb"
+           role="tabpanel" aria-labelledby="heading-3bf8a523aea21a3a0f6c53b0f43429bb">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2024/09/22/C-%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/" title="[C++] 返回值优化"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++] 返回值优化</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/22/C-C-Primer-Chapter-1/" title="[C++]C++Primer Chapter 1"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++Primer Chapter 1</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/22/C-C-Primer-Chapter-10/" title="[C++]C++Primer Chapter 10"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++Primer Chapter 10</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/22/C-C-Primer-Chapter-11/" title="[C++]C++Primer Chapter 11"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++Primer Chapter 11</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/22/C-C-Primer-Chapter-12/" title="[C++]C++Primer Chapter 12"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++Primer Chapter 12</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/22/C-C-Primer-Chapter-13/" title="[C++]C++Primer Chapter 13"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++Primer Chapter 13</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/22/C-C-Primer-Chapter-14/" title="[C++]C++Primer Chapter 14"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++Primer Chapter 14</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/29/C-C-Primer-Chapter-15/" title="[C++]C++Primer Chapter 15"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++Primer Chapter 15</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/10/04/C-C-Primer-Chapter-16/" title="[C++]C++Primer Chapter 16"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++Primer Chapter 16</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/22/C-C-Primer-Chapter-2/" title="[C++]C++Primer Chapter 2"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++Primer Chapter 2</span>
+        </a>
+      
+    
+      
+      
+        <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="list-group-item list-group-item-action">
+          <span class="category-post">More...</span>
+        </a>
+        
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
