@@ -1,0 +1,960 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Scheduling: Proportional Share在本章中，将研究一种不同类型的调度程序，即比例共享（proportional share）调度程序，有时也称为公平共享（fair-share）调度程序。比例共享调度器基于一个简单的概念：调度器可以不对周转时间或响应时间进行优化，而是设法保证每个作业都能获得一定比例的 CPU 时间。其基本思想非常简单：每隔一段时间举行一次抽签，决定下一个运">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[OS]Three Easy Pieces Chapter 9">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/11/01/OS-Three-Easy-Pieces-Chapter-9/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="Scheduling: Proportional Share在本章中，将研究一种不同类型的调度程序，即比例共享（proportional share）调度程序，有时也称为公平共享（fair-share）调度程序。比例共享调度器基于一个简单的概念：调度器可以不对周转时间或响应时间进行优化，而是设法保证每个作业都能获得一定比例的 CPU 时间。其基本思想非常简单：每隔一段时间举行一次抽签，决定下一个运">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=21">
+<meta property="article:published_time" content="2024-11-01T06:33:38.000Z">
+<meta property="article:modified_time" content="2024-11-01T07:58:34.039Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="OS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=21">
+  
+  
+  
+  <title>[OS]Three Easy Pieces Chapter 9 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[OS]Three Easy Pieces Chapter 9"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-01 14:33" pubdate>
+          2024年11月1日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[OS]Three Easy Pieces Chapter 9</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Scheduling-Proportional-Share"><a href="#Scheduling-Proportional-Share" class="headerlink" title="Scheduling: Proportional Share"></a>Scheduling: Proportional Share</h1><p>在本章中，将研究一种不同类型的调度程序，即<strong>比例共享（proportional share）</strong>调度程序，有时也称为<strong>公平共享（fair-share）</strong>调度程序。比例共享调度器基于一个简单的概念：调度器可以不对周转时间或响应时间进行优化，而是设法保证每个作业都能获得一定比例的 CPU 时间。其<strong>基本思想</strong>非常简单：每隔一段时间举行一次抽签，决定下一个运行的进程；应该更频繁运行的进程应该有更多机会中签。</p>
+<h2 id="1-Basic-Concept-Tickets-Represent-Your-Share"><a href="#1-Basic-Concept-Tickets-Represent-Your-Share" class="headerlink" title="1 Basic Concept: Tickets Represent Your Share"></a>1 Basic Concept: Tickets Represent Your Share</h2><p>抽签调度的基础是一个非常基本的概念：<strong>tickets</strong>，用来表示进程（或用户或其他）应获得的资源份额。一个进程拥有的 ticket 的百分比代表了它在相关系统资源中的份额。</p>
+<p>抽签调度每隔一段时间进行一次抽签，随机抽一个ticket出来，然后调度拥有该ticket的进程运行。</p>
+<h2 id="2-Ticket-Mechanisms"><a href="#2-Ticket-Mechanisms" class="headerlink" title="2 Ticket Mechanisms"></a>2 Ticket Mechanisms</h2><p><strong>ticket currency</strong></p>
+<p>该机制允许用户根据需要给自己的任务分配货币，然后操作系统根据该用户所有的ticket以及子任务的货币计算出每个子任务的tickets。</p>
+<p>比如，最开始A，B各自有100个tickets</p>
+<p><img src="/../images/OS-Three-Easy-Pieces-Chapter-9/image-20241101145013205.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>ticket transfer</strong></p>
+<p>一个进程可以暂时将自己的tickets转给另外一个进程。该策略在CS模式下非常有用。</p>
+<p>当客户需要服务器帮自己完成某些工作的时候，一并将自己的tickets转给服务器，服务器完成之后，将tickets再转回客户。</p>
+<p><strong>ticket inflation</strong></p>
+<p>在互相信任的环境中，进程可以通过增加或减少其ticket来适应其资源需求。</p>
+<h2 id="3-Implementation"><a href="#3-Implementation" class="headerlink" title="3 Implementation"></a>3 Implementation</h2><p>抽签调度最大的优势就是其实现非常简单，只需要：</p>
+<ol>
+<li>一个设计良好的随机数生成器</li>
+<li>一个维护所有进程的数据结构</li>
+<li>tickets总数</li>
+</ol>
+<p><img src="/../images/OS-Three-Easy-Pieces-Chapter-9/image-20241101150058910.png" srcset="/img/loading.gif" lazyload></p>
+<p>要做出调度决策，我们首先要从ticket总数中随机抽取一个数字（中奖者）。然后，我们只需遍历列表，用一个简单的计数器帮助我们找到中奖者。代码会遍历进程列表，将每个进程的tickets添加到计数器中，直到计数器超过中奖者为止。一旦出现这种情况，当前列表中的进程就是中奖者。</p>
+<h2 id="4-How-To-Assign-Tickets"><a href="#4-How-To-Assign-Tickets" class="headerlink" title="4 How To Assign Tickets"></a>4 How To Assign Tickets</h2><p>一个方法是认为用户知道如何分配。但这其实并没有解决实际的问题。</p>
+<h2 id="5-Stride-Scheduling"><a href="#5-Stride-Scheduling" class="headerlink" title="5 Stride Scheduling"></a>5 Stride Scheduling</h2><p>该策略是用一个很大的数除以每个进程的ticket，得到每个进程的stride，并用一个计数器来记录每个进程的执行进度（pass）。每次执行一个进程，将其pass增加stride。每次调度都会选取pass值最小的那个进程来执行。</p>
+<p><strong>抽签调度的优势</strong></p>
+<p>相较于stride scheduling，抽签调度的优势是没有全局状态，即没有pass。当有一个新的进程添加的时候，对于stride scheduling，我们不能将其pass简单的设置为0，否则该新进程会主宰系统。而对于抽签调度，我们无需考虑这个问题，只要设置好对应的tickets即可。</p>
+<h2 id="6-The-Linux-Completely-Fair-Scheduler（CFS）"><a href="#6-The-Linux-Completely-Fair-Scheduler（CFS）" class="headerlink" title="6 The Linux Completely Fair Scheduler（CFS）"></a>6 The Linux Completely Fair Scheduler（CFS）</h2><p>Linux的CFS调度器实现了公平共享调度，而且是以高效和可扩展的方式实现的。</p>
+<p><strong>Basic Operation</strong></p>
+<p>大多数调度程序都基于固定时间片的概念，而 CFS 的运行方式则有些不同。它的目标很简单：在所有竞争进程之间公平分配 CPU。它通过一种简单的基于计数的技术来实现这一目标，这种技术被称为<strong>虚拟运行时间（vruntime）</strong>。</p>
+<p>每个进程运行时都会累积 vruntime。在最基本的情况下，每个进程的 vruntime 都以相同的速度增长，与物理（实际）时间成比例。在进行调度决策时，CFS 会选择 vruntime 最低的进程作为下一个运行进程。</p>
+<p>调度程序如何知道何时停止当前正在运行的进程，并运行下一个进程？这里的矛盾很明显：如果 CFS 切换过于频繁，公平性会提高，因为 CFS 将确保每个进程即使在微小的时间窗口内也能获得其 CPU 份额，但代价是性能下降（上下文切换过多）；如果 CFS 切换频率较低，性能会提高（上下文切换减少），但代价是近期公平性下降。</p>
+<p>CFS 通过各种控制参数来处理这种矛盾。</p>
+<p>首先是 <code>sched_latency</code>。CFS 使用该值来确定一个进程在考虑切换前应运行多长时间。典型的调度延迟值为 48（毫秒）；CFS 将此值除以 CPU 上运行的进程数（n）来确定进程的时间片，从而确保在这段时间内，CFS 完全公平。</p>
+<p><img src="/../images/OS-Three-Easy-Pieces-Chapter-9/image-20241101152428006.png" srcset="/img/loading.gif" lazyload></p>
+<p>上述是一个例子，最开始有四个进程ABCD，因此最开始的时间片是48&#x2F;4 &#x3D; 12ms，之后CD运行完毕，只剩两个进程AB，每个进程的时间片是48&#x2F;2 &#x3D; 12ms。</p>
+<p>但是，当进程过多的时候，会导致每个进程的时间片过多，导致频繁的上下文切换。为了解决这个问题，CFS用另外一个参数来控制，<code>min_granularity</code> ，一般设置为6ms。CFS永远不会将时间片的值设置的比 <code>min_granularity</code> 小，保证上下文切换不会太过频繁。</p>
+<p><strong>Weighting(Niceness)</strong></p>
+<p>CFS（完全公平调度器）还允许对进程优先级进行控制，让用户或管理员可以为某些进程分配更多的CPU资源。这种控制不是通过ticket，而是通过UNIX经典的“nice”机制来实现的。进程的nice参数范围在 -20 到 +19 之间，默认值是 0。正的nice值意味着较低的优先级，负的nice值则表示较高的优先级。</p>
+<p>CFS将nice值映射到weight，并根据一下公式来计算每个进程的时间片。</p>
+<p><img src="/../images/OS-Three-Easy-Pieces-Chapter-9/image-20241101153458916.png" srcset="/img/loading.gif" lazyload><br>$$<br>time_slice_k &#x3D; \frac{weight_k}{\Sigma_{i &#x3D; 0}^{n - 1}weight_k} · sched_latency<br>$$<br>为了配合时间片计算，vruntime的计算公式也要做出相应的修改，其中$weight_0$是默认权重，为1024，$runtime_i$是某个进程的实际运行时间。<br>$$<br>vruntime_i&#x3D;vruntime_i + \frac{weight_0}{weight_i} · runtime_i<br>$$<br>使用权重表的设计的聪明之处在于，当进程之间的nice值差异保持不变时，CPU分配比例也能保持不变。换句话说，即使两个进程的nice值发生变化，只要它们之间的差值相同，它们的CPU分配比例不会变。</p>
+<p>举个例子：假设最初进程A的nice值为0，进程B的nice值为5。后来我们将A的nice值调整为5，B的nice值调整为10。虽然两个进程的nice值都变了，但由于它们的nice差值仍然是5，CFS会以与之前相同的方式调度它们，保持相同的CPU分配比例。</p>
+<p><strong>Using Red-Black Trees</strong></p>
+<p>CFS使用红黑树来维护所有runnable的进程（其他状态的进程由其他数据结构来维护）。这可以保证每次选取最小vruntime的进程的时间复杂度为$O(logn)$。</p>
+<p>为什么不适用小顶堆来维护？</p>
+<p>关于这个问题，可以参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/33191110/reason-why-cfs-scheduler-using-red-black-tree">linux kernel - Reason why CFS scheduler using red black tree? - Stack Overflow</a></p>
+<p><strong>Dealing With I&#x2F;O And Sleeping Process</strong></p>
+<p>在选择下一个运行的最低 vruntime 时会遇到一个问题，那就是作业已经休眠了很长时间。设想有两个进程，A 和 B，其中一个进程（A）持续运行，而另一个进程（B）已经休眠了很长时间（比如 10 秒）。当 B 唤醒时，它的 vruntime 将比 A 晚 10 秒，因此，B 将在接下来的 10 秒内独占 CPU，同时赶上 A，这实际上会饿死 A。</p>
+<p>实际上，CFS 会将该作业的 vruntime 设置为在树中找到的最小值。通过这种方式，CFS 避免了 “饥饿”，但也付出了代价：作业如果经常处于短时间睡眠状态，就无法获得公平的 CPU 资源。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/OS/" class="print-no-link">#OS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[OS]Three Easy Pieces Chapter 9</div>
+      <div>https://erlsrnby04.github.io/2024/11/01/OS-Three-Easy-Pieces-Chapter-9/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年11月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-10/" title="[OS]Three Easy Pieces Chapter 10">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[OS]Three Easy Pieces Chapter 10</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-14/" title="[C++]现代C++语言核心特性解析 Chapter 14">
+                        <span class="hidden-mobile">[C++]现代C++语言核心特性解析 Chapter 14</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="操作系统"
+        id="heading-30d23ef4f49e85f37f54786ff984032c" role="tab" data-toggle="collapse" href="#collapse-30d23ef4f49e85f37f54786ff984032c"
+        aria-expanded="true"
+      >
+        操作系统
+        <span class="list-group-count">(19)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-30d23ef4f49e85f37f54786ff984032c"
+           role="tabpanel" aria-labelledby="heading-30d23ef4f49e85f37f54786ff984032c">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2024/10/04/MIT-6-1810-Lab2-system-calls/" title="[MIT 6.1810]Lab2 system calls"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Lab2 system calls</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/10/05/MIT-6-1810-Lab3-page-tables/" title="[MIT 6.1810]Lab3 page tables"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Lab3 page tables</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-1/" title="[MIT 6.1810]Xv6 Chapter 1"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 1</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/24/MIT-6-1810-Xv6-Chapter-2/" title="[MIT 6.1810]Xv6 Chapter 2"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 2</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/25/MIT-6-1810-Xv6-Chapter-3/" title="[MIT 6.1810]Xv6 Chapter 3"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 3</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/26/MIT-6-1810-Xv6-Chapter-4/" title="[MIT 6.1810]Xv6 Chapter 4"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 4</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/27/MIT-6-1810-Xv6-Chapter-5/" title="[MIT 6.1810]Xv6 Chapter 5"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 5</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/10/27/MIT-6-1810-Xv6-Chapter-8/" title="[MIT 6.1810]Xv6 Chapter 8"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.1810]Xv6 Chapter 8</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/09/21/MIT-6-S081-Lab1-Xv6-and-Unix-utilities/" title="[MIT 6.S081]Lab1 Xv6 and Unix utilities"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[MIT 6.S081]Lab1 Xv6 and Unix utilities</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-10/" title="[OS]Three Easy Pieces Chapter 10"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[OS]Three Easy Pieces Chapter 10</span>
+        </a>
+      
+    
+      
+      
+        <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="list-group-item list-group-item-action">
+          <span class="category-post">More...</span>
+        </a>
+        
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

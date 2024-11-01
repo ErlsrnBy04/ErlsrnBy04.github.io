@@ -4,6 +4,156 @@
   
   
   <entry>
+    <title>[OS]Three Easy Pieces Chapter 14</title>
+    <link href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-14/"/>
+    <url>/2024/11/01/OS-Three-Easy-Pieces-Chapter-14/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Interlude-Memory-API"><a href="#Interlude-Memory-API" class="headerlink" title="Interlude: Memory API"></a>Interlude: Memory API</h1><p>本章介绍UNIX系统中内存相关的API。</p><h2 id="1-Types-of-Memory"><a href="#1-Types-of-Memory" class="headerlink" title="1 Types of Memory"></a>1 Types of Memory</h2><p>在c程序中，有两种类型的内存</p><ul><li><p>栈内存</p><p>栈内存，也被称为自动存储内存，由编译器隐式的申请和释放。</p></li><li><p>堆内存</p><p>由程序员手动的通过malloc和free申请和释放。</p></li></ul><h2 id="2-The-malloc-Call"><a href="#2-The-malloc-Call" class="headerlink" title="2 The malloc() Call"></a>2 The <code>malloc()</code> Call</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> *<span class="hljs-title function_">malloc</span><span class="hljs-params">(<span class="hljs-type">size_t</span> size)</span>;<br></code></pre></td></tr></table></figure><p>该函数比较简单，在堆上申请指定大小字节的内存，并返回该内存的地址。失败的话，返回 <code>NULL</code>.</p><p>通常情况下会搭配 <code>sizeof()</code> 运算符一起使用。之所以是运算符而不是函数调用是因为 <code>sizeof()</code> 求值通常发生在编译期，而不是运行期。</p><h2 id="3-The-free-Call"><a href="#3-The-free-Call" class="headerlink" title="3 The free() Call"></a>3 The <code>free()</code> Call</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">free</span><span class="hljs-params">(<span class="hljs-type">void</span> *ptr)</span>;<br></code></pre></td></tr></table></figure><h2 id="4-Underlying-OS-Support"><a href="#4-Underlying-OS-Support" class="headerlink" title="4 Underlying OS Support"></a>4 Underlying OS Support</h2><p>有一个系统调用叫做 <code>brk</code>，用于改变程序<strong>break</strong>的位置，即堆（heap）结束的位置。<code>brk</code> 接受一个参数（新的break地址），可以根据新地址与当前break的位置关系来增大或缩小堆的大小：如果新的break位置比当前的位置大，堆会扩展；如果小，堆会缩小。</p><p>另一个相关的系统调用是 <code>sbrk</code>，它接受一个增量值作为参数，用于在现有堆的基础上增加或减少一定的内存大小，功能与 <code>brk</code> 类似。</p><p>此外，还可以通过 <code>mmap()</code> 系统调用从操作系统获取内存。通过传入合适的参数，<code>mmap()</code> 可以在程序中创建一个匿名内存区域——这个区域不与任何特定文件关联，而是与交换空间相关。这种内存区域也可以像堆一样进行管理和使用。更多细节可以查阅 <code>mmap()</code> 的手册页。</p><h2 id="5-Other-Calls"><a href="#5-Other-Calls" class="headerlink" title="5 Other Calls"></a>5 Other Calls</h2><p><strong><code>calloc()</code></strong></p><p>申请内存并初始化为0.</p><p><strong><code>realloc()</code></strong></p><p>修改某片申请的内存的大小，可能涉及到内存的拷贝。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[OS]Three Easy Pieces Chapter 13</title>
+    <link href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-13/"/>
+    <url>/2024/11/01/OS-Three-Easy-Pieces-Chapter-13/</url>
+    
+    <content type="html"><![CDATA[<h1 id="The-Abstraction-Address-Spaces"><a href="#The-Abstraction-Address-Spaces" class="headerlink" title="The Abstraction: Address Spaces"></a>The Abstraction: Address Spaces</h1><h2 id="1-Early-Systems"><a href="#1-Early-Systems" class="headerlink" title="1 Early Systems"></a>1 Early Systems</h2><p>从内存的角度来看，早期的机器并没有为用户提供太多的抽象概念。基本上，操作系统是在内存中的程序（实际上是程序库），而有一个正在运行的程序（进程）当前位于物理内存中，并使用内存的其余部分。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-13/image-20241101160330010.png"></p><h2 id="2-The-Address-Space"><a href="#2-The-Address-Space" class="headerlink" title="2 The Address Space"></a>2 The Address Space</h2><p>地址空间是操作系统提供给用户的一种抽象。在用户看来，它可以使用整个地址空间的内存。一般来说，地址空间至少包括代码，堆，栈等。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-13/image-20241101161943524.png" alt="用户地址空间"></p><p>由于操作系统需要在多个进程之间共享物理内存，因此它不能直接使用进程地址空间的地址（虚拟地址），它需要将其转换为实际的物理地址，即虚拟化内存。</p><h2 id="3-Goals"><a href="#3-Goals" class="headerlink" title="3 Goals"></a>3 Goals</h2><p>VM系统有如下几个目标：</p><ol><li>transparency：程序不应该意识到虚拟内存的存在，它表现的应该像自己拥有完整的物理内存一样。</li><li>efficiency：时间和空间上高效</li><li>protection：操作系统本身和用户进程不应该受到其他进程的干扰（进程不能访问其他进程的内存）。这引出了isolation的概念，每个进程都应该在自己的隔离的内存中运行。</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[OS]Three Easy Pieces Chapter 10</title>
+    <link href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-10/"/>
+    <url>/2024/11/01/OS-Three-Easy-Pieces-Chapter-10/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Multiprocessor-Scheduling-Advanced"><a href="#Multiprocessor-Scheduling-Advanced" class="headerlink" title="Multiprocessor Scheduling (Advanced)"></a>Multiprocessor Scheduling (Advanced)</h1>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[OS]Three Easy Pieces Chapter 9</title>
+    <link href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-9/"/>
+    <url>/2024/11/01/OS-Three-Easy-Pieces-Chapter-9/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Scheduling-Proportional-Share"><a href="#Scheduling-Proportional-Share" class="headerlink" title="Scheduling: Proportional Share"></a>Scheduling: Proportional Share</h1><p>在本章中，将研究一种不同类型的调度程序，即<strong>比例共享（proportional share）</strong>调度程序，有时也称为<strong>公平共享（fair-share）</strong>调度程序。比例共享调度器基于一个简单的概念：调度器可以不对周转时间或响应时间进行优化，而是设法保证每个作业都能获得一定比例的 CPU 时间。其<strong>基本思想</strong>非常简单：每隔一段时间举行一次抽签，决定下一个运行的进程；应该更频繁运行的进程应该有更多机会中签。</p><h2 id="1-Basic-Concept-Tickets-Represent-Your-Share"><a href="#1-Basic-Concept-Tickets-Represent-Your-Share" class="headerlink" title="1 Basic Concept: Tickets Represent Your Share"></a>1 Basic Concept: Tickets Represent Your Share</h2><p>抽签调度的基础是一个非常基本的概念：<strong>tickets</strong>，用来表示进程（或用户或其他）应获得的资源份额。一个进程拥有的 ticket 的百分比代表了它在相关系统资源中的份额。</p><p>抽签调度每隔一段时间进行一次抽签，随机抽一个ticket出来，然后调度拥有该ticket的进程运行。</p><h2 id="2-Ticket-Mechanisms"><a href="#2-Ticket-Mechanisms" class="headerlink" title="2 Ticket Mechanisms"></a>2 Ticket Mechanisms</h2><p><strong>ticket currency</strong></p><p>该机制允许用户根据需要给自己的任务分配货币，然后操作系统根据该用户所有的ticket以及子任务的货币计算出每个子任务的tickets。</p><p>比如，最开始A，B各自有100个tickets</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-9/image-20241101145013205.png"></p><p><strong>ticket transfer</strong></p><p>一个进程可以暂时将自己的tickets转给另外一个进程。该策略在CS模式下非常有用。</p><p>当客户需要服务器帮自己完成某些工作的时候，一并将自己的tickets转给服务器，服务器完成之后，将tickets再转回客户。</p><p><strong>ticket inflation</strong></p><p>在互相信任的环境中，进程可以通过增加或减少其ticket来适应其资源需求。</p><h2 id="3-Implementation"><a href="#3-Implementation" class="headerlink" title="3 Implementation"></a>3 Implementation</h2><p>抽签调度最大的优势就是其实现非常简单，只需要：</p><ol><li>一个设计良好的随机数生成器</li><li>一个维护所有进程的数据结构</li><li>tickets总数</li></ol><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-9/image-20241101150058910.png"></p><p>要做出调度决策，我们首先要从ticket总数中随机抽取一个数字（中奖者）。然后，我们只需遍历列表，用一个简单的计数器帮助我们找到中奖者。代码会遍历进程列表，将每个进程的tickets添加到计数器中，直到计数器超过中奖者为止。一旦出现这种情况，当前列表中的进程就是中奖者。</p><h2 id="4-How-To-Assign-Tickets"><a href="#4-How-To-Assign-Tickets" class="headerlink" title="4 How To Assign Tickets"></a>4 How To Assign Tickets</h2><p>一个方法是认为用户知道如何分配。但这其实并没有解决实际的问题。</p><h2 id="5-Stride-Scheduling"><a href="#5-Stride-Scheduling" class="headerlink" title="5 Stride Scheduling"></a>5 Stride Scheduling</h2><p>该策略是用一个很大的数除以每个进程的ticket，得到每个进程的stride，并用一个计数器来记录每个进程的执行进度（pass）。每次执行一个进程，将其pass增加stride。每次调度都会选取pass值最小的那个进程来执行。</p><p><strong>抽签调度的优势</strong></p><p>相较于stride scheduling，抽签调度的优势是没有全局状态，即没有pass。当有一个新的进程添加的时候，对于stride scheduling，我们不能将其pass简单的设置为0，否则该新进程会主宰系统。而对于抽签调度，我们无需考虑这个问题，只要设置好对应的tickets即可。</p><h2 id="6-The-Linux-Completely-Fair-Scheduler（CFS）"><a href="#6-The-Linux-Completely-Fair-Scheduler（CFS）" class="headerlink" title="6 The Linux Completely Fair Scheduler（CFS）"></a>6 The Linux Completely Fair Scheduler（CFS）</h2><p>Linux的CFS调度器实现了公平共享调度，而且是以高效和可扩展的方式实现的。</p><p><strong>Basic Operation</strong></p><p>大多数调度程序都基于固定时间片的概念，而 CFS 的运行方式则有些不同。它的目标很简单：在所有竞争进程之间公平分配 CPU。它通过一种简单的基于计数的技术来实现这一目标，这种技术被称为<strong>虚拟运行时间（vruntime）</strong>。</p><p>每个进程运行时都会累积 vruntime。在最基本的情况下，每个进程的 vruntime 都以相同的速度增长，与物理（实际）时间成比例。在进行调度决策时，CFS 会选择 vruntime 最低的进程作为下一个运行进程。</p><p>调度程序如何知道何时停止当前正在运行的进程，并运行下一个进程？这里的矛盾很明显：如果 CFS 切换过于频繁，公平性会提高，因为 CFS 将确保每个进程即使在微小的时间窗口内也能获得其 CPU 份额，但代价是性能下降（上下文切换过多）；如果 CFS 切换频率较低，性能会提高（上下文切换减少），但代价是近期公平性下降。</p><p>CFS 通过各种控制参数来处理这种矛盾。</p><p>首先是 <code>sched_latency</code>。CFS 使用该值来确定一个进程在考虑切换前应运行多长时间。典型的调度延迟值为 48（毫秒）；CFS 将此值除以 CPU 上运行的进程数（n）来确定进程的时间片，从而确保在这段时间内，CFS 完全公平。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-9/image-20241101152428006.png"></p><p>上述是一个例子，最开始有四个进程ABCD，因此最开始的时间片是48&#x2F;4 &#x3D; 12ms，之后CD运行完毕，只剩两个进程AB，每个进程的时间片是48&#x2F;2 &#x3D; 12ms。</p><p>但是，当进程过多的时候，会导致每个进程的时间片过多，导致频繁的上下文切换。为了解决这个问题，CFS用另外一个参数来控制，<code>min_granularity</code> ，一般设置为6ms。CFS永远不会将时间片的值设置的比 <code>min_granularity</code> 小，保证上下文切换不会太过频繁。</p><p><strong>Weighting(Niceness)</strong></p><p>CFS（完全公平调度器）还允许对进程优先级进行控制，让用户或管理员可以为某些进程分配更多的CPU资源。这种控制不是通过ticket，而是通过UNIX经典的“nice”机制来实现的。进程的nice参数范围在 -20 到 +19 之间，默认值是 0。正的nice值意味着较低的优先级，负的nice值则表示较高的优先级。</p><p>CFS将nice值映射到weight，并根据一下公式来计算每个进程的时间片。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-9/image-20241101153458916.png"><br>$$<br>time_slice_k &#x3D; \frac{weight_k}{\Sigma_{i &#x3D; 0}^{n - 1}weight_k} · sched_latency<br>$$<br>为了配合时间片计算，vruntime的计算公式也要做出相应的修改，其中$weight_0$是默认权重，为1024，$runtime_i$是某个进程的实际运行时间。<br>$$<br>vruntime_i&#x3D;vruntime_i + \frac{weight_0}{weight_i} · runtime_i<br>$$<br>使用权重表的设计的聪明之处在于，当进程之间的nice值差异保持不变时，CPU分配比例也能保持不变。换句话说，即使两个进程的nice值发生变化，只要它们之间的差值相同，它们的CPU分配比例不会变。</p><p>举个例子：假设最初进程A的nice值为0，进程B的nice值为5。后来我们将A的nice值调整为5，B的nice值调整为10。虽然两个进程的nice值都变了，但由于它们的nice差值仍然是5，CFS会以与之前相同的方式调度它们，保持相同的CPU分配比例。</p><p><strong>Using Red-Black Trees</strong></p><p>CFS使用红黑树来维护所有runnable的进程（其他状态的进程由其他数据结构来维护）。这可以保证每次选取最小vruntime的进程的时间复杂度为$O(logn)$。</p><p>为什么不适用小顶堆来维护？</p><p>关于这个问题，可以参考<a href="https://stackoverflow.com/questions/33191110/reason-why-cfs-scheduler-using-red-black-tree">linux kernel - Reason why CFS scheduler using red black tree? - Stack Overflow</a></p><p><strong>Dealing With I&#x2F;O And Sleeping Process</strong></p><p>在选择下一个运行的最低 vruntime 时会遇到一个问题，那就是作业已经休眠了很长时间。设想有两个进程，A 和 B，其中一个进程（A）持续运行，而另一个进程（B）已经休眠了很长时间（比如 10 秒）。当 B 唤醒时，它的 vruntime 将比 A 晚 10 秒，因此，B 将在接下来的 10 秒内独占 CPU，同时赶上 A，这实际上会饿死 A。</p><p>实际上，CFS 会将该作业的 vruntime 设置为在树中找到的最小值。通过这种方式，CFS 避免了 “饥饿”，但也付出了代价：作业如果经常处于短时间睡眠状态，就无法获得公平的 CPU 资源。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[C++]现代C++语言核心特性解析 Chapter 14</title>
+    <link href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-14/"/>
+    <url>/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-14/</url>
+    
+    <content type="html"><![CDATA[<h1 id="强枚举类型（C-11C-17-C-20）"><a href="#强枚举类型（C-11C-17-C-20）" class="headerlink" title="强枚举类型（C++11C++17 C++20）"></a>强枚举类型（C++11C++17 C++20）</h1><h2 id="1-枚举类型的弊端"><a href="#1-枚举类型的弊端" class="headerlink" title="1 枚举类型的弊端"></a>1 枚举类型的弊端</h2><p><strong>类型问题</strong></p><p>虽然枚举类型存在一定的安全检查功能，一个枚举类型不允许分配到另外一种枚举类型，而且整型也无法隐式转换成枚举类型。但是枚举类型却可以隐式转换为整型，因为C++标准文档提到“枚举类型可以采用整型提升的方法转换成整型”。</p><p><strong>作用域问题</strong></p><p>枚举类型会把其内部的枚举标识符导出到枚举被定义的作用域。也是就说，我们使用枚举标识符的时候，可以跳过对于枚举类型的描述。</p><h2 id="2-使用强枚举类型"><a href="#2-使用强枚举类型" class="headerlink" title="2 使用强枚举类型"></a>2 使用强枚举类型</h2><p>C++11增加了强枚举类型，具有以下特性：</p><ul><li>枚举标识符属于强枚举类型的作用域。</li><li>枚举标识符不会隐式转换为整型。</li><li>能指定强枚举类型的底层类型，底层类型默认为int类型。</li></ul><p>定义语法很简单，只需要在枚举定义的enum关键字之后加上class关键字就可以了。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">enum class</span> <span class="hljs-title class_">HighSchool</span> &#123;<br>    student,<br>    teacher,<br>    principal<br>&#125;;<br></code></pre></td></tr></table></figure><p>强枚举类型不仅实现起来非常简洁，而且还是POD类型。</p><p>我们可以在定义类型的时候使用:符号来指明其底层类型。利用它可以消除不同编译器带来的歧义</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">enum class</span> <span class="hljs-title class_">E</span> : <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> &#123;<br>    e1 = <span class="hljs-number">1</span>,<br>    e2 = <span class="hljs-number">2</span>,<br>    e3 = <span class="hljs-number">0xfffffff0</span><br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">bool</span> b = e1 &lt; e3;<br>    std::cout &lt;&lt; std::boolalpha &lt;&lt; b &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="3-列表初始化有底层类型枚举对象"><a href="#3-列表初始化有底层类型枚举对象" class="headerlink" title="3 列表初始化有底层类型枚举对象"></a>3 列表初始化有底层类型枚举对象</h2><p>从C++17标准开始，对有底层类型的枚举类型对象可以直接使用列表初始化。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">enum class</span> <span class="hljs-title class_">Color</span> &#123;<br>  Red,<br>  Green,<br>  Blue<br>&#125;;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  Color c&#123; <span class="hljs-number">5</span> &#125;;          <span class="hljs-comment">// 编译成功</span><br>  Color c1 = <span class="hljs-number">5</span>;          <span class="hljs-comment">// 编译失败</span><br>  Color c2 = &#123; <span class="hljs-number">5</span> &#125;;      <span class="hljs-comment">// 编译失败</span><br>  <span class="hljs-function">Color <span class="hljs-title">c3</span><span class="hljs-params">(<span class="hljs-number">5</span>)</span></span>;           <span class="hljs-comment">// 编译失败</span><br>&#125;<br></code></pre></td></tr></table></figure><p>C++11标准中对强枚举类型初始化做了严格限制，目的就是防止枚举类型的滥用。可是C++17又打破了这种严格的限制，动机是什么？</p><p>现在假设一个场景，我们需要一个新整数类型，该类型必须严格区别于其他整型，也就是说不能够和其他整型做隐式转换，显然使用typedef的方法是不行的。另外，虽然通过定义一个类的方法可以到达这个目的，但是这个方法需要编写大量的代码来重载运算符，也不是一个理想的方案。所以，C++的专家把目光投向了有底层类型的枚举类型，其特性几乎完美地符合以上要求，除了初始化整型值的时候需要用到强制类型转换。于是，C++17为有底层类型的枚举类型放宽了初始化的限制，让其支持列表初始化：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">enum class</span> <span class="hljs-title class_">Index</span> : <span class="hljs-type">int</span> &#123;&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  Index a&#123; <span class="hljs-number">5</span> &#125;;<br>  Index b&#123; <span class="hljs-number">10</span> &#125;;<br>  <span class="hljs-comment">// a = 12;</span><br>  <span class="hljs-comment">// int c = b;</span><br>  std::cout &lt;&lt; <span class="hljs-string">&quot;a &lt; b is &quot;</span> <br>       &lt;&lt; std::boolalpha <br>       &lt;&lt; (a &lt; b) &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="4-使用using打开强枚举类型"><a href="#4-使用using打开强枚举类型" class="headerlink" title="4 使用using打开强枚举类型"></a>4 使用using打开强枚举类型</h2><p>C++20标准扩展了using功能，它可以打开强枚举类型的命名空间。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">char</span>* <span class="hljs-title">ColorToString</span><span class="hljs-params">(Color c)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">switch</span> (c)<br>  &#123;<br>  <span class="hljs-keyword">using</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span>;<br>  <span class="hljs-keyword">case</span> Red: <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Red&quot;</span>;<br>  <span class="hljs-keyword">case</span> Green: <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Green&quot;</span>;<br>  <span class="hljs-keyword">case</span> Blue: <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Blue&quot;</span>;<br>  <span class="hljs-keyword">default</span>:<br>       <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;none&quot;</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">char</span>* <span class="hljs-title">ColorToString</span><span class="hljs-params">(Color c)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">switch</span> (c)<br>  &#123;<br>  <span class="hljs-keyword">using</span> Color::Red;<br>  <span class="hljs-keyword">case</span> Red: <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Red&quot;</span>;<br>  <span class="hljs-keyword">case</span> Color::Green: <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Green&quot;</span>;<br>  <span class="hljs-keyword">case</span> Color::Blue: <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Blue&quot;</span>;<br>  <span class="hljs-keyword">default</span>:<br>       <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;none&quot;</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程语言</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>C++</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[C++]现代C++语言核心特性解析 Chapter 13</title>
+    <link href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-13/"/>
+    <url>/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-13/</url>
+    
+    <content type="html"><![CDATA[<h1 id="继承构造函数（C-11）"><a href="#继承构造函数（C-11）" class="headerlink" title="继承构造函数（C++11）"></a>继承构造函数（C++11）</h1><h2 id="1-使用继承构造函数"><a href="#1-使用继承构造函数" class="headerlink" title="1 使用继承构造函数"></a>1 使用继承构造函数</h2><p>C++中可以使用using关键字将基类的函数引入派生类</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">foo</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span> </span>&#123;&#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">public</span> Base &#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-keyword">using</span> Base::foo;<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">foo</span><span class="hljs-params">(<span class="hljs-type">char</span>*)</span> </span>&#123;&#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  Derived d;<br>  d.<span class="hljs-built_in">foo</span>(<span class="hljs-number">5</span>);<br>&#125;<br></code></pre></td></tr></table></figure><p>C++11的继承构造函数正是利用了这一点，将using关键字的能力进行了扩展，使其能够引入基类的构造函数</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-built_in">Base</span>() : <span class="hljs-built_in">x_</span>(<span class="hljs-number">0</span>), <span class="hljs-built_in">y_</span>(<span class="hljs-number">0.</span>) &#123;&#125;;<br>  <span class="hljs-built_in">Base</span>(<span class="hljs-type">int</span> x, <span class="hljs-type">double</span> y) : <span class="hljs-built_in">x_</span>(x), <span class="hljs-built_in">y_</span>(y) &#123;&#125;<br>  <span class="hljs-built_in">Base</span>(<span class="hljs-type">int</span> x) : <span class="hljs-built_in">x_</span>(x), <span class="hljs-built_in">y_</span>(<span class="hljs-number">0.</span>) &#123;&#125;<br>  <span class="hljs-built_in">Base</span>(<span class="hljs-type">double</span> y) : <span class="hljs-built_in">x_</span>(<span class="hljs-number">0</span>), <span class="hljs-built_in">y_</span>(y) &#123;&#125;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">int</span> x_;<br>  <span class="hljs-type">double</span> y_;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">public</span> Base &#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-keyword">using</span> Base::Base;<br>&#125;;<br></code></pre></td></tr></table></figure><p><strong>注意事项</strong></p><ul><li><p>派生类是隐式继承基类的构造函数，所以只有在程序中使用了这些构造函数，编译器才会为派生类生成继承构造函数的代码。</p></li><li><p>派生类不会继承基类的默认构造函数和复制构造函数。这一点乍看有些奇怪，但仔细想想也是顺理成章的。因为在C++语法规则中，执行派生类默认构造函数之前一定会先执行基类的构造函数。同样的，在执行复制构造函数之前也一定会先执行基类的复制构造函数。所以继承基类的默认构造函数和默认复制构造函数的做法是多余的，这里不会这么做。</p></li><li><p>继承构造函数不会影响派生类默认构造函数的隐式声明，也就是说对于继承基类构造函数的派生类，编译器依然会为其自动生成默认构造函数的代码。</p></li><li><p>在派生类中声明签名相同的构造函数会禁止继承相应的构造函数。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-built_in">Base</span>() : <span class="hljs-built_in">x_</span>(<span class="hljs-number">0</span>), <span class="hljs-built_in">y_</span>(<span class="hljs-number">0.</span>) &#123;&#125;;<br>  <span class="hljs-built_in">Base</span>(<span class="hljs-type">int</span> x, <span class="hljs-type">double</span> y) : <span class="hljs-built_in">x_</span>(x), <span class="hljs-built_in">y_</span>(y) &#123;&#125;<br>  <span class="hljs-built_in">Base</span>(<span class="hljs-type">int</span> x) : <span class="hljs-built_in">x_</span>(x), <span class="hljs-built_in">y_</span>(<span class="hljs-number">0.</span>) &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;Base(int x)&quot;</span> &lt;&lt; std::endl; &#125;<br>  <span class="hljs-built_in">Base</span>(<span class="hljs-type">double</span> y) : <span class="hljs-built_in">x_</span>(<span class="hljs-number">0</span>), <span class="hljs-built_in">y_</span>(y) &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;Base(double y)&quot;</span> &lt;&lt; std::endl; &#125;<br><span class="hljs-keyword">private</span>:<br>  <span class="hljs-type">int</span> x_;<br>  <span class="hljs-type">double</span> y_;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">public</span> Base &#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-keyword">using</span> Base::Base;<br>  <span class="hljs-built_in">Derived</span>(<span class="hljs-type">int</span> x) &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;Derived(int x)&quot;</span> &lt;&lt; std::endl; &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-function">Derived <span class="hljs-title">d</span><span class="hljs-params">(<span class="hljs-number">5</span>)</span></span>;<br>  <span class="hljs-function">Derived <span class="hljs-title">d1</span><span class="hljs-params">(<span class="hljs-number">5.5</span>)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure><p>派生类Derived使用using Base::Base继承了基类的构造函数，但是由于Derived定义了构造函数Derived(int x)，该函数的签名与基类的构造函数Base(int x)相同，因此这个构造函数的继承被禁止了，Derived d(5)会调用派生类的构造函数并且输出”Derived(int x)”。另外，这个禁止动作并不会影响到其他签名的构造函数，Derived d1(5.5)依然可以成功地使用基类的构造函数进行构造初始化。</p></li><li><p>派生类继承多个签名相同的构造函数会导致编译失败</p></li><li><p>继承构造函数的基类构造函数不能为私有</p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程语言</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>C++</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[C++]现代C++语言核心特性解析 Chapter 12</title>
     <link href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-12/"/>
     <url>/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-12/</url>
@@ -756,9 +906,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -814,9 +964,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -845,9 +995,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -876,9 +1026,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -905,9 +1055,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -988,9 +1138,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -1019,9 +1169,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>分治</tag>
-      
       <tag>leetcode</tag>
+      
+      <tag>分治</tag>
       
     </tags>
     
@@ -1791,11 +1941,33 @@
   
   
   <entry>
+    <title></title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>about</title>
     <link href="/"/>
     <url>/</url>
     
     <content type="html"><![CDATA[]]></content>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[#board {  -webkit-backdrop-filter: blur(5px);  backdrop-filter: blur(5px);}]]></content>
     
   </entry>
   
@@ -1817,18 +1989,7 @@
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title></title>
-    <link href="/"/>
-    <url>/</url>
-    
-    <content type="html"><![CDATA[#board {  -webkit-backdrop-filter: blur(5px);  backdrop-filter: blur(5px);}]]></content>
+    <content type="html"><![CDATA[const cards = document.querySelectorAll('.index-card')if (cards.length) {  document.querySelector('.row').setAttribute('style', 'overflow: hidden;')  const coefficient = document.documentElement.clientWidth > 768 ? .5 : .3  const origin = document.documentElement.clientHeight - cards[0].getBoundingClientRect().height * coefficient  function throttle(fn, wait) {    let timer = null;    return function () {      const context = this;      const args = arguments;      if (!timer) {        timer = setTimeout(function () {          fn.apply(context, args);          timer = null;        }, wait)      }    }  }  function handle() {    cards.forEach(card => {      card.setAttribute('style', `--state: ${(card.getBoundingClientRect().top - origin) < 0 ? 1 : 0};`)    })    console.log(1)  }  document.addEventListener("scroll", throttle(handle, 100));}]]></content>
     
   </entry>
   
@@ -1840,17 +2001,6 @@
     <url>/</url>
     
     <content type="html"><![CDATA[]]></content>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title></title>
-    <link href="/"/>
-    <url>/</url>
-    
-    <content type="html"><![CDATA[const cards = document.querySelectorAll('.index-card')if (cards.length) {  document.querySelector('.row').setAttribute('style', 'overflow: hidden;')  const coefficient = document.documentElement.clientWidth > 768 ? .5 : .3  const origin = document.documentElement.clientHeight - cards[0].getBoundingClientRect().height * coefficient  function throttle(fn, wait) {    let timer = null;    return function () {      const context = this;      const args = arguments;      if (!timer) {        timer = setTimeout(function () {          fn.apply(context, args);          timer = null;        }, wait)      }    }  }  function handle() {    cards.forEach(card => {      card.setAttribute('style', `--state: ${(card.getBoundingClientRect().top - origin) < 0 ? 1 : 0};`)    })    console.log(1)  }  document.addEventListener("scroll", throttle(handle, 100));}]]></content>
     
   </entry>
   
