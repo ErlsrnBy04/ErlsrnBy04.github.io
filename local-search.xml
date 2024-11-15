@@ -4,6 +4,256 @@
   
   
   <entry>
+    <title>[OS]Three Easy Pieces Chapter 19</title>
+    <link href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-19/"/>
+    <url>/2024/11/15/OS-Three-Easy-Pieces-Chapter-19/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Paging-Faster-Translations-TLBs"><a href="#Paging-Faster-Translations-TLBs" class="headerlink" title="Paging: Faster Translations (TLBs)"></a>Paging: Faster Translations (TLBs)</h1><p>为了加速内存访问，OS需要硬件的帮助：<strong>translation-lookaside buffer（TLB）</strong>。TLB其实就是经常访问的PTE的硬件缓存。在每次访存之前，硬件首先去TLB中查看指定的PTE是否存在，如果存在，就不需要去内存中查找对应的PTE了。</p><h2 id="1-TLB-Basic-Algorithm"><a href="#1-TLB-Basic-Algorithm" class="headerlink" title="1 TLB Basic Algorithm"></a>1 TLB Basic Algorithm</h2><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-19/image-20241115164628041.png"></p><h2 id="2-Who-Handles-The-TLB-Miss"><a href="#2-Who-Handles-The-TLB-Miss" class="headerlink" title="2 Who Handles The TLB Miss"></a>2 Who Handles The TLB Miss</h2><p><strong>硬件处理</strong></p><p>由硬件负责更新TLB。</p><p><strong>软件处理（OS）</strong></p><p>由OS负责更新TLB。当遇到TLB miss的时候，硬件只需要发出一个异常，然后跳转到对应的异常处理程序进行处理即可。</p><p>注意事项：</p><ul><li>这种异常和系统调用不一样，系统调用返回下一条指令的地址继续执行；而这种异常需要返回当前指令的地址重新执行当前指令。</li><li>OS需要确保TLB miss处理代码不会触发TLB miss。可以直接将处理代码放在物理地址中（未映射，无需地址翻译）或者在TLB中预留一些entries用来存放处理代码的PTE。</li></ul><h2 id="3-TLB-Contents-What’s-In-There"><a href="#3-TLB-Contents-What’s-In-There" class="headerlink" title="3 TLB Contents: What’s In There"></a>3 TLB Contents: What’s In There</h2><p>TLB通常有32，64，128个entries，并且是全相连的（意味着任何一个entry都可能防止在任何位置，由硬件负责并行的查找对应的entry）。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-19/image-20241115170540216.png" alt="A TLB entry"></p><p>需要注意，TLB entry需要包含VPN，因为TLB是全相连的。</p><p>other bits通常包含valid bit，protection bits，address-space identifier，dirty bit等。</p><h2 id="4-TLB-Issue-Context-Switches"><a href="#4-TLB-Issue-Context-Switches" class="headerlink" title="4 TLB Issue: Context Switches"></a>4 TLB Issue: Context Switches</h2><p>需要注意的是，TLB中的内容都是针对某个进程而言的。当发生上下文切换的时候，TLB中的内容就不在有效了。</p><p><strong>TLB flush</strong></p><p>简单的做法是每次上下文切换的时候，都将TLB中的内容flush掉（将valid bit置0）。但是对于频繁切换的系统，可能会带来较大的开销。</p><p><strong>ASID</strong></p><p>另一种做法是在TLB entry中增加一个<strong>address space identifier（ASID）</strong>来指示该entry对应的进程。ASID相当于是PID，但是通常只有较少的位数（PID32位，ASID8位）</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-19/image-20241115171717905.png"></p><h2 id="5-Issue-Replacement-Policy"><a href="#5-Issue-Replacement-Policy" class="headerlink" title="5 Issue: Replacement Policy"></a>5 Issue: Replacement Policy</h2><p>类似于页置换算法。</p><p>典型的有LRU，随机替换算法等。随机替换算法比较简单，并且可以避免一些边界情况。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[OS]Three Easy Pieces Chapter 18</title>
+    <link href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-18/"/>
+    <url>/2024/11/15/OS-Three-Easy-Pieces-Chapter-18/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Paging-Introduction"><a href="#Paging-Introduction" class="headerlink" title="Paging: Introduction"></a>Paging: Introduction</h1><h2 id="1-Overview"><a href="#1-Overview" class="headerlink" title="1 Overview"></a>1 Overview</h2><p>每个进程都有一个自己的页表(Page table)，用来进行虚拟地址到物理地址的转换。</p><p>虚拟地址分为两部分，虚拟页号（Virtual Page Number，VPN）和内页偏移（offset）。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-18/image-20241115161640163.png"></p><p>MMU根据页表，将VPN转换为对应的物理页号（Physical Page Number，PPN），然后将PPN和offset组合，获得实际的物理地址。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-18/image-20241115161808036.png"></p><h2 id="2-Where-Are-Page-Tables-Stored"><a href="#2-Where-Are-Page-Tables-Stored" class="headerlink" title="2  Where Are Page Tables Stored?"></a>2  Where Are Page Tables Stored?</h2><p>对于常见的地址空间（32位，页大小4KB），VPN是20位，offset是12位。这意味着我们需要$2^{20}$个页表项（page table entry），如果每个页表项是4字节，那么每个进程为了进行地址转换，需要4MB的空间。因此，通常，将页表防止在内存中，而不是在某些芯片上的硬件中。</p><h2 id="3-What’s-Actually-In-The-Page-Table"><a href="#3-What’s-Actually-In-The-Page-Table" class="headerlink" title="3 What’s Actually In The Page Table?"></a>3 What’s Actually In The Page Table?</h2><p>页表就是一个负责将VPN转换为PPN的数据结构。最简单的实现方式是数组，OS用VPN作为索引，取得对应的PTE，然后取得对应的PPN。</p><p><strong>valid bit</strong></p><p>该位用来标识一个地址转化是否有效。</p><p><strong>protection bits</strong></p><p>用来标识某页是否可读，可写，可执行等。</p><p><strong>present bit</strong></p><p>用来标识某页是在物理内存中，还是在磁盘中。主要是为了支持交换技术。</p><p><strong>dirty bit</strong></p><p>用来标识某页是否被修改过。</p><p><strong>reference bit（accessed bit）</strong></p><p>用来标识某页是否被访问过。主要是为了支持页替换。</p><h2 id="4-Paging-Also-Too-Slow"><a href="#4-Paging-Also-Too-Slow" class="headerlink" title="4 Paging: Also Too Slow"></a>4 Paging: Also Too Slow</h2><p>注意到，每次访存之前，都必须进行一次额外的访存，找到对应的PTE完成地址转换，然后才能访问实际的内存。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[OS]Three Easy Pieces Chapter 17</title>
+    <link href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-17/"/>
+    <url>/2024/11/15/OS-Three-Easy-Pieces-Chapter-17/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Free-Space-Management"><a href="#Free-Space-Management" class="headerlink" title="Free-Space Management"></a>Free-Space Management</h1><p>对于页式内存来说，空闲页管理很简单，只需要用链表来管理空闲页即可；但是对于像段式内存这种空闲内存单元大小不固定的方式来说，空闲内存管理变得更复杂。对于后者，最大的挑战是<strong>外部碎片问题</strong>。</p><h2 id="1-Low-level-Mechanisms"><a href="#1-Low-level-Mechanisms" class="headerlink" title="1 Low-level Mechanisms"></a>1 Low-level Mechanisms</h2><p><strong>Splitting and Coalescing</strong></p><p>管理空闲内存空间的数据结构在需要时需要进行相应的拆分或者合并。</p><p><strong>Tracking The Size Of Allocated Regions</strong></p><p>像 <code>free(void *ptr)</code> 这样的接口无需大小参数。因此，给定一个指针，应该可以快速确定需要释放的内存的大小。</p><p>为此，很多实现会在内存中存储一个header，在header中存储一些额外的信息。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-17/image-20241115144435344.png"></p><p><strong>Embedding A Free List</strong></p><p>将管理空闲内存的链表结点存储在空闲内存中。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-17/image-20241115150529087.png"></p><p>当申请了一些内存后</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-17/image-20241115150608588.png"></p><p>当申请了一些内存，并释放了一些内存后。可以注意到，此时所有的空闲空间没有被合并，我们可以遍历一遍链表，将相邻的空间合并。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-17/image-20241115150744978.png"></p><h2 id="2-Basic-Strategies"><a href="#2-Basic-Strategies" class="headerlink" title="2 Basic Strategies"></a>2 Basic Strategies</h2><p><strong>Best Fit</strong></p><p>从最小的可行的空闲内存中分配。</p><p><strong>Worst Fit</strong></p><p>从最大的可行的空闲内存中分配。</p><p><strong>First Fit</strong></p><p>从第一个可行的空闲内存中分配。</p><p>一般将空闲内存按照地址排序。</p><p><strong>Next Fit</strong></p><p>类似First fit，但是每次从上一次分配的下一个可行的空闲内存中分配。</p><h2 id="3-Other-Approaches"><a href="#3-Other-Approaches" class="headerlink" title="3 Other Approaches"></a>3 Other Approaches</h2><p>Segregated Lists、Buddy Allocation等。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[MIT 6.1810]Lab4 traps</title>
+    <link href="/2024/11/12/MIT-6-1810-Lab4-traps/"/>
+    <url>/2024/11/12/MIT-6-1810-Lab4-traps/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1-RISC-V-assembly-easy"><a href="#1-RISC-V-assembly-easy" class="headerlink" title="1 RISC-V assembly (easy)"></a>1 RISC-V assembly (<a href="https://pdos.csail.mit.edu/6.828/2024/labs/guidance.html">easy</a>)</h2><div class="note note-primary">            <p>Which registers contain arguments to functions? For example, which register holds 13 in main’s call to <code>printf</code>?</p>          </div><p>在RISC-V中，函数的参数存放在寄存器 <code>a0-a7</code> 中，如果超过8个参数，可以用栈来传递。<code>a0-a1</code> 寄存器还用来传递函数的返回值。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">24:4635                lia2,13<br></code></pre></td></tr></table></figure><p> 从上述代码中可以看出，<code>printf</code> 的参数13放在寄存器 <code>a2</code> 中进行传递。</p><div class="note note-primary">            <p>Where is the call to function <code>f</code> in the assembly code for main? Where is the call to <code>g</code>? (Hint: the compiler may inline functions.)</p>          </div><p><code>f</code> 和 <code>g</code> 都被inlined到 <code>main</code> 中了，编译器预计算出了 <code>f(8) + 1</code> 的值，直接将 <code>12</code> 加载到寄存器 <code>a1</code> 中，而没有直接调用函数。</p><div class="note note-primary">            <p>At what address is the function <code>printf</code> located?</p>          </div><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">30:68c000ef          jal6bc &lt;printf&gt;<br></code></pre></td></tr></table></figure><p>从上述代码中可知，<code>printf</code> 在0x6bc处</p><div class="note note-primary">            <p>What value is in the register <code>ra</code> just after the <code>jalr</code> to <code>printf</code> in <code>main</code>?</p>          </div><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs assembly">30:68c000ef          jal6bc &lt;printf&gt;<br>34:4501                lia0,0<br></code></pre></td></tr></table></figure><p>当 <code>jal</code> 指令执行完毕后，会将下一条指令的地址放在 <code>ra</code> 中，因此 <code>ra</code> 中的值是0x34</p><div class="note note-primary">            <p>Run the following code.</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> i = <span class="hljs-number">0x00646c72</span>;<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;H%x Wo%s&quot;</span>, <span class="hljs-number">57616</span>, (<span class="hljs-type">char</span> *) &amp;i);<br></code></pre></td></tr></table></figure><p>What is the output? <a href="https://www.asciitable.com/">Here’s an ASCII table</a> that maps bytes to characters.</p><p>The output depends on that fact that the RISC-V is little-endian. If the RISC-V were instead big-endian what would you set <code>i</code> to in order to yield the same output? Would you need to change <code>57616</code> to a different value?</p>          </div><p>在小端（little-endian）系统中，最低有效字节存储在最低地址。</p><p><code>i = 0x00646c72</code>，在小端系统中，它会按字节顺序存储为 <code>72 6c 64 00</code>：</p><ul><li><code>0x72</code> 对应字符 <code>&#39;r&#39;</code></li><li><code>0x6c</code> 对应字符 <code>&#39;l&#39;</code></li><li><code>0x64</code> 对应字符 <code>&#39;d&#39;</code></li><li><code>0x00</code> 对应空字符（字符串结尾）</li></ul><p><code>printf(&quot;H%x Wo%s&quot;, 57616, (char *) &amp;i);</code> 中，<code>%x</code> 会将 <code>57616</code> 以十六进制格式输出，而 <code>%s</code> 会将 <code>i</code> 的值按字符字符串输出。</p><p>因此，输出是：</p><ul><li><code>H%x</code> 会输出 <code>H</code> 加上 <code>57616</code> 的十六进制形式，即 <code>e110</code>。</li><li><code>Wo%s</code> 会输出 <code>Wo</code> 加上 <code>i</code> 的内容，即 <code>rld</code>。</li></ul><p>所以在小端系统上，这段代码的输出为：</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">He110</span> World<br></code></pre></td></tr></table></figure><p>在大端（big-endian）系统上，<code>0x00646c72</code> 将按字节顺序存储为 <code>00 64 6c 72</code>，这会将 <code>i</code> 解释为不同的字符序列，因此我们需要重新设置 <code>i</code> 以确保输出相同。</p><p>为了在大端系统上得到 <code>rld</code> 的字符顺序，我们需要将 <code>i</code> 设为 <code>0x726c6400</code>，这样在大端系统中存储的字节序将是 <code>72 6c 64 00</code>，即 <code>rld</code>。</p><p><code>57616</code> 的值没有依赖字节顺序，它只是一个整数，所以无需更改。</p><div class="note note-primary">            <p>In the following code, what is going to be printed after <code>&#39;y=&#39;</code>? (note: the answer is not a specific value.) Why does this happen?</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;x=%d y=%d&quot;</span>, <span class="hljs-number">3</span>);<br></code></pre></td></tr></table></figure>          </div><p>这段代码使用 <code>printf</code> 函数来输出两个占位符 <code>%d</code>，分别用于打印变量 <code>x</code> 和 <code>y</code> 的值。然而，只提供了一个参数 <code>3</code>，没有给出第二个参数。</p><p>由于缺少第二个参数，<code>printf</code> 会在内存中继续读取下一个位置的值来填充 <code>y</code> 的占位符。这种行为是<strong>未定义行为</strong>（undefined behavior），可能导致以下情况之一：</p><ol><li><strong>随机值</strong>：<code>printf</code> 会从栈或寄存器中读取一些未初始化的值，因此 <code>y</code> 可能会显示一个随机值。</li><li><strong>程序崩溃</strong>：在某些系统上，未提供的参数会导致程序崩溃或打印出无效数据。</li></ol><h2 id="2-Backtrace-moderate"><a href="#2-Backtrace-moderate" class="headerlink" title="2 Backtrace (moderate)"></a>2 Backtrace (<a href="https://pdos.csail.mit.edu/6.828/2024/labs/guidance.html">moderate</a>)</h2><p>本题要求我们实现 <code>backtrace()</code> 函数用来打印函数调用栈，函数调用栈的结构如下所示。可以看到，<code>ra</code> 寄存器的地址存放在 <code>fp - 8</code> 的位置上。在xv6中，内核栈的大小是一页，因此所有的栈帧都在同一页中，我们可以据此来停止 <code>backtrace</code>。</p><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">                 .<br>                 .<br>    +-&gt;          .<br>    |<span class="hljs-string">   +-----------------+   </span>|<br>    |<span class="hljs-string">   </span>|<span class="hljs-string"> return address  </span>|<span class="hljs-string">   </span>|<br>    |<span class="hljs-string">   </span>|<span class="hljs-string">   previous fp ------+</span><br><span class="hljs-string">    </span>|<span class="hljs-string">   </span>|<span class="hljs-string"> saved registers </span>|<br>    |<span class="hljs-string">   </span>|<span class="hljs-string"> local variables </span>|<br>    |<span class="hljs-string">   </span>|<span class="hljs-string">       ...       </span>|<span class="hljs-string"> &lt;-+</span><br><span class="hljs-string">    </span>|<span class="hljs-string">   +-----------------+   </span>|<br>    |<span class="hljs-string">   </span>|<span class="hljs-string"> return address  </span>|<span class="hljs-string">   </span>|<br>    +------ previous fp   |<span class="hljs-string">   </span>|<br>        |<span class="hljs-string"> saved registers </span>|<span class="hljs-string">   </span>|<br>        |<span class="hljs-string"> local variables </span>|<span class="hljs-string">   </span>|<br>    +-&gt; |<span class="hljs-string">       ...       </span>|<span class="hljs-string">   </span>|<br>    |<span class="hljs-string">   +-----------------+   </span>|<br>    |<span class="hljs-string">   </span>|<span class="hljs-string"> return address  </span>|<span class="hljs-string">   </span>|<br>    |<span class="hljs-string">   </span>|<span class="hljs-string">   previous fp ------+</span><br><span class="hljs-string">    </span>|<span class="hljs-string">   </span>|<span class="hljs-string"> saved registers </span>|<br>    |<span class="hljs-string">   </span>|<span class="hljs-string"> local variables </span>|<br>    |<span class="hljs-string">   </span>|<span class="hljs-string">       ...       </span>|<span class="hljs-string"> &lt;-+</span><br><span class="hljs-string">    </span>|<span class="hljs-string">   +-----------------+   </span>|<br>    |<span class="hljs-string">   </span>|<span class="hljs-string"> return address  </span>|<span class="hljs-string">   </span>|<br>    +------ previous fp   |<span class="hljs-string">   </span>|<br>        |<span class="hljs-string"> saved registers </span>|<span class="hljs-string">   </span>|<br>        |<span class="hljs-string"> local variables </span>|<span class="hljs-string">   </span>|<br>$fp --&gt; |<span class="hljs-string">       ...       </span>|<span class="hljs-string">   </span>|<br>        +-----------------+   |<span class="hljs-string"></span><br><span class="hljs-string">        </span>|<span class="hljs-string"> return address  </span>|<span class="hljs-string">   </span>|<br>        |<span class="hljs-string">   previous fp ------+</span><br><span class="hljs-string">        </span>|<span class="hljs-string"> saved registers </span>|<br>$sp --&gt; |<span class="hljs-string"> local variables </span>|<br>        +-----------------+<br></code></pre></td></tr></table></figure><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span><br><span class="hljs-title function_">backtrace</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  uint64 ra, cur_fp, prev_fp, page;<br>  cur_fp = r_fp();<br>  page = PGROUNDDOWN(cur_fp);<br>  <span class="hljs-keyword">while</span> (cur_fp &gt;= page &amp;&amp; cur_fp &lt; page + PGSIZE) &#123;<br>    ra = *((uint64*)(cur_fp - <span class="hljs-number">8</span>));<br>    prev_fp = *((uint64*)(cur_fp - <span class="hljs-number">16</span>));<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%p\n&quot;</span>, (<span class="hljs-type">void</span>*)ra);<br>    cur_fp = prev_fp;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>MIT 6.1810</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[DB]Database System Concepts Chapter 2</title>
+    <link href="/2024/11/10/DB-Database-System-Concepts-Chapter-2/"/>
+    <url>/2024/11/10/DB-Database-System-Concepts-Chapter-2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Introduction-to-the-Relational-Model"><a href="#Introduction-to-the-Relational-Model" class="headerlink" title="Introduction to the Relational Model"></a>Introduction to the Relational Model</h1><h2 id="1-Structure-of-Relational-Databases"><a href="#1-Structure-of-Relational-Databases" class="headerlink" title="1 Structure of Relational Databases"></a>1 Structure of Relational Databases</h2><p>一个关系型数据库包含一组表，每个表都有一个独特的名字。</p><p><img src="/../images/DB-Database-System-Concepts-Chapter-2/image-20241110210929546.png" alt="instructor关系"></p><p>通常来说，表中的一行代表着一组值之间的关系。</p><p><strong>术语</strong></p><ul><li><p>tuple：一组值的序列</p></li><li><p>n个值的关系用一个n-tuple来表示（表中的一行）</p></li><li><p>relation - 一张表</p></li><li><p>tuple - 表中的一行</p></li><li><p>attribute - 表中的一列</p></li><li><p>relation instance - 某种关系的一个示例（某些特定的行）</p></li><li><p>domain - 某种关系某个attribute的可行值集合</p><p>对于所有关系 r，r 的所有属性域都是原子的。域是原子的的意思是域的元素被视为不可分割的单位。</p></li><li><p>null value - 用来指示某个值未知或者不存在</p></li></ul><h2 id="2-Database-Schema"><a href="#2-Database-Schema" class="headerlink" title="2 Database Schema"></a>2 Database Schema</h2><ul><li>database schema - 数据库的逻辑视图</li><li>database instance - 某个给定的数据库的某个确定时间的一个快照</li><li>relation - 对应编程中的变量</li><li>relation schema - 对应编程中的类型定义</li></ul><p>对于下图中的department关系，其schema为：<br>$$<br>department(dept_name, building, budget)<br>$$<br><img src="/../images/DB-Database-System-Concepts-Chapter-2/image-20241110212615824.png"></p><h2 id="3-Keys"><a href="#3-Keys" class="headerlink" title="3 Keys"></a>3 Keys</h2><p>必须提供一种方法来区分一个关系中不同的tuple。</p><p><strong>超键superkey</strong></p><p>超键是一个或几个属性的集合，它们可以唯一标识一个关系中的某个tuple。<br>$$<br>if \space t_1 \neq t_2,then \space t1.K \neq t2.K<br>$$<br>其中$K$是某个关系$r$的所有属性集合$R$的一个子集。</p><p>如果$K$是一个超键，那么$K$的任何一个超集也是超键</p><p><strong>候选键candidate keys</strong></p><p>候选键的任何一个子集都不是超键。</p><p>对于一个关系，可以有多个候选键。</p><p><strong>主键primary key</strong></p><p>被选定的某个候选键，用来区分tuple。主键的值应该从不或者很少改变。</p><p><strong>主键约束primary key constraints</strong></p><p>键是整个关系的一个性质，而无关某个具体的tuple。任何两个不同的tuple，它们键的值不能相同。这代表这被建模的真实世界的一个约束（主键约束primary key constraints）</p><p><strong>外键约束</strong></p><p>考虑一下教师关系中的部门名属性。如果 instructor 中的元组的系名值与系关系中的系不对应，那是不合理的。因此，在任何数据库实例中，给定教员关系中的任何元组（如 ta），部门关系中一定有某个元组（如 tb），使得 ta 的部门名属性值与 tb 的主键（部门名）值相同。</p><p>从关系 r1 的属性集 A 到关系 r2 的<strong>主键</strong> B 的外键约束规定，在任何数据库实例中，r1 中每个元组的 A 值也必须是 r2 中某个元组的 B 值。属性集 A 被称为来自 r1 并引用 r2 的外键。关系 r1 也被称为外键约束的引用关系，而 r2 被称为被引用关系。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据库</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Database</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[OS]Three Easy Pieces Chapter 16</title>
+    <link href="/2024/11/10/OS-Three-Easy-Pieces-Chapter-16/"/>
+    <url>/2024/11/10/OS-Three-Easy-Pieces-Chapter-16/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Segmentation"><a href="#Segmentation" class="headerlink" title="Segmentation"></a>Segmentation</h1><h2 id="1-Segmentation-Generalized-Base-Bounds"><a href="#1-Segmentation-Generalized-Base-Bounds" class="headerlink" title="1 Segmentation: Generalized Base&#x2F;Bounds"></a>1 Segmentation: Generalized Base&#x2F;Bounds</h2><p>传统的动态重定位会导致内存空间的浪费（整个用户地址空间可能只有一小部分真正使用，大部分是空闲的）。因此，可以使用分段的方式，将用户地址空间按照逻辑分为不同的segment，每个segment都有一对base&#x2F;bound寄存器。需要注意的是，在进行地址转化的时候，必须将虚拟地址首先转化为段内偏移，然后在转换为物理地址。</p><h2 id="2-Which-Segment-Are-We-Referring-To"><a href="#2-Which-Segment-Are-We-Referring-To" class="headerlink" title="2 Which Segment Are We Referring To"></a>2 Which Segment Are We Referring To</h2><p>一种普遍的做法是，用虚拟地址的高位来索引不同的段，低位作为段内的偏移。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-16/image-20241110195254091.png"></p><p>这种做法的缺点是限制了每个段的大小。</p><p>另外一种可能的做法是通过地址的来源来判断段。如果地址来自PC，那么肯定是代码段；如果地址来自sp，那么肯定是栈段；否则就是堆段。</p><h2 id="3-What-About-The-Stack"><a href="#3-What-About-The-Stack" class="headerlink" title="3 What About The Stack"></a>3 What About The Stack</h2><p>因为堆是逆向增长的，因此需要额外处理。具体地，硬件应该添加一个标记位，用来指示地址增长方向是正向的还是逆向的。</p><h2 id="4-Support-for-Sharing"><a href="#4-Support-for-Sharing" class="headerlink" title="4 Support for Sharing"></a>4 Support for Sharing</h2><p>通过对每个segment添加保护位（可读、可写、可执行等），可以安全的在不同的进程间共享内存。</p><p>同时，MMU在进行地址转换的时候，也要确保某个进程对某块内存有正确的访问权限。</p><h2 id="5-OS-Support"><a href="#5-OS-Support" class="headerlink" title="5 OS Support"></a>5 OS Support</h2><p>段式内存也有一些问题：</p><ul><li>上下文切换的时候操作系统需要负责切换所有段的base&#x2F;bound寄存器</li><li>段增长<ul><li>如果heap有足够的内存，<code>malloc</code> 直接在heap中分配内存，然后返回相应的地址</li><li>如果heap没有足够的内存， <code>malloc</code> 会调用 <code>sbrk</code> 系统调用去增长heap，如果有足够的空间供增长，操作系统会更新堆段的bound寄存器。</li></ul></li><li>管理空闲内存：段式内存最大的问题是会外部碎片问题。有一系列算法来管理内存（BF，WF，FF，伙伴算法等），但是都无法根本上解决外部碎片问题。</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[OS]Three Easy Pieces Chapter 15</title>
+    <link href="/2024/11/10/OS-Three-Easy-Pieces-Chapter-15/"/>
+    <url>/2024/11/10/OS-Three-Easy-Pieces-Chapter-15/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Mechanism-Address-Translation"><a href="#Mechanism-Address-Translation" class="headerlink" title="Mechanism: Address Translation"></a>Mechanism: Address Translation</h1><h2 id="1-Assumptions"><a href="#1-Assumptions" class="headerlink" title="1 Assumptions"></a>1 Assumptions</h2><p>最初的假设很简单：</p><ul><li>用户地址空间在物理内存中连续存放</li><li>用户地址空间不大于物理内存大小</li><li>每个用户地址空间都一样大</li></ul><h2 id="2-Dynamic-Hardware-based-Relocation"><a href="#2-Dynamic-Hardware-based-Relocation" class="headerlink" title="2 Dynamic(Hardware-based) Relocation"></a>2 Dynamic(Hardware-based) Relocation</h2><p>早期，在没有硬件支持的时候，有些操作系统支持软件重定位(static relocation)。<strong>loader</strong>程序负责改写另外一个程序中涉及到的地址为实际的物理地址。这种方法不提供任何的保护，同时也很难修改某个程序在物理内存中的位置。</p><p>后面，在硬件的支持下，提出了动态重定位。每个CPU内部有一个base寄存器和一个bound寄存器，负责将虚拟地址转换为实际的物理地。<br>$$<br>physical\space address &#x3D; virtual \space address + base<br>$$<br>这种地址转换是发生在运行期间的，并且在程序已经开始运行之后，也可以重新定位程序。</p><p>bound寄存器负责提供内存保护，内存管理单元（MMU）检查一个程序提供的虚拟地址是否在bound范围内，如果不在，则触发异常，将进程杀死；如果合法，才接着进行地址转换，将其转换为实际的物理地址。</p><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-15/image-20241110185430276.png"></p><h2 id="3-Operating-System-Issues"><a href="#3-Operating-System-Issues" class="headerlink" title="3 Operating System Issues"></a>3 Operating System Issues</h2><p><img src="/../images/OS-Three-Easy-Pieces-Chapter-15/image-20241110185748756.png"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[CMU 15-445]HyperLogLog原理</title>
+    <link href="/2024/11/09/CMU-15-445-HyperLogLog%E5%8E%9F%E7%90%86/"/>
+    <url>/2024/11/09/CMU-15-445-HyperLogLog%E5%8E%9F%E7%90%86/</url>
+    
+    <content type="html"><![CDATA[<h1 id="HyperLogLog-in-Presto"><a href="#HyperLogLog-in-Presto" class="headerlink" title="HyperLogLog in Presto"></a>HyperLogLog in Presto</h1><p><strong>情景</strong></p><p>想要确定一个有重复元素的很大集合的cardinality。常规方法的时间开销或者内存开销过大，无法接受。</p><p><strong>A simple estimator</strong></p><p>首先，生成一个理论数据集：</p><ul><li>生成n个均匀分布在[0,1]之间的数。</li><li>随机挑选一些数，随机复制几次。</li><li>打乱顺序</li></ul><p>因为所有数是均匀分布的，可以找出最小的数$x_{min}$，然后估计集合的$cardinality &#x3D; 1&#x2F;x_{min}$.</p><p>为了确保数是均匀分布的，可以对每个数进行哈希，然后根据哈希值来估计。</p><p><img src="/../images/CMU-15-445-HyperLogLog%E5%8E%9F%E7%90%86/image-20241109162303304.png"></p><p>这种简单的估计有较高的偏差，因为如果最小值太小，会导致估计的值过大。</p><p><strong>Probabilistic counting</strong></p><p>为了改善上述问题，我们可以通过统计哈希值二进制开头连续的0的个数。因为某个给定哈希值开头连续出现$i$个0的概率是$1&#x2F;2^i$。也就是说，平均来说，每$2^i$个哈希值才会出现一个连续$i$个0的哈希值。</p><p>因此，我们可以统计所有哈希值中出现的最大的连续的0的个数$k$，然后集合的$cardinality&#x3D;2^k$。</p><p>这种方法有两个缺点：</p><ul><li>最好情况下，该方法估计的值只能是2的幂</li><li>因为该方法仍然只依赖于某个有最长连续0的哈希值，因此也有较大的偏差。</li></ul><p>这种方法的优点是需要的内存空间很小，只需要记录最大连续的0的个数即可。</p><p><strong>Improving accuracy：LogLog</strong></p><p>我们可以设计很多哈希函数，然后将最大连续0的个数取平均。但是这种方法的计算开销过大。</p><p>另一种方法是，用哈希值的最高几位作为索引，索引到一个bucket，每个bucket记录其见过的最长连续0的个数。然后用公式$cardinality &#x3D; constant · m · 2^{1&#x2F;m \Sigma^N_{j&#x3D;1}R_j}$来进行估计。</p><p><img src="/../images/CMU-15-445-HyperLogLog%E5%8E%9F%E7%90%86/image-20241109164308143.png"></p><p>统计分析指出上述方法的估计有一个偏差，因此令$constant &#x3D; 0.79402$来修正这个偏差。</p><p>对于$m$个bucket，该方法的误差大概在$1.3&#x2F;\sqrt{m}$左右。</p><p><strong>HLL：Improving accuracy further</strong></p><ul><li>异常值会降低准确度。因此，可以在收集每个bucket的值的时候，只考虑较小的70%的bucket，扔掉其余30%。这种算法（SuperLogLog），可以将误差降低到$1.05&#x2F;\sqrt{m}$.</li><li>HLL使用调和平均，可以将误差降低到$1.04&#x2F;\sqrt{m}$左右。</li></ul><p>最终，得到的公式为<br>$$<br>CARDINALITY_{HLL} &#x3D; constant · m · \frac{m}{\Sigma_{j&#x3D;1}^N 2^{-R_j}}<br>$$<br><strong>集合并运算</strong></p><p>对于两个HLL数据结构，我们可以对其进行并操作（对每个对应位置的bucket取二者的较大者）。该操作很简单并且是无损的。对于并行运算友好。</p><p><strong>Presto‘s HLL implementation</strong></p><p>该实现方法有两种布局：sparse和dense。</p><p>sparse布局的结果几乎是准确的，但是对于cardinality较大的情况，算法会自动采用dense布局，该布局的结果是上述HLL算法的预估值。</p><p><strong>稀疏布局</strong>存储一组相邻的 32 位的bucket，按桶索引升序排序。当有新数据输入时，Presto 会检查数据桶编号是否已经存在。如果存在，则更新其值。如果数据桶是新的，Presto 会分配一个新的 32 位内存地址来保存该值。随着数据量的增加，存储桶的数量可能会超过预先设定的内存限制。这时，Presto 会切换到密集布局表示法。</p><p><strong>密集布局</strong> 有固定数量的存储桶，相关内存从一开始就被分配。桶值以 4 位值序列的形式编码，如下图所示。根据 HLL 算法的统计特性，4 位足以编码给定 HLL 结构中的大部分值。对于大于4位的值，余数存储在溢出项列表中。</p><p><img src="/../images/CMU-15-445-HyperLogLog%E5%8E%9F%E7%90%86/image-20241109171247559.png"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据库</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>CMU 15-445</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[C++]文件系统filesystem库</title>
+    <link href="/2024/11/06/C-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9Ffilesystem%E5%BA%93/"/>
+    <url>/2024/11/06/C-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9Ffilesystem%E5%BA%93/</url>
+    
+    <content type="html"><![CDATA[<h1 id="文件系统filesystem库"><a href="#文件系统filesystem库" class="headerlink" title="文件系统filesystem库"></a>文件系统filesystem库</h1><p>C++17标准的一个重要补充是filesystem库，它使我们能够处理分层文件系统（如Windows或POSIX的文件系统）中的路径、文件和目录。</p><h2 id="1-使用文件系统路径"><a href="#1-使用文件系统路径" class="headerlink" title="1 使用文件系统路径"></a>1 使用文件系统路径</h2><p>filesystem库位于 <code>&lt;filesystem&gt;</code> 头文件的 <code>std::filesystem</code> 命名空间中。</p><p>文件系统组件（文件、目录、硬链接或软链接）的路径由 <code>path</code> 类表示。</p><h3 id="1-1-基本操作"><a href="#1-1-基本操作" class="headerlink" title="1.1 基本操作"></a>1.1 基本操作</h3><ul><li><p>创建路径</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">auto</span> path = std::filesystem::path&#123;<span class="hljs-string">&quot;/home/docs&quot;</span>&#125;;<br></code></pre></td></tr></table></figure></li><li><p>添加元素到路径（包含目录分隔符）</p><p>通过成员操作符 <code>/=</code> ，非成员操作符 <code>/</code> 或者 <code>append()</code> 方法将元素附加到路径，包含目录分隔符</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++">path /= <span class="hljs-string">&quot;Book&quot;</span>;<br>path = path / <span class="hljs-string">&quot;Modern&quot;</span> / <span class="hljs-string">&quot;Cpp&quot;</span>;<br>path.<span class="hljs-built_in">append</span>(<span class="hljs-string">&quot;Programming&quot;</span>);<br><span class="hljs-comment">// 输出 &quot;/home/docs/book/Modern/Cpp/Programming&quot;</span><br>cout &lt;&lt; path &lt;&lt; endl;<br></code></pre></td></tr></table></figure></li><li><p>添加元素到路径（不包含目录分隔符）</p><p>使用成员操作符 <code>+=</code> 、非成员操作符 <code>+</code> 或 <code>concat()</code> 方法将元素连接到路径，而不包含目录分隔符</p></li><li><p>分解目录</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">auto</span> path = filesystem::path&#123;<span class="hljs-string">&quot;root/home/docs/file.txt&quot;</span>&#125;;<br>    cout <br>        &lt;&lt; <span class="hljs-string">&quot;root: &quot;</span>        &lt;&lt; path.<span class="hljs-built_in">root_name</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;root dir: &quot;</span>    &lt;&lt; path.<span class="hljs-built_in">root_directory</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;root path: &quot;</span>   &lt;&lt; path.<span class="hljs-built_in">root_path</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;rel path: &quot;</span>    &lt;&lt; path.<span class="hljs-built_in">relative_path</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;parent path: &quot;</span> &lt;&lt; path.<span class="hljs-built_in">parent_path</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;filename: &quot;</span>    &lt;&lt; path.<span class="hljs-built_in">filename</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;stem: &quot;</span>        &lt;&lt; path.<span class="hljs-built_in">stem</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;extension: &quot;</span>   &lt;&lt; path.<span class="hljs-built_in">extension</span>() &lt;&lt; endl;<br>&#125;<br></code></pre></td></tr></table></figure><p>输出：</p><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xquery">root: <span class="hljs-string">&quot;&quot;</span><span class="hljs-built_in"></span><br><span class="hljs-built_in">root</span> dir: <span class="hljs-string">&quot;&quot;</span><span class="hljs-built_in"></span><br><span class="hljs-built_in">root</span><span class="hljs-built_in"> path</span>: <span class="hljs-string">&quot;&quot;</span><br>rel<span class="hljs-built_in"> path</span>: <span class="hljs-string">&quot;root/home/docs/file.txt&quot;</span><br>parent<span class="hljs-built_in"> path</span>: <span class="hljs-string">&quot;root/home/docs&quot;</span><br>filename: <span class="hljs-string">&quot;file.txt&quot;</span><br>stem: <span class="hljs-string">&quot;file&quot;</span><br>extension: <span class="hljs-string">&quot;.txt&quot;</span><br></code></pre></td></tr></table></figure></li><li><p>检查目录各个部分</p><p>使用成员函数（如 <code>has_root_name()</code> 、 <code>has_root_directory()</code> 、<code>has_filename()</code> 、 <code>has_stem()</code> 和 <code>has_extension()</code> ）获取路径的各部分是否可用</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">auto</span> path = filesystem::path&#123;<span class="hljs-string">&quot;root/home/docs/file.txt&quot;</span>&#125;;<br>    cout <br>        &lt;&lt; <span class="hljs-string">&quot;has root: &quot;</span>        &lt;&lt; path.<span class="hljs-built_in">has_root_name</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;has root dir: &quot;</span>    &lt;&lt; path.<span class="hljs-built_in">has_root_directory</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;has root path: &quot;</span>   &lt;&lt; path.<span class="hljs-built_in">has_root_path</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;has rel path: &quot;</span>    &lt;&lt; path.<span class="hljs-built_in">has_relative_path</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;has parent path: &quot;</span> &lt;&lt; path.<span class="hljs-built_in">has_parent_path</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;has filename: &quot;</span>    &lt;&lt; path.<span class="hljs-built_in">has_filename</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;has stem: &quot;</span>        &lt;&lt; path.<span class="hljs-built_in">has_stem</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span><br>        &lt;&lt; <span class="hljs-string">&quot;has extension: &quot;</span>   &lt;&lt; path.<span class="hljs-built_in">has_extension</span>() &lt;&lt; endl;<br>&#125;<br></code></pre></td></tr></table></figure><p>输出</p><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">has</span> root: <span class="hljs-number">0</span><br><span class="hljs-attribute">has</span> root dir: <span class="hljs-number">0</span><br><span class="hljs-attribute">has</span> root path: <span class="hljs-number">0</span><br><span class="hljs-attribute">has</span> rel path: <span class="hljs-number">1</span><br><span class="hljs-attribute">has</span> parent path: <span class="hljs-number">1</span><br><span class="hljs-attribute">has</span> filename: <span class="hljs-number">1</span><br><span class="hljs-attribute">has</span> stem: <span class="hljs-number">1</span><br><span class="hljs-attribute">has</span> extension: <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure></li><li><p>检查路径是相对路径还是绝对路径</p><p>用 <code>is_absolute()</code> 成员函数检查路径是否是绝对路径</p></li><li><p>修改文件名和扩展名</p><p>用 <code>replace_filename()</code> 修改文件名，用 <code>remove_filename()</code> 删除文件名，用<code>replace_extension()</code> 修改扩展名</p></li><li><p>将目录分隔符转换为系统首选的分隔符</p><p>用 <code>make_preferred()</code> 成员函数将目录分隔符转换为系统首选的分隔符</p></li></ul><h2 id="2-创建、复制和删除文件及目录"><a href="#2-创建、复制和删除文件及目录" class="headerlink" title="2 创建、复制和删除文件及目录"></a>2 创建、复制和删除文件及目录</h2><p>filesystem库支持对文件的操作（如复制、移动和删除）以及对目录的操作（如创建、重命名和删除）。</p><ul><li>使用 <code>create_directory()</code> 创建新目录。如果目录已经存在，则该函数什么都不做。注意，该方法不会递归的创建目录</li><li>使用 <code>create_directories()</code> 递归的创建新目录。</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程语言</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>C++</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[C++]C++Primer Chapter 17</title>
+    <link href="/2024/11/03/C-C-Primer-Chapter-17/"/>
+    <url>/2024/11/03/C-C-Primer-Chapter-17/</url>
+    
+    <content type="html"><![CDATA[<h1 id="17-标准库特殊设施"><a href="#17-标准库特殊设施" class="headerlink" title="17 标准库特殊设施"></a>17 标准库特殊设施</h1><h2 id="4-随机数"><a href="#4-随机数" class="headerlink" title="4 随机数"></a>4 随机数</h2><p>定义在头文件random中的随机数库通过一组协作的类来生成随机数：</p><ul><li>随机数引擎类（random-number engines）</li><li>随机数分布类（random-number distribution）</li></ul><p>一个引擎类可以生成unsigned随机数序列，一个分布类使用一个引擎类生成指定类型的、在给定范围内的、服从特定概率分布的随机数。</p><h3 id="4-1-随机数引擎和分布"><a href="#4-1-随机数引擎和分布" class="headerlink" title="4.1 随机数引擎和分布"></a>4.1 随机数引擎和分布</h3><p>随机数引擎是函数对象类（参见14.8节，第506页），它们定义了一个调用运算符，该运算符不接受参数并返回一个随机unsigned整数。</p><p>标准库定义了多个随机数引擎类，区别在于性能和随机性质量不同。每个编译器都会指定其中一个作为default_random_engine类型。</p><p><img src="/../images/C-C-Primer-Chapter-17/image-20241103140024471.png"></p><p>对于大多数场合，随机数引擎的输出是不能直接使用的，这也是为什么称之为原始随机数。问题出在生成的随机数的值范围通常与我们需要的不符，而正确转换随机数的范围是极其困难的。</p><p><strong>分布类型和引擎</strong></p><p>为了得到在一个指定范围内的数，需要使用一个分布类型的对象</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">uniform_int_distribution&lt;<span class="hljs-type">unsigned</span>&gt; <span class="hljs-title">u</span><span class="hljs-params">(<span class="hljs-number">0</span>,<span class="hljs-number">9</span>)</span></span>;<br>default_random_engine e;<br><span class="hljs-keyword">for</span> (<span class="hljs-type">size_t</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; ++i) <br>    cout &lt;&lt; <span class="hljs-built_in">u</span>(e) &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br></code></pre></td></tr></table></figure><p>其中 <code>u(0,0)</code> 表示希望得到[0,9]之间的数。</p><p><strong>引擎生成一个数值序列</strong></p><p>对于随机数发生器来说：即使生成的数看起来是随机的，但对一个给定的发生器，每次运行程序它都会返回相同的数值序列。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">vector&lt;<span class="hljs-type">unsigned</span>&gt; <span class="hljs-title">bad_randVec</span><span class="hljs-params">()</span> </span>&#123;<br>    default_random_engine e;<br>    <span class="hljs-function">uniform_int_distribution&lt;<span class="hljs-type">unsigned</span>&gt; <span class="hljs-title">u</span><span class="hljs-params">(<span class="hljs-number">0</span>,<span class="hljs-number">9</span>)</span></span>;<br>    vector&lt;<span class="hljs-type">unsigned</span>&gt; ret;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">size_t</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; ++i) <br>        ret.<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">u</span>(e));<br>    <span class="hljs-keyword">return</span> ret;<br>&#125;<br></code></pre></td></tr></table></figure><p>上述代码，每次调用都会返回相同的vector，不是我们想要的。</p><p>正确的做法如下</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">vector&lt;<span class="hljs-type">unsigned</span>&gt; <span class="hljs-title">good_randVec</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">static</span> default_random_engine e;<br>    <span class="hljs-function"><span class="hljs-type">static</span> uniform_int_distribution&lt;<span class="hljs-type">unsigned</span>&gt; <span class="hljs-title">u</span><span class="hljs-params">(<span class="hljs-number">0</span>,<span class="hljs-number">9</span>)</span></span>;<br>    vector&lt;<span class="hljs-type">unsigned</span>&gt; ret;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">size_t</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; ++i) <br>        ret.<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">u</span>(e));<br>    <span class="hljs-keyword">return</span> ret;<br>&#125;<br></code></pre></td></tr></table></figure><p>将引擎和分布定义为static的，使其在函数调用之间能够保持住状态。</p><div class="note note-primary">            <p>一个给定的随机数发生器一直会生成相同的随机数序列。一个函数如果定义了局部的随机数发生器，应该将其（包括引擎和分布对象）定义为static的。否则，每次调用函数都会生成相同的序列。</p>          </div><p><strong>设置随机数发生器种子</strong></p><p>最常用的方法是调用系统函数time。这个函数定义在头文件ctime中，它返回从一个特定时刻到当前经过了多少秒。函数time接受单个指针参数，它指向用于写入时间的数据结构。如果此指针为空，则函数简单地返回时间</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">default_random_engine <span class="hljs-title">e</span><span class="hljs-params">(time(<span class="hljs-number">0</span>))</span></span>;<br></code></pre></td></tr></table></figure><p>由于time返回以秒计的时间，因此这种方式只适用于生成种子的间隔为秒级或更长的应用。</p><h3 id="4-2-其他随机数分布"><a href="#4-2-其他随机数分布" class="headerlink" title="4.2 其他随机数分布"></a>4.2 其他随机数分布</h3><p><strong>生成随机实数</strong></p><p>使用新标准库设施，可以很容易地获得随机浮点数。我们可以定义一个uniform_real_distribution类型的对象，并让标准库来处理从随机整数到随机浮点数的映射。</p><p><strong>使用分布的默认结果类型</strong></p><p>分布类型都是模板，具有单一的模板类型参数，表示分布生成的随机数的类型。</p><p>每个分布模板都有一个默认模板实参。生成浮点值的分布类型默认生成double值，而生成整型值的分布默认生成int值。由于分布类型只有一个模板参数，因此当我们希望使用默认随机数类型时要记得在模板名之后使用空尖括号。</p><p><strong>生成非均匀分布的随机数</strong></p><p>除了正确生成在指定范围内的数之外，新标准库的另一个优势是可以生成非均匀分布的随机数。实际上，新标准库定义了20种分布类型，例如normal_distribution，该分布接受一个均值和方差。</p><p><strong>bernoulli_distribution类</strong></p><p>该类是一个普通类，而不是模板类。此分布总是返回一个bool值。它返回true的概率是一个常数，此概率的默认值是0.5。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>编程语言</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>C++</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[OS]Three Easy Pieces Chapter 14</title>
     <link href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-14/"/>
     <url>/2024/11/01/OS-Three-Easy-Pieces-Chapter-14/</url>
@@ -906,9 +1156,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -964,9 +1214,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -995,9 +1245,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -1026,9 +1276,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -1055,9 +1305,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -1138,9 +1388,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -1169,9 +1419,9 @@
       
       <tag>algorithm</tag>
       
-      <tag>leetcode</tag>
-      
       <tag>分治</tag>
+      
+      <tag>leetcode</tag>
       
     </tags>
     
@@ -1941,17 +2191,6 @@
   
   
   <entry>
-    <title></title>
-    <link href="/"/>
-    <url>/</url>
-    
-    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>about</title>
     <link href="/"/>
     <url>/</url>
@@ -1978,17 +2217,6 @@
     <link href="/"/>
     <url>/</url>
     
-    <content type="html"><![CDATA[// document//   .querySelector('#web_bg')//   .setAttribute('style', `background-image: ${document.querySelector('.banner').style.background.split(' ')[0]};position: fixed;width: 100%;height: 100%;z-index: -1;background-size: cover;`);// document//   .querySelector("#banner")//   .setAttribute('style', 'background-image: url()')// document//   .querySelector("#banner .mask")//   .setAttribute('style', 'background-color:rgba(0,0,0,0)')]]></content>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title></title>
-    <link href="/"/>
-    <url>/</url>
-    
     <content type="html"><![CDATA[const cards = document.querySelectorAll('.index-card')if (cards.length) {  document.querySelector('.row').setAttribute('style', 'overflow: hidden;')  const coefficient = document.documentElement.clientWidth > 768 ? .5 : .3  const origin = document.documentElement.clientHeight - cards[0].getBoundingClientRect().height * coefficient  function throttle(fn, wait) {    let timer = null;    return function () {      const context = this;      const args = arguments;      if (!timer) {        timer = setTimeout(function () {          fn.apply(context, args);          timer = null;        }, wait)      }    }  }  function handle() {    cards.forEach(card => {      card.setAttribute('style', `--state: ${(card.getBoundingClientRect().top - origin) < 0 ? 1 : 0};`)    })    console.log(1)  }  document.addEventListener("scroll", throttle(handle, 100));}]]></content>
     
   </entry>
@@ -2001,6 +2229,28 @@
     <url>/</url>
     
     <content type="html"><![CDATA[]]></content>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[.index-card {  transition: all 0.5s;  transform: scale(calc(1.5 - 0.5 * var(--state)));  opacity: var(--state);  margin-bottom: 2rem;}.index-img img {  margin: 20px 0;}]]></content>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[// document//   .querySelector('#web_bg')//   .setAttribute('style', `background-image: ${document.querySelector('.banner').style.background.split(' ')[0]};position: fixed;width: 100%;height: 100%;z-index: -1;background-size: cover;`);// document//   .querySelector("#banner")//   .setAttribute('style', 'background-image: url()')// document//   .querySelector("#banner .mask")//   .setAttribute('style', 'background-color:rgba(0,0,0,0)')]]></content>
     
   </entry>
   
