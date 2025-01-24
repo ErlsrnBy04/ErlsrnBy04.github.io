@@ -19,24 +19,24 @@
   <meta name="author" content="ErlsrnBy04">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Segmentation1 Segmentation: Generalized Base&#x2F;Bounds传统的动态重定位会导致内存空间的浪费（整个用户地址空间可能只有一小部分真正使用，大部分是空闲的）。因此，可以使用分段的方式，将用户地址空间按照逻辑分为不同的segment，每个segment都有一对base&#x2F;bound寄存器。需要注意的是，在进行地址转化的时候，必须将虚拟地址首">
+    <meta name="description" content="Beyond Physical Memory: Mechanisms如果某个进程的虚拟地址空间太大，或者整个系统所有进程的所有虚拟地址空间之和无法一次性放到物理内存中，操作系统通常需要将一些当前不常用的地址空间换出到硬盘中。 1 Swap Space磁盘中需要有一个交换区，用于和内存交换内存页。OS需要记录每个换出页的磁盘地址。  2 The Present Bit常规的地址转换过程： 进程提供虚">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[OS]Three Easy Pieces Chapter 16">
-<meta property="og:url" content="https://erlsrnby04.github.io/2024/11/10/OS-Three-Easy-Pieces-Chapter-16/index.html">
+<meta property="og:title" content="[OS]Three Easy Pieces Chapter 21">
+<meta property="og:url" content="https://erlsrnby04.github.io/2024/11/22/OS-Three-Easy-Pieces-Chapter-21/index.html">
 <meta property="og:site_name" content="ErlsrnBy04">
-<meta property="og:description" content="Segmentation1 Segmentation: Generalized Base&#x2F;Bounds传统的动态重定位会导致内存空间的浪费（整个用户地址空间可能只有一小部分真正使用，大部分是空闲的）。因此，可以使用分段的方式，将用户地址空间按照逻辑分为不同的segment，每个segment都有一对base&#x2F;bound寄存器。需要注意的是，在进行地址转化的时候，必须将虚拟地址首">
+<meta property="og:description" content="Beyond Physical Memory: Mechanisms如果某个进程的虚拟地址空间太大，或者整个系统所有进程的所有虚拟地址空间之和无法一次性放到物理内存中，操作系统通常需要将一些当前不常用的地址空间换出到硬盘中。 1 Swap Space磁盘中需要有一个交换区，用于和内存交换内存页。OS需要记录每个换出页的磁盘地址。  2 The Present Bit常规的地址转换过程： 进程提供虚">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://t.alcy.cc/fj?postId=29">
-<meta property="article:published_time" content="2024-11-10T11:41:51.000Z">
-<meta property="article:modified_time" content="2024-11-10T12:53:18.043Z">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=36">
+<meta property="article:published_time" content="2024-11-22T07:13:22.000Z">
+<meta property="article:modified_time" content="2024-11-22T07:42:55.043Z">
 <meta property="article:author" content="ErlsrnBy04">
 <meta property="article:tag" content="OS">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=29">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=36">
   
   
   
-  <title>[OS]Three Easy Pieces Chapter 16 - ErlsrnBy04</title>
+  <title>[OS]Three Easy Pieces Chapter 21 - ErlsrnBy04</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -220,7 +220,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="[OS]Three Easy Pieces Chapter 16"></span>
+            <span id="subtitle" data-typed-text="[OS]Three Easy Pieces Chapter 21"></span>
           
         </div>
 
@@ -236,8 +236,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-11-10 19:41" pubdate>
-          2024年11月10日 晚上
+        <time datetime="2024-11-22 15:13" pubdate>
+          2024年11月22日 下午
         </time>
       </span>
     
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          529 字
+          228 字
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          5 分钟
+          2 分钟
         
       </span>
     
@@ -309,30 +309,28 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">[OS]Three Easy Pieces Chapter 16</h1>
+            <h1 id="seo-header">[OS]Three Easy Pieces Chapter 21</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="Segmentation"><a href="#Segmentation" class="headerlink" title="Segmentation"></a>Segmentation</h1><h2 id="1-Segmentation-Generalized-Base-Bounds"><a href="#1-Segmentation-Generalized-Base-Bounds" class="headerlink" title="1 Segmentation: Generalized Base&#x2F;Bounds"></a>1 Segmentation: Generalized Base&#x2F;Bounds</h2><p>传统的动态重定位会导致内存空间的浪费（整个用户地址空间可能只有一小部分真正使用，大部分是空闲的）。因此，可以使用分段的方式，将用户地址空间按照逻辑分为不同的segment，每个segment都有一对base&#x2F;bound寄存器。需要注意的是，在进行地址转化的时候，必须将虚拟地址首先转化为段内偏移，然后在转换为物理地址。</p>
-<h2 id="2-Which-Segment-Are-We-Referring-To"><a href="#2-Which-Segment-Are-We-Referring-To" class="headerlink" title="2 Which Segment Are We Referring To"></a>2 Which Segment Are We Referring To</h2><p>一种普遍的做法是，用虚拟地址的高位来索引不同的段，低位作为段内的偏移。</p>
-<p><img src="/../images/OS-Three-Easy-Pieces-Chapter-16/image-20241110195254091.png" srcset="/img/loading.gif" lazyload></p>
-<p>这种做法的缺点是限制了每个段的大小。</p>
-<p>另外一种可能的做法是通过地址的来源来判断段。如果地址来自PC，那么肯定是代码段；如果地址来自sp，那么肯定是栈段；否则就是堆段。</p>
-<h2 id="3-What-About-The-Stack"><a href="#3-What-About-The-Stack" class="headerlink" title="3 What About The Stack"></a>3 What About The Stack</h2><p>因为堆是逆向增长的，因此需要额外处理。具体地，硬件应该添加一个标记位，用来指示地址增长方向是正向的还是逆向的。</p>
-<h2 id="4-Support-for-Sharing"><a href="#4-Support-for-Sharing" class="headerlink" title="4 Support for Sharing"></a>4 Support for Sharing</h2><p>通过对每个segment添加保护位（可读、可写、可执行等），可以安全的在不同的进程间共享内存。</p>
-<p>同时，MMU在进行地址转换的时候，也要确保某个进程对某块内存有正确的访问权限。</p>
-<h2 id="5-OS-Support"><a href="#5-OS-Support" class="headerlink" title="5 OS Support"></a>5 OS Support</h2><p>段式内存也有一些问题：</p>
+                <h1 id="Beyond-Physical-Memory-Mechanisms"><a href="#Beyond-Physical-Memory-Mechanisms" class="headerlink" title="Beyond Physical Memory: Mechanisms"></a>Beyond Physical Memory: Mechanisms</h1><p>如果某个进程的虚拟地址空间太大，或者整个系统所有进程的所有虚拟地址空间之和无法一次性放到物理内存中，操作系统通常需要将一些当前不常用的地址空间换出到硬盘中。</p>
+<h2 id="1-Swap-Space"><a href="#1-Swap-Space" class="headerlink" title="1 Swap Space"></a>1 Swap Space</h2><p>磁盘中需要有一个交换区，用于和内存交换内存页。OS需要记录每个换出页的磁盘地址。</p>
+<p><img src="/../images/OS-Three-Easy-Pieces-Chapter-21/image-20241122152725104.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="2-The-Present-Bit"><a href="#2-The-Present-Bit" class="headerlink" title="2 The Present Bit"></a>2 The Present Bit</h2><p>常规的地址转换过程：</p>
+<p>进程提供虚拟内存地址</p>
 <ul>
-<li>上下文切换的时候操作系统需要负责切换所有段的base&#x2F;bound寄存器</li>
-<li>段增长<ul>
-<li>如果heap有足够的内存，<code>malloc</code> 直接在heap中分配内存，然后返回相应的地址</li>
-<li>如果heap没有足够的内存， <code>malloc</code> 会调用 <code>sbrk</code> 系统调用去增长heap，如果有足够的空间供增长，操作系统会更新堆段的bound寄存器。</li>
+<li>TLB hit：取得物理页号</li>
+<li>TLB miss<ul>
+<li>查找页表，取得物理页号</li>
+<li>更新TLB</li>
+<li>重新执行指令</li>
 </ul>
 </li>
-<li>管理空闲内存：段式内存最大的问题是会外部碎片问题。有一系列算法来管理内存（BF，WF，FF，伙伴算法等），但是都无法根本上解决外部碎片问题。</li>
 </ul>
-
+<p>为了支持swap，页表项中需要增加一个<strong>present bit</strong>，用来指出当前页是否在内存中。</p>
+<p>如果尝试访问某个当前不在内存中的内存页，会触发<strong>page fault</strong>异常，之后操作系统执行page-fault handler来处理。</p>
+<h2 id="3-The-Page-Fault"><a href="#3-The-Page-Fault" class="headerlink" title="3 The Page Fault"></a>3 The Page Fault</h2>
                 
               </div>
             
@@ -377,8 +375,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>[OS]Three Easy Pieces Chapter 16</div>
-      <div>https://erlsrnby04.github.io/2024/11/10/OS-Three-Easy-Pieces-Chapter-16/</div>
+      <div>[OS]Three Easy Pieces Chapter 21</div>
+      <div>https://erlsrnby04.github.io/2024/11/22/OS-Three-Easy-Pieces-Chapter-21/</div>
     </div>
     <div class="license-meta">
       
@@ -390,7 +388,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年11月10日</div>
+          <div>2024年11月22日</div>
         </div>
       
       
@@ -428,18 +426,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/11/10/DB-Database-System-Concepts-Chapter-2/" title="[DB]Database System Concepts Chapter 2">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">[DB]Database System Concepts Chapter 2</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/11/10/OS-Three-Easy-Pieces-Chapter-15/" title="[OS]Three Easy Pieces Chapter 15">
-                        <span class="hidden-mobile">[OS]Three Easy Pieces Chapter 15</span>
+                      <a href="/2024/11/22/OS-Three-Easy-Pieces-Chapter-20/" title="[OS]Three Easy Pieces Chapter 20">
+                        <span class="hidden-mobile">[OS]Three Easy Pieces Chapter 20</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
