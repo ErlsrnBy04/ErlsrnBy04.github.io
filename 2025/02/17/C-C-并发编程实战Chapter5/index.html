@@ -1,0 +1,941 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="5 C++内存模型和原子操作内存模型基础对象、内存区域和并发所有与多线程相关的事项都会牵涉内存区域。如果两个线程各自访问分离的内存区域，则相安无事，一切运作良好；反之，如果两个线程访问同一内存区域，我们就要警惕了。假使没有线程更新内存区域，则不必在意，只读数据无须保护或同步。 任一线程改动数据都可能引发条件竞争。要避免条件竞争，就必须强制两个线程按一定的次序访问。  可以用互斥来保证这种次序。 利">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[C++]C++并发编程实战Chapter5">
+<meta property="og:url" content="https://erlsrnby04.github.io/2025/02/17/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter5/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="5 C++内存模型和原子操作内存模型基础对象、内存区域和并发所有与多线程相关的事项都会牵涉内存区域。如果两个线程各自访问分离的内存区域，则相安无事，一切运作良好；反之，如果两个线程访问同一内存区域，我们就要警惕了。假使没有线程更新内存区域，则不必在意，只读数据无须保护或同步。 任一线程改动数据都可能引发条件竞争。要避免条件竞争，就必须强制两个线程按一定的次序访问。  可以用互斥来保证这种次序。 利">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=7">
+<meta property="article:published_time" content="2025-02-17T08:01:55.000Z">
+<meta property="article:modified_time" content="2025-02-19T12:47:48.046Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=7">
+  
+  
+  
+  <title>[C++]C++并发编程实战Chapter5 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[C++]C++并发编程实战Chapter5"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-17 16:01" pubdate>
+          2025年2月17日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[C++]C++并发编程实战Chapter5</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="5-C-内存模型和原子操作"><a href="#5-C-内存模型和原子操作" class="headerlink" title="5 C++内存模型和原子操作"></a>5 C++内存模型和原子操作</h1><h2 id="内存模型基础"><a href="#内存模型基础" class="headerlink" title="内存模型基础"></a>内存模型基础</h2><h3 id="对象、内存区域和并发"><a href="#对象、内存区域和并发" class="headerlink" title="对象、内存区域和并发"></a>对象、内存区域和并发</h3><p>所有与多线程相关的事项都会牵涉内存区域。如果两个线程各自访问分离的内存区域，则相安无事，一切运作良好；反之，如果两个线程访问同一内存区域，我们就要警惕了。假使没有线程更新内存区域，则不必在意，只读数据无须保护或同步。</p>
+<p>任一线程改动数据都可能引发条件竞争。要避免条件竞争，就必须强制两个线程按一定的次序访问。</p>
+<ul>
+<li>可以用互斥来保证这种次序。</li>
+<li>利用原子操作的同步性质，强制两个线程遵循一定的访问次序。</li>
+</ul>
+<h3 id="改动序列"><a href="#改动序列" class="headerlink" title="改动序列"></a>改动序列</h3><p>在一个C++程序中，每个对象都具有一个改动序列[1]，它由所有线程在对象上的全部写操作构成，其中第一个写操作即为对象的初始化。大部分情况下，这个序列会随程序的多次运行而发生变化，但是在程序的任意一次运行过程中，所含的全部线程都必须形成相同的改动序列。</p>
+<p>改动序列的要求：</p>
+<ul>
+<li>只要某线程看到过某个对象，则该线程的后续读操作必须获得相对新近的值</li>
+<li>该线程就同一对象的后续写操作，必然出现在改动序列后方</li>
+<li>如果某线程先向一个对象写数据，过后再读取它，那么必须读取前面写的值。</li>
+<li>若在改动序列中，上述读写操作之间还有别的写操作，则必须读取最后写的值。</li>
+<li>在程序内部，对于同一个对象，全部线程都必须就其形成相同的改动序列，并且在所有对象上都要求如此，而多个对象上的改动序列只是相对关系，线程之间不必达成一致。</li>
+</ul>
+<h2 id="C-中的原子操作及其类别"><a href="#C-中的原子操作及其类别" class="headerlink" title="C++中的原子操作及其类别"></a>C++中的原子操作及其类别</h2><p>原子操作是不可分割的操作（indivisible operation）。该操作要么完全做好，要么完全没做。</p>
+<h3 id="标准原子类型"><a href="#标准原子类型" class="headerlink" title="标准原子类型"></a>标准原子类型</h3><p>标准原子类型的定义位于头文件 <code>&lt;atomic&gt;</code> 内。这些类型的操作全是原子化的，并且，根据语言的定义，C++内建的原子操作也仅仅支持这些类型。</p>
+<p>标准的原子类型几乎都具备成员函数 <code>is_lock_free()</code> ,(只有 <code>std::atomic_flag</code> 不具备该成员函数，它一定采用无锁操作)准许使用者判定某一给定类型上的操作是能由原子指令直接实现，还是要借助编译器和程序库的内部锁来实现。</p>
+<p>从C++17开始，全部原子类型都含有一个静态常量表达式成员变量，形如<code>X::is_always_lock_free</code> ，考察编译生成的一个特定版本的程序，当且仅当在所有支持该程序运行的硬件上，原子类型X全都以无锁结构形式实现，该成员变量的值才为true。</p>
+<p>对于原子类型上的每一种操作，我们都可以提供额外的参数，从枚举类<code>std::memory_order</code> 取值，用于设定所需的内存次序语义。具有6个可能的值，包括 <code>std::memory_order_relaxed</code> 、<code>std::memory_order_acquire</code> 、<code>std::memory_order_consume</code> 、<code>std::memory_order_acq_rel</code> 、<code>std:: memory_order_release</code> 和 <code>std::memory_order_seq_cst</code>。默认内存次序是最严格的 <code>std::memory_order_seq_cst</code></p>
+<p>操作的类别决定了内存次序所准许的取值：</p>
+<ul>
+<li>存储（store）操作，可选用的内存次序有 <code>std::memory_order_relaxed</code>、<code>std::memory_order_release</code> 或<code>std::memory_order_seq_cst</code>。</li>
+<li>载入（load）操作，可选用的内存次序有 <code>std::memory_order_relaxed</code>、<code>std::memory_order_consume</code> 、<code>std::memory_order_acquire</code> 或<code>std::memory_order_seq_cst</code>。</li>
+<li>“读-改-写”（read-modify-write）操作，可选用的内存次序有<code>std::memory_order_relaxed</code> 、<code>std::memory_order_acquire</code> 、<code>std::memory_order_consume</code> 、<code>std::memory_order_acq_rel</code> 、<code>std:: memory_order_release</code> 和 <code>std::memory_order_seq_cst</code></li>
+</ul>
+<h3 id="std-atomic-flag"><a href="#std-atomic-flag" class="headerlink" title="std::atomic_flag"></a><code>std::atomic_flag</code></h3><p><code>std::atomic_flag</code> 是最简单的标准原子类型，表示一个布尔标志。该类型的对象只有两种状态：成立或置零。<code>std::atomic_flag</code> 类型的对象必须由宏<code>ATOMIC_FLAG_INIT</code> 初始化，它把标志初始化为置零状态。</p>
+<p>完成初始化后，我们只能执行3种操作：销毁、置零、读取原有的值并设置标志成立。这分别对应于析构函数、成员函数 <code>clear()</code> 、成员函数 <code>test_and_set()</code>。</p>
+<p>我们可以采用 <code>std::atomic_flag</code> 来实现自旋锁。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SpinLock</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">SpinLock</span>() : <span class="hljs-built_in">flag</span>(ATOMIC_FLAG_INIT) <br>    &#123; &#125;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">lock</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">while</span>(flag.<span class="hljs-built_in">test_and_set</span>());<br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">unlock</span><span class="hljs-params">()</span> </span>&#123;<br>        flag.<span class="hljs-built_in">clear</span>();<br>    &#125;<br><span class="hljs-keyword">private</span>:<br>    std::atomic_flag flag;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="std-atomic"><a href="#std-atomic" class="headerlink" title="std::atomic&lt;bool&gt;"></a><code>std::atomic&lt;bool&gt;</code></h3><p><code>std::atomic&lt;bool&gt;</code> 是基于整数的最基本的原子类型。尽管也无法拷贝构造或拷贝赋值，但我们还是能依据非原子布尔量创建其对象，初始值是true或false皆可。该类型的实例还能接受非原子布尔量的赋值。</p>
+<p>需要注意，与惯例不同，原子类型的赋值操作符不返回引用，而是按值返回（该值属于对应的非原子类型，返回的是赋予的值）。</p>
+<p><code>std::atomic&lt;bool&gt;</code> 通过 <code>store()</code> 操作进行写作操，通过 <code>exchange()</code> 操作代替 <code>test_and_set()</code> 操作，获取原有的值，自行选定新值作为替换。</p>
+<p>支持单纯的读取：隐式做法是将实例转换为普通布尔值，显示做法是调用 <code>load()</code>.</p>
+<p>还引入了一种操作：若原子对象当前的值符合预期，就赋予新值。它与<code>exchange()</code> 一样，同为“读-改-写”操作。</p>
+<p>这一新操作被称为“比较-交换”（compare-exchange），实现形式是成员函数<code>compare_exchange_weak()</code> 和 <code>compare_exchange_strong()</code>。使用者给定一个期望值，原子变量将它和自身的值比较，如果相等，就存入另一既定的值；否则，更新期望值所属的变量，向它赋予原子变量的值。比较-交换函数返回布尔类型，如果完成了保存动作（前提是两值相等），则操作成功，函数返回 <code>ture</code>；反之操作失败，函数返回 <code>false</code>。</p>
+<p>对于 <code>compare_exchange_weak()</code>，即使原子变量的值等于期望值，保存动作还是有可能失败，在这种情形下，原子变量维持原值不变，返回false。原子化的比较-交换必须由一条指令单独完成，而某些处理器没有这种指令，无从保证该操作按原子化方式完成。要实现比较-交换，负责的线程则须改为连续运行一系列指令，但在这些计算机上，只要出现线程数量多于处理器数量的情形，线程就有可能执行到中途因系统调度而切出，导致操作失败。这种计算机最有可能引发上述的保存失败，我们称之为佯败（spurious failure）。其败因不是变量值本身存在问题，而是函数执行时机不对。因为 <code>compare_exchange_weak</code>() 可能佯败，所以它往往必须配合循环使用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">bool</span> expected=<span class="hljs-literal">false</span>;<br><span class="hljs-keyword">extern</span> atomic&lt;<span class="hljs-type">bool</span>&gt; b; <span class="hljs-comment">//由其他源文件的代码设定变量的值</span><br><span class="hljs-keyword">while</span>(!b.<span class="hljs-built_in">compare_exchange_weak</span>(expected,<span class="hljs-literal">true</span>) &amp;&amp; !expected);<br></code></pre></td></tr></table></figure>
+
+<p><strong>weak和strong版本的区别</strong></p>
+<ul>
+<li>weak版本可能会发生佯败，即虽然变量值和预期值相等，但是由于执行时机问题，导致返回false</li>
+<li>strong版本只有和预期值不一样的时候才会返回false。</li>
+</ul>
+<p>strong版本自身内部含有一个循环，性能较差，对于某些经过简单计算就能得出的保存值，用weak版本性能更好，对于需要耗时才能得出的值，用strong版本可以避免重复计算。</p>
+<h3 id="std-atomic-1"><a href="#std-atomic-1" class="headerlink" title="std::atomic&lt;T*&gt;"></a><code>std::atomic&lt;T*&gt;</code></h3><p>接口、特性都类似 <code>std::atomic&lt;bool&gt;</code> 。提供的新操作是算术形式的指针运算。成员函数 <code>fetch_add()</code> 和 <code>fetch_sub()</code> 给出了最基本的操作，分别就对象中存储的地址进行原子化加减，返回原来的地址。另外，该原子类型还具有包装成重载运算符的+&#x3D;和−&#x3D;，以及++和−−的前后缀版本，用起来十分方便。</p>
+<h3 id="标准整数原子类型"><a href="#标准整数原子类型" class="headerlink" title="标准整数原子类型"></a>标准整数原子类型</h3><p>在 <code>std::atomic&lt;int&gt;</code> 和 <code>std::atomic&lt;unsigned long long&gt;</code> 这样的整数原子类型上，我们可以执行的操作颇为齐全：既包括常用的原子操作（load()、store()、exchange()、compare_exchange_weak()和compare_exchange_strong()），也包括原子运算（fetch_add()、fetch_sub()、fetch_and()、fetch_or()、fetch_xor()），以及这些运算的复合赋值形式（+&#x3D;、−&#x3D;、&amp;&#x3D;、|&#x3D;和^&#x3D;），还有前后缀形式的自增和自减（++x、x++、−−x和x−−）。</p>
+<h3 id="泛化的-std-atomic-类模板"><a href="#泛化的-std-atomic-类模板" class="headerlink" title="泛化的 std::atomic&lt;&gt; 类模板"></a>泛化的 <code>std::atomic&lt;&gt;</code> 类模板</h3><p>对于某个自定义类型UDT，要满足一定条件才能具现化出 <code>std::atomic&lt;UDT&gt;</code> ：</p>
+<ul>
+<li>必须具备平实拷贝赋值操作符（trivial copy-assignment operator）</li>
+<li>它不得含有任何虚函数，也不可以从虚基类派生得出</li>
+<li>必须由编译器代其隐式生成拷贝赋值操作符；</li>
+<li>若自定义类型具有基类或非静态数据成员，则它们同样必须具备平实拷贝赋值操作符。</li>
+</ul>
+<p>值得注意的是，比较-交换操作所采用的是逐位比较运算，效果等同于直接使用<code>memcmp()</code> 函数。即使UDT自行定义了比较运算符，在这项操作中也会被忽略。若自定义类型含有填充位（padding bit），却不参与普通比较操作，那么即使UDT对象的值相等，比较-交换操作还是会失败。</p>
+<p>类型 <code>std::atomic&lt;T&gt;</code> 的接口与 <code>std::atomic&lt;bool&gt;</code> 相似，可用的操作有限，包括 <code>load()</code>、<code>store()</code>、<code>exchange()</code>、<code>compare_exchange_weak()</code> 和<code>compare_exchange_strong()</code>，以及接受类型T的实例的赋值、转换成类型T的实例。</p>
+<h3 id="原子操作的非成员函数"><a href="#原子操作的非成员函数" class="headerlink" title="原子操作的非成员函数"></a>原子操作的非成员函数</h3><p>目前为止，我们介绍了不少原子操作，但仅限于原子类型成员函数的形式。不过，还有众多非成员函数，与各原子类型上的所有操作逐一等价。大部分非成员函数依据对应的成员函数命名，只不过冠以前缀“ <code>atomic_</code> ”（如<code>std::atomic_load()</code>），它们还针对各原子类型进行了重载。只要有可能指定内存次序，这些函数就衍化出两个变体：一个带有后缀“<code>_explicit</code>”，接收更多参数以指定内存次序，而另一个则不带后缀也不接收内存次序参数，如<code>std::atomic_store_explicit(&amp;atomic_var,new_value,std::memory_order_release)</code>与 <code>std::atomic_store(&amp;atomic_var,new_value)</code>。成员函数的调用会隐式地操作原子对象，但所有非成员函数的第一个参数都是指针，指向所要操作的目标原子对象。</p>
+<p>C++标准库还提供了非成员函数，按原子化形式访问 <code>std::shared_ptr&lt;&gt;</code> 的实例。标准库给出了共享指针的原子操作（载入、存储、交换和比较-交换），它们与标准原子类型上的操作一样，都是对应的同名函数的重载，而且第一个参数都属于 <code>std:shared_ptr&lt;&gt;*</code> 类型。</p>
+<h3 id="原子操作的内存顺序"><a href="#原子操作的内存顺序" class="headerlink" title="原子操作的内存顺序"></a>原子操作的内存顺序</h3><p>原子类型上的操作服从 6 种内存次序：memory_order_relaxed、memory_order_consume、memory_order_acquire、memory_order_release、memory_order_acq_rel和memory_order_seq_cst。其中，memory_order_seq_cst是可选的最严格的内存次序，各种原子类型的所有操作都默认遵从该次序。</p>
+<p>虽然内存次序共有6种，但它们只代表3种模式：</p>
+<ul>
+<li>先后一致次序（memory_order_seq_cst）</li>
+<li>获取-释放次序（memory_order_consume、memory_order_acquire、memory_order_release和memory_order_acq_rel）</li>
+<li>宽松次序（memory_order_relaxed）</li>
+</ul>
+<h4 id="先后一致次序"><a href="#先后一致次序" class="headerlink" title="先后一致次序"></a>先后一致次序</h4>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C/" class="category-chain-item">C++</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C++</a>
+      
+        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="print-no-link">#多线程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[C++]C++并发编程实战Chapter5</div>
+      <div>https://erlsrnby04.github.io/2025/02/17/C-C-并发编程实战Chapter5/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年2月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/22/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter7/" title="[C++]C++并发编程实战Chapter7">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[C++]C++并发编程实战Chapter7</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/15/PRO-%E5%86%85%E5%AD%98%E6%B1%A0/" title="[PRO]内存池">
+                        <span class="hidden-mobile">[PRO]内存池</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="C++"
+        id="heading-f6f87c9fdcf8b3c3f07f93f1ee8712c9" role="tab" data-toggle="collapse" href="#collapse-f6f87c9fdcf8b3c3f07f93f1ee8712c9"
+        aria-expanded="true"
+      >
+        C++
+        <span class="list-group-count">(6)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-f6f87c9fdcf8b3c3f07f93f1ee8712c9"
+           role="tabpanel" aria-labelledby="heading-f6f87c9fdcf8b3c3f07f93f1ee8712c9">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/01/24/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter2/" title="[C++]C++并发编程实战Chapter2"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++并发编程实战Chapter2</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/01/26/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter3/" title="[C++]C++并发编程实战Chapter3"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++并发编程实战Chapter3</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/01/26/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter4/" title="[C++]C++并发编程实战Chapter4"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++并发编程实战Chapter4</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/02/17/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter5/" title="[C++]C++并发编程实战Chapter5"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">[C++]C++并发编程实战Chapter5</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/01/29/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter6/" title="[C++]C++并发编程实战Chapter6"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++并发编程实战Chapter6</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/02/22/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter7/" title="[C++]C++并发编程实战Chapter7"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[C++]C++并发编程实战Chapter7</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

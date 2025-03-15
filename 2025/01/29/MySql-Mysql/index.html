@@ -1,0 +1,1721 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 基础知识1.1 数据库相关概念数据库：存储数据的仓库，其中数据是有组织的存储起来的。 数据库管理系统：操纵和管理数据库的软件 SQL：操纵关系型数据库的编程语言。 1.2 MySQL数据库的安装windows直接去官网下载安装包，按照默认安装即可。 启动和停止  windows+r 输入services.msc找到mysql80。 命令行输入 net start mysql80 net sto">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[MySql]Mysql">
+<meta property="og:url" content="https://erlsrnby04.github.io/2025/01/29/MySql-Mysql/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="1 基础知识1.1 数据库相关概念数据库：存储数据的仓库，其中数据是有组织的存储起来的。 数据库管理系统：操纵和管理数据库的软件 SQL：操纵关系型数据库的编程语言。 1.2 MySQL数据库的安装windows直接去官网下载安装包，按照默认安装即可。 启动和停止  windows+r 输入services.msc找到mysql80。 命令行输入 net start mysql80 net sto">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=5">
+<meta property="article:published_time" content="2025-01-29T08:11:04.000Z">
+<meta property="article:modified_time" content="2025-02-06T08:27:26.509Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta property="article:tag" content="MySql">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=5">
+  
+  
+  
+  <title>[MySql]Mysql - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[MySql]Mysql"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-29 16:11" pubdate>
+          2025年1月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          64 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[MySql]Mysql</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="1-基础知识"><a href="#1-基础知识" class="headerlink" title="1 基础知识"></a>1 基础知识</h1><h2 id="1-1-数据库相关概念"><a href="#1-1-数据库相关概念" class="headerlink" title="1.1 数据库相关概念"></a>1.1 数据库相关概念</h2><p><strong>数据库</strong>：存储数据的仓库，其中数据是有组织的存储起来的。</p>
+<p><strong>数据库管理系统</strong>：操纵和管理数据库的软件</p>
+<p><strong>SQL</strong>：操纵关系型数据库的编程语言。</p>
+<h2 id="1-2-MySQL数据库的安装"><a href="#1-2-MySQL数据库的安装" class="headerlink" title="1.2 MySQL数据库的安装"></a>1.2 MySQL数据库的安装</h2><h3 id="windows"><a href="#windows" class="headerlink" title="windows"></a><strong>windows</strong></h3><p>直接去官网下载安装包，按照默认安装即可。</p>
+<p><strong>启动和停止</strong></p>
+<ul>
+<li>windows+r 输入services.msc找到mysql80。</li>
+<li>命令行输入<ul>
+<li>net start mysql80</li>
+<li>net stop mysql80</li>
+</ul>
+</li>
+</ul>
+<p><strong>客户端连接</strong></p>
+<ul>
+<li>mysql提供的客户端命令行工具</li>
+<li>系统自带的命令行连接<ul>
+<li>命令：<code>mysql [-h 127.0.0.1] [-P 3306] -u root -p</code></li>
+<li>这种方式需要配置环境变量</li>
+</ul>
+</li>
+</ul>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><h2 id="1-3-MySQL数据模型"><a href="#1-3-MySQL数据模型" class="headerlink" title="1.3 MySQL数据模型"></a>1.3 MySQL数据模型</h2><p><img src="/../images/MySql-Mysql/image-20250129163345252.png" srcset="/img/loading.gif" lazyload alt="image-20250129163345252"></p>
+<p>如图所示，我们的客户端通过SQL将要执行的操作发送给DBMS，然后由其帮助我们去操作、创建数据库。</p>
+<p><strong>关系型数据库</strong>：建立在关系模型基础上，由多张相互连接的二维表组成的数据库</p>
+<h1 id="2-SQL"><a href="#2-SQL" class="headerlink" title="2 SQL"></a>2 SQL</h1><h2 id="2-1-SQL通用语法"><a href="#2-1-SQL通用语法" class="headerlink" title="2.1 SQL通用语法"></a>2.1 SQL通用语法</h2><ul>
+<li>可以单行或者多行书写，以分号结尾</li>
+<li>可以使用空格&#x2F;缩进增加可读性</li>
+<li>不区分大小写，关键字建议用大写</li>
+<li>注释<ul>
+<li>单行注释：<code>-- 注释内容</code>&#x2F;<code># 注释内容</code></li>
+<li>多行注释：<code>/*注释内容*/</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="2-2-SQL分类"><a href="#2-2-SQL分类" class="headerlink" title="2.2 SQL分类"></a>2.2 SQL分类</h2><p><img src="/../images/MySql-Mysql/image-20250129164541224.png" srcset="/img/loading.gif" lazyload alt="image-20250129164541224"></p>
+<h2 id="2-3-DDL"><a href="#2-3-DDL" class="headerlink" title="2.3 DDL"></a>2.3 DDL</h2><h3 id="2-3-1-数据库操作"><a href="#2-3-1-数据库操作" class="headerlink" title="2.3.1 数据库操作"></a>2.3.1 数据库操作</h3><h4 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h4><ul>
+<li>查询所有数据库: <code>SHOW DATABASES;</code></li>
+<li>查询当前数据库: <code>SELECT DATABASE();</code></li>
+</ul>
+<h4 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> DATABASE [IF <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span>] 数据库名 [<span class="hljs-keyword">DEFAULT</span> CHARSET 字符集] [<span class="hljs-keyword">COLLATE</span> 排序规则];<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>if not exists：如果不存在则创建；存在不进行任何操作</li>
+<li>default charset:指定字符集</li>
+<li>collate：指定排序规则</li>
+</ul>
+<h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> DATABASE [IF <span class="hljs-keyword">EXISTS</span>] 数据库名;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>if exists：如果存在则删除</li>
+</ul>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">USE 数据库名;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-3-2-表操作"><a href="#2-3-2-表操作" class="headerlink" title="2.3.2 表操作"></a>2.3.2 表操作</h3><h4 id="查询-1"><a href="#查询-1" class="headerlink" title="查询"></a>查询</h4><ul>
+<li>查看当前数据库所有表</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SHOW</span> TABLES;<br></code></pre></td></tr></table></figure>
+
+<p>必须先使用USE进入一个具体的数据库。</p>
+<ul>
+<li>查询表结构</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DESC</span> 表名;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询指定表的建表语句</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SHOW</span> <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> 表名;<br></code></pre></td></tr></table></figure>
+
+<h4 id="创建-1"><a href="#创建-1" class="headerlink" title="创建"></a>创建</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> 表名(<br>	字段<span class="hljs-number">1</span> 字段<span class="hljs-number">1</span>类型 [COMMENT 字段<span class="hljs-number">1</span>注释],<br>	...<br>	字段n 字段n类型 [COMMENT 字段n注释]<br>)[COMMENT 表注释];<br></code></pre></td></tr></table></figure>
+
+<p><strong>例子</strong></p>
+<p><img src="/../images/MySql-Mysql/image-20250129170018326.png" srcset="/img/loading.gif" lazyload alt="image-20250129170018326"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> tb_user(<br>	id <span class="hljs-type">int</span> comment <span class="hljs-string">&#x27;编号&#x27;</span>,<br>    name <span class="hljs-type">varchar</span>(<span class="hljs-number">50</span>) comment <span class="hljs-string">&#x27;姓名&#x27;</span>,<br>    age <span class="hljs-type">int</span> comment <span class="hljs-string">&#x27;年龄&#x27;</span>,<br>    gender <span class="hljs-type">varchar</span>(<span class="hljs-number">1</span>) comment <span class="hljs-string">&#x27;性别&#x27;</span><br>    ) comment <span class="hljs-string">&#x27;用户表&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>用decs命令来查看表结构</p>
+<p><img src="/../images/MySql-Mysql/image-20250129170540291.png" srcset="/img/loading.gif" lazyload></p>
+<p>用show create table命令来查看建表语句</p>
+<p><img src="/../images/MySql-Mysql/image-20250129170724563.png" srcset="/img/loading.gif" lazyload alt="image-20250129170724563"></p>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>主要分为三类</p>
+<ul>
+<li>数值类型</li>
+<li>字符串类型</li>
+<li>日期时间类型</li>
+</ul>
+<p><strong>数值类型</strong></p>
+<p><img src="/../images/MySql-Mysql/image-20250129171019459.png" srcset="/img/loading.gif" lazyload alt="image-20250129171019459"></p>
+<p>例子：</p>
+<ul>
+<li>age TINYINT UNSIGNED</li>
+<li>score double(4,1) # 4代表整体长度，1代表小数位数</li>
+</ul>
+<p><strong>字符串类型</strong></p>
+<p><img src="/../images/MySql-Mysql/image-20250129171353079.png" srcset="/img/loading.gif" lazyload alt="image-20250129171353079"></p>
+<p>char和varchar都需要指明最大长度：</p>
+<ul>
+<li>对于char(10):存储几个字符都占用10个空间（用空格补齐）</li>
+<li>对于varchar(10)：存储几个字符就占用几个字符的空间</li>
+</ul>
+<p>char的性能高，varchar性能较差。</p>
+<p><strong>日期时间类型</strong></p>
+<p><img src="/../images/MySql-Mysql/image-20250129171646683.png" srcset="/img/loading.gif" lazyload alt="image-20250129171646683"></p>
+<h4 id="修改表"><a href="#修改表" class="headerlink" title="修改表"></a>修改表</h4><ul>
+<li>添加字段</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名 <span class="hljs-keyword">ADD</span> 字段名 类型 [COMMENT 注释] [约束];<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>修改字段</p>
+<ul>
+<li>修改字段类型</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名 MODIFY 字段名 新数据类型;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>修改字段名和字段类型</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名 CHANGE 旧字段名 新字段名 类型 [COMMENT 注释] [约束]<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>删除字段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名 <span class="hljs-keyword">DROP</span> 字段名;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>修改表名</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名 RENAME <span class="hljs-keyword">TO</span> 新表名;<br></code></pre></td></tr></table></figure>
+
+<h4 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h4><ul>
+<li>删除表</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> [IF <span class="hljs-keyword">EXISTS</span>] 表名;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>删除指定表，并重新创建该表</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">TRUNCATE</span> <span class="hljs-keyword">TABLE</span> 表名;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-4-DML"><a href="#2-4-DML" class="headerlink" title="2.4 DML"></a>2.4 DML</h2><p>对数据库中表的数据记录进行增删改操作。</p>
+<ul>
+<li>添加数据(INSERT)</li>
+<li>修改数据(UPDATE)</li>
+<li>删除数据(DELETE)</li>
+</ul>
+<h3 id="2-4-1-添加数据"><a href="#2-4-1-添加数据" class="headerlink" title="2.4.1 添加数据"></a>2.4.1 添加数据</h3><ul>
+<li>给指定字段添加数据</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> 表名(字段名<span class="hljs-number">1</span>,字段名<span class="hljs-number">2</span>,...) <span class="hljs-keyword">VALUES</span>(值<span class="hljs-number">1</span>,值<span class="hljs-number">2</span>,...);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>给全部字段添加数据</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> 表名 <span class="hljs-keyword">VALUES</span>(值<span class="hljs-number">1</span>,值<span class="hljs-number">2</span>,...);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>批量添加数据</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> 表名(字段名<span class="hljs-number">1</span>,字段名<span class="hljs-number">2</span>,...) <span class="hljs-keyword">VALUES</span>(值<span class="hljs-number">1</span>,值<span class="hljs-number">2</span>,...),(值<span class="hljs-number">1</span>,值<span class="hljs-number">2</span>,...),...;<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> 表名 <span class="hljs-keyword">VALUES</span>(值<span class="hljs-number">1</span>,值<span class="hljs-number">2</span>,...),(值<span class="hljs-number">1</span>,值<span class="hljs-number">2</span>,...),...;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-4-2-修改数据"><a href="#2-4-2-修改数据" class="headerlink" title="2.4.2 修改数据"></a>2.4.2 修改数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> 表名 <span class="hljs-keyword">SET</span> 字段名<span class="hljs-number">1</span><span class="hljs-operator">=</span>值<span class="hljs-number">1</span>,字段名<span class="hljs-number">2</span><span class="hljs-operator">=</span>值<span class="hljs-number">2</span>,...[ <span class="hljs-keyword">WHERE</span> 条件];<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-4-3-删除数据"><a href="#2-4-3-删除数据" class="headerlink" title="2.4.3 删除数据"></a>2.4.3 删除数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> 表名 [<span class="hljs-keyword">WHERE</span> 条件];<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-5-DQL"><a href="#2-5-DQL" class="headerlink" title="2.5 DQL"></a>2.5 DQL</h2><p>数据查询语言，用来查询数据库中表的记录。</p>
+<p>关键字：SELECT</p>
+<p><strong>语法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <br>	字段列表<br><span class="hljs-keyword">FROM</span> <br>	表名列表<br><span class="hljs-keyword">WHERE</span><br>	条件列表<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span><br>	分组字段列表<br><span class="hljs-keyword">HAVING</span><br>	分组后条件列表<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span><br>	排序字段列表<br>LIMIT<br>	分页参数<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-5-1-基本查询"><a href="#2-5-1-基本查询" class="headerlink" title="2.5.1 基本查询"></a>2.5.1 基本查询</h3><ul>
+<li>查询多个字段</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> 字段<span class="hljs-number">1</span>,字段<span class="hljs-number">2</span>,... <span class="hljs-keyword">FROM</span> 表名;<br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> 表名;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>设置别名</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> 字段<span class="hljs-number">1</span> [<span class="hljs-keyword">AS</span> 别名<span class="hljs-number">1</span>], 字段<span class="hljs-number">2</span> [<span class="hljs-keyword">AS</span> 别名<span class="hljs-number">2</span>],... <span class="hljs-keyword">FROM</span> 表名;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>去除重复记录</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> 字段列表 <span class="hljs-keyword">FROM</span> 表名;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-5-2-条件查询"><a href="#2-5-2-条件查询" class="headerlink" title="2.5.2 条件查询"></a>2.5.2 条件查询</h3><ul>
+<li>基本语法</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> 字段列表 <span class="hljs-keyword">FROM</span> 表名 <span class="hljs-keyword">WHERE</span> 条件列表;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>条件</li>
+</ul>
+<p><img src="/../images/MySql-Mysql/image-20250131193638225.png" srcset="/img/loading.gif" lazyload alt="image-20250131193638225"></p>
+<p><img src="/../images/MySql-Mysql/image-20250131193646484.png" srcset="/img/loading.gif" lazyload alt="image-20250131193646484"></p>
+<h3 id="2-5-3-聚合函数"><a href="#2-5-3-聚合函数" class="headerlink" title="2.5.3 聚合函数"></a>2.5.3 聚合函数</h3><p>将一列数据作为一个整体，进行纵向计算。</p>
+<p><strong>常见聚合函数</strong></p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>count</td>
+<td>统计数量</td>
+</tr>
+<tr>
+<td>max</td>
+<td>最大值</td>
+</tr>
+<tr>
+<td>min</td>
+<td>最小值</td>
+</tr>
+<tr>
+<td>avg</td>
+<td>平均值</td>
+</tr>
+<tr>
+<td>sum</td>
+<td>求和</td>
+</tr>
+</tbody></table>
+<p><strong>语法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> 聚合函数(字段列表) <span class="hljs-keyword">FROM</span> 表名;<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<p>null值不参与计算。</p>
+<h3 id="2-5-4-分组查询"><a href="#2-5-4-分组查询" class="headerlink" title="2.5.4 分组查询"></a>2.5.4 分组查询</h3><p><strong>语法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> 字段列表 <span class="hljs-keyword">FROM</span> 表名 [<span class="hljs-keyword">WHERE</span> 条件] <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> 分组字段名 [<span class="hljs-keyword">HAVING</span> 分组后过滤条件];<br></code></pre></td></tr></table></figure>
+
+<p><strong>where与having区别</strong></p>
+<ul>
+<li>执行时机不同：where是分组之前进行过滤，不满足where条件，不参与分组；而having是分组之后对结果进行过滤。</li>
+<li>判断条件不同：where不能对聚合函数进行判断，而having可以。</li>
+</ul>
+<p><strong>注意</strong></p>
+<ul>
+<li>执行顺序：where &gt; 聚合函数 &gt; having</li>
+<li>分组之后，查询的字段一般为聚合函数和分组字段，查询其他字段无任何意义</li>
+</ul>
+<h3 id="2-5-5-排序查询"><a href="#2-5-5-排序查询" class="headerlink" title="2.5.5 排序查询"></a>2.5.5 排序查询</h3><p><strong>语法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> 字段列表 <span class="hljs-keyword">FROM</span> 表名 <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> 字段<span class="hljs-number">1</span> 排序方式<span class="hljs-number">1</span>, 字段<span class="hljs-number">2</span> 排序方式<span class="hljs-number">2</span>;<br></code></pre></td></tr></table></figure>
+
+<p><strong>排序方式</strong></p>
+<ul>
+<li>ASC：升序（默认值）</li>
+<li>DESC：降序</li>
+</ul>
+<h3 id="2-5-6-分页查询"><a href="#2-5-6-分页查询" class="headerlink" title="2.5.6 分页查询"></a>2.5.6 分页查询</h3><p><strong>语法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> 字段列表 <span class="hljs-keyword">FROM</span> 表名 LIMIT 起始索引,查询记录数;<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<ul>
+<li>起始索引从0开始，起始索引&#x3D;（查询页码-1）* 每页记录数。</li>
+<li>分页查询是数据库的方言，不同的数据库有不同的实现，mysql是LIMIT</li>
+<li>如果查询的是第一页数据，起始索引可以省略，直接简写为limit 10.</li>
+</ul>
+<h3 id="2-5-7-DQL执行顺序"><a href="#2-5-7-DQL执行顺序" class="headerlink" title="2.5.7 DQL执行顺序"></a>2.5.7 DQL执行顺序</h3><p><img src="/../images/MySql-Mysql/image-20250131201032788.png" srcset="/img/loading.gif" lazyload alt="image-20250131201032788"></p>
+<h2 id="2-6-DCL"><a href="#2-6-DCL" class="headerlink" title="2.6 DCL"></a>2.6 DCL</h2><p>用来管理数据库用户、控制数据库的访问权限。</p>
+<h3 id="2-6-1-管理用户"><a href="#2-6-1-管理用户" class="headerlink" title="2.6.1 管理用户"></a>2.6.1 管理用户</h3><ul>
+<li>查询用户</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">USE mysql;<br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">user</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>创建用户</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> <span class="hljs-string">&#x27;用户名&#x27;</span>@<span class="hljs-string">&#x27;主机名&#x27;</span> IDENTIFIED <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;密码&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>修改用户密码</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">USER</span> <span class="hljs-string">&#x27;用户名&#x27;</span>@<span class="hljs-string">&#x27;主机名&#x27;</span> IDENTIFIED <span class="hljs-keyword">WITH</span> mysql_native_password <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;新密码&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>删除用户</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">USER</span> <span class="hljs-string">&#x27;用户名&#x27;</span>@<span class="hljs-string">&#x27;主机名&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-6-2-权限控制"><a href="#2-6-2-权限控制" class="headerlink" title="2.6.2 权限控制"></a>2.6.2 权限控制</h3><p><strong>常用权限</strong></p>
+<p><img src="/../images/MySql-Mysql/image-20250131201930250.png" srcset="/img/loading.gif" lazyload alt="image-20250131201930250"></p>
+<ul>
+<li>查询权限</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SHOW</span> GRANTS <span class="hljs-keyword">FOR</span> <span class="hljs-string">&#x27;用户名&#x27;</span>@<span class="hljs-string">&#x27;主机名&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>授予权限</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> 权限列表 <span class="hljs-keyword">ON</span> 数据库名.表名 <span class="hljs-keyword">TO</span> <span class="hljs-string">&#x27;用户名&#x27;</span>@<span class="hljs-string">&#x27;主机名&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>撤销权限</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> 权限列表 <span class="hljs-keyword">ON</span> 数据库名.表名 <span class="hljs-keyword">FROM</span> <span class="hljs-string">&#x27;用户名&#x27;</span>@<span class="hljs-string">&#x27;主机名&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<h1 id="3-函数"><a href="#3-函数" class="headerlink" title="3 函数"></a>3 函数</h1><h2 id="3-1-字符串函数"><a href="#3-1-字符串函数" class="headerlink" title="3.1 字符串函数"></a>3.1 字符串函数</h2><p><img src="/../images/MySql-Mysql/image-20250201121439266.png" srcset="/img/loading.gif" lazyload alt="image-20250201121439266"></p>
+<h2 id="3-2-数值函数"><a href="#3-2-数值函数" class="headerlink" title="3.2 数值函数"></a>3.2 数值函数</h2><p><img src="/../images/MySql-Mysql/image-20250201121923898.png" srcset="/img/loading.gif" lazyload alt="image-20250201121923898"></p>
+<h2 id="3-3-日期函数"><a href="#3-3-日期函数" class="headerlink" title="3.3 日期函数"></a>3.3 日期函数</h2><p><img src="/../images/MySql-Mysql/image-20250201122243626.png" srcset="/img/loading.gif" lazyload alt="image-20250201122243626"></p>
+<h2 id="3-4-流程函数"><a href="#3-4-流程函数" class="headerlink" title="3.4 流程函数"></a>3.4 流程函数</h2><p><img src="/../images/MySql-Mysql/image-20250201122608008.png" srcset="/img/loading.gif" lazyload alt="image-20250201122608008"></p>
+<h1 id="4-约束"><a href="#4-约束" class="headerlink" title="4 约束"></a>4 约束</h1><p><strong>概念</strong>：作用于表中字段上的规则，用于限制存储在表中的数据</p>
+<p><strong>目的</strong>：保证数据库中数据的正确、有效和完整</p>
+<p><strong>分类</strong></p>
+<p><img src="/../images/MySql-Mysql/image-20250201124712615.png" srcset="/img/loading.gif" lazyload alt="image-20250201124712615"></p>
+<p><strong>案例</strong></p>
+<p><img src="/../images/MySql-Mysql/image-20250201125133223.png" srcset="/img/loading.gif" lazyload alt="image-20250201125133223"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">user</span>(<br>    id     <span class="hljs-type">int</span>           <span class="hljs-keyword">primary</span> key auto_increment     comment <span class="hljs-string">&#x27;编号&#x27;</span>,<br>    name   <span class="hljs-type">varchar</span>(<span class="hljs-number">10</span>)   <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> <span class="hljs-keyword">unique</span>                comment <span class="hljs-string">&#x27;姓名&#x27;</span>,<br>    age    <span class="hljs-type">int</span> unsigned  <span class="hljs-keyword">check</span>(age <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> age <span class="hljs-operator">&lt;=</span> <span class="hljs-number">120</span>)  comment <span class="hljs-string">&#x27;年龄&#x27;</span>,<br>    status <span class="hljs-type">char</span>(<span class="hljs-number">1</span>)       <span class="hljs-keyword">default</span> <span class="hljs-string">&#x27;1&#x27;</span>                    comment <span class="hljs-string">&#x27;状态&#x27;</span>,<br>    gender <span class="hljs-type">char</span>(<span class="hljs-number">1</span>)                                      comment <span class="hljs-string">&#x27;性别&#x27;</span><br>)comment <span class="hljs-string">&#x27;用户表&#x27;</span>;<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="4-1-外键约束"><a href="#4-1-外键约束" class="headerlink" title="4.1 外键约束"></a>4.1 外键约束</h2><p><strong>概念</strong>：用来让两张表的数据之间建立连接，从而保证数据的一致性和完整性。</p>
+<p><img src="/../images/MySql-Mysql/image-20250201130252646.png" srcset="/img/loading.gif" lazyload alt="image-20250201130252646"></p>
+<p><strong>语法</strong></p>
+<ul>
+<li>添加外键</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> 表名(<br>	字段名 数据类型<br>	...<br>	[<span class="hljs-keyword">CONSTRAINT</span>] [外键名称] <span class="hljs-keyword">FOREIGN</span> KEY(外键字段名) <span class="hljs-keyword">REFERENCES</span> 主表(主表列名)<br>);<br><br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名 <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">CONSTRAINT</span> 外键名称 <span class="hljs-keyword">FOREIGN</span> KEY(外键字段名) <span class="hljs-keyword">REFERENCES</span> 主表(主表列名);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>删除外键</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名 <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">FOREIGN</span> KEY 外键名称;<br></code></pre></td></tr></table></figure>
+
+<p><strong>删除&#x2F;更新行为</strong></p>
+<p><img src="/../images/MySql-Mysql/image-20250201130815062.png" srcset="/img/loading.gif" lazyload alt="image-20250201130815062"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名 <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">CONSTRAINT</span> 外键名称 <span class="hljs-keyword">FOREIGN</span> KEY(外键字段) <span class="hljs-keyword">REFERENCES</span> 主表名(主表字段名) <span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> CASCADE <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE;<br></code></pre></td></tr></table></figure>
+
+<h1 id="5-多表查询"><a href="#5-多表查询" class="headerlink" title="5 多表查询"></a>5 多表查询</h1><h2 id="5-1-多表关系"><a href="#5-1-多表关系" class="headerlink" title="5.1 多表关系"></a>5.1 多表关系</h2><h3 id="5-1-1-一对多"><a href="#5-1-1-一对多" class="headerlink" title="5.1.1 一对多"></a>5.1.1 一对多</h3><p>例如部门与员工的关系，一个部门对应多个员工，一个员工对应一个部门。</p>
+<p>实现：在多的一方建立外键，指向一的一方的主键。</p>
+<h3 id="5-1-2-多对多"><a href="#5-1-2-多对多" class="headerlink" title="5.1.2 多对多"></a>5.1.2 多对多</h3><p>例如学生和课程之间的关系，一个学生可以选修多门课程，一门课程也可以被多个学生选修。</p>
+<p>实现：建立一张中间表，至少包含两个外键，分别关联双方的主键。</p>
+<h3 id="5-1-3-一对一"><a href="#5-1-3-一对一" class="headerlink" title="5.1.3 一对一"></a>5.1.3 一对一</h3><p>例如用户与用户详情之间的关系。多用于单表拆分，将一张表的基础字段放在一张表中，其他详情放在另外一张表中，以提升操作效率。</p>
+<p>实现：在任意一方加入外键，关联另一方的主键，并且设置外键为唯一的（unique）</p>
+<h2 id="5-2-多表查询概述"><a href="#5-2-多表查询概述" class="headerlink" title="5.2 多表查询概述"></a>5.2 多表查询概述</h2><p><strong>概述</strong>：从多张表中查询数据</p>
+<p><strong>笛卡尔积</strong>：两个集合A和B的所有组合情况（多表查询时，需要消除无效的笛卡尔积）。</p>
+<h2 id="5-3-连接查询"><a href="#5-3-连接查询" class="headerlink" title="5.3 连接查询"></a>5.3 连接查询</h2><h3 id="5-3-1-内连接"><a href="#5-3-1-内连接" class="headerlink" title="5.3.1 内连接"></a>5.3.1 内连接</h3><p>查询A、B交集部分的数据。</p>
+<p><strong>语法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 隐式内连接</span><br><span class="hljs-keyword">SELECT</span> 字段列表 <span class="hljs-keyword">FROM</span> 表<span class="hljs-number">1</span>,表<span class="hljs-number">2</span> <span class="hljs-keyword">WHERE</span> 条件;<br><br><span class="hljs-comment">-- 显式内连接</span><br><span class="hljs-keyword">SELECT</span> 字段列表 <span class="hljs-keyword">FROM</span> 表<span class="hljs-number">1</span> [<span class="hljs-keyword">INNER</span>] <span class="hljs-keyword">JOIN</span> 表<span class="hljs-number">2</span> <span class="hljs-keyword">ON</span> 连接条件;<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-3-2-外连接"><a href="#5-3-2-外连接" class="headerlink" title="5.3.2 外连接"></a>5.3.2 外连接</h3><h4 id="左外连接"><a href="#左外连接" class="headerlink" title="左外连接"></a>左外连接</h4><p>查询左表所有数据，以及两表交集部分的数据。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> 字段列表 表<span class="hljs-number">1</span> <span class="hljs-keyword">LEFT</span> [<span class="hljs-keyword">OUTER</span>] <span class="hljs-keyword">JOIN</span> 表<span class="hljs-number">2</span> <span class="hljs-keyword">ON</span> 条件;<br></code></pre></td></tr></table></figure>
+
+<h4 id="右外连接"><a href="#右外连接" class="headerlink" title="右外连接"></a>右外连接</h4><p>查询右表所有数据，以及两表交集部分的数据。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> 字段列表 表<span class="hljs-number">1</span> <span class="hljs-keyword">RIGHT</span> [<span class="hljs-keyword">OUTER</span>] <span class="hljs-keyword">JOIN</span> 表<span class="hljs-number">2</span> <span class="hljs-keyword">ON</span> 条件;<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-3-3-自连接"><a href="#5-3-3-自连接" class="headerlink" title="5.3.3 自连接"></a>5.3.3 自连接</h3><p>当前表与自身的连接查询，自连接必须使用表别名。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> 字段列表 <span class="hljs-keyword">FROM</span> 表A 别名A <span class="hljs-keyword">JOIN</span> 表A 别名B <span class="hljs-keyword">ON</span> 条件;<br></code></pre></td></tr></table></figure>
+
+<h2 id="5-4-联合查询"><a href="#5-4-联合查询" class="headerlink" title="5.4 联合查询"></a>5.4 联合查询</h2><p>关键字：union，union all</p>
+<p>把多次查询的结果合并起来，形成一个新的查询结果。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> 字段列表 <span class="hljs-keyword">FROM</span> 表A...<br><span class="hljs-keyword">UNION</span> [<span class="hljs-keyword">ALL</span>]<br><span class="hljs-keyword">SELECT</span> 字段列表 <span class="hljs-keyword">FROM</span> 表B...;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>UNION会对结果去重</li>
+<li>UNION ALL直接将两次查询的结果拼接到一起</li>
+<li>多张表的列数必须保持一致，字段类型也需要保持一致</li>
+</ul>
+<h2 id="5-5-子查询"><a href="#5-5-子查询" class="headerlink" title="5.5 子查询"></a>5.5 子查询</h2><p>概念：在sql语句中嵌套select语句，成为嵌套查询，也叫子查询。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> t1 <span class="hljs-keyword">WHERE</span> column1 <span class="hljs-operator">=</span> (<span class="hljs-keyword">SELECT</span> column1 <span class="hljs-keyword">FROM</span> t2);<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-5-1-标量子查询"><a href="#5-5-1-标量子查询" class="headerlink" title="5.5.1 标量子查询"></a>5.5.1 标量子查询</h3><p>子查询放回的结果是单个值。 </p>
+<p><strong>常用的操作符</strong>：&#x3D;,&lt;&gt;,&gt;,&lt;,&gt;&#x3D;,&lt;&#x3D;</p>
+<p><strong>案例</strong></p>
+<p>查询销售部的所有员工信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- a 先查询销售部的部门id</span><br><span class="hljs-keyword">select</span> id <span class="hljs-keyword">from</span> dept <span class="hljs-keyword">where</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;销售部&#x27;</span>;<br><span class="hljs-comment">-- b 再查询部门id=销售部部门id的员工信息</span><br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> dept_id <span class="hljs-operator">=</span> (<span class="hljs-keyword">select</span> id <span class="hljs-keyword">from</span> dept <span class="hljs-keyword">where</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;销售部&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-5-2-列子查询"><a href="#5-5-2-列子查询" class="headerlink" title="5.5.2 列子查询"></a>5.5.2 列子查询</h3><p>子查询返回的结果是一列。</p>
+<p><strong>常用的操作符</strong>：IN, NOT IN, ANY, SOME, ALL</p>
+<p><img src="/../images/MySql-Mysql/image-20250201141909930.png" srcset="/img/loading.gif" lazyload alt="image-20250201141909930"></p>
+<h3 id="5-5-3-行子查询"><a href="#5-5-3-行子查询" class="headerlink" title="5.5.3 行子查询"></a>5.5.3 行子查询</h3><p>子查询返回的结果是一行。</p>
+<p><strong>常用的操作符</strong>：&#x3D;, &lt;&gt;, IN, NOT IN</p>
+<p><strong>案例</strong></p>
+<p>查询与张无忌工资以及直属领导相同的员工信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- a 查询张无忌的工资及直属领导id</span><br><span class="hljs-keyword">select</span> salary, managerid <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;张无忌&#x27;</span>;<br><span class="hljs-comment">-- 结果 12500, 1</span><br><span class="hljs-comment">-- b 查询与之相同的员工信息</span><br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> salary <span class="hljs-operator">=</span> <span class="hljs-number">12500</span> <span class="hljs-keyword">and</span> managerid <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>;<br><span class="hljs-comment">-- 可以进一步简写为</span><br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> (salary, mangerid) <span class="hljs-operator">=</span> (<span class="hljs-number">12500</span>, <span class="hljs-string">&#x27;1&#x27;</span>);<br><br><span class="hljs-comment">-- 进一步用子查询</span><br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> (salary, mangerid) <span class="hljs-operator">=</span> (<span class="hljs-keyword">select</span> salary, managerid <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;张无忌&#x27;</span>;);<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-5-4-表子查询"><a href="#5-5-4-表子查询" class="headerlink" title="5.5.4 表子查询"></a>5.5.4 表子查询</h3><p>子查询返回的结果是多行多列。</p>
+<p><strong>常用的操作</strong>：IN</p>
+<p>主要是用到from之后，将临时结果作为表从中查询。</p>
+<p><strong>案例</strong></p>
+<p>查询与“鹿杖客”，“宋远桥”的职位和薪资相同的员工信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> (job, salary) <span class="hljs-keyword">in</span> (<span class="hljs-keyword">select</span> job, salary <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;鹿杖客&#x27;</span> <span class="hljs-keyword">or</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;宋远桥&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>查询入职日期是’2006-01-01’之后的员工信息，及部门信息。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> e.<span class="hljs-operator">*</span>, d.<span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> (<span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> entrydate <span class="hljs-operator">&gt;</span> <span class="hljs-string">&#x27;2006-01-01&#x27;</span>) e <span class="hljs-keyword">left</span> <span class="hljs-keyword">outer</span> <span class="hljs-keyword">join</span> dept d <span class="hljs-keyword">on</span> e.dept_id <span class="hljs-operator">=</span> d.id;<br></code></pre></td></tr></table></figure>
+
+<h2 id="5-6-多表查询案例"><a href="#5-6-多表查询案例" class="headerlink" title="5.6 多表查询案例"></a>5.6 多表查询案例</h2><ul>
+<li>查询员工的姓名、年龄、职位、部门信息。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> e.name, e.age, e.job, d.<span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp e, dept d <span class="hljs-keyword">where</span> e.dept_id <span class="hljs-operator">=</span> d.id;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询年龄小于30的员工姓名、年龄、职位、部门信息。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> e.name, e.age, e.job, d.<span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp e <span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> dept d <span class="hljs-keyword">on</span> e.dept_id <span class="hljs-operator">=</span> d.id <span class="hljs-keyword">where</span> e.age <span class="hljs-operator">&lt;</span> <span class="hljs-number">30</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询拥有员工的部门ID、部门名称。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> d.id, d.name <span class="hljs-keyword">from</span> emp e, dept d <span class="hljs-keyword">where</span> e.dept_id <span class="hljs-operator">=</span> d.id;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询所有年龄大于40岁的员工，及其归属的部门名称；如果员工没有分配部门，也需要展示出来。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> e.name, d.name <span class="hljs-keyword">from</span> emp e <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> dept d <span class="hljs-keyword">on</span> e.dept_id <span class="hljs-operator">=</span> d.id <span class="hljs-keyword">where</span> e.age <span class="hljs-operator">&gt;</span> <span class="hljs-number">40</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询所有员工的工资等级。</li>
+</ul>
+<p><img src="/../images/MySql-Mysql/image-20250201145602955.png" srcset="/img/loading.gif" lazyload alt="工资等级表"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> e.name, sg.grade <span class="hljs-keyword">from</span> emp e, salarygrade sg <span class="hljs-keyword">where</span> e.salary <span class="hljs-operator">&gt;=</span> losal <span class="hljs-keyword">and</span> e.salary <span class="hljs-operator">&lt;=</span> hisal;<br><br><span class="hljs-keyword">select</span> e.name, sg.grade <span class="hljs-keyword">from</span> emp e, salarygrade sg <span class="hljs-keyword">where</span> e.salary <span class="hljs-keyword">between</span> sg.losal <span class="hljs-keyword">and</span> sg.hisal;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询研发部所有员工的信息及工资等级。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> e.<span class="hljs-operator">*</span>, sg.grade <span class="hljs-keyword">from</span> emp e, salarygrade sg <span class="hljs-keyword">where</span> e.salary <span class="hljs-keyword">between</span> sg.losal <span class="hljs-keyword">and</span> sg.hisal <span class="hljs-keyword">and</span> e.dept_id <span class="hljs-operator">=</span> (<span class="hljs-keyword">select</span> id <span class="hljs-keyword">from</span> dept <span class="hljs-keyword">where</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;研发部&#x27;</span>);<br><br><span class="hljs-keyword">select</span> e.<span class="hljs-operator">*</span>, sg.grade <span class="hljs-string">&#x27;工资等级&#x27;</span><br><span class="hljs-keyword">from</span> emp e, salgrade sg, dept d<br><span class="hljs-keyword">where</span> e.salary <span class="hljs-keyword">between</span> sg.losal <span class="hljs-keyword">and</span> sg.hisal<br>  <span class="hljs-keyword">and</span> e.dept_id <span class="hljs-operator">=</span> d.id<br>  <span class="hljs-keyword">and</span> d.name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;研发部&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询研发部员工的平均工资。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-built_in">avg</span>(e.salary) <span class="hljs-string">&#x27;平均薪资&#x27;</span><br><span class="hljs-keyword">from</span> emp e, dept d<br><span class="hljs-keyword">where</span> e.dept_id <span class="hljs-operator">=</span> d.id <span class="hljs-keyword">and</span><br>      d.name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;研发部&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询工资比灭绝高的员工信息。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> e.<span class="hljs-operator">*</span><br><span class="hljs-keyword">from</span> emp e<br><span class="hljs-keyword">where</span> e.salary <span class="hljs-operator">&gt;</span> (<span class="hljs-keyword">select</span> salary <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;灭绝&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询比平均薪资高的员工信息。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">from</span> emp e<br><span class="hljs-keyword">where</span> e.salary <span class="hljs-operator">&gt;</span> (<span class="hljs-keyword">select</span> <span class="hljs-built_in">avg</span>(salary) <span class="hljs-keyword">from</span> emp);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询低于本部门平均工资的员工信息。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> e.name, e.salary, e.dept_id, t.dept_id, t.avg_sal<br><span class="hljs-keyword">from</span> emp e,<br>     (<span class="hljs-keyword">select</span> dept_id, <span class="hljs-built_in">avg</span>(salary) avg_sal <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> dept_id) t<br><span class="hljs-keyword">where</span> e.dept_id <span class="hljs-operator">=</span> t.dept_id<br>  <span class="hljs-keyword">and</span> e.salary <span class="hljs-operator">&lt;</span> t.avg_sal;<br><br><span class="hljs-keyword">select</span> e.<span class="hljs-operator">*</span><br><span class="hljs-keyword">from</span> emp e<br><span class="hljs-keyword">where</span> e.salary <span class="hljs-operator">&lt;</span> (<span class="hljs-keyword">select</span> <span class="hljs-built_in">avg</span>(salary) <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> emp.dept_id <span class="hljs-operator">=</span> e.dept_id);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询所有的部门信息，并统计部门的员工人数。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 查询所有的部门信息，并统计部门的员工人数。</span><br><span class="hljs-keyword">select</span> d.name, <span class="hljs-built_in">count</span>(e.name) <span class="hljs-string">&#x27;人数&#x27;</span><br><span class="hljs-keyword">from</span> dept d<br>         <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> emp e <span class="hljs-keyword">on</span> d.id <span class="hljs-operator">=</span> e.dept_id<br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> d.name;<br></code></pre></td></tr></table></figure>
+
+<h1 id="6-事务"><a href="#6-事务" class="headerlink" title="6 事务"></a>6 事务</h1><h2 id="6-1-事务简介"><a href="#6-1-事务简介" class="headerlink" title="6.1 事务简介"></a>6.1 事务简介</h2><p>事务是一组操作的集合，是一个不可分割的工作单位，事务会把所有的操作作为一个整体一起向系统提交或撤销操作请求，要么同时成功，要么同时失败。</p>
+<p>默认mysql的事务是自动提交的，当执行一条sql语句，mysql会立即隐式的提交事务。</p>
+<h2 id="6-2-事务操作"><a href="#6-2-事务操作" class="headerlink" title="6.2 事务操作"></a>6.2 事务操作</h2><ul>
+<li>查看&#x2F;设置事务提交方式</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> @<span class="hljs-variable">@autocommit</span>;<br><br><span class="hljs-keyword">SET</span> @<span class="hljs-variable">@autocommit</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br><span class="hljs-keyword">SET</span> @<span class="hljs-variable">@autocommit</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>提交事务</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">COMMIT</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>回滚事务</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ROLLBACK</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>开启事务</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">START</span> TRANSACTION <br><span class="hljs-comment">-- 或</span><br><span class="hljs-keyword">BEGIN</span>;<br></code></pre></td></tr></table></figure>
+
+<h2 id="6-3-事务四大特性ACID"><a href="#6-3-事务四大特性ACID" class="headerlink" title="6.3 事务四大特性ACID"></a>6.3 事务四大特性ACID</h2><ul>
+<li>原子性（atuomicity）：事务是不可分割的最小操作单元。</li>
+<li>一致性（consistency）：事务完成时，必须使所有的数据都保持一致状态</li>
+<li>隔离性（isolation）：保证事务在不受外部并发操作影响的独立环境下运行</li>
+<li>持久性（durability）：事务一旦提交或者回滚，对数据的改变就是永久的</li>
+</ul>
+<h2 id="6-4-并发事务问题"><a href="#6-4-并发事务问题" class="headerlink" title="6.4 并发事务问题"></a>6.4 并发事务问题</h2><p><img src="/../images/MySql-Mysql/image-20250201211459327.png" srcset="/img/loading.gif" lazyload alt="image-20250201211459327"></p>
+<h2 id="6-5-事务隔离级别"><a href="#6-5-事务隔离级别" class="headerlink" title="6.5 事务隔离级别"></a>6.5 事务隔离级别</h2><p><img src="/../images/MySql-Mysql/image-20250201211735100.png" srcset="/img/loading.gif" lazyload alt="image-20250201211735100"></p>
+<p>从上到下，隔离级别越来越高，性能越来越差。</p>
+<ul>
+<li>查看事务隔离级别</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> @<span class="hljs-variable">@TRANSACTION_ISOLATION</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>设置事务隔离级别</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SET</span> [SESSION <span class="hljs-operator">|</span> <span class="hljs-keyword">GLOBAL</span>] TRANSACTION ISOLATION LEVEL &#123;READ UNCOMMITTED<span class="hljs-operator">|</span>READ COMMITTED<span class="hljs-operator">|</span>REPEATABLE READ<span class="hljs-operator">|</span>SERIALIZABLE&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>SESSION|GLOBAL字段指明是设置当前会话的隔离级别还是全局的隔离级别。</p>
+<h1 id="7-存储引擎"><a href="#7-存储引擎" class="headerlink" title="7 存储引擎"></a>7 存储引擎</h1><h2 id="7-1-mysql体系结构"><a href="#7-1-mysql体系结构" class="headerlink" title="7.1 mysql体系结构"></a>7.1 mysql体系结构</h2><p><img src="/../images/MySql-Mysql/image-20250202202859742.png" srcset="/img/loading.gif" lazyload alt="image-20250202202859742"></p>
+<ul>
+<li>连接层：最上层是一些客户端和链接服务，主要完成一些类似于连接处理、授权认证、及相关的安全方案。服务器也会为安全接入的每个客户端验证它所具有的操作权限。</li>
+<li>服务层：第二层架构主要完成大多数的核心服务功能，如SQL接口，并完成缓存的查询，SQL的分析和优化，部分内置函数的执行。所有跨存储引擎的功能也在这一层实现，如 过程、函数等。</li>
+<li>引擎层：存储引擎真正的负责了MvSQL中数据的存储和提取，服务器通过API和存储引擎进行通信。不同的存储引擎具有不同的功能，这样我们可以根据自己的需要，来选取合适的存储引擎。</li>
+<li>存储层：主要是将数据存储在文件系统之上，并完成与存储引擎的交互，</li>
+</ul>
+<h2 id="7-2-存储引擎简介"><a href="#7-2-存储引擎简介" class="headerlink" title="7.2 存储引擎简介"></a>7.2 存储引擎简介</h2><p>存储引擎是存储数据、建立索引、更新&#x2F;查询数据等技术的实现方式。存储引擎是基于表的，而不是基于库的。</p>
+<ul>
+<li>在创建表时，指定存储引擎</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> 表名(<br>	字段列表<br>)ENGINE <span class="hljs-operator">=</span> INNODB;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查看当前数据库支持的存储引擎</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SHOW</span> ENGINES;<br></code></pre></td></tr></table></figure>
+
+<h2 id="7-3-存储引擎特点"><a href="#7-3-存储引擎特点" class="headerlink" title="7.3 存储引擎特点"></a>7.3 存储引擎特点</h2><h3 id="7-3-1-InnoDB"><a href="#7-3-1-InnoDB" class="headerlink" title="7.3.1 InnoDB"></a>7.3.1 InnoDB</h3><p>兼顾高可靠性和高性能的通用存储引擎，在mysql5.5之后，作为默认存储引擎。</p>
+<ul>
+<li>DML操作遵循ACID模型，支持<strong>事务</strong>。</li>
+<li><strong>行级锁</strong>，提高并发事务访问。</li>
+<li>支持<strong>外键</strong>FOREIGN KEY约束，保证数据的完整性和正确性；</li>
+</ul>
+<p><strong>文件</strong>：</p>
+<ul>
+<li>xxx.ibd：xxx代表的是表名，innoDB引擎的每张表都会对应这样的一个表空间文件，存储该表的表结构（frm，sdi），数据和索引。</li>
+<li>参数：innodb_file_per_table指定是否每张表都对应一个表文件。</li>
+</ul>
+<p><strong>逻辑存储结构</strong></p>
+<p><img src="/../images/MySql-Mysql/image-20250202204450953.png" srcset="/img/loading.gif" lazyload alt="image-20250202204450953"></p>
+<h3 id="7-3-2-MyISAM"><a href="#7-3-2-MyISAM" class="headerlink" title="7.3.2 MyISAM"></a>7.3.2 MyISAM</h3><p>早期的默认存储引擎。</p>
+<ul>
+<li>不支持事务，不支持外键</li>
+<li>支持表锁，不支持行锁</li>
+<li>访问速度快</li>
+</ul>
+<p><strong>文件</strong></p>
+<ul>
+<li>xxx.sdi：存储表结构信息</li>
+<li>xxx.MYD：存储数据</li>
+<li>xxx.MYI：存储索引</li>
+</ul>
+<h3 id="7-3-3-Memory"><a href="#7-3-3-Memory" class="headerlink" title="7.3.3 Memory"></a>7.3.3 Memory</h3><p>存储在内存中，只能作为临时表或缓存使用</p>
+<ul>
+<li>内存存放，访问速度快</li>
+<li>hash索引（默认）</li>
+</ul>
+<p><strong>文件</strong></p>
+<ul>
+<li>xxx.sdi：存储表结构信息</li>
+</ul>
+<p><img src="/../images/MySql-Mysql/image-20250202204822801.png" srcset="/img/loading.gif" lazyload alt="image-20250202204822801"></p>
+<h2 id="7-4-存储引擎选择"><a href="#7-4-存储引擎选择" class="headerlink" title="7.4 存储引擎选择"></a>7.4 存储引擎选择</h2><ul>
+<li>InnoDB：是Mysql的默认存储引擎，支持事务、外键。如果应用对事务的完整性有比较高的要求，在并发条件下要求数据的一致性，数据操作除了插入和查询之外，还包含很多的更新、删除操作，那么InnoDB存储引擎是比较合适的选择。</li>
+<li>MyISAM： 如果应用是以读操作和插入操作为主，只有很少的更新和删除操作，并且对事务的完整性、并发性要求不是很高，那么选择这个存储引擎是非常合适的。</li>
+<li>MEMORY：将所有数据保存在内存中，访问速度快，通常用于临时表及缓存。MEMORY的缺陷就是对表的大小有限制，太大的表无法缓存在内存中，而且无法保障数据的安全性。</li>
+</ul>
+<h1 id="8-索引"><a href="#8-索引" class="headerlink" title="8 索引"></a>8 索引</h1><h2 id="8-1-索引概述"><a href="#8-1-索引概述" class="headerlink" title="8.1 索引概述"></a>8.1 索引概述</h2><p>索引（index）是帮助mysql高效获取数据的<strong>数据结构（有序）</strong>。在数据之外，数据库系统还维护着满足特性查找算法的数据结构，这些数据结构以某种方式指向数据，帮助快速查找数据。</p>
+<p><img src="/../images/MySql-Mysql/image-20250205153457238.png" srcset="/img/loading.gif" lazyload alt="image-20250205153457238"></p>
+<h2 id="8-2-索引结构"><a href="#8-2-索引结构" class="headerlink" title="8.2 索引结构"></a>8.2 索引结构</h2><p><strong>索引结构</strong></p>
+<p>因存储引擎不同而所有区别</p>
+<p><img src="/../images/MySql-Mysql/image-20250205153615648.png" srcset="/img/loading.gif" lazyload alt="image-20250205153615648"></p>
+<p><img src="/../images/MySql-Mysql/image-20250205153700915.png" srcset="/img/loading.gif" lazyload alt="image-20250205153700915"></p>
+<h3 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h3><p><img src="/../images/MySql-Mysql/image-20250205155204239.png" srcset="/img/loading.gif" lazyload alt="image-20250205155204239"></p>
+<h3 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h3><ul>
+<li>只能由于对等比较，不支持范围查询</li>
+<li>无法利用索引完成排序</li>
+<li>效率高，通常只需要一次检索，通常要优于B+树索引</li>
+</ul>
+<h3 id="为什么采用b-树"><a href="#为什么采用b-树" class="headerlink" title="为什么采用b+树"></a>为什么采用b+树</h3><ul>
+<li>相对于二叉树，层级更少，搜索效率高</li>
+<li>相对于b树，非叶子节点只存放索引，能够存放的索引更多，高度更低，效率更高</li>
+<li>相对于hash，支持范围查询及排序操作</li>
+</ul>
+<h2 id="8-3-索引分类"><a href="#8-3-索引分类" class="headerlink" title="8.3 索引分类"></a>8.3 索引分类</h2><p><img src="/../images/MySql-Mysql/image-20250205155915157.png" srcset="/img/loading.gif" lazyload alt="image-20250205155915157"></p>
+<p><img src="/../images/MySql-Mysql/image-20250205160036466.png" srcset="/img/loading.gif" lazyload alt="image-20250205160036466"></p>
+<p>聚集索引选取规则：</p>
+<ul>
+<li>如果存在主键，主键索引就是聚集索引</li>
+<li>如果不存在主键，将使用第一个唯一索引作为聚集索引</li>
+<li>如果不存在主键，也没有合适的唯一索引，innodb会自动生成一个rowid作为隐藏的聚集索引</li>
+</ul>
+<p><img src="/../images/MySql-Mysql/image-20250205160313810.png" srcset="/img/loading.gif" lazyload alt="image-20250205160313810"></p>
+<p><strong>回表查询</strong></p>
+<p>先根据二级索引找到对应的主键值，再根据主键值去聚集索引中拿到对应的行数据。</p>
+<h2 id="8-4-索引语法"><a href="#8-4-索引语法" class="headerlink" title="8.4 索引语法"></a>8.4 索引语法</h2><ul>
+<li>创建索引</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">UNIQUE</span><span class="hljs-operator">|</span>FULLTEXT] INDEX index_name <span class="hljs-keyword">ON</span> table_name (index_col_name,...);<br></code></pre></td></tr></table></figure>
+
+<p>一个索引可以关联多个字段，如果只关联一个字段，则是单列索引，否则就是组合索引（联合索引）。</p>
+<ul>
+<li>查看索引</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SHOW</span> INDEX <span class="hljs-keyword">FROM</span> table_name;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>删除索引</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> INDEX index_name <span class="hljs-keyword">ON</span> table_name;<br></code></pre></td></tr></table></figure>
+
+<h2 id="8-5-SQL性能分析"><a href="#8-5-SQL性能分析" class="headerlink" title="8.5 SQL性能分析"></a>8.5 SQL性能分析</h2><h3 id="8-5-1-SQL执行频率"><a href="#8-5-1-SQL执行频率" class="headerlink" title="8.5.1 SQL执行频率"></a>8.5.1 SQL执行频率</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SHOW</span> [<span class="hljs-keyword">GLOBAL</span><span class="hljs-operator">|</span>SESSION] STATUE <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;Com_______&#x27;</span>; # <span class="hljs-number">7</span>个下划线<br></code></pre></td></tr></table></figure>
+
+<p><img src="/../images/MySql-Mysql/image-20250205161725617.png" srcset="/img/loading.gif" lazyload alt="image-20250205161725617"></p>
+<h3 id="8-5-2-慢查询日志"><a href="#8-5-2-慢查询日志" class="headerlink" title="8.5.2 慢查询日志"></a>8.5.2 慢查询日志</h3><p>慢查询日志记录了所有执行时间超过指定参数（long_query_time, 单位：秒，默认10s）的所有sql语句的日志。</p>
+<p>mysql的慢查询日志默认没有开启，需要在mysql的配置文件（&#x2F;etc&#x2F;my.cnf）中配置如下信息</p>
+<p><img src="/../images/MySql-Mysql/image-20250205203414889.png" srcset="/img/loading.gif" lazyload alt="image-20250205203414889"></p>
+<h3 id="8-5-3-profile详情"><a href="#8-5-3-profile详情" class="headerlink" title="8.5.3 profile详情"></a>8.5.3 profile详情</h3><p>show profiles能够在做sql优化时帮助我们了解时间耗费情况。通过have_profiling参数，能够查看当前数据库是否支持profile操作</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> @<span class="hljs-variable">@have_profiling</span>;<br></code></pre></td></tr></table></figure>
+
+<p>默认profiling是关闭的，可以通过set语句在session&#x2F;global下开启profiling</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">set</span> profiling <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br><br><span class="hljs-comment">-- 查看每一条sql的耗时基本情况</span><br><span class="hljs-keyword">show</span> profiles;<br><br><span class="hljs-comment">-- 查看指定query_id的sql语句各个阶段的耗时情况</span><br><span class="hljs-keyword">show</span> profile <span class="hljs-keyword">for</span> query query_id;<br><span class="hljs-comment">-- 查看指定query_id的sql语句的cpu使用情况</span><br><span class="hljs-keyword">show</span> profile cpu <span class="hljs-keyword">for</span> query query_id;<br></code></pre></td></tr></table></figure>
+
+<h3 id="8-5-4-explain执行计划"><a href="#8-5-4-explain执行计划" class="headerlink" title="8.5.4 explain执行计划"></a>8.5.4 explain执行计划</h3><p>explain或者desc命令获取mysql如何执行select语句的信息，包括在select语句执行过程中表如何连接和连接的顺序。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 直接在select语句前面加上explain或者desc</span><br>EXPLAIN <span class="hljs-keyword">SELECT</span> 字段列表 <span class="hljs-keyword">FROM</span> 表名 <span class="hljs-keyword">WHERE</span> 条件;<br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">id</th>
+<th align="left">select_type</th>
+<th align="left">table</th>
+<th align="left">partitions</th>
+<th align="left">type</th>
+<th align="left">possible_keys</th>
+<th align="left">key</th>
+<th align="left">key_len</th>
+<th align="left">ref</th>
+<th align="left">rows</th>
+<th align="left">filtered</th>
+<th align="left">Extra</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">SIMPLE</td>
+<td align="left">account</td>
+<td align="left">null</td>
+<td align="left">ALL</td>
+<td align="left">null</td>
+<td align="left">null</td>
+<td align="left">null</td>
+<td align="left">null</td>
+<td align="left">2</td>
+<td align="left">50</td>
+<td align="left">Using where</td>
+</tr>
+</tbody></table>
+<ul>
+<li>id：select查询的序列号，表示查询中执行select子句或者是操作表的顺序（id相同，执行顺序从上到下，id不同，值越大，越先执行）。</li>
+<li>select_type：表示查询类型，常见的取值有simple（简单表，不使用表连接或者子查询）、primary（主查询，外层的查询）、union（union中的第二个或者后面的查询语句）、subquery（子查询）等。</li>
+<li><strong>type</strong>：表示连接类型，性能由好到差的连接类型为NULL（不涉及表）、system（系统表）、const（唯一索引）、eq_ref、ref（非唯一性索引）、range、index（用了索引，但是仍然对整棵树进行扫描）、all（全表扫描）。</li>
+<li><strong>possible_keys</strong>：显示可能应用在这张表上的索引。</li>
+<li><strong>key</strong>：实际用到的索引</li>
+<li><strong>key_len</strong>：使用到的索引的字节数，该值为索引字段的最大可能长度。</li>
+<li>rows：mysql认为必须要执行查询的行数，是一个估计值</li>
+<li>filtered：结果的行数占需读取行数的百分比</li>
+</ul>
+<h2 id="8-6-索引使用"><a href="#8-6-索引使用" class="headerlink" title="8.6 索引使用"></a>8.6 索引使用</h2><ul>
+<li>最左前缀法则</li>
+</ul>
+<p>如果索引了多列，要遵守最左前缀法则，即查询从索引的最左列开始，并且不跳过索引中的列。如果不包含最左边的列，索引全部失效；如果跳过了部分列，索引会部分失效（后面的字段的索引失效）。</p>
+<ul>
+<li>范围查询</li>
+</ul>
+<p>联合索引中，出现范围查询（&gt;,&lt;)，范围查询右侧的列索引失效。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">explain <span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> tb_user <span class="hljs-keyword">where</span> profession<span class="hljs-operator">=</span><span class="hljs-string">&#x27;软件工程&#x27;</span> <span class="hljs-keyword">and</span> age <span class="hljs-operator">&gt;</span> <span class="hljs-number">30</span> <span class="hljs-keyword">and</span> status<span class="hljs-operator">=</span><span class="hljs-string">&#x27;0&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>对于上面的语句，status索引失效。</p>
+<p><strong>规避方式</strong>就是在条件允许的情况下，尽量采用&gt;&#x3D;,&lt;&#x3D;。</p>
+<ul>
+<li>索引列运算</li>
+</ul>
+<p>不要在索引列上进行运算操作，否则索引会失效。</p>
+<ul>
+<li>字符串类型加引号</li>
+</ul>
+<p>不加引号，索引会失效</p>
+<ul>
+<li>模糊查询</li>
+</ul>
+<p>如果仅仅是尾部模糊匹配，索引不会失效，如果是头部模糊匹配，索引失效。</p>
+<ul>
+<li>or连接的条件</li>
+</ul>
+<p>用or分开的条件，如果一个有索引，一个没有索引，那么涉及的索引都不会生效。</p>
+<p><strong>规避方式</strong>就是对涉及到的列都建立索引。</p>
+<ul>
+<li>数据分布影响</li>
+</ul>
+<p>如果mysql评估使用此索引比全表扫描还慢，就不使用索引。</p>
+<ul>
+<li>sql提示</li>
+</ul>
+<p>在sql语句中加入一些人为的提示来达到优化操作的目的。</p>
+<p><img src="/../images/MySql-Mysql/image-20250205212130871.png" srcset="/img/loading.gif" lazyload alt="image-20250205212130871"></p>
+<p>use index是一个建议，force index是强制。</p>
+<ul>
+<li>覆盖索引</li>
+</ul>
+<p>尽量使用覆盖索引（查询使用了索引，并且需要返回的列，在该索引中已经全部能够找到），减少select*</p>
+<p>extra信息：</p>
+<p><img src="/../images/MySql-Mysql/image-20250205212600517.png" srcset="/img/loading.gif" lazyload alt="image-20250205212600517"></p>
+<ul>
+<li>前缀索引</li>
+</ul>
+<p>当字段类型为字符串时，有时候索引很长，导致大量的磁盘io，影响查询效率。此时可以只将字符串的一部分前缀建立索引，提高索引效率。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> INDEX idx_name <span class="hljs-keyword">ON</span> table_name(<span class="hljs-keyword">column</span>(n));<br></code></pre></td></tr></table></figure>
+
+<p>根据索引的选择性来决定前缀长度，选择性是指不重复的索引值和数据表的记录总数的比值。</p>
+<p>计算选择性</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-built_in">count</span>(<span class="hljs-keyword">distinct</span> email) <span class="hljs-operator">/</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">from</span> tb_user;<br><span class="hljs-keyword">select</span> <span class="hljs-built_in">count</span>(<span class="hljs-keyword">distinct</span> <span class="hljs-built_in">substring</span>(email,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>)) <span class="hljs-operator">/</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">from</span> tb_user;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/../images/MySql-Mysql/image-20250205213709424.png" srcset="/img/loading.gif" lazyload alt="image-20250205213709424"></p>
+<ul>
+<li>单列索引和联合索引</li>
+</ul>
+<p>如果存在多个查询条件，建议建立联合索引。如果覆盖索引，不需要回表查询。</p>
+<h2 id="8-7-索引设计原则"><a href="#8-7-索引设计原则" class="headerlink" title="8.7 索引设计原则"></a>8.7 索引设计原则</h2><p><img src="/../images/MySql-Mysql/image-20250205214206757.png" srcset="/img/loading.gif" lazyload alt="image-20250205214206757"></p>
+<h1 id="9-SQL优化"><a href="#9-SQL优化" class="headerlink" title="9 SQL优化"></a>9 SQL优化</h1><h2 id="9-1-插入数据"><a href="#9-1-插入数据" class="headerlink" title="9.1 插入数据"></a>9.1 插入数据</h2><ul>
+<li>批量插入</li>
+</ul>
+<p>采用批量插入优化插入多条数据操作，不建议超过1000条以上的数据。对于几万条数据，可以分为多条插入批量操作。</p>
+<ul>
+<li>手动提交事务</li>
+<li>主键顺序插入</li>
+<li>大批量插入数据</li>
+</ul>
+<p>使用insert插入性能较低，可以使用load指令进行插入</p>
+<p><img src="/../images/MySql-Mysql/image-20250206113524201.png" srcset="/img/loading.gif" lazyload alt="image-20250206113524201"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 客户端连接服务器时，加上参数 --local-infile</span><br>mysql <span class="hljs-comment">--local-infile -u root -p</span><br><span class="hljs-comment">-- 设置全局参数local_infile为1，开启从本地加载文件导入数据的开关</span><br><span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span> local_infile <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br><span class="hljs-comment">-- 执行load指令将准备好的数据，加载到表结构中</span><br>load data <span class="hljs-keyword">local</span> infile <span class="hljs-string">&#x27;/root/sql1.log&#x27;</span> <span class="hljs-keyword">into</span> <span class="hljs-keyword">table</span> <span class="hljs-string">&#x27;tb_user&#x27;</span> fields terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;,&#x27;</span> lines terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;\n&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<h2 id="9-2-主键优化"><a href="#9-2-主键优化" class="headerlink" title="9.2 主键优化"></a>9.2 主键优化</h2><ul>
+<li>数据组织方式</li>
+</ul>
+<p>在InnoDB存储引擎中，表数据都是根据主键顺序组织存放的，这种存储方式的表称为索引组织表（index organized table，IOT）。</p>
+<ul>
+<li>页分裂</li>
+</ul>
+<p>页可以为空，也可以填充一半，也可以填充100%，每个页包含了2-N行数据，根据主键排列。</p>
+<ul>
+<li>页合并</li>
+</ul>
+<p><img src="/../images/MySql-Mysql/image-20250206114941929.png" srcset="/img/loading.gif" lazyload alt="image-20250206114941929"></p>
+<ul>
+<li>主键顺序插入</li>
+</ul>
+<p><img src="/../images/MySql-Mysql/image-20250206114618274.png" srcset="/img/loading.gif" lazyload alt="image-20250206114618274"></p>
+<p>对于顺序插入，当一页满了之后，直接将新的行数据插入到新分配的页内即可，不会发生页分裂情况。</p>
+<ul>
+<li>主键乱序插入</li>
+</ul>
+<p><img src="/../images/MySql-Mysql/image-20250206114701480.png" srcset="/img/loading.gif" lazyload alt="image-20250206114701480"></p>
+<p><img src="/../images/MySql-Mysql/image-20250206114727804.png" srcset="/img/loading.gif" lazyload alt="image-20250206114727804"></p>
+<p><img src="/../images/MySql-Mysql/image-20250206114738690.png" srcset="/img/loading.gif" lazyload alt="image-20250206114738690"></p>
+<p>对于主键乱序插入，当新的行数据来了之后，需要根据顺序插入，此时前面的页如果满了，就会发生页分裂，将页一半的数据复制到新页中，然后插入数据，再调整链表指针。</p>
+<ul>
+<li><p>主键设计原则</p>
+<ul>
+<li><p>尽量降低主键长度</p>
+<p>因为对于二级索引中存放的数据，就是主键，主键如果过长，会导致二级索引占用的空间变大。</p>
+</li>
+<li><p>插入数据时，尽量选择顺序插入，选择使用AUTO_INCREMENT自增主键。</p>
+</li>
+<li><p>尽量不要使用UUID做主键或者是其他自然主键，如身份证号。</p>
+</li>
+<li><p>避免对主键的修改</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="9-3-order-by优化"><a href="#9-3-order-by优化" class="headerlink" title="9.3 order by优化"></a>9.3 order by优化</h2><p><img src="/../images/MySql-Mysql/image-20250206121348047.png" srcset="/img/loading.gif" lazyload alt="image-20250206121348047"></p>
+<p><img src="/../images/MySql-Mysql/image-20250206121907392.png" srcset="/img/loading.gif" lazyload alt="image-20250206121907392"></p>
+<h2 id="9-4-group-by优化"><a href="#9-4-group-by优化" class="headerlink" title="9.4 group by优化"></a>9.4 group by优化</h2><ul>
+<li>分组操作可以通过索引来优化</li>
+<li>需要满足最左前缀法则</li>
+</ul>
+<h2 id="9-5-limit优化"><a href="#9-5-limit优化" class="headerlink" title="9.5 limit优化"></a>9.5 limit优化</h2><p>对于limit，大数据量的时候，越往后的页，花费时间越长。因此此时mysql需要排序前面的数据，最后只返回最后的一页数据。</p>
+<p>优化思路：通过创建覆盖索引加子查询的方式进行优化</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> t.<span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> tb_sku t, (<span class="hljs-keyword">select</span> id <span class="hljs-keyword">from</span> tb_sku <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> id limit <span class="hljs-number">2000000</span>, <span class="hljs-number">10</span>) a <span class="hljs-keyword">where</span> t.id <span class="hljs-operator">=</span> a.id;<br></code></pre></td></tr></table></figure>
+
+<h2 id="9-6-count优化"><a href="#9-6-count优化" class="headerlink" title="9.6 count优化"></a>9.6 count优化</h2><p><img src="/../images/MySql-Mysql/image-20250206122752072.png" srcset="/img/loading.gif" lazyload alt="image-20250206122752072"></p>
+<p>优化思路：自己计数（通过redis等）。</p>
+<ul>
+<li><p>count的几种用法：count是一个聚合函数，对于返回的结果集，一行行地判断，如果不是null，累计值就+1。</p>
+<ul>
+<li><p>count(*)</p>
+<p><img src="/../images/MySql-Mysql/image-20250206123320304.png" srcset="/img/loading.gif" lazyload alt="image-20250206123320304"></p>
+</li>
+<li><p>count(主键)</p>
+<p><img src="/../images/MySql-Mysql/image-20250206123336547.png" srcset="/img/loading.gif" lazyload alt="image-20250206123336547"></p>
+</li>
+<li><p>count(字段)</p>
+<p><img src="/../images/MySql-Mysql/image-20250206123236087.png" srcset="/img/loading.gif" lazyload alt="image-20250206123236087"></p>
+</li>
+<li><p>count(1)</p>
+<p><img src="/../images/MySql-Mysql/image-20250206123257547.png" srcset="/img/loading.gif" lazyload alt="image-20250206123257547"></p>
+</li>
+<li><p>按照效率排序</p>
+<p>count(字段)&lt;count(主键)&lt;count(1)约等于count(*)。主要考虑是否取值，是否判断等因素。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="9-7-update优化"><a href="#9-7-update优化" class="headerlink" title="9.7 update优化"></a>9.7 update优化</h2><p> InnoDB的行锁是针对索引加的锁，不是针对记录的，并且该索引不能失效，否则就会从行锁升级为表锁，导致并发性能降低。</p>
+<h1 id="10-视图"><a href="#10-视图" class="headerlink" title="10 视图"></a>10 视图</h1><p>视图（view）是一种虚拟存在的表。视图中的数据并不在数据库中实际存在，行和列的数据来自定义视图的查询中使用的表，并且是在使用视图时动态生成的。</p>
+<ul>
+<li>创建</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">OR</span> REPLACE] <span class="hljs-keyword">VIEW</span> 视图名称(列名列表) <span class="hljs-keyword">AS</span> <span class="hljs-keyword">SELECT</span>语句 [<span class="hljs-keyword">WITH</span> [<span class="hljs-keyword">CASCADED</span><span class="hljs-operator">|</span><span class="hljs-keyword">LOCAL</span>] <span class="hljs-keyword">CHECK</span> OPTION];<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查询</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 查看创建视图语句</span><br><span class="hljs-keyword">SHOW</span> <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> 视图名称;<br><br><span class="hljs-comment">-- 查看视图数据 可以像操作表一样操作视图</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> 视图名称;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>修改</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">OR</span> REPLACE] <span class="hljs-keyword">VIEW</span> 视图名称(列名列表) <span class="hljs-keyword">AS</span> <span class="hljs-keyword">SELECT</span>语句 [<span class="hljs-keyword">WITH</span> [<span class="hljs-keyword">CASCADED</span><span class="hljs-operator">|</span><span class="hljs-keyword">LOCAL</span>] <span class="hljs-keyword">CHECK</span> OPTION];<br><br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">VIEW</span> 视图名称(列名列表) <span class="hljs-keyword">AS</span> <span class="hljs-keyword">SELECT</span>语句 [<span class="hljs-keyword">WITH</span> [<span class="hljs-keyword">CASCADED</span><span class="hljs-operator">|</span><span class="hljs-keyword">LOCAL</span>] <span class="hljs-keyword">CHECK</span> OPTION];<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>删除</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">VIEW</span> [IF <span class="hljs-keyword">EXISTS</span>] 视图名称 [,视图名称]...;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>检查选项<ul>
+<li>使用with check option创建视图时，mysql会检查正在更改的行，以使其符合视图定义。mysql允许基于另一个视图创建视图，它还会检查依赖视图中的规则以保证一致性。cascaded和local指明了检查的范围。默认为cascaded。</li>
+<li>cascaded：会级联检查每个依赖的视图的条件是否满足。</li>
+<li>local：会级联检查依赖视图的条件是否满足，如果依赖的视图没有设置检查选项，则不检查。</li>
+</ul>
+</li>
+<li>视图的更新</li>
+</ul>
+<p>只有视图中的行于基表中的行<strong>存在一对一</strong>的关系时，视图才可以更新，如果视图包含一下任何一项，视图不可更新：</p>
+<p><img src="/../images/MySql-Mysql/image-20250206155521991.png" srcset="/img/loading.gif" lazyload alt="image-20250206155521991"></p>
+<ul>
+<li>作用</li>
+</ul>
+<ol>
+<li>简单：简化对数据的理解，简化操作。某些复杂查询可以被定义为视图，从而简化后续的查询。</li>
+<li>安全：数据库可以授权，但是不能授权到特定行和特定列上，通过视图，用户只能查询和修改他们所能见到的数据</li>
+<li>数据独立：屏蔽真实表结构带来的变化</li>
+</ol>
+<h1 id="11-存储过程"><a href="#11-存储过程" class="headerlink" title="11 存储过程"></a>11 存储过程</h1><p>存储过程是事先经过编译并存储在数据库中的一段sql语句的集合，调用存储过程可以简化开发人员的工作，减少数据库和应用服务器之间的数据传输，可以提高数据处理效率。</p>
+<p>思想上，存储过程就是数据库sql语言层面的代码封装与重用。</p>
+<ul>
+<li>封装，复用</li>
+<li>可以接受参数，可以返回数据</li>
+<li>减少网络交互，效率提升</li>
+</ul>
+<h2 id="11-1-基本语法"><a href="#11-1-基本语法" class="headerlink" title="11.1 基本语法"></a>11.1 基本语法</h2><ul>
+<li>创建</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">PROCEDURE</span> 存储过程名称([参数列表])<br><span class="hljs-keyword">BEGIN</span><br>	<span class="hljs-comment">-- SQL语句</span><br><span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>调用</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CALL</span> 名称([参数]);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查看</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 查询指定数据库的存储过程及状态信息</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> INFORMATION_SCHEMA.ROUTINES <span class="hljs-keyword">WHERE</span> ROUTINE_SCHEMA<span class="hljs-operator">=</span><span class="hljs-string">&#x27;XXX&#x27;</span>; <span class="hljs-comment">-- XXX数据库名称</span><br><br><span class="hljs-comment">-- 查询某个存储过程的定义</span><br><span class="hljs-keyword">SHOW</span> <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">PROCEDURE</span> 存储过程名称;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>删除</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">PROCEDURE</span> [IF <span class="hljs-keyword">EXISTS</span>] 存储过程名称;<br></code></pre></td></tr></table></figure>
+
+<h2 id="11-2-变量"><a href="#11-2-变量" class="headerlink" title="11.2 变量"></a>11.2 变量</h2><h3 id="11-2-1-系统变量"><a href="#11-2-1-系统变量" class="headerlink" title="11.2.1 系统变量"></a>11.2.1 系统变量</h3><p>mysql服务器提供，不是用户定义的，属于服务器层面，分为</p>
+<ul>
+<li>全局变量（GLOBAL）：针对所有会话有效。</li>
+<li>会话变量（SESSION）：针对当前会话有效。</li>
+</ul>
+<p><strong>查看系统变量</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SHOW</span> [SESSION<span class="hljs-operator">|</span><span class="hljs-keyword">GLOBAL</span>] VARIABLES;<br><span class="hljs-keyword">SHOW</span> [SESSION<span class="hljs-operator">|</span><span class="hljs-keyword">GLOBAL</span>] VARIABLES <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;...&#x27;</span>;<br><span class="hljs-keyword">SELECT</span> @@[SESSION<span class="hljs-operator">|</span>GLOBAL.]系统变量名;<br></code></pre></td></tr></table></figure>
+
+<p><strong>设置系统变量</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SET</span> [SESSION<span class="hljs-operator">|</span><span class="hljs-keyword">GLOBAL</span>] 系统变量名<span class="hljs-operator">=</span>值;<br><span class="hljs-keyword">SET</span> @@[SESSION<span class="hljs-operator">|</span>GLOBAL.]系统变量名<span class="hljs-operator">=</span>值;<br></code></pre></td></tr></table></figure>
+
+<p>mysql服务器重启之后，全局变量会重置。如果想永久生效，需要修改配置文件。</p>
+<h3 id="11-2-2-用户定义变量"><a href="#11-2-2-用户定义变量" class="headerlink" title="11.2.2 用户定义变量"></a>11.2.2 用户定义变量</h3><p>用户根据业务需求自己定义的变量，不用提前声明，在用的时候直接用”@变量名“使用就可以，其作用域为当前连接。</p>
+<p><strong>赋值</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SET</span> <span class="hljs-variable">@var_name</span> <span class="hljs-operator">=</span> expr [, <span class="hljs-variable">@var_name</span> <span class="hljs-operator">=</span> expr]...;<br><span class="hljs-keyword">SET</span> <span class="hljs-variable">@var_name</span> :<span class="hljs-operator">=</span> expr [, <span class="hljs-variable">@var_name</span> :<span class="hljs-operator">=</span> expr]...;<br><br><span class="hljs-keyword">SELECT</span> <span class="hljs-variable">@var_name</span> :<span class="hljs-operator">=</span> expr [, <span class="hljs-variable">@var_name</span> :<span class="hljs-operator">=</span> expr]...;<br><span class="hljs-keyword">SELECT</span> 字段名 <span class="hljs-keyword">INTO</span> <span class="hljs-variable">@var_name</span> <span class="hljs-keyword">FROM</span> 表名;<br></code></pre></td></tr></table></figure>
+
+<p><strong>使用</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-variable">@var_name</span>;<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<p>用户定义变量不用提前声明，如果使用的时候还没有赋值，也不会报错，只不过变量的值为null</p>
+<h3 id="11-2-3-局部变量"><a href="#11-2-3-局部变量" class="headerlink" title="11.2.3 局部变量"></a>11.2.3 局部变量</h3>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MySql/" class="print-no-link">#MySql</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[MySql]Mysql</div>
+      <div>https://erlsrnby04.github.io/2025/01/29/MySql-Mysql/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年1月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/15/PRO-%E5%86%85%E5%AD%98%E6%B1%A0/" title="[PRO]内存池">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[PRO]内存池</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/01/29/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter6/" title="[C++]C++并发编程实战Chapter6">
+                        <span class="hidden-mobile">[C++]C++并发编程实战Chapter6</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="数据库"
+        id="heading-68051bf4aa2743b030984b694628ee9c" role="tab" data-toggle="collapse" href="#collapse-68051bf4aa2743b030984b694628ee9c"
+        aria-expanded="true"
+      >
+        数据库
+        <span class="list-group-count">(3)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-68051bf4aa2743b030984b694628ee9c"
+           role="tabpanel" aria-labelledby="heading-68051bf4aa2743b030984b694628ee9c">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2024/11/09/CMU-15-445-HyperLogLog%E5%8E%9F%E7%90%86/" title="[CMU 15-445]HyperLogLog原理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[CMU 15-445]HyperLogLog原理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/11/10/DB-Database-System-Concepts-Chapter-2/" title="[DB]Database System Concepts Chapter 2"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[DB]Database System Concepts Chapter 2</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/01/29/MySql-Mysql/" title="[MySql]Mysql"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">[MySql]Mysql</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
