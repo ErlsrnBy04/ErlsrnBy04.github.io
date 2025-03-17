@@ -1,0 +1,1134 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 使用minikube创建一个集群1.1 kubernetes集群Kubernetes协调一组高度可用的计算机，这些计算机连接在一起以作为一个单一单元工作。k8s提供的抽象可以把容器化的应用部署到集群上，而无需将应用指定到具体的机器上。应用必须容器化。k8s会自动负责应用容器在集群中的分布和调度。 k8s集群包含两种资源：  控制平面负责协调整个集群 Node负责运行应用。 Node是一个实际的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[k8s]k8s基础">
+<meta property="og:url" content="https://erlsrnby04.github.io/2025/03/15/k8s-k8s%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="1 使用minikube创建一个集群1.1 kubernetes集群Kubernetes协调一组高度可用的计算机，这些计算机连接在一起以作为一个单一单元工作。k8s提供的抽象可以把容器化的应用部署到集群上，而无需将应用指定到具体的机器上。应用必须容器化。k8s会自动负责应用容器在集群中的分布和调度。 k8s集群包含两种资源：  控制平面负责协调整个集群 Node负责运行应用。 Node是一个实际的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=9">
+<meta property="article:published_time" content="2025-03-15T07:14:59.000Z">
+<meta property="article:modified_time" content="2025-03-16T12:47:04.029Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=9">
+  
+  
+  
+  <title>[k8s]k8s基础 - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[k8s]k8s基础"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-15 15:14" pubdate>
+          2025年3月15日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          43 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[k8s]k8s基础</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="1-使用minikube创建一个集群"><a href="#1-使用minikube创建一个集群" class="headerlink" title="1 使用minikube创建一个集群"></a>1 使用minikube创建一个集群</h1><h2 id="1-1-kubernetes集群"><a href="#1-1-kubernetes集群" class="headerlink" title="1.1 kubernetes集群"></a>1.1 kubernetes集群</h2><p>Kubernetes协调一组高度可用的计算机，这些计算机连接在一起以作为一个单一单元工作。k8s提供的抽象可以把容器化的应用部署到集群上，而无需将应用指定到具体的机器上。<strong>应用必须容器化</strong>。k8s会自动负责应用容器在集群中的分布和调度。</p>
+<p>k8s集群包含两种资源：</p>
+<ul>
+<li>控制平面负责协调整个集群</li>
+<li>Node负责运行应用。<ul>
+<li>Node是一个实际的物理机或虚拟机。</li>
+<li>每个Node有kubelet，负责通控制平面通信以及管理node。</li>
+<li>每个Node还有负责处理容器运行的工具，例如containerd&#x2F;CRI-O。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315152209662.png" srcset="/img/loading.gif" lazyload></p>
+<p>通过控制平面来部署应用，控制平面会负责调度应用容器在node上运行。</p>
+<p>可以通过控制平面暴露的kubernetes API和控制平面通信。Node上的kubelet和终端用户都可以通过这种方式同控制平面通信。</p>
+<h2 id="1-2-通过minikube创建一个集群"><a href="#1-2-通过minikube创建一个集群" class="headerlink" title="1.2 通过minikube创建一个集群"></a>1.2 通过minikube创建一个集群</h2><h3 id="1-2-1-创建一个minikube集群"><a href="#1-2-1-创建一个minikube集群" class="headerlink" title="1.2.1 创建一个minikube集群"></a>1.2.1 创建一个minikube集群</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">minikube start	<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-2-2-打开Dashboard"><a href="#1-2-2-打开Dashboard" class="headerlink" title="1.2.2 打开Dashboard"></a>1.2.2 打开Dashboard</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">minikube dashboard	<br>minikube dashboard --url<br></code></pre></td></tr></table></figure>
+
+<p>dashboard命令启用dashboard插件并在默认的网页浏览器中打开代理。你可以通过dashboard创建Kubernetes资源，如部署和服务。</p>
+<p>通过 <code>--url</code> 参数，可以不自动打开dashboard，而是返回一个url。</p>
+<p>默认情况下，dashboard只能在集群内部的虚拟网络中访问，dashboard命令创建了一个临时的代理，使dashboard可以从外部访问。</p>
+<p><code>ctrl+c</code> 可以关闭这个临时代理，但是dashboard还是在集群内部运行，后面可以重新用 <code>dashboard</code> 命令创建代理。</p>
+<h3 id="1-2-3-创建一个deployment"><a href="#1-2-3-创建一个deployment" class="headerlink" title="1.2.3 创建一个deployment"></a>1.2.3 创建一个deployment</h3><p>deployment会检查pod的状态，并且维护容器的运行，如果容器挂了，会自动重启容器。</p>
+<ol>
+<li><p>用 <code>kubectl create</code> 命令创建一个deployment负责管理pod。pod根据提供的容器镜像运行容器。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl create deployment hello-node --image=registry.k8s.io/e2e-test-images/agnhost:2.39 -- /agnhost netexec --http-port=8080<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看deployment</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get deployments<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看pod</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pods<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看集群事件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get events<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看kubectl配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl config view<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看pod中容器的应用日志</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl logs hello-node-5f76cf6ccf-br9b5<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="1-3-创建一个service"><a href="#1-3-创建一个service" class="headerlink" title="1.3 创建一个service"></a>1.3 创建一个service</h2><p>默认情况下，pod只能通过集群内部ip地址在集群内部访问。必须将pod作为k8s service暴露出来，才能在外部访问该pod中的容器。</p>
+<ol>
+<li><p>将pod暴露在外部网络中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl expose deployment hello-node --type=LoadBalancer --port=8080<br></code></pre></td></tr></table></figure>
+
+<p><code>--type=LoadBalancer</code> 选项表明希望将服务暴露给集群外部。</p>
+</li>
+<li><p>查看服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get services<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>运行下列命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">minikube service hello-node<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="1-4-打开插件-addons"><a href="#1-4-打开插件-addons" class="headerlink" title="1.4 打开插件(addons)"></a>1.4 打开插件(addons)</h2><ol>
+<li><p>显示目前支持的插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">minikube addons list<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>打开某个插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">minikube addons enable metrics-server<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看安装该插件后，创建的pod和服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pod,svc -n kube-system<br></code></pre></td></tr></table></figure>
+
+<p>这条命令查看在kube-system命名空间下的所有pod和service资源的状态。</p>
+</li>
+<li><p>查看metrics-server的输出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl top pods<br></code></pre></td></tr></table></figure>
+
+<p><code>kubectl top pods</code> 命令用于显示Kubernetes集群中各个Pod的资源使用情况，比如CPU和内存的消耗。</p>
+<ul>
+<li><code>top</code> 是 <code>kubectl</code> 的一个子命令，用来实时查看集群中资源对象（如Pod或节点）的资源使用情况。</li>
+<li><code>pods</code> 指定了查询的对象类型是Pod。这条命令会列出所有命名空间下的Pod及其对应的资源使用情况，除非通过 <code>-n</code> 参数指定了特定的命名空间。</li>
+</ul>
+<p>为了使 <code>kubectl top pods</code> 命令能够正常工作，集群必须部署了Metric Server。且执行命令的用户需要有访问Metric Server提供的资源指标API的权限。</p>
+</li>
+<li><p>关闭metrics-server插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">minikube addons disable metrics-server<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="1-5清理"><a href="#1-5清理" class="headerlink" title="1.5清理"></a>1.5清理</h2><ol>
+<li><p>清理在集群中创建的资源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl delete service hello-node<br>kubectl delete deployment hello-node<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>关闭minikube集群</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">minikube stop<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="2-使用kubectl创建一个deployment"><a href="#2-使用kubectl创建一个deployment" class="headerlink" title="2 使用kubectl创建一个deployment"></a>2 使用kubectl创建一个deployment</h2><h3 id="2-1-Kubernetes-Deployments"><a href="#2-1-Kubernetes-Deployments" class="headerlink" title="2.1 Kubernetes Deployments"></a>2.1 Kubernetes Deployments</h3><p>一旦有了一个运行中的Kubernetes集群，就可以在上面部署容器化应用。为此，需要创建一个Kubernetes Deployment。该部署会指示Kubernetes如何创建和更新应用实例。创建部署后，Kubernetes控制平面会调度该部署中包含的应用实例在集群的各个节点上运行。</p>
+<p>一旦应用实例被创建，Kubernetes部署控制器会持续监控这些实例。如果托管实例的节点发生故障或被删除，部署控制器会用集群中另一个节点上的实例替换该实例。这提供了一种自我修复机制，以应对机器故障或维护。</p>
+<h3 id="2-2-在k8s上部署应用"><a href="#2-2-在k8s上部署应用" class="headerlink" title="2.2 在k8s上部署应用"></a>2.2 在k8s上部署应用</h3><p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315163724086.png" srcset="/img/loading.gif" lazyload></p>
+<p>可以使用Kubernetes命令行界面kubectl来创建和管理deployment。Kubectl利用Kubernetes API与集群进行交互。</p>
+<p>当创建一个deployment时，需要指定应用的容器镜像和希望运行的副本数量。也可以后续通过更新deployment来更改这些信息。</p>
+<h3 id="2-3-kubectl基础"><a href="#2-3-kubectl基础" class="headerlink" title="2.3 kubectl基础"></a>2.3 kubectl基础</h3><p>kubectl命令通用格式：<code>kubectl action resource</code></p>
+<p>这会在指定的资源(node,deployment…)上执行指定的操作(create, describe, delete…)。可以用 <code>--help</code> 命令来查看可能的参数(<code>kubectl get nodes --help</code>)。</p>
+<h3 id="2-4-部署一个应用"><a href="#2-4-部署一个应用" class="headerlink" title="2.4 部署一个应用"></a>2.4 部署一个应用</h3><p>通过以下命令部署应用。需要指明deployment的名字以及应用镜像的位置。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1<br></code></pre></td></tr></table></figure>
+
+<p>这个命令会进行以下几个操作：</p>
+<ul>
+<li>查找合适的node来运行应用</li>
+<li>调度应用在该node上运行</li>
+<li>配置集群，当需要的时候重新调度实例运行</li>
+</ul>
+<p>使用 <code>kubectl get deployments</code> 命令来查看所有的deployment。</p>
+<h3 id="2-5-查看应用"><a href="#2-5-查看应用" class="headerlink" title="2.5 查看应用"></a>2.5 查看应用</h3><p>在Kubernetes内部运行的Pod位于一个私有的、隔离的网络中。默认情况下，它们只能被同一个Kubernetes集群内的其他Pod和服务看到，而不能从外部网络访问。当使用kubectl时，是通过API端点与应用程序进行交互的。</p>
+<p>kubectl proxy命令可以创建一个代理，将通信转发到集群范围的私有网络中。代理可以通过按下Control+C终止，并且在运行时不会显示任何输出。</p>
+<p>需要打开第二个终端窗口来运行这个代理。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl proxy<br></code></pre></td></tr></table></figure>
+
+<p>现在已经在主机（终端）和Kubernetes集群之间建立了连接。这个代理允许从这些终端直接访问API。</p>
+<p>可以通过代理端点查看所有这些API。例如，可以使用curl命令直接通过API查询版本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">curl http://localhost:8001/version<br></code></pre></td></tr></table></figure>
+
+<p>API服务器会根据Pod的名称自动为每个Pod创建一个端点，这些端点也可以通过代理访问。</p>
+<p>首先，需要获取Pod的名称</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pods -o go-template --template &#x27;&#123;&#123;range .items&#125;&#125;&#123;&#123;.metadata.name&#125;&#125;&#123;&#123;end&#125;&#125;&#x27;<br></code></pre></td></tr></table></figure>
+
+<p>你可以通过代理API访问Pod，运行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">curl http://localhost:8001/api/v1/namespaces/default/pods/kubernetes-bootcamp-9bc58d867-kcmfc:8080/proxy/<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-查看Pods和Nodes的信息"><a href="#3-查看Pods和Nodes的信息" class="headerlink" title="3 查看Pods和Nodes的信息"></a>3 查看Pods和Nodes的信息</h2><h3 id="3-1-Pods"><a href="#3-1-Pods" class="headerlink" title="3.1 Pods"></a>3.1 Pods</h3><p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315191951488.png" srcset="/img/loading.gif" lazyload></p>
+<p>当创建一个deployment时，Kubernetes创建了一个Pod来承载应用实例。Pod是Kubernetes的一种抽象，代表了一组一个或多个应用程序容器（如Docker容器），以及这些容器共享的一些资源。这些资源包括：</p>
+<ul>
+<li><strong>共享存储</strong>，以volume的形式提供</li>
+<li><strong>网络</strong>，提供唯一的集群IP地址</li>
+<li><strong>运行每个容器的信息</strong>，例如容器镜像版本或要使用的特定端口</li>
+</ul>
+<p>Pod模型化了一个应用特定的“逻辑主机”，它可以包含不同的应用程序容器，这些容器之间的耦合相对紧密。Pod中的容器<strong>共享同一个IP地址和端口空间</strong>，总是<strong>共同位于一处并一同调度</strong>，并<strong>在同一个节点上以共享的上下文运行</strong>。</p>
+<p>在Kubernetes平台上，<strong>Pod是最小的部署单元</strong>。当创建一个deployment时，该deployment会创建包含容器的Pod（而不是直接创建容器）。每个Pod都绑定到它被调度的node上，并一直留在那里直到终止（根据重启策略）或删除。如果节点发生故障，相同的Pod会被调度到集群中其他可用的节点上。这样可以确保应用的高可用性和可靠性。</p>
+<h3 id="3-2-Nodes"><a href="#3-2-Nodes" class="headerlink" title="3.2 Nodes"></a>3.2 Nodes</h3><p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315192252168.png" srcset="/img/loading.gif" lazyload></p>
+<p>Pod运行在一个Node上。Node是Kubernetes中的工作机器，可以是虚拟机也可以是物理机。每个Node都由控制平面管理。一个Node可以运行多个Pod，Kubernetes控制平面会根据node的可用资源在集群的Nodes之间调度这些Pod。</p>
+<p>每个Kubernetes Node至少运行以下组件：</p>
+<ul>
+<li><strong>Kubelet</strong>：是负责Kubernetes控制平面与Node之间通信的进程；它管理运行在该机器上的Pod和容器。</li>
+<li><strong>容器运行时</strong>（如Docker）：负责从注册表中拉取容器镜像、解包容器并运行应用程序。</li>
+</ul>
+<p>只有容器之间是高度耦合的并且需要共享资源（硬盘）的时候，它们才应该被规划到同一个pod中。</p>
+<h3 id="3-3-Troubleshooting-with-kubectl"><a href="#3-3-Troubleshooting-with-kubectl" class="headerlink" title="3.3 Troubleshooting with kubectl"></a>3.3 Troubleshooting with kubectl</h3><p>最常见的操作可以通过以下kubectl命令完成：</p>
+<ul>
+<li><p><strong>kubectl get</strong>：列出资源。例如，可以用来列出Pods、Services等资源。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">kubectl <span class="hljs-built_in">get</span> pods<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>kubectl describe</strong>：显示资源的详细信息。这对于获取有关特定资源（如Pod，node，deployment）的深入信息非常有用，包括状态、事件等。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml">kubectl describe pod <span class="hljs-tag">&lt;<span class="hljs-name">pod-name</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>kubectl logs</strong>：从Pod中的容器打印日志。这对于调试运行中的应用和检查错误特别有用。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml">kubectl logs <span class="hljs-tag">&lt;<span class="hljs-name">pod-name</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>kubectl exec</strong>：在Pod中的容器上执行命令。这对于进入容器内部进行调试或直接操作非常有用。</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">kubectl exec -<span class="hljs-keyword">it</span> &lt;pod-<span class="hljs-built_in">name</span>&gt; <span class="hljs-comment">-- /bin/sh</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="3-3-1-查看容器的日志"><a href="#3-3-1-查看容器的日志" class="headerlink" title="3.3.1 查看容器的日志"></a>3.3.1 查看容器的日志</h4><p>应用程序通常会将其标准输出发送到容器内的日志中。可以使用<code>kubectl logs</code>命令检索这些日志：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">kubectl</span> logs <span class="hljs-string">&quot;<span class="hljs-variable">$POD_NAME</span>&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>注意：当在Pod中只有一个容器的时候，无需指定容器名称。如果Pod中有多个容器，需要使用<code>-c</code>选项指定容器名称来查看特定容器的日志。</p>
+<p><strong>查看特定Pod中所有容器的名称</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;<br></code></pre></td></tr></table></figure>
+<p>在输出的信息中，找到 <code>Containers:</code> 部分，这里列出了该Pod中所有容器的名称及其相关信息。</p>
+<p>在输出结果中，会看到类似如下的部分：</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">Containers</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">container-one</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">Image</span><span class="hljs-punctuation">:</span> <span class="hljs-string">        nginx</span><br>    <span class="hljs-attribute">...</span><br><span class="hljs-attribute">  container-two</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">Image</span><span class="hljs-punctuation">:</span> <span class="hljs-string">        redis</span><br>    ...<br></code></pre></td></tr></table></figure>
+<p>这里的 <code>container-one</code> 和 <code>container-two</code> 就是Pod中容器的名称。</p>
+<h4 id="3-3-2-在容器中执行命令"><a href="#3-3-2-在容器中执行命令" class="headerlink" title="3.3.2 在容器中执行命令"></a>3.3.2 在容器中执行命令</h4><p>可以直接在Pod启动并运行后，在容器中执行命令。</p>
+<p>使用<code>exec</code>子命令，并将Pod的名称作为参数。让我们列出环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl <span class="hljs-built_in">exec</span> <span class="hljs-string">&quot;<span class="hljs-variable">$POD_NAME</span>&quot;</span> -- <span class="hljs-built_in">env</span><br></code></pre></td></tr></table></figure>
+
+<p>在Pod的容器中启动一个bash会话：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl <span class="hljs-built_in">exec</span> -ti <span class="hljs-string">&quot;<span class="hljs-variable">$POD_NAME</span>&quot;</span> -- bash<br></code></pre></td></tr></table></figure>
+
+<p>已经打开了运行应用的容器控制台。应用的源代码位于<code>server.js</code>文件中：</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">cat <span class="hljs-keyword">server</span>.js<br></code></pre></td></tr></table></figure>
+
+<p>可以通过运行以下curl命令来检查应用程序是否已启动并正在运行：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">curl http<span class="hljs-punctuation">:</span><span class="hljs-comment">//localhost:8080</span><br></code></pre></td></tr></table></figure>
+
+<p>输入<code>exit</code> 来关闭与容器的连接</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-keyword">exit</span><br></code></pre></td></tr></table></figure>
+
+<p>这样就可以退出bash会话，返回到本地终端。</p>
+<h2 id="4-通过service来将应用暴露给外部网络"><a href="#4-通过service来将应用暴露给外部网络" class="headerlink" title="4 通过service来将应用暴露给外部网络"></a>4 通过service来将应用暴露给外部网络</h2><h3 id="4-1-kubernetes-services"><a href="#4-1-kubernetes-services" class="headerlink" title="4.1 kubernetes services"></a>4.1 kubernetes services</h3><p>在Kubernetes中，Pod是临时的，并且有其生命周期。当一个工作节点失效时，运行在其上的Pod也会丢失。这时，ReplicaSet可以根据需要动态地通过创建新的Pod来使集群回到期望的状态，以保持应用程序的持续运行。例如，考虑一个有3个副本的图像处理后端应用。这些副本是可以互换的；前端系统不应该关心后端副本的具体情况，甚至不需要知道某个Pod丢失并被重新创建的情况。然而，每个Pod在Kubernetes集群中都有一个唯一的IP地址，即使是位于同一Node上的Pod也是如此，因此需要一种方法自动协调Pod之间的变化，以确保你的应用程序继续正常运行。</p>
+<p><strong>Service</strong>是一个抽象概念，它定义了一组逻辑上的Pod以及访问它们的策略。Service使得互相依赖的Pod之间可以松散耦合。Service可以通过YAML或JSON进行定义。</p>
+<ul>
+<li><p><strong>目标Pod集</strong>：通常由<strong>label selector</strong>决定（但在某些情况下，你可能希望创建一个没有选择器的Service）。</p>
+</li>
+<li><p><strong>IP暴露问题</strong>：尽管每个Pod都有一个唯一的IP地址，但如果没有Service，这些IP地址不会暴露到集群外部。Service允许你的应用程序接收流量。</p>
+</li>
+</ul>
+<p><strong>Service类型</strong></p>
+<p>根据你在Service的spec中指定的类型，Service可以通过不同的方式暴露：</p>
+<ul>
+<li><p><strong>ClusterIP（默认）</strong>：在集群内部IP上暴露Service。这种类型使得Service只能从集群内部访问。</p>
+</li>
+<li><p><strong>NodePort</strong>：通过NAT在集群中每个选定node的相同端口上暴露Service。这使得你可以使用<code>&lt;NodeIP&gt;:&lt;NodePort&gt;</code>从集群外部访问Service。它是ClusterIP的超集。</p>
+</li>
+<li><p><strong>LoadBalancer</strong>：在当前云环境中创建一个外部负载均衡器（如果支持），并为Service分配一个固定的外部IP。它是NodePort的超集。</p>
+</li>
+<li><p><strong>ExternalName</strong>：将Service映射到externalName字段的内容（如foo.bar.example.com）。不设置任何形式的代理。</p>
+</li>
+</ul>
+<p><strong>其他注意事项</strong></p>
+<p>有时，你可能会遇到一些不需要在Service的spec中定义选择器的用例。一个没有选择器的Service也不会创建相应的Endpoints对象。这允许用户手动将Service映射到特定的端点。另一种可能是严格使用<code>type: ExternalName</code>的情况。</p>
+<h3 id="4-2-service和labels"><a href="#4-2-service和labels" class="headerlink" title="4.2 service和labels"></a>4.2 service和labels</h3><p>在Kubernetes中，Service用于将流量路由到一组Pod。依赖Pod之间的发现和路由（例如应用中的前端和后端组件）是由Kubernetes Services处理的。</p>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315195515618.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>Service如何匹配Pod</strong></p>
+<p>Service通过使用<strong>标签（labels）</strong>和<strong>选择器（selectors）</strong>来匹配一组Pod。标签和选择器是Kubernetes中的一种分组原语，允许对对象进行逻辑操作。</p>
+<ul>
+<li><p><strong>标签（Labels）</strong>：标签是附加到对象上的key&#x2F;values对，可以以多种方式使用。例如：</p>
+<ul>
+<li>为开发、测试和生产环境指定对象。</li>
+<li>嵌入版本标签。</li>
+<li>使用tags对对象进行分类。</li>
+</ul>
+</li>
+<li><p><strong>选择器（Selectors）</strong>：选择器用于定义哪些带有特定标签的Pod应属于该Service。通过这种方式，Service可以动态地适应集群的变化，如Pod的增加或删除。</p>
+</li>
+</ul>
+<h3 id="4-3-实例"><a href="#4-3-实例" class="headerlink" title="4.3 实例"></a>4.3 实例</h3><h4 id="step-1：创建一个service"><a href="#step-1：创建一个service" class="headerlink" title="step 1：创建一个service"></a>step 1：创建一个service</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl expose deployment/kubernetes-bootcamp --type=&quot;NodePort&quot; --port 8080<br></code></pre></td></tr></table></figure>
+
+<p>使用该命令创建一个NodePort类型的服务，该服务向外部暴露端口。</p>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315200309564.png" srcset="/img/loading.gif" lazyload></p>
+<p>使用 <code>kubectl describe services/kubernete-bootcamp</code> 命令来查看详细信息。</p>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315200503146.png" srcset="/img/loading.gif" lazyload></p>
+<p>可以看到向外开放的端口是30247.</p>
+<p>接下来，可以使用 <code>curl http:&quot;(minikube ip)&quot;:30247</code> 来使用服务。</p>
+<p>注意，在windows下使用docker desktop的时候，需要配置一个minikube tunnel。通过tunnel来进行转发。</p>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315202309870.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="Step-2：使用Labels"><a href="#Step-2：使用Labels" class="headerlink" title="Step 2：使用Labels"></a>Step 2：使用Labels</h4><p>deployment自动为pod分配了一个标签，可以通过 <code>describe deployment</code> 命令来查看。</p>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315202510900.png" srcset="/img/loading.gif" lazyload></p>
+<p>在get命令中使用-l参数指明标签来选择相应的pod和service</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pods -l app=kubernetes-bootcamp<br>kubectl get services -l app=kubernetes-bootcamp<br></code></pre></td></tr></table></figure>
+
+<p>使用label命令来为对象指明新的标签。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl label pods &lt;POD_NAME&gt; version=v1<br></code></pre></td></tr></table></figure>
+
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315202921610.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="Step-3：删除service"><a href="#Step-3：删除service" class="headerlink" title="Step 3：删除service"></a>Step 3：删除service</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl delete service -l app=kubernetes-bootcamp<br></code></pre></td></tr></table></figure>
+
+<h2 id="5-运行应用的多个实例"><a href="#5-运行应用的多个实例" class="headerlink" title="5 运行应用的多个实例"></a>5 运行应用的多个实例</h2><p>scaling是通过修改deployment中replica的个数来实现的。</p>
+<p>在创建deployment的时候可以通过 <code>--replicas</code> 参数来创建多个实例。</p>
+<h3 id="5-1-Scaling概述"><a href="#5-1-Scaling概述" class="headerlink" title="5.1 Scaling概述"></a>5.1 Scaling概述</h3><p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315205009041.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315205121386.png" srcset="/img/loading.gif" lazyload></p>
+<p>扩展Deployment将确保创建新的Pod，并将其调度到具有可用资源的节点上。通过扩展，可以增加Pod的数量以达到新的期望状态。Kubernetes还支持Pod的自动扩展。此外，将Pod数量扩展为零也是可行的，这将终止指定Deployment的所有Pod。</p>
+<p>运行应用程序的多个实例需要一种方式来分配流量给所有的实例。Kubernetes中的Service具备集成的负载均衡器，能够将网络流量分配给暴露的Deployment中的所有Pod。Service会持续监控运行中的Pod，确保流量仅发送到可用的Pod。</p>
+<p>当你有多个应用程序实例在运行时，你可以执行滚动更新（Rolling Updates）而不会造成停机。滚动更新允许你逐步替换旧的Pod并启动新的Pod，确保服务的连续性。</p>
+<h3 id="5-2-查看ReplicaSet"><a href="#5-2-查看ReplicaSet" class="headerlink" title="5.2 查看ReplicaSet"></a>5.2 查看ReplicaSet</h3><p>要查看由Deployment创建的ReplicaSet，可以运行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl get rs<br></code></pre></td></tr></table></figure>
+
+<p>ReplicaSet的名字总是格式为 <code>[DEPLOYMENT-NAME]-[RANDOM-STRING]</code>。这里的随机字符串是随机生成的，并使用<code>pod-template-hash</code>作为种子。</p>
+<p>在输出中，有两个重要的列需要注意：</p>
+<ul>
+<li><strong>DESIRED</strong>：显示定义的期望的应用程序副本数量。这是在创建Deployment时指定的期望状态。</li>
+<li><strong>CURRENT</strong>：显示当前实际运行的副本数量。</li>
+</ul>
+<h3 id="5-3-扩展Deployment"><a href="#5-3-扩展Deployment" class="headerlink" title="5.3 扩展Deployment"></a>5.3 扩展Deployment</h3><p>要手动扩展Deployment，你可以使用<code>kubectl scale</code>命令。例如，要将一个名为<code>web-app</code>的Deployment扩展到5个副本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl scale deployment/web-app --replicas=5<br></code></pre></td></tr></table></figure>
+
+<p>这条命令将使Kubernetes创建足够的Pod以达到指定的副本数（在这个例子中是5个）。如果当前已经有5个或更多Pod在运行，Kubernetes会相应地减少或增加Pod的数量。</p>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250315210125918.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="5-4-自动扩展（Horizontal-Pod-Autoscaler）"><a href="#5-4-自动扩展（Horizontal-Pod-Autoscaler）" class="headerlink" title="5.4 自动扩展（Horizontal Pod Autoscaler）"></a>5.4 自动扩展（Horizontal Pod Autoscaler）</h3><p>虽然手动扩展适用于已知的工作负载，但Kubernetes也支持基于CPU利用率等指标的自动扩展（Horizontal Pod Autoscaler）。你可以在创建Deployment时配置自动扩展策略，或者稍后添加。例如，以下命令设置了一个Deployment <code>web-app</code>的自动扩展策略，使其副本数在1到10之间变化，根据平均CPU使用率调整：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl autoscale deployment web-app --min=1 --max=10 --cpu-percent=80<br></code></pre></td></tr></table></figure>
+
+<p>这意味着当平均CPU使用率达到80%时，Kubernetes会自动增加Pod的数量，最多不超过10个；当负载下降时，它也会减少Pod的数量，最少保持1个Pod运行。</p>
+<h2 id="6-滚动更新"><a href="#6-滚动更新" class="headerlink" title="6 滚动更新"></a>6 滚动更新</h2><h3 id="6-1-更新应用"><a href="#6-1-更新应用" class="headerlink" title="6.1 更新应用"></a>6.1 更新应用</h3><p>滚动更新允许在不造成停机的情况下进行部署更新，其工作原理是逐步用新Pod替换当前的Pod。新Pod被调度到有可用资源的节点上，Kubernetes会等待这些新Pod启动后再移除旧的Pod。</p>
+<p>滚动更新的必要条件：应用程序在集群中有多个运行实例。</p>
+<p>默认情况下，更新过程中不可用的最大Pod数量和可以创建的新Pod最大数量均为1。这两个选项都可以配置为具体的数字或比例（的Pod）。在Kubernetes中，更新是具有版本控制的，任何部署更新都可以回滚到之前的（稳定）版本。</p>
+<h3 id="6-2-滚动更新概述"><a href="#6-2-滚动更新概述" class="headerlink" title="6.2 滚动更新概述"></a>6.2 滚动更新概述</h3><p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250316202843174.png" srcset="/img/loading.gif" lazyload alt="更新前"></p>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250316202938157.png" srcset="/img/loading.gif" lazyload alt="更新中"></p>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250316202851638.png" srcset="/img/loading.gif" lazyload alt="更新中"></p>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250316202929630.png" srcset="/img/loading.gif" lazyload alt="更新后"></p>
+<p>类似于应用程序扩展，如果一个部署被公开暴露，那么在更新期间，服务将仅向可用的Pod分发流量。</p>
+<p>滚动更新允许执行以下操作：</p>
+<ul>
+<li>通过容器镜像更新将应用程序从一个环境升级到另一个环境</li>
+<li>回滚到之前的版本</li>
+<li>实现应用的持续集成和持续交付，并且达到零停机时间</li>
+</ul>
+<h3 id="6-3-更新应用版本"><a href="#6-3-更新应用版本" class="headerlink" title="6.3 更新应用版本"></a>6.3 更新应用版本</h3><p>首先查看更新前的镜像版本（<code>kubectl describe pods</code>）</p>
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250316203843519.png" srcset="/img/loading.gif" lazyload></p>
+<p>要将应用程序的镜像更新到第2版，可以使用<code>set image</code>子命令，随后跟上deployment名称和新的镜像版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl <span class="hljs-built_in">set</span> image deployments/kubernetes-bootcamp kubernetes-bootcamp=docker.io/jocatalin/kubernetes-bootcamp:v2<br></code></pre></td></tr></table></figure>
+
+<p>此命令通知deployment使用新版本的镜像进行应用更新，并启动了一个滚动更新。可以通过<code>get pods</code>子命令检查新Pod的状态，并查看旧Pod正在终止：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl get pods<br></code></pre></td></tr></table></figure>
+
+<p><img src="/../images/k8s-k8s%E5%9F%BA%E7%A1%80/image-20250316204059267.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="6-4-验证更新"><a href="#6-4-验证更新" class="headerlink" title="6.4 验证更新"></a>6.4 验证更新</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl http://<span class="hljs-string">&quot;<span class="hljs-subst">$(minikube ip)</span>:<span class="hljs-variable">$NODE_PORT</span>&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>每次运行curl命令时，都会访问到不同的Pod。请注意，现在所有Pod都在运行最新版本（v2）。</p>
+<p>也可以通过运行<code>rollout status</code>子命令来确认更新状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl rollout status deployments/kubernetes-bootcamp<br></code></pre></td></tr></table></figure>
+
+<p>要查看应用程序当前的镜像版本，可以运行<code>describe pods</code>子命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl describe pods<br></code></pre></td></tr></table></figure>
+
+<p>在输出的镜像字段中，确认正在运行的是最新的镜像版本（v2）。</p>
+<h3 id="6-5-回滚更新"><a href="#6-5-回滚更新" class="headerlink" title="6.5 回滚更新"></a>6.5 回滚更新</h3><p>让我们执行另一次更新，并尝试部署一个标记为v10的镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl <span class="hljs-built_in">set</span> image deployments/kubernetes-bootcamp kubernetes-bootcamp=gcr.io/google-samples/kubernetes-bootcamp:v10<br></code></pre></td></tr></table></figure>
+
+<p>使用<code>get deployments</code>查看部署的状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl get deployments<br></code></pre></td></tr></table></figure>
+
+<p>注意，输出中没有列出期望的可用Pod数量。运行<code>get pods</code>子命令列出所有Pod：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl get pods<br></code></pre></td></tr></table></figure>
+
+<p>注意到一些Pod的状态为ImagePullBackOff。</p>
+<p>为了更深入地了解问题，运行<code>describe pods</code>子命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl describe pods<br></code></pre></td></tr></table></figure>
+
+<p>在受影响Pod的输出事件部分中，注意到v10镜像版本在仓库中不存在。</p>
+<p>要回滚部署到最后一个正常工作的版本，使用<code>rollout undo</code>子命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl rollout undo deployments/kubernetes-bootcamp<br></code></pre></td></tr></table></figure>
+
+<p><code>rollout undo</code>命令将部署恢复到之前的已知状态（即镜像的v2版本）。更新是版本化的，可以回滚到Deployment的任何之前已知的状态。</p>
+<p>再次使用<code>get pods</code>子命令列出Pod：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl get pods<br></code></pre></td></tr></table></figure>
+
+<p>要检查正在运行的Pod上部署的镜像，使用<code>describe pods</code>子命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl describe pods<br></code></pre></td></tr></table></figure>
+
+<p>现在，Deployment再次使用应用程序的一个稳定版本（v2）。回滚成功。</p>
+<p>记得清理本地集群：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl delete deployments/kubernetes-bootcamp services/kubernetes-bootcamp<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[k8s]k8s基础</div>
+      <div>https://erlsrnby04.github.io/2025/03/15/k8s-k8s基础/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/22/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter7/" title="[C++]C++并发编程实战Chapter7">
+                        <span class="hidden-mobile">[C++]C++并发编程实战Chapter7</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="k8s"
+        id="heading-bfd47ab5b430c23c83ea0d7b87b6e244" role="tab" data-toggle="collapse" href="#collapse-bfd47ab5b430c23c83ea0d7b87b6e244"
+        aria-expanded="true"
+      >
+        k8s
+        <span class="list-group-count">(1)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-bfd47ab5b430c23c83ea0d7b87b6e244"
+           role="tabpanel" aria-labelledby="heading-bfd47ab5b430c23c83ea0d7b87b6e244">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/15/k8s-k8s%E5%9F%BA%E7%A1%80/" title="[k8s]k8s基础"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">[k8s]k8s基础</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
