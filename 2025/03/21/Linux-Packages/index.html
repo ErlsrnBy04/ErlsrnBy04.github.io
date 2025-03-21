@@ -1,0 +1,1006 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Packages1 software distribution在计算机系统中，众多软件包如互联网浏览器、文本编辑器和媒体播放器等通过包管理器进行管理。包管理器负责安装并维护系统上的软件。尽管并非所有软件包都通过包管理器安装，直接从源代码安装也是一种常见方式，但大多数情况下，用户依赖包管理器来完成软件的安装。常用的软件包格式包括Debian（.deb）和Red Hat（.rpm）。Debian风格的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Linux]Packages">
+<meta property="og:url" content="https://erlsrnby04.github.io/2025/03/21/Linux-Packages/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="Packages1 software distribution在计算机系统中，众多软件包如互联网浏览器、文本编辑器和媒体播放器等通过包管理器进行管理。包管理器负责安装并维护系统上的软件。尽管并非所有软件包都通过包管理器安装，直接从源代码安装也是一种常见方式，但大多数情况下，用户依赖包管理器来完成软件的安装。常用的软件包格式包括Debian（.deb）和Red Hat（.rpm）。Debian风格的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=18">
+<meta property="article:published_time" content="2025-03-21T13:51:10.000Z">
+<meta property="article:modified_time" content="2025-03-21T13:53:21.339Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=18">
+  
+  
+  
+  <title>[Linux]Packages - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[Linux]Packages"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-21 21:51" pubdate>
+          2025年3月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[Linux]Packages</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Packages"><a href="#Packages" class="headerlink" title="Packages"></a>Packages</h1><h2 id="1-software-distribution"><a href="#1-software-distribution" class="headerlink" title="1 software distribution"></a>1 software distribution</h2><p>在计算机系统中，众多软件包如互联网浏览器、文本编辑器和媒体播放器等通过包管理器进行管理。包管理器负责安装并维护系统上的软件。尽管并非所有软件包都通过包管理器安装，直接从源代码安装也是一种常见方式，但大多数情况下，用户依赖包管理器来完成软件的安装。常用的软件包格式包括Debian（.deb）和Red Hat（.rpm）。Debian风格的软件包广泛应用于诸如Debian、Ubuntu、Linux Mint等发行版中；而Red Hat风格的软件包则用于Red Hat Enterprise Linux、Fedora、CentOS等。</p>
+<p>软件包可以理解为我们熟知的应用程序，例如Chrome、Photoshop等。实际上，它们是由大量文件编译而成的一个整体。编写这些软件的人或团队被称为上游提供者，他们不仅编写代码，还会编写安装指南。上游提供者致力于开发新软件及更新现有软件。当准备发布时，他们会将软件包提交给包维护者。包维护者负责审核、管理和以软件包的形式分发这些软件，确保最终用户能够获取并使用这些软件。</p>
+<h2 id="2-package-repositories"><a href="#2-package-repositories" class="headerlink" title="2 package repositories"></a>2 package repositories</h2><p>软件包通过网络上传后，是如何安装到我们的计算机上的呢？是否需要访问每个软件包的下载页面并手动点击下载和安装？实际上，这种方法是可行的，但存在一种更高效的方式：使用软件包仓库（repositories）。仓库作为软件包的集中存储位置，其中包含了大量软件包，并且这些仓库均位于互联网上，无需传统的安装光盘。然而，计算机需要明确知道这些仓库的位置才能进行访问。</p>
+<p>例如，假设希望在计算机上安装WackyWidgets公司的软件。WackyWidgets管理着自己的仓库用于存放其软件包，在这个仓库中有10个软件包，如CoolWidget、SuperWidget等。WackyWidgets在其服务器上托管了该仓库，对应的源链接为：<a target="_blank" rel="noopener" href="http://download.widgets/linux/deb/%E3%80%82">http://download.widgets/linux/deb/。</a></p>
+<p>通过这种方式，不需要访问WackyWidgets的官方网站直接下载软件包，而是让计算机从指定的源链接获取WackyWidgets的软件。</p>
+<p>通常情况下，操作系统已经预设了一些可信的软件源，这使得系统能够安装所有基础软件包。在基于Debian的系统中，这些源信息保存在<code>/etc/apt/sources.list</code>文件中。</p>
+<h2 id="3-tar和gzip"><a href="#3-tar和gzip" class="headerlink" title="3 tar和gzip"></a>3 tar和gzip</h2><p><strong>archive</strong></p>
+<p>archive，比如常见的.rar和.zip文件格式。这些是包含多个文件的单个archive文件，便于存储和传输。</p>
+<h4 id="使用gzip进行文件压缩"><a href="#使用gzip进行文件压缩" class="headerlink" title="使用gzip进行文件压缩"></a>使用gzip进行文件压缩</h4><p><code>gzip</code>是Linux中用于压缩文件的程序，生成的压缩文件通常带有<code>.gz</code>扩展名。</p>
+<ul>
+<li><p>压缩文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ gzip mycoolfile<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>解压文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ gunzip mycoolfile.gz<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="使用tar创建archive文件"><a href="#使用tar创建archive文件" class="headerlink" title="使用tar创建archive文件"></a>使用tar创建archive文件</h4><p>尽管<code>gzip</code>无法将多个文件合并到一个归档文件中，但<code>tar</code>命令可以做到这一点。使用<code>tar</code>创建的归档文件通常带有<code>.tar</code>扩展名。</p>
+<ul>
+<li><p>创建归档文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ tar cvf mytarfile.tar mycoolfile1 mycoolfile2<br></code></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li><code>c</code>：创建归档。</li>
+<li><code>v</code>：显示处理过程（可选）。</li>
+<li><code>f</code>：指定输出文件名。</li>
+</ul>
+</li>
+<li><p>解开归档文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ tar xvf mytarfile.tar<br></code></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li><code>x</code>：解压文件。</li>
+<li><code>v</code>：显示处理过程（可选）。</li>
+<li><code>f</code>：指定要解压的文件。</li>
+</ul>
+</li>
+</ul>
+<h4 id="结合tar和gzip进行压缩和解压缩"><a href="#结合tar和gzip进行压缩和解压缩" class="headerlink" title="结合tar和gzip进行压缩和解压缩"></a>结合tar和gzip进行压缩和解压缩</h4><p>有时会遇到被压缩的tar文件，如<code>mycompressedarchive.tar.gz</code>。这时，可以先用<code>gunzip</code>解除压缩，再用<code>tar</code>解开归档；或者直接使用<code>tar</code>命令的<code>z</code>选项来简化这一过程。</p>
+<ul>
+<li><p>创建压缩的tar文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ tar czf myfile.tar.gz [files...]<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>解压缩并解归档：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ tar xzf file.tar.gz<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>记住这个简单的助记符：“eXtract all Zee Files!”</p>
+<h4 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h4><p>在使用Linux的过程中，还会遇到其他一些归档和压缩类型，例如bzip2、compress、zip和unzip等。</p>
+<h2 id="4-Package-Dependencies"><a href="#4-Package-Dependencies" class="headerlink" title="4 Package Dependencies"></a>4 Package Dependencies</h2><p>在Linux系统中，软件包很少能够独立工作，它们通常需要依赖其他软件包或共享库来正常运行。以一组餐厅为例，尽管每家餐厅制作不同的菜肴，但它们都从同一个农场获取食材。如果这个农场突然停止供应，那么这些餐厅将会陷入困境。</p>
+<h4 id="依赖关系的重要性"><a href="#依赖关系的重要性" class="headerlink" title="依赖关系的重要性"></a>依赖关系的重要性</h4><p>类似地，在Linux中，软件包依赖于其他软件包或共享库。共享库是程序代码库，其它程序可以使用这些代码而无需自行重写。设想一下，如果每家餐厅都需要自己种植食材，那将是非常低效的。</p>
+<ul>
+<li><strong>共享库</strong>：这些是多个程序可以共同使用的代码库。</li>
+</ul>
+<h4 id="缺失依赖导致的问题"><a href="#缺失依赖导致的问题" class="headerlink" title="缺失依赖导致的问题"></a>缺失依赖导致的问题</h4><p>如果一个软件包所需的依赖项不存在，该软件包可能无法安装，或者即使安装成功也可能处于损坏状态，无法正常运行。因此，确保所有依赖项的存在对于维护软件环境的稳定至关重要。</p>
+<h2 id="5-rpm和dpkg"><a href="#5-rpm和dpkg" class="headerlink" title="5 rpm和dpkg"></a>5 rpm和dpkg</h2><h4 id="独立软件包格式"><a href="#独立软件包格式" class="headerlink" title="独立软件包格式"></a>独立软件包格式</h4><p>类似于Windows下的.exe文件，Linux系统中有.deb和.rpm格式的单个可执行包文件。通常情况下，通过软件仓库安装软件时不会直接遇到这些文件，但当从网络上直接下载软件包时，最有可能获得的就是这两种格式之一。.deb格式专用于基于Debian的发行版，而.rpm格式则用于基于Red Hat的发行版。</p>
+<h4 id="安装与卸载命令"><a href="#安装与卸载命令" class="headerlink" title="安装与卸载命令"></a>安装与卸载命令</h4><p>为了安装这些单独的软件包，可以使用<code>dpkg</code>和<code>rpm</code>命令：</p>
+<ul>
+<li><p><strong>安装软件包</strong></p>
+<ul>
+<li>Debian系：<code>$ dpkg -i some_deb_package.deb</code></li>
+<li>RPM系：<code>$ rpm -i some_rpm_package.rpm</code></li>
+</ul>
+<p>这里的<code>i</code>代表install，也可以使用全写<code>--install</code>。</p>
+</li>
+<li><p><strong>移除软件包</strong></p>
+<ul>
+<li>Debian系：<code>$ dpkg -r some_deb_package.deb</code></li>
+<li>RPM系：<code>$ rpm -e some_rpm_package.rpm</code></li>
+</ul>
+<p>Debian系中的<code>r</code>表示remove，RPM系中的<code>e</code>表示erase。</p>
+</li>
+</ul>
+<h4 id="查询与验证"><a href="#查询与验证" class="headerlink" title="查询与验证"></a>查询与验证</h4><p>由于<code>dpkg</code>和<code>rpm</code>不会自动处理依赖关系，因此在使用这些工具安装软件包之前，需要手动解决所有依赖项问题。这凸显了完整包管理系统的重要性。</p>
+<p>此外，还有查询已安装软件包的命令：</p>
+<ul>
+<li><p>Debian系：<code>$ dpkg -l</code></p>
+</li>
+<li><p>RPM系：<code>$ rpm -qa</code></p>
+<p>在Debian系中，<code>l</code>表示list；而在RPM系中，<code>q</code>表示query，<code>a</code>表示all。</p>
+</li>
+</ul>
+<h2 id="6-yum和apt"><a href="#6-yum和apt" class="headerlink" title="6 yum和apt"></a>6 yum和apt</h2><p>在Linux系统中，包管理系统扮演着至关重要的角色，它们不仅简化了软件的安装、卸载和更新流程，还能够自动处理依赖关系。当前最流行的两大包管理系统分别是适用于Red Hat系列的YUM和专用于Debian系列的APT。</p>
+<h4 id="软件包操作命令"><a href="#软件包操作命令" class="headerlink" title="软件包操作命令"></a>软件包操作命令</h4><p>使用这些工具进行软件包的操作非常直接：</p>
+<ul>
+<li><p><strong>从仓库安装软件包</strong></p>
+<ul>
+<li>Debian系：<code>$ apt install package_name</code></li>
+<li>RPM系：<code>$ yum install package_name</code></li>
+</ul>
+</li>
+<li><p><strong>移除软件包</strong></p>
+<ul>
+<li>Debian系：<code>$ apt remove package_name</code></li>
+<li>RPM系：<code>$ yum erase package_name</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="更新仓库与软件包"><a href="#更新仓库与软件包" class="headerlink" title="更新仓库与软件包"></a>更新仓库与软件包</h4><p>为了确保系统的稳定性和安全性，在安装或更新软件包之前，建议首先更新仓库列表，并升级现有软件包至最新版本：</p>
+<ul>
+<li>Debian系：<code>$ apt update; apt upgrade</code></li>
+<li>RPM系：<code>$ yum update</code></li>
+</ul>
+<p>这种做法可以保证您获取到最新的安全补丁和功能改进。</p>
+<h4 id="查询已安装软件包信息"><a href="#查询已安装软件包信息" class="headerlink" title="查询已安装软件包信息"></a>查询已安装软件包信息</h4><p>了解已安装软件包的详细信息同样重要，这有助于排查问题或确认软件的功能特性：</p>
+<ul>
+<li>Debian系：<code>$ apt show package_name</code></li>
+<li>RPM系：<code>$ yum info package_name</code></li>
+</ul>
+<h2 id="7-编译源码"><a href="#7-编译源码" class="headerlink" title="7 编译源码"></a>7 编译源码</h2><p>在Linux系统中，有时会遇到仅以纯源代码形式提供的软件包。为了将这些源代码包编译并安装到系统中，需要执行一系列命令。以下是详细步骤：</p>
+<h4 id="安装编译工具"><a href="#安装编译工具" class="headerlink" title="安装编译工具"></a>安装编译工具</h4><p>首先，确保系统已安装必要的编译工具。对于基于Debian的系统，可以使用以下命令进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> apt install build-essential<br></code></pre></td></tr></table></figure>
+
+<h4 id="解压源代码包"><a href="#解压源代码包" class="headerlink" title="解压源代码包"></a>解压源代码包</h4><p>通常，源代码包为<code>.tar.gz</code>格式，使用<code>tar</code>命令解压缩：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ tar -xzvf package.tar.gz<br></code></pre></td></tr></table></figure>
+
+<h4 id="阅读README或INSTALL文件"><a href="#阅读README或INSTALL文件" class="headerlink" title="阅读README或INSTALL文件"></a>阅读README或INSTALL文件</h4><p>解压后，查看包内的README或INSTALL文件，因为它们可能包含特定的安装指南。</p>
+<h4 id="编译与安装"><a href="#编译与安装" class="headerlink" title="编译与安装"></a>编译与安装</h4><p>根据开发者采用的编译方法不同，需要使用的命令也会有所差异，如cmake等。然而，最常见的编译方式是通过<code>make</code>进行基本编译：</p>
+<ol>
+<li><p><strong>运行配置脚本</strong>：检查系统依赖项。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ ./configure<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>编译源代码</strong>：使用Makefile中的规则构建软件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ make<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>安装软件包</strong>：复制编译后的文件到系统相应位置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> make install<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>卸载软件包</strong>（如果需要）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> make uninstall<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="使用checkinstall简化管理"><a href="#使用checkinstall简化管理" class="headerlink" title="使用checkinstall简化管理"></a>使用checkinstall简化管理</h4><p>直接使用<code>make install</code>可能会导致后续难以完全卸载软件包的问题。为了避免这种情况，推荐使用<code>checkinstall</code>命令，它会在安装过程中生成一个<code>.deb</code>包，便于日后安装和卸载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> checkinstall<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[Linux]Packages</div>
+      <div>https://erlsrnby04.github.io/2025/03/21/Linux-Packages/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/21/Linux-Devices/" title="[Linux]Devices">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[Linux]Devices</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/21/Linux-Processes/" title="[Linux]Processes">
+                        <span class="hidden-mobile">[Linux]Processes</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="linux"
+        id="heading-e206a54e97690cce50cc872dd70ee896" role="tab" data-toggle="collapse" href="#collapse-e206a54e97690cce50cc872dd70ee896"
+        aria-expanded="true"
+      >
+        linux
+        <span class="list-group-count">(7)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-e206a54e97690cce50cc872dd70ee896"
+           role="tabpanel" aria-labelledby="heading-e206a54e97690cce50cc872dd70ee896">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/18/Linux-Command-Line/" title="[Linux]Command Line"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Command Line</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Devices/" title="[Linux]Devices"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Devices</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Packages/" title="[Linux]Packages"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">[Linux]Packages</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Permissions/" title="[Linux]Permissions"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Permissions</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Processes/" title="[Linux]Processes"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Processes</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/18/Linux-Text-Fu/" title="[Linux]Text-Fu"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Text-Fu</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/" title="[Linux]用户管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]用户管理</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

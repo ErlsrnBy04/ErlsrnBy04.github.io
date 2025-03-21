@@ -1,0 +1,966 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Devices1 &#x2F;dev目录当将一个设备连接到计算机时，通常需要一个设备驱动程序以确保其正常工作。设备驱动程序可通过设备文件或设备节点进行交互，这些特殊文件看起来就像普通文件一样。由于这些设备文件与普通文件相似，可以使用如ls、cat等命令来与它们互动。这些设备文件一般存储在&#x2F;dev目录下。 查看系统中的设备文件要查看您的系统中有哪些设备文件，请执行以下命令： 1$ ls &#x2F;dev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Linux]Devices">
+<meta property="og:url" content="https://erlsrnby04.github.io/2025/03/21/Linux-Devices/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="Devices1 &#x2F;dev目录当将一个设备连接到计算机时，通常需要一个设备驱动程序以确保其正常工作。设备驱动程序可通过设备文件或设备节点进行交互，这些特殊文件看起来就像普通文件一样。由于这些设备文件与普通文件相似，可以使用如ls、cat等命令来与它们互动。这些设备文件一般存储在&#x2F;dev目录下。 查看系统中的设备文件要查看您的系统中有哪些设备文件，请执行以下命令： 1$ ls &#x2F;dev">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=19">
+<meta property="article:published_time" content="2025-03-21T13:51:19.000Z">
+<meta property="article:modified_time" content="2025-03-21T13:53:37.503Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=19">
+  
+  
+  
+  <title>[Linux]Devices - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[Linux]Devices"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-21 21:51" pubdate>
+          2025年3月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[Linux]Devices</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Devices"><a href="#Devices" class="headerlink" title="Devices"></a>Devices</h1><h2 id="1-dev目录"><a href="#1-dev目录" class="headerlink" title="1 &#x2F;dev目录"></a>1 &#x2F;dev目录</h2><p>当将一个设备连接到计算机时，通常需要一个设备驱动程序以确保其正常工作。设备驱动程序可通过设备文件或设备节点进行交互，这些特殊文件看起来就像普通文件一样。由于这些设备文件与普通文件相似，可以使用如<code>ls</code>、<code>cat</code>等命令来与它们互动。这些设备文件一般存储在<code>/dev</code>目录下。</p>
+<h4 id="查看系统中的设备文件"><a href="#查看系统中的设备文件" class="headerlink" title="查看系统中的设备文件"></a>查看系统中的设备文件</h4><p>要查看您的系统中有哪些设备文件，请执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">ls</span> /dev<br></code></pre></td></tr></table></figure>
+
+<p>执行后，会看到大量存在于系统中的设备文件。其中一些设备文件，比如<code>/dev/null</code>，当向<code>/dev/null</code>发送输出时，内核知道该设备会接收所有输入并直接丢弃，因此不会有任何返回内容。</p>
+<h4 id="传统方法的问题"><a href="#传统方法的问题" class="headerlink" title="传统方法的问题"></a>传统方法的问题</h4><p>在过去，如果想要向系统添加一个设备，需要手动在<code>/dev</code>目录下添加相应的设备文件，然后很可能就不再理会它了。重复几次之后，问题便显现出来了：<code>/dev</code>目录会被长期未使用或已升级设备的静态设备文件所堆积。此外，设备还会根据内核发现它们的顺序被分配设备文件。这意味着每次系统重启后，设备可能会因为被发现的时间不同而拥有不同的设备文件。</p>
+<h4 id="动态管理设备的新方法"><a href="#动态管理设备的新方法" class="headerlink" title="动态管理设备的新方法"></a>动态管理设备的新方法</h4><p>现在采用了一种新的机制来动态地添加和移除系统中当前正在使用的设备，从而避免了上述问题。这种方法将在后面详细讨论。</p>
+<h2 id="2-设备种类"><a href="#2-设备种类" class="headerlink" title="2 设备种类"></a>2 设备种类</h2><p>运行以下命令，可以列出<code>/dev</code>目录下的设备文件及其详细信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">ls</span> -l /dev<br></code></pre></td></tr></table></figure>
+
+<p>示例输出可能如下所示：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">brw</span>-rw----   <span class="hljs-number">1</span> root disk      <span class="hljs-number">8</span>,   <span class="hljs-number">0</span> Dec <span class="hljs-number">20</span> <span class="hljs-number">20</span>:<span class="hljs-number">13</span> sda<br><span class="hljs-attribute">crw</span>-rw-rw-   <span class="hljs-number">1</span> root root      <span class="hljs-number">1</span>,   <span class="hljs-number">3</span> Dec <span class="hljs-number">20</span> <span class="hljs-number">20</span>:<span class="hljs-number">13</span> null<br><span class="hljs-attribute">srw</span>-rw-rw-   <span class="hljs-number">1</span> root root           <span class="hljs-number">0</span> Dec <span class="hljs-number">20</span> <span class="hljs-number">20</span>:<span class="hljs-number">13</span> log<br><span class="hljs-attribute">prw</span>-r--r--   <span class="hljs-number">1</span> root root           <span class="hljs-number">0</span> Dec <span class="hljs-number">20</span> <span class="hljs-number">20</span>:<span class="hljs-number">13</span> fdata<br></code></pre></td></tr></table></figure>
+
+<p>每一行从左至右分别表示权限、所有者、所属组、主设备号、次设备号、时间戳和\名称。</p>
+<h4 id="文件类型的标识"><a href="#文件类型的标识" class="headerlink" title="文件类型的标识"></a>文件类型的标识</h4><p>使用<code>ls</code>命令时，可以通过每行的第一个字符识别文件类型。设备文件的标识符如下：</p>
+<ul>
+<li><code>c</code>：字符设备</li>
+<li><code>b</code>：块设备</li>
+<li><code>p</code>：管道设备</li>
+<li><code>s</code>：套接字设备</li>
+</ul>
+<h4 id="字符设备"><a href="#字符设备" class="headerlink" title="字符设备"></a>字符设备</h4><p>此类设备逐字符传输数据。常见于伪设备（如<code>/dev/null</code>），这些伪设备并非物理连接到机器上，但它们扩展了操作系统的功能。</p>
+<h4 id="块设备"><a href="#块设备" class="headerlink" title="块设备"></a>块设备</h4><p>此类设备以大而固定大小的数据块进行数据传输。最常见的是硬盘和文件系统等利用数据块的设备。</p>
+<h4 id="管道设备"><a href="#管道设备" class="headerlink" title="管道设备"></a>管道设备</h4><p>命名管道允许两个或多个进程之间进行通信，与字符设备类似，但其输出是发送给另一个进程而非设备。</p>
+<h4 id="套接字设备"><a href="#套接字设备" class="headerlink" title="套接字设备"></a>套接字设备</h4><p>套接字设备促进进程间的通信，类似于管道设备，但能够同时与多个进程进行通信。</p>
+<h4 id="设备编号"><a href="#设备编号" class="headerlink" title="设备编号"></a>设备编号</h4><p>设备通过两个数字进行分类：主设备号和次设备号。例如，对于设备编号8, 0：</p>
+<ul>
+<li>主设备号（8）代表所使用的设备驱动程序，这通常对应sd块设备。</li>
+<li>次设备号（0）告诉内核该设备在此驱动类别中的唯一标识，例如这里的0表示第一个设备（a）。</li>
+</ul>
+<h2 id="3-设备名称"><a href="#3-设备名称" class="headerlink" title="3 设备名称"></a>3 设备名称</h2><h4 id="SCSI设备"><a href="#SCSI设备" class="headerlink" title="SCSI设备"></a>SCSI设备</h4><p>如果使用的机器上有任何形式的大容量存储，很有可能它使用的是SCSI（发音为”scuzzy”）协议。SCSI代表小型计算机系统接口，是一种允许磁盘、打印机、扫描仪及其他外围设备与系统通信的协议。尽管实际的SCSI设备可能不再广泛应用于现代系统中，但在Linux系统中，SCSI磁盘通常对应于&#x2F;dev目录下的硬盘驱动器，并以sd（SCSI disk）作为前缀标识。</p>
+<ul>
+<li><code>/dev/sda</code>：第一块硬盘</li>
+<li><code>/dev/sdb</code>：第二块硬盘</li>
+<li><code>/dev/sda3</code>：第一块硬盘上的第三个分区</li>
+</ul>
+<h4 id="伪设备"><a href="#伪设备" class="headerlink" title="伪设备"></a>伪设备</h4><p>伪设备并非物理连接到系统上，它们多数作为字符设备存在：</p>
+<ul>
+<li><code>/dev/zero</code>：接受所有输入并丢弃之，生成连续的NULL（零值）字节流。</li>
+<li><code>/dev/null</code>：接受所有输入并丢弃之，不产生任何输出。</li>
+<li><code>/dev/random</code>：生成随机数。</li>
+</ul>
+<h4 id="PATA设备"><a href="#PATA设备" class="headerlink" title="PATA设备"></a>PATA设备</h4><p>在一些较老的系统中，可能会看到使用hd前缀表示的硬盘驱动器：</p>
+<ul>
+<li><code>/dev/hda</code>：第一块硬盘</li>
+<li><code>/dev/hdd2</code>：第四块硬盘上的第二个分区</li>
+</ul>
+<h2 id="4-sysfs"><a href="#4-sysfs" class="headerlink" title="4 sysfs"></a>4 sysfs</h2><h3 id="Sysfs与设备管理"><a href="#Sysfs与设备管理" class="headerlink" title="Sysfs与设备管理"></a>Sysfs与设备管理</h3><p>Sysfs文件系统创建的目的在于更有效地管理系统中的设备，补充了&#x2F;dev目录未能提供的功能。作为一个虚拟文件系统，Sysfs通常挂载于&#x2F;sys目录下，提供了比&#x2F;dev目录更为详尽的设备信息。尽管&#x2F;sys和&#x2F;dev目录在某些方面看起来相似，但它们有着明显的区别和不同的用途。简而言之，&#x2F;dev目录提供了一个简单的接口，允许其他程序直接访问设备；而&#x2F;sys文件系统则用于查看设备信息和进行设备管理。</p>
+<h4 id="Sysfs下的设备信息"><a href="#Sysfs下的设备信息" class="headerlink" title="Sysfs下的设备信息"></a>Sysfs下的设备信息</h4><p>&#x2F;sys文件系统包含了系统中所有设备的详细信息，如制造商、型号、设备连接位置、设备状态、设备层次结构等。以下是通过浏览&#x2F;sys&#x2F;block&#x2F;sda目录内容所展示的部分示例：</p>
+<ul>
+<li><code>alignment_offset</code>、<code>discard_alignment</code>：关于磁盘对齐的信息。</li>
+<li><code>holders</code>、<code>slaves</code>：显示此设备被哪些设备持有或依赖的设备。</li>
+<li><code>removable</code>：指示设备是否可移除。</li>
+<li><code>ro</code>：指示设备是否只读。</li>
+<li><code>size</code>：显示设备大小。</li>
+<li><code>stat</code>：提供设备的统计信息。</li>
+<li><code>device</code>、<code>subsystem</code>：包含设备本身及其所属子系统的相关信息。</li>
+<li><code>power</code>、<code>queue</code>：分别涉及设备的电源管理和队列设置。</li>
+</ul>
+<p>这些文件并不是设备节点，因此不用于直接与设备交互。相反，它们为用户提供了一种手段来管理和监控系统上的设备。通过查阅这些文件，用户能够获取到设备的详细属性，并据此进行必要的调整和优化，确保系统运行效率和稳定性。</p>
+<h2 id="5-udev"><a href="#5-udev" class="headerlink" title="5 udev"></a>5 udev</h2><p>在过去，若要手动创建设备节点，可以使用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">mknod</span> /dev/sdb1 b 8 3<br></code></pre></td></tr></table></figure>
+
+<p>这条命令将创建一个名为&#x2F;dev&#x2F;sdb1的设备节点，指定其为块设备（b），并赋予主设备号8和次设备号3。同样地，删除设备也只需简单地移除&#x2F;dev目录下的对应设备文件。</p>
+<p>然而，得益于udev系统的出现，现在无需手动执行这些操作。udev系统能够根据设备是否连接动态地创建或移除设备文件。系统中运行着一个udevd守护进程，它监听来自内核的关于新连接设备的消息。udevd会解析这些信息，并将其与&#x2F;etc&#x2F;udev&#x2F;rules.d目录下预定义的规则进行匹配，进而创建设备节点和符号链接。虽然用户可以编写自己的udev规则，但这通常超出了基本需求范围。统自带了丰富的udev规则，足以满足大多数情况的需求。</p>
+<p><strong>使用udevadm工具</strong></p>
+<p>通过udevadm命令，我们可以查看udev数据库和sysfs中的信息。要获取特定设备的详细信息，可以使用以下简单命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ udevadm info --query=all --name=/dev/sda<br></code></pre></td></tr></table></figure>
+
+<h2 id="6-lsusb-lspci-lssci"><a href="#6-lsusb-lspci-lssci" class="headerlink" title="6 lsusb, lspci, lssci"></a>6 lsusb, lspci, lssci</h2><h3 id="列出设备信息的工具"><a href="#列出设备信息的工具" class="headerlink" title="列出设备信息的工具"></a>列出设备信息的工具</h3><p>类似于使用<code>ls</code>命令列出文件和目录，Linux系统提供了多种工具用于列出不同类型的设备信息。</p>
+<h4 id="列出USB设备"><a href="#列出USB设备" class="headerlink" title="列出USB设备"></a>列出USB设备</h4><p>要查看系统中的USB设备，可以使用<code>lsusb</code>命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ lsusb<br></code></pre></td></tr></table></figure>
+
+<p>该命令将显示所有连接的USB设备的详细信息，包括设备ID、制造商和设备类型等。</p>
+<h4 id="列出PCI设备"><a href="#列出PCI设备" class="headerlink" title="列出PCI设备"></a>列出PCI设备</h4><p>对于PCI设备，可以使用<code>lspci</code>命令来获取相关信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ lspci<br></code></pre></td></tr></table></figure>
+
+<p>执行上述命令后，系统会列出所有PCI设备，提供设备名称、类别以及连接的总线位置等详情。</p>
+<h4 id="列出SCSI设备"><a href="#列出SCSI设备" class="headerlink" title="列出SCSI设备"></a>列出SCSI设备</h4><p>要列出SCSI设备的信息，可以使用<code>lsscsi</code>命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ lsscsi<br></code></pre></td></tr></table></figure>
+
+<p>此命令将输出系统中所有SCSI设备的列表，包含设备路径、类型及厂商等信息。</p>
+<h2 id="7-使用dd工具进行数据转换和复制"><a href="#7-使用dd工具进行数据转换和复制" class="headerlink" title="7 使用dd工具进行数据转换和复制"></a>7 使用<code>dd</code>工具进行数据转换和复制</h2><p><code>dd</code>是一个功能强大的命令行工具，适用于Linux和其他Unix-like操作系统，用于数据的转换和复制。它可以从文件或数据流读取输入，并将其写入到另一个文件或数据流。</p>
+<p>考虑以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">dd</span> <span class="hljs-keyword">if</span>=/home/pete/backup.img of=/dev/sdb bs=1024<br></code></pre></td></tr></table></figure>
+
+<p>此命令将<code>backup.img</code>的内容复制到<code>/dev/sdb</code>。它将以1024字节为单位块进行数据复制，直到所有数据传输完成为止。</p>
+<ul>
+<li><code>if=file</code>: 输入文件，从指定文件而非标准输入读取数据。</li>
+<li><code>of=file</code>: 输出文件，向指定文件而非标准输出写入数据。</li>
+<li><code>bs=bytes</code>: 块大小，表示每次读写的字节数。可以使用不同的尺寸单位，例如k代表千字节，m代表兆字节等。因此，1024字节等于1k。</li>
+<li><code>count=number</code>: 复制的块数。</li>
+</ul>
+<p><strong>使用<code>count</code>选项</strong></p>
+<p>假设执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">dd</span> <span class="hljs-keyword">if</span>=/home/pete/backup.img of=/dev/sdb bs=1M count=2<br></code></pre></td></tr></table></figure>
+
+<p>如果<code>backup.img</code>的大小是10MB，但是上述命令仅指示复制1MB的数据两次，即总共只复制了2MB的数据，导致数据不完整。在特定情况下，<code>count</code>参数非常有用，但在简单地复制整个文件时，通常可以省略<code>count</code>和<code>bs</code>参数。若要优化数据传输效率，则应合理配置这些选项。</p>
+<p><code>dd</code>可用于制作任何东西的备份，包括整个磁盘驱动器、恢复磁盘映像等。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[Linux]Devices</div>
+      <div>https://erlsrnby04.github.io/2025/03/21/Linux-Devices/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/21/Linux-Packages/" title="[Linux]Packages">
+                        <span class="hidden-mobile">[Linux]Packages</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="linux"
+        id="heading-e206a54e97690cce50cc872dd70ee896" role="tab" data-toggle="collapse" href="#collapse-e206a54e97690cce50cc872dd70ee896"
+        aria-expanded="true"
+      >
+        linux
+        <span class="list-group-count">(7)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-e206a54e97690cce50cc872dd70ee896"
+           role="tabpanel" aria-labelledby="heading-e206a54e97690cce50cc872dd70ee896">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/18/Linux-Command-Line/" title="[Linux]Command Line"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Command Line</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Devices/" title="[Linux]Devices"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">[Linux]Devices</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Packages/" title="[Linux]Packages"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Packages</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Permissions/" title="[Linux]Permissions"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Permissions</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Processes/" title="[Linux]Processes"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Processes</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/18/Linux-Text-Fu/" title="[Linux]Text-Fu"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Text-Fu</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/" title="[Linux]用户管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]用户管理</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
