@@ -1,0 +1,999 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Networking Sharing1 文件共享概述在企业环境中，网络中的计算机通常不止一台。当需要在这些设备间传输数据时，相较于使用USB驱动器手动复制文件，利用网络文件共享进行数据传输通常是更为高效的方法。 简单文件共享工具：SCP命令scp（Secure Copy）命令是一种简便的文件共享工具。它与cp命令相似，但允许通过网络在不同的主机间安全地复制文件。scp基于SSH协议工作，所有操作均">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Linux]Network Sharing">
+<meta property="og:url" content="https://erlsrnby04.github.io/2025/03/22/Linux-Network-Sharing/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="Networking Sharing1 文件共享概述在企业环境中，网络中的计算机通常不止一台。当需要在这些设备间传输数据时，相较于使用USB驱动器手动复制文件，利用网络文件共享进行数据传输通常是更为高效的方法。 简单文件共享工具：SCP命令scp（Secure Copy）命令是一种简便的文件共享工具。它与cp命令相似，但允许通过网络在不同的主机间安全地复制文件。scp基于SSH协议工作，所有操作均">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=26">
+<meta property="article:published_time" content="2025-03-22T07:35:52.000Z">
+<meta property="article:modified_time" content="2025-03-22T07:48:58.459Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=26">
+  
+  
+  
+  <title>[Linux]Network Sharing - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[Linux]Network Sharing"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-22 15:35" pubdate>
+          2025年3月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[Linux]Network Sharing</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Networking-Sharing"><a href="#Networking-Sharing" class="headerlink" title="Networking Sharing"></a>Networking Sharing</h1><h2 id="1-文件共享概述"><a href="#1-文件共享概述" class="headerlink" title="1 文件共享概述"></a>1 文件共享概述</h2><p>在企业环境中，网络中的计算机通常不止一台。当需要在这些设备间传输数据时，相较于使用USB驱动器手动复制文件，利用网络文件共享进行数据传输通常是更为高效的方法。</p>
+<h4 id="简单文件共享工具：SCP命令"><a href="#简单文件共享工具：SCP命令" class="headerlink" title="简单文件共享工具：SCP命令"></a>简单文件共享工具：SCP命令</h4><p><code>scp</code>（Secure Copy）命令是一种简便的文件共享工具。它与<code>cp</code>命令相似，但允许通过网络在不同的主机间安全地复制文件。<code>scp</code>基于SSH协议工作，所有操作均享有与SSH相同的认证和安全保障。</p>
+<ul>
+<li><strong>从本地主机复制文件到远程主机</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ scp myfile.txt username@remotehost.com:/remote/directory<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>从远程主机复制文件到本地主机</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ scp username@remotehost.com:/remote/directory/myfile.txt /local/directory<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>递归复制本地目录至远程主机</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ scp -r mydir username@remotehost.com:/remote/directory<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-文件同步工具：Rsync"><a href="#2-文件同步工具：Rsync" class="headerlink" title="2 文件同步工具：Rsync"></a>2 文件同步工具：Rsync</h2><p>除了<code>scp</code>之外，另一种用于在不同主机间复制数据的工具是<code>rsync</code>（远程同步）。虽然<code>rsync</code>与<code>scp</code>类似，但它具备一项显著的不同：<code>rsync</code>采用了一种特殊算法，该算法会预先检查目标位置是否已存在相同的数据，并仅传输差异部分。例如，在文件传输过程中若网络中断导致传输中途停止，<code>rsync</code>不会重新传输所有数据，而是只传输未完成的部分。</p>
+<p>此外，<code>rsync</code>使用校验和验证所传输文件的完整性，这些优化使得<code>rsync</code>非常适合进行本地或远程目录同步、数据备份以及大量数据传输等操作。</p>
+<h4 id="常用rsync选项："><a href="#常用rsync选项：" class="headerlink" title="常用rsync选项："></a>常用<code>rsync</code>选项：</h4><ul>
+<li><p><code>v</code> - 详细输出</p>
+</li>
+<li><p><code>r</code> - 递归进入子目录</p>
+</li>
+<li><p><code>h</code> - 显示人类可读的输出</p>
+</li>
+<li><p><code>z</code> - 压缩文件以便于传输，特别适用于速度较慢的连接</p>
+</li>
+<li><p><strong>在同一主机上同步文件</strong></p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ rsync -zvr /my/local/directory/one /my/local/directory/two<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>从远程主机同步文件到本地主机</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ rsync username@remotehost.com:/remote/directory /local/directory<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>从本地主机同步文件到远程主机</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ rsync /local/directory username@remotehost.com:/remote/directory<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-使用Python创建简易HTTP服务器"><a href="#3-使用Python创建简易HTTP服务器" class="headerlink" title="3 使用Python创建简易HTTP服务器"></a>3 使用Python创建简易HTTP服务器</h2><p>Python提供了一个极为便捷的工具，用于通过HTTP协议共享文件。这对于快速创建网络共享，使同一网络中的其他设备能够访问非常有用。只需导航至你希望共享的目录，并执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ python -m http.server<br></code></pre></td></tr></table></figure>
+
+<p>这将启动一个基础的Web服务器，可以通过本地主机地址进行访问。获取运行此命令的机器的IP地址，在另一台设备上，通过浏览器访问<code>http://IP_ADDRESS:8000</code>来查看共享内容。若在本机访问，则只需在浏览器地址栏输入<code>http://localhost:8000</code>即可浏览可用文件。</p>
+<h2 id="4-使用NFS进行网络文件共享"><a href="#4-使用NFS进行网络文件共享" class="headerlink" title="4 使用NFS进行网络文件共享"></a>4 使用NFS进行网络文件共享</h2><p>在Linux环境中，标准的网络文件共享解决方案是NFS（Network File System）。通过NFS，服务器能够跨网络与一个或多个客户端共享目录和文件。</p>
+<p>这里不讨论如何创建一个NFS服务器，简单介绍如何设置NFS客户端。</p>
+<h4 id="设置NFS客户端"><a href="#设置NFS客户端" class="headerlink" title="设置NFS客户端"></a>设置NFS客户端</h4><p>首先，启动NFS客户端服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> service nfs-client start<br></code></pre></td></tr></table></figure>
+
+<p>然后，挂载远程NFS目录到本地文件系统：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> mount -t nfs server:/directory /mount_directory<br></code></pre></td></tr></table></figure>
+
+<h4 id="自动挂载"><a href="#自动挂载" class="headerlink" title="自动挂载"></a>自动挂载</h4><p>如果频繁使用NFS服务器，并希望实现永久性挂载，直接编辑<code>/etc/fstab</code>文件可能导致开机时因无法连接至服务器而出现问题。为避免这种情况，建议配置自动挂载功能。这一功能可通过<code>automount</code>工具或较新版本Linux中的<code>amd</code>来实现。当访问特定目录下的文件时，自动挂载工具将查找远程服务器并自动完成挂载操作。</p>
+<h2 id="5-使用Samba实现跨平台文件共享"><a href="#5-使用Samba实现跨平台文件共享" class="headerlink" title="5 使用Samba实现跨平台文件共享"></a>5 使用Samba实现跨平台文件共享</h2><p>在计算技术发展的早期，Windows与Linux系统之间需要进行文件共享，这就催生了服务器消息块（Server Message Block, SMB）协议。该协议最初用于Windows操作系统间的文件共享（Mac系统也支持通过SMB共享文件），随后演变为更优化的通用互联网文件系统（Common Internet File System, CIFS）协议。</p>
+<p>Samba是实现Linux系统中CIFS兼容性的实用工具集，除了文件共享外，还可以共享如打印机等资源。</p>
+<h4 id="创建Samba网络共享"><a href="#创建Samba网络共享" class="headerlink" title="创建Samba网络共享"></a>创建Samba网络共享</h4><p>以下步骤简要介绍了如何创建一个可供Windows机器访问的网络共享：</p>
+<ol>
+<li><p><strong>安装Samba</strong></p>
+<p>更新软件包列表并安装Samba：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> apt update<br>$ <span class="hljs-built_in">sudo</span> apt install samba<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>配置<code>smb.conf</code></strong></p>
+<p>Samba的配置文件位于<code>/etc/samba/smb.conf</code>，此文件定义了应共享的目录、访问权限及其他选项。默认的<code>smb.conf</code>文件包含大量注释示例，可以作为配置参考。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> vi /etc/samba/smb.conf<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>为Samba设置密码</strong></p>
+<p>为用户添加Samba密码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> smbpasswd -a [username]<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>创建共享目录</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">mkdir</span> /my/directory/to/share<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>重启Samba服务</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> service smbd restart<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="访问Samba共享"><a href="#访问Samba共享" class="headerlink" title="访问Samba共享"></a>访问Samba共享</h4><ul>
+<li><p><strong>从Windows访问</strong></p>
+<p>在运行对话框中输入网络路径以访问共享：<code>\\HOST\sharename</code></p>
+</li>
+<li><p><strong>从Linux访问Samba或Windows共享</strong></p>
+<p>使用Samba包中的命令行工具<code>smbclient</code>访问任何Windows或Samba服务器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ smbclient //HOST/directory -U user<br></code></pre></td></tr></table></figure>
+
+<p>连接到共享后，即可浏览和传输文件。</p>
+</li>
+</ul>
+<h4 id="挂载Samba共享"><a href="#挂载Samba共享" class="headerlink" title="挂载Samba共享"></a>挂载Samba共享</h4><p>为了更高效地管理文件，可以将网络共享挂载到本地系统：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> mount -t cifs servername:directory mountpoint -o username=user,password=pass<br></code></pre></td></tr></table></figure>
+
+<p>这种方法允许用户直接访问网络共享中的文件，而无需逐一传输，极大提高了工作效率。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[Linux]Network Sharing</div>
+      <div>https://erlsrnby04.github.io/2025/03/22/Linux-Network-Sharing/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/22/Linux-Network-Basics/" title="[Linux]Network Basics">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[Linux]Network Basics</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/22/Linux-Logging/" title="[Linux]Logging">
+                        <span class="hidden-mobile">[Linux]Logging</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="linux"
+        id="heading-e206a54e97690cce50cc872dd70ee896" role="tab" data-toggle="collapse" href="#collapse-e206a54e97690cce50cc872dd70ee896"
+        aria-expanded="true"
+      >
+        linux
+        <span class="list-group-count">(20)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-e206a54e97690cce50cc872dd70ee896"
+           role="tabpanel" aria-labelledby="heading-e206a54e97690cce50cc872dd70ee896">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/22/Linux-Boot-the-System/" title="[Linux]Boot the System"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Boot the System</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/18/Linux-Command-Line/" title="[Linux]Command Line"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Command Line</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-DNS/" title="[Linux]DNS"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]DNS</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Devices/" title="[Linux]Devices"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Devices</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Init/" title="[Linux]Init"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Init</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Kernel/" title="[Linux]Kernel"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Kernel</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Logging/" title="[Linux]Logging"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Logging</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Basics/" title="[Linux]Network Basics"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Basics</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Config/" title="[Linux]Network Config"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Config</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Sharing/" title="[Linux]Network Sharing"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">[Linux]Network Sharing</span>
+        </a>
+      
+    
+      
+      
+        <a href="/categories/linux/" class="list-group-item list-group-item-action">
+          <span class="category-post">More...</span>
+        </a>
+        
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

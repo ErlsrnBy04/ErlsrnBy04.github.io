@@ -1,0 +1,939 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Boot the System1 Linux 启动过程概述当打开计算机时，会看到一系列不同的消息滚动，最后出现登录窗口。实际上，从按下电源键到登录界面呈现之前，系统进行了大量的工作。本文将详细介绍这一过程。 Linux的启动过程可以分为四个简单阶段： 1. BIOS（basic input&#x2F;output system）BIOS负责初始化硬件，并通过开机自检（POST）确保所有硬件正常运行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Linux]Boot the System">
+<meta property="og:url" content="https://erlsrnby04.github.io/2025/03/22/Linux-Boot-the-System/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="Boot the System1 Linux 启动过程概述当打开计算机时，会看到一系列不同的消息滚动，最后出现登录窗口。实际上，从按下电源键到登录界面呈现之前，系统进行了大量的工作。本文将详细介绍这一过程。 Linux的启动过程可以分为四个简单阶段： 1. BIOS（basic input&#x2F;output system）BIOS负责初始化硬件，并通过开机自检（POST）确保所有硬件正常运行">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=21">
+<meta property="article:published_time" content="2025-03-22T01:21:30.000Z">
+<meta property="article:modified_time" content="2025-03-22T01:50:31.441Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=21">
+  
+  
+  
+  <title>[Linux]Boot the System - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[Linux]Boot the System"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-22 09:21" pubdate>
+          2025年3月22日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[Linux]Boot the System</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Boot-the-System"><a href="#Boot-the-System" class="headerlink" title="Boot the System"></a>Boot the System</h1><h1 id="1-Linux-启动过程概述"><a href="#1-Linux-启动过程概述" class="headerlink" title="1 Linux 启动过程概述"></a>1 Linux 启动过程概述</h1><p>当打开计算机时，会看到一系列不同的消息滚动，最后出现登录窗口。实际上，从按下电源键到登录界面呈现之前，系统进行了大量的工作。本文将详细介绍这一过程。</p>
+<p>Linux的启动过程可以分为四个简单阶段：</p>
+<h4 id="1-BIOS（basic-input-output-system）"><a href="#1-BIOS（basic-input-output-system）" class="headerlink" title="1. BIOS（basic input&#x2F;output system）"></a>1. BIOS（basic input&#x2F;output system）</h4><p>BIOS负责初始化硬件，并通过开机自检（POST）确保所有硬件正常运行。其主要任务是加载引导装载程序(bootloader)。开机时，BIOS首先进行硬件检测，并准备就绪后将控制权交给引导装载程序。</p>
+<h4 id="2-引导装载程序-bootloader"><a href="#2-引导装载程序-bootloader" class="headerlink" title="2. 引导装载程序(bootloader)"></a>2. 引导装载程序(bootloader)</h4><p>引导装载程序负责将内核加载到内存中，并使用一组内核参数启动内核。最常见的引导装载程序之一是GRUB，它是Linux的标准通用引导装载程序。GRUB允许用户选择加载哪个操作系统或内核版本。</p>
+<h4 id="3-内核"><a href="#3-内核" class="headerlink" title="3. 内核"></a>3. 内核</h4><p>一旦内核被加载到内存中，它会立即开始初始化设备和内存。内核的主要职责是启动init进程。内核不仅管理硬件资源，还为用户空间应用程序提供系统调用接口。</p>
+<h4 id="4-Init进程"><a href="#4-Init进程" class="headerlink" title="4. Init进程"></a>4. Init进程</h4><p>Init进程是系统启动后的第一个进程，负责启动和停止系统上的关键服务进程。在Linux发行版中有三种主要的init实现方式，后面详细探讨它们。</p>
+<h2 id="2-BIOS"><a href="#2-BIOS" class="headerlink" title="2 BIOS"></a>2 BIOS</h2><p>Linux启动流程的第一步是通过BIOS执行系统完整性检查。BIOS是一种固件，广泛应用于现今主流的IBM PC兼容计算机中。使用BIOS固件可以更改硬盘的启动顺序、检查系统时间、查看机器的MAC地址等。BIOS的主要目标是找到系统的引导装载程序。</p>
+<p>当BIOS启动硬盘后，它会搜索引导块以确定如何启动系统。根据硬盘分区方式的不同，BIOS会查找主引导记录（MBR）或GPT。MBR位于硬盘的第一个扇区，即前512字节内，其中包含加载磁盘上另一个程序的代码，而这个程序实际上负责加载引导装载程序。</p>
+<p>如果硬盘使用GPT方式进行分区，则引导装载程序的位置会有所不同。</p>
+<h4 id="UEFI"><a href="#UEFI" class="headerlink" title="UEFI"></a>UEFI</h4><p>除了BIOS之外，另一种启动系统的方式是通过UEFI（统一可扩展固件接口）。UEFI旨在成为BIOS的继任者，现今大多数硬件都内置了UEFI固件。Macintosh设备多年来一直使用EFI进行启动，Windows也几乎完全转向UEFI启动。GPT格式设计用于与EFI配合使用。使用GPT格式的硬盘并不一定需要EFI，其第一个扇区保留了一个“保护性MBR”，以便在基于BIOS的机器上也能启动。</p>
+<p>UEFI将所有启动信息存储在一个.EFI文件中，该文件存放在硬件上的一个名为EFI系统分区的特殊分区中，此分区包含了bootloader。相比于传统的BIOS固件，UEFI带来了许多改进。Linux系统在大多数情况下使用的仍然是BIOS。</p>
+<h2 id="3-bootloader"><a href="#3-bootloader" class="headerlink" title="3 bootloader"></a>3 bootloader</h2><p>引导装载程序的主要职责包括：</p>
+<ul>
+<li>引导进入操作系统，也支持启动非Linux操作系统。</li>
+<li>选择要使用的内核。</li>
+<li>指定内核参数。</li>
+</ul>
+<p>Linux中最常用的引导装载程序是GRUB。当然，还有其他多种引导装载程序可供选择，如LILO、efilinux、coreboot、SYSLINUX等。</p>
+<p>了解引导装载程序的主要目标是加载内核后，接下来的问题就是它如何找到内核。这需要查看内核参数来确定。可以通过在启动时按下’e’键进入GRUB菜单来查看这些参数：</p>
+<ul>
+<li><code>initrd</code>：指定初始RAM磁盘的位置。</li>
+<li><code>BOOT_IMAGE</code>：指示内核映像的位置。</li>
+<li><code>root</code>：指出根文件系统的所在位置，内核在此位置查找init进程。通常以UUID或设备名称（如&#x2F;dev&#x2F;sda1）表示。</li>
+<li><code>ro</code>：此参数为标准设置，以只读模式挂载文件系统。</li>
+<li><code>quiet</code>：添加此参数是为了避免在启动过程中显示后台运行的消息。</li>
+<li><code>splash</code>：允许显示启动画面。</li>
+</ul>
+<h2 id="4-内核"><a href="#4-内核" class="headerlink" title="4 内核"></a>4 内核</h2><h4 id="Initrd与Initramfs"><a href="#Initrd与Initramfs" class="headerlink" title="Initrd与Initramfs"></a>Initrd与Initramfs</h4><p>当讨论内核启动时，存在一个“先有鸡还是先有蛋”的问题。内核管理系统的硬件，但在启动期间，并非所有驱动都对内核可用。因此，我们需要一个临时的根文件系统，其中仅包含内核访问其余硬件所需的必要模块。在过去，这项任务由initrd（初始RAM磁盘）承担。内核会挂载initrd，加载必要的启动驱动，然后在加载完所需的一切后，用实际的根文件系统替换initrd。如今，我们使用一种名为initramfs的机制。这是一种内置在内核中的临时根文件系统，用于加载真实根文件系统所需的所有驱动，从而不再需要定位initrd文件。</p>
+<h4 id="挂载根文件系统"><a href="#挂载根文件系统" class="headerlink" title="挂载根文件系统"></a>挂载根文件系统</h4><p>现在，内核拥有创建根设备和挂载根分区所需的所有模块。然而，根分区最初是以只读模式挂载的，以便fsck可以安全运行并检查系统完整性。完成这些步骤后，再以读写模式重新挂载根文件系统。随后，内核定位init程序并执行它。</p>
+<h2 id="5-Init"><a href="#5-Init" class="headerlink" title="5 Init"></a>5 Init</h2><p>Linux中有三种主要的init实现方式：</p>
+<h4 id="System-V-Init（简称SysV）"><a href="#System-V-Init（简称SysV）" class="headerlink" title="System V Init（简称SysV）"></a>System V Init（简称SysV）</h4><p>这是传统的init系统，基于启动脚本顺序地启动和停止进程。系统的状态由运行级别（runlevels）表示，每个运行级别以不同的方式启动或停止机器。</p>
+<h4 id="Upstart"><a href="#Upstart" class="headerlink" title="Upstart"></a>Upstart</h4><p>Upstart是较旧版本Ubuntu上使用的init系统。它引入了作业（jobs）和事件（events）的概念，通过响应特定事件来启动执行某些动作的作业。</p>
+<h4 id="Systemd"><a href="#Systemd" class="headerlink" title="Systemd"></a>Systemd</h4><p>Systemd是新的init标准，目标导向型设计。简而言之，你有一个想要达成的目标，而Systemd试图满足该目标的所有依赖项以完成目标。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[Linux]Boot the System</div>
+      <div>https://erlsrnby04.github.io/2025/03/22/Linux-Boot-the-System/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/22/Linux-Kernel/" title="[Linux]Kernel">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[Linux]Kernel</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/21/Linux-The-Filesystem/" title="[Linux]The Filesystem">
+                        <span class="hidden-mobile">[Linux]The Filesystem</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="linux"
+        id="heading-e206a54e97690cce50cc872dd70ee896" role="tab" data-toggle="collapse" href="#collapse-e206a54e97690cce50cc872dd70ee896"
+        aria-expanded="true"
+      >
+        linux
+        <span class="list-group-count">(20)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-e206a54e97690cce50cc872dd70ee896"
+           role="tabpanel" aria-labelledby="heading-e206a54e97690cce50cc872dd70ee896">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/22/Linux-Boot-the-System/" title="[Linux]Boot the System"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">[Linux]Boot the System</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/18/Linux-Command-Line/" title="[Linux]Command Line"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Command Line</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-DNS/" title="[Linux]DNS"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]DNS</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Devices/" title="[Linux]Devices"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Devices</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Init/" title="[Linux]Init"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Init</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Kernel/" title="[Linux]Kernel"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Kernel</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Logging/" title="[Linux]Logging"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Logging</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Basics/" title="[Linux]Network Basics"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Basics</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Config/" title="[Linux]Network Config"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Config</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Sharing/" title="[Linux]Network Sharing"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Sharing</span>
+        </a>
+      
+    
+      
+      
+        <a href="/categories/linux/" class="list-group-item list-group-item-action">
+          <span class="category-post">More...</span>
+        </a>
+        
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

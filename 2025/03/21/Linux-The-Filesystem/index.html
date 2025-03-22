@@ -1,0 +1,1133 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="The Filesystem1 文件系统层次结构标准在Linux或Unix-like系统中，文件系统层次结构标准（Filesystem Hierarchy Standard, FHS）为系统的目录结构提供了一套规范。执行ls -l &#x2F;命令可以查看根目录下的子目录列表。以下是各个主要目录的简要介绍：  &#x2F;：整个文件系统的根目录，所有其他目录和文件都位于此目录之下。 &#x2F;bin：存放系统必需的二进制程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Linux]The Filesystem">
+<meta property="og:url" content="https://erlsrnby04.github.io/2025/03/21/Linux-The-Filesystem/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="The Filesystem1 文件系统层次结构标准在Linux或Unix-like系统中，文件系统层次结构标准（Filesystem Hierarchy Standard, FHS）为系统的目录结构提供了一套规范。执行ls -l &#x2F;命令可以查看根目录下的子目录列表。以下是各个主要目录的简要介绍：  &#x2F;：整个文件系统的根目录，所有其他目录和文件都位于此目录之下。 &#x2F;bin：存放系统必需的二进制程序">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=20">
+<meta property="article:published_time" content="2025-03-21T13:55:05.000Z">
+<meta property="article:modified_time" content="2025-03-21T14:26:36.750Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=20">
+  
+  
+  
+  <title>[Linux]The Filesystem - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[Linux]The Filesystem"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-21 21:55" pubdate>
+          2025年3月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          42 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[Linux]The Filesystem</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="The-Filesystem"><a href="#The-Filesystem" class="headerlink" title="The Filesystem"></a>The Filesystem</h1><h2 id="1-文件系统层次结构标准"><a href="#1-文件系统层次结构标准" class="headerlink" title="1 文件系统层次结构标准"></a>1 文件系统层次结构标准</h2><p>在Linux或Unix-like系统中，文件系统层次结构标准（Filesystem Hierarchy Standard, FHS）为系统的目录结构提供了一套规范。执行<code>ls -l /</code>命令可以查看根目录下的子目录列表。以下是各个主要目录的简要介绍：</p>
+<ul>
+<li><code>/</code>：整个文件系统的根目录，所有其他目录和文件都位于此目录之下。</li>
+<li><code>/bin</code>：存放系统必需的二进制程序，包括基础命令如<code>ls</code>、<code>cp</code>等。</li>
+<li><code>/boot</code>：包含内核及启动引导加载器的文件。</li>
+<li><code>/dev</code>：设备文件，代表系统中的硬件设备。</li>
+<li><code>/etc</code>：核心系统配置文件所在目录，通常仅包含配置文件而非可执行文件。</li>
+<li><code>/home</code>：用户个人目录，存储用户的文档、文件和个人设置。</li>
+<li><code>/lib</code>：库文件，供&#x2F;bin和&#x2F;sbin中的二进制文件使用。</li>
+<li><code>/media</code>：用于挂载可移动媒体，如USB驱动器的挂载点。</li>
+<li><code>/mnt</code>：临时挂载文件系统的挂载点。</li>
+<li><code>/opt</code>：可选的应用软件包。</li>
+<li><code>/proc</code>：关于当前运行进程的信息。</li>
+<li><code>/root</code>：root用户的主目录。</li>
+<li><code>/run</code>：自上次启动以来关于运行系统的动态数据。</li>
+<li><code>/sbin</code>：系统必备的管理工具，通常只能由超级用户(root)执行。</li>
+<li><code>/srv</code>：由系统提供的特定站点数据。</li>
+<li><code>/tmp</code>：存储临时文件。</li>
+<li><code>/usr</code>：用于用户安装的软件和实用工具，并非传统意义上的用户文件（例如&#x2F;home下的用户目录）。该目录下还有进一步的子目录，如<code>/usr/bin</code>、<code>/usr/local</code>等。</li>
+<li><code>/var</code>：变量文件目录，用于系统日志、用户跟踪、缓存等随时间变化的数据。</li>
+</ul>
+<h2 id="2-文件系统类型"><a href="#2-文件系统类型" class="headerlink" title="2 文件系统类型"></a>2 文件系统类型</h2><p>在计算机中，存在多种文件系统实现，每种都有其特定的应用场景和优势。文件系统的差异体现在<strong>速度</strong>、支持的<strong>存储容量</strong>以及<strong>数据组织方式</strong>上。为了使应用程序能够在不同类型的文件系统上运行，引入了虚拟文件系统（Virtual File System, VFS）抽象层，它作为应用与具体文件系统间的中介，确保应用可以无缝地操作各种文件系统。</p>
+<h4 id="日志文件系统"><a href="#日志文件系统" class="headerlink" title="日志文件系统"></a>日志文件系统</h4><p>现代文件系统通常默认支持日志功能。日志文件系统通过记录即将进行的操作来预防突然断电等情况导致的数据损坏或文件系统不一致。在非日志文件系统中，突发断电可能导致文件损坏，并需要在下次启动时进行全面检查以修复问题，这可能耗时较长。而在日志文件系统中，所有操作先被记录到日志中，在操作完成后标记为完成，从而保持文件系统的完整性并减少重启时的检查时间。</p>
+<h4 id="常见桌面文件系统类型"><a href="#常见桌面文件系统类型" class="headerlink" title="常见桌面文件系统类型"></a>常见桌面文件系统类型</h4><ul>
+<li><strong>ext4</strong>：Linux最新的原生文件系统，向后兼容ext2和ext3。支持最大1EB的磁盘卷和最大16TB的文件大小，是Linux的标准选择。</li>
+<li><strong>Btrfs</strong>：一种新的Linux文件系统，提供快照、增量备份等功能，性能有所提升，但稳定性尚待完善。</li>
+<li><strong>XFS</strong>：高性能的日志文件系统，适合用于大型文件如媒体服务器。</li>
+<li><strong>NTFS和FAT</strong>：Windows操作系统使用的文件系统。</li>
+<li>**HFS+**：苹果Macintosh电脑所用的文件系统。</li>
+</ul>
+<p>使用<code>df -T</code>命令可以查看当前系统中挂载的文件系统类型及其使用情况：</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs tap">pete@icebox:~$ df -T<br>Filesystem     Type     1K-blocks    Used Available Use% Mounted on<br>/dev/sda1      ext4      <span class="hljs-number"> 6461592 </span>2402708  <span class="hljs-number"> 3707604 </span> 40% /<br>udev           devtmpfs   <span class="hljs-number"> 501356 </span>     <span class="hljs-number"> 4 </span>  <span class="hljs-number"> 501352 </span>  1% /dev<br>tmpfs          tmpfs      <span class="hljs-number"> 102544 </span>  <span class="hljs-number"> 1068 </span>  <span class="hljs-number"> 101476 </span>  2% /run<br>/dev/sda6      xfs      <span class="hljs-number"> 13752320 </span><span class="hljs-number"> 460112 </span><span class="hljs-number"> 13292208 </span>  4% /home<br></code></pre></td></tr></table></figure>
+
+<p>上述命令展示了每个文件系统的类型、块大小、已用空间、可用空间及挂载点等信息。</p>
+<h2 id="3-磁盘结构解析"><a href="#3-磁盘结构解析" class="headerlink" title="3 磁盘结构解析"></a>3 磁盘结构解析</h2><p>硬盘可以通过分区被细分为多个块设备，例如&#x2F;dev&#x2F;sda1和&#x2F;dev&#x2F;sda2。其中，&#x2F;dev&#x2F;sda代表整个磁盘，而&#x2F;dev&#x2F;sda1表示该磁盘的第一个分区。分区有助于数据分离，并且可以根据需要创建特定文件系统的分区，而不是将整个磁盘格式化为单一类型的文件系统。</p>
+<h4 id="分区表"><a href="#分区表" class="headerlink" title="分区表"></a>分区表</h4><p>每个磁盘都有一个分区表，用于描述磁盘是如何分区的。它标明了各个分区的起始与结束位置、哪些分区是可引导的以及各分区所占的扇区等信息。常用的分区表类型有两种：MBR（主引导记录）和GPT（GUID分区表）。</p>
+<h4 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h4><p>磁盘由多个分区组成，这些分区帮助我们组织数据。一个磁盘上可以有多个不重叠的分区。未分配给任何分区的空间被称为自由空间。分区的类型取决于分区表。分区既可以包含文件系统，也可以专门用于其他用途，如交换分区。</p>
+<h4 id="MBR与GPT"><a href="#MBR与GPT" class="headerlink" title="MBR与GPT"></a>MBR与GPT</h4><ul>
+<li><strong>MBR</strong>：传统分区表，最多支持四个主分区。通过创建扩展分区（仅允许一个），可以在其内部添加逻辑分区，从而实现更多的分区。</li>
+<li><strong>GPT</strong>：作为新的标准逐渐取代MBR，支持更多的分区数量，每个分区拥有全局唯一的标识符（GUID）。主要用于UEFI引导模式下的磁盘分区。</li>
+</ul>
+<h4 id="文件系统结构"><a href="#文件系统结构" class="headerlink" title="文件系统结构"></a>文件系统结构</h4><p>文件系统是一个有序的文件和目录集合。基本组成部分包括：</p>
+<ul>
+<li><strong>引导块</strong>：位于文件系统的前几个扇区，包含操作系统启动所需的信息。</li>
+<li><strong>超级块</strong>：紧跟引导块之后，包含了关于文件系统的重要信息，如inode表大小、逻辑块大小及文件系统的总大小。</li>
+<li><strong>inode表</strong>：可以看成是管理文件的数据库，每个文件或目录在inode表中都有唯一入口，包含文件的各种属性信息。</li>
+<li><strong>数据块</strong>：实际存储文件和目录数据的部分。</li>
+</ul>
+<p>以下是使用不同分区表的实际例子：</p>
+<p><strong>MBR分区表示例</strong>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs shell">pete@icebox:~$ sudo parted -l<br><br>Model: Seagate (scsi)<br><br>Disk /dev/sda: 21.5GB<br><br>Sector size (logical/physical): 512B/512B<br><br>Partition Table: msdos<br><br><br>Number  Start   End     Size    Type      File system     Flags<br><br> 1      1049kB  6860MB  6859MB  primary   ext4            boot<br><br> 2      6861MB  21.5GB  14.6GB  extended<br><br> 5      6861MB  7380MB  519MB   logical   linux-swap(v1)<br><br> 6      7381MB  21.5GB  14.1GB  logical   xfs<br></code></pre></td></tr></table></figure>
+
+<p><strong>GPT分区表示例</strong>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell">Model: Thumb Drive (scsi)<br><br>Disk /dev/sdb: 4041MB<br><br>Sector size (logical/physical): 512B/512B<br><br>Partition Table: gpt<br><br><br>Number  Start   End     Size     File system  Name        Flags<br><br> 1      17.4kB  1000MB  1000MB                first<br><br> 2      1000MB  4040MB  3040MB                second<br></code></pre></td></tr></table></figure>
+
+<p>上述命令展示了磁盘及其分区的具体情况，包括分区的起始位置、大小、类型、文件系统及标志等信息。</p>
+<h2 id="4-磁盘分区"><a href="#4-磁盘分区" class="headerlink" title="4 磁盘分区"></a>4 磁盘分区</h2><h4 id="分区工具选择"><a href="#分区工具选择" class="headerlink" title="分区工具选择"></a>分区工具选择</h4><p>有多种工具可用于磁盘分区：</p>
+<ul>
+<li><strong>fdisk</strong>：基础命令行分区工具，不支持GPT。</li>
+<li><strong>parted</strong>：支持MBR和GPT的命令行工具。</li>
+<li><strong>gparted</strong>：parted的图形用户界面版本。</li>
+<li><strong>gdisk</strong>：仅支持GPT的fdisk版本。</li>
+</ul>
+<p>使用<code>parted</code>对磁盘进行分区。假设连接USB设备后，设备名为<code>/dev/sdb2</code>。</p>
+<h4 id="使用Parted进行分区"><a href="#使用Parted进行分区" class="headerlink" title="使用Parted进行分区"></a>使用Parted进行分区</h4><ol>
+<li><p><strong>启动parted</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> parted</span><br></code></pre></td></tr></table></figure>
+
+<p>进入parted工具后，可以通过命令对设备进行分区操作。</p>
+</li>
+<li><p><strong>选择设备</strong></p>
+<p>在parted工具中，首先需要选择要操作的设备：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">(parted) select /dev/sdb2<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>查看当前分区表</strong></p>
+<p>使用<code>print</code>命令查看选定设备的现有分区情况：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">(parted) print<br></code></pre></td></tr></table></figure>
+
+<p>输出示例：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Model</span>: Seagate (scsi)<br><br><span class="hljs-attribute">Disk</span> /dev/sda: <span class="hljs-number">21</span>.<span class="hljs-number">5</span>GB<br><br><span class="hljs-attribute">Sector</span> size (logical/physical): <span class="hljs-number">512</span>B/<span class="hljs-number">512</span>B<br><br><span class="hljs-attribute">Partition</span> Table: msdos<br><br><br><span class="hljs-attribute">Number</span>  Start   End     Size    Type      File system     Flags<br><br> <span class="hljs-attribute">1</span>      <span class="hljs-number">1049</span>kB  <span class="hljs-number">6860</span>MB  <span class="hljs-number">6859</span>MB  primary   ext4            boot<br><br> <span class="hljs-attribute">2</span>      <span class="hljs-number">6861</span>MB  <span class="hljs-number">21</span>.<span class="hljs-number">5</span>GB  <span class="hljs-number">14</span>.<span class="hljs-number">6</span>GB  extended<br><br> <span class="hljs-attribute">5</span>      <span class="hljs-number">6861</span>MB  <span class="hljs-number">7380</span>MB  <span class="hljs-number">519</span>MB   logical   linux-swap(v1)<br><br> <span class="hljs-attribute">6</span>      <span class="hljs-number">7381</span>MB  <span class="hljs-number">21</span>.<span class="hljs-number">5</span>GB  <span class="hljs-number">14</span>.<span class="hljs-number">1</span>GB  logical   xfs<br></code></pre></td></tr></table></figure>
+
+<p>此处列出了设备上的所有分区及其起始和结束位置。</p>
+</li>
+<li><p><strong>创建新分区</strong></p>
+<p>选择合适的起始和结束位置来创建新分区：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">(parted) mkpart primary 123 4567<br></code></pre></td></tr></table></figure>
+
+<p>需要指定分区类型（根据使用的分区表类型）。</p>
+</li>
+<li><p><strong>调整分区大小</strong></p>
+<p>如果空间不足，可以调整分区大小：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">(parted) resize 2 1245 3456<br></code></pre></td></tr></table></figure>
+
+<p>选择分区编号，并指定新的起始和结束位置。</p>
+</li>
+</ol>
+<h2 id="5-创建文件系统"><a href="#5-创建文件系统" class="headerlink" title="5 创建文件系统"></a>5 创建文件系统</h2><p>在完成磁盘分区后，下一步是创建文件系统。以下是创建文件系统的步骤：</p>
+<h4 id="使用mkfs命令创建文件系统"><a href="#使用mkfs命令创建文件系统" class="headerlink" title="使用mkfs命令创建文件系统"></a>使用mkfs命令创建文件系统</h4><p>假设已对<code>/dev/sdb2</code>进行了分区，现在我们可以在此分区上创建一个ext4文件系统：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> mkfs -t ext4 /dev/sdb2</span><br></code></pre></td></tr></table></figure>
+
+<p>此命令使用<code>mkfs</code>（make filesystem）工具，并通过<code>-t</code>参数指定文件系统类型为ext4和目标设备路径。</p>
+<p><strong>重要提示</strong>：仅应在新分区的磁盘或重新分区的旧磁盘上创建文件系统。若在一个已有文件系统的分区上再次创建文件系统，可能会导致文件系统损坏。</p>
+<h2 id="6-挂载与卸载文件系统"><a href="#6-挂载与卸载文件系统" class="headerlink" title="6 挂载与卸载文件系统"></a>6 挂载与卸载文件系统</h2><p>在查看文件系统内容之前，必须先将其挂载到系统上。这需要设备位置、文件系统类型以及挂载点，其中挂载点是系统中的一个目录，用于将文件系统附加于此。</p>
+<h4 id="创建挂载点并挂载文件系统"><a href="#创建挂载点并挂载文件系统" class="headerlink" title="创建挂载点并挂载文件系统"></a>创建挂载点并挂载文件系统</h4><p>首先创建挂载点，例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">mkdir</span> /mydrive</span><br></code></pre></td></tr></table></figure>
+
+<p>然后使用<code>mount</code>命令挂载设备：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> mount -t ext4 /dev/sdb2 /mydrive</span><br></code></pre></td></tr></table></figure>
+
+<p>这里，<code>-t</code>参数指定文件系统类型，随后是设备位置和挂载点。</p>
+<h4 id="卸载文件系统"><a href="#卸载文件系统" class="headerlink" title="卸载文件系统"></a>卸载文件系统</h4><p>要从挂载点卸载设备，可以使用以下任一命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> umount /mydrive</span><br></code></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> umount /dev/sdb2</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：内核会按照发现设备的顺序命名它们。如果设备名称在挂载后发生变化，可以使用设备的UUID（通用唯一标识符）来代替名称进行挂载。</p>
+<h4 id="查看和使用UUID"><a href="#查看和使用UUID" class="headerlink" title="查看和使用UUID"></a>查看和使用UUID</h4><p>使用<code>blkid</code>命令查看系统中块设备的UUID：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> blkid</span><br></code></pre></td></tr></table></figure>
+
+<p>示例输出可能如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">/dev/sda1: UUID=&quot;130b882f-7d79-436d-a096-1e594c92bb76&quot; TYPE=&quot;ext4&quot;<br>/dev/sda5: UUID=&quot;22c3d34b-467e-467c-b44d-f03803c2c526&quot; TYPE=&quot;swap&quot;<br>/dev/sda6: UUID=&quot;78d203a0-7c18-49bd-9e07-54f44cdb5726&quot; TYPE=&quot;xfs&quot;<br></code></pre></td></tr></table></figure>
+
+<p>通过UUID挂载设备的方法如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> mount UUID=130b882f-7d79-436d-a096-1e594c92bb76 /mydrive</span><br></code></pre></td></tr></table></figure>
+
+<p>通常情况下，无需通过UUID挂载设备，直接使用设备名更为简便。但若需在启动时自动挂载文件系统，如添加了第二块硬盘，则应使用UUID。</p>
+<h2 id="7-自动挂载文件系统：-etc-fstab"><a href="#7-自动挂载文件系统：-etc-fstab" class="headerlink" title="7 自动挂载文件系统：&#x2F;etc&#x2F;fstab"></a>7 自动挂载文件系统：&#x2F;etc&#x2F;fstab</h2><p>为了在系统启动时自动挂载文件系统，可以将其添加到<code>/etc/fstab</code>文件中。该文件是文件系统表的简称，包含了系统启动时需要挂载的文件系统的永久列表。</p>
+<p>示例<code>/etc/fstab</code>内容如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">UUID=130b882f-7d79-436d-a096-1e594c92bb76 /               ext4    relatime,errors=remount-ro 0       1<br>UUID=78d203a0-7c18-49bd-9e07-54f44cdb5726 /home           xfs     relatime        0       2<br>UUID=22c3d34b-467e-467c-b44d-f03803c2c526 none            swap    sw              0       0<br></code></pre></td></tr></table></figure>
+
+<p>每一行代表一个文件系统，字段含义分别为：</p>
+<ul>
+<li><strong>UUID</strong>：设备标识符。</li>
+<li><strong>挂载点</strong>：文件系统挂载到的目录。</li>
+<li><strong>文件系统类型</strong>：如ext4、xfs等。</li>
+<li><strong>选项</strong>：其他挂载选项，详情可参阅相关手册页。</li>
+<li><strong>转储标志</strong>：用于转储工具决定何时进行备份，默认设为0即可。</li>
+<li><strong>文件系统检查顺序</strong>：由fsck使用，决定文件系统的检查顺序。值为0表示不检查。</li>
+</ul>
+<h4 id="添加新条目"><a href="#添加新条目" class="headerlink" title="添加新条目"></a>添加新条目</h4><p>要添加新的挂载条目，直接编辑<code>/etc/fstab</code>文件并按上述语法格式加入相应的信息。修改此文件时需谨慎，错误的更改可能会导致系统问题。</p>
+<h2 id="8-交换分区（Swap）的使用与管理"><a href="#8-交换分区（Swap）的使用与管理" class="headerlink" title="8 交换分区（Swap）的使用与管理"></a>8 交换分区（Swap）的使用与管理</h2><p>查看分区表。聚焦于其中特定的一行：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">Number</span>  Start   <span class="hljs-keyword">End</span>    <span class="hljs-built_in">Size</span>    <span class="hljs-keyword">Type</span>       <span class="hljs-keyword">File</span> system    Flags<br><span class="hljs-number">5</span>      <span class="hljs-number">6861</span>MB  <span class="hljs-number">7380</span>MB  <span class="hljs-number">519</span>MB   逻辑分区   linux-swap(v1)<br></code></pre></td></tr></table></figure>
+
+<h4 id="什么是交换分区？"><a href="#什么是交换分区？" class="headerlink" title="什么是交换分区？"></a>什么是交换分区？</h4><p>交换分区（swap）用于为系统分配虚拟内存。当物理内存不足时，系统会利用这个分区将非活动进程的部分内存“交换”到磁盘上，从而释放内存空间。</p>
+<h4 id="使用分区作为交换空间"><a href="#使用分区作为交换空间" class="headerlink" title="使用分区作为交换空间"></a>使用分区作为交换空间</h4><p>假设我们需要将<code>/dev/sdb2</code>分区设置为交换空间，操作步骤如下：</p>
+<ol>
+<li><strong>确保分区为空</strong>：确认目标分区没有存储重要数据。</li>
+<li><strong>初始化交换区</strong>：运行<code>mkswap /dev/sdb2</code>命令。</li>
+<li><strong>启用交换设备</strong>：执行<code>swapon /dev/sdb2</code>以激活该交换分区。</li>
+<li><strong>持久化设置</strong>：为了在系统重启后仍然保持此交换分区有效，需在<code>/etc/fstab</code>文件中添加相应的条目，类型应设为<code>swap</code>。</li>
+</ol>
+<p>示例<code>/etc/fstab</code>条目：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">/dev/sdb2 none swap sw 0 0<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>禁用交换</strong>：若要关闭交换分区，可以使用<code>swapoff /dev/sdb2</code>命令。</li>
+</ul>
+<h4 id="分配原则"><a href="#分配原则" class="headerlink" title="分配原则"></a>分配原则</h4><p>通常建议分配的交换空间大小为实际物理内存的两倍。然而，鉴于现今系统的强大性能及充足的RAM容量，这一准则可根据实际情况灵活调整。对于大多数现代系统而言，除非有特殊需求，否则不一定需要遵循这一传统指导原则。</p>
+<h2 id="9-磁盘使用情况"><a href="#9-磁盘使用情况" class="headerlink" title="9 磁盘使用情况"></a>9 磁盘使用情况</h2><p>为了监控磁盘的使用情况，Linux 提供了多种实用工具。以下是两个最常用的命令：<code>df</code> 和 <code>du</code>。</p>
+<h4 id="使用-df-查看文件系统利用率"><a href="#使用-df-查看文件系统利用率" class="headerlink" title="使用 df 查看文件系统利用率"></a>使用 <code>df</code> 查看文件系统利用率</h4><p>通过运行以下命令，可以查看当前已挂载文件系统的利用率：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">df -h<br></code></pre></td></tr></table></figure>
+
+<p>示例输出：</p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs nsis"><span class="hljs-keyword">File</span><span class="hljs-params">system</span>     <span class="hljs-number">1</span>K-blocks      Used   Available  Use% Mounted <span class="hljs-literal">on</span><br>/dev/sda1    <span class="hljs-number">6.2</span>G      <span class="hljs-number">2.3</span>G   <span class="hljs-number">3.6</span>G  <span class="hljs-number">40</span>%   /<br></code></pre></td></tr></table></figure>
+
+<p>这里的 <code>-h</code> 标志使得输出结果以人类可读的格式显示（例如 KB、MB、GB）。该命令能展示设备名称、容量使用情况及可用空间。</p>
+<h4 id="使用-du-分析目录和文件大小"><a href="#使用-du-分析目录和文件大小" class="headerlink" title="使用 du 分析目录和文件大小"></a>使用 <code>du</code> 分析目录和文件大小</h4><p>如果需要进一步了解哪些文件或目录占用了大量磁盘空间，可以使用 <code>du</code> 命令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">du -h<br></code></pre></td></tr></table></figure>
+
+<p>此命令会显示当前所在目录下的磁盘使用情况。若要检查根目录下的磁盘使用情况，可以执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">du -h /<br></code></pre></td></tr></table></figure>
+
+<p>但请注意，这种方式可能会产生大量输出，因为根目录包含了整个文件系统的文件信息。</p>
+<h4 id="区分-df-和-du"><a href="#区分-df-和-du" class="headerlink" title="区分 df 和 du"></a>区分 <code>df</code> 和 <code>du</code></h4><p>尽管这两个命令在语法上相似，它们的功能却有明显区别：</p>
+<ul>
+<li><strong>检查disk free</strong>：使用 <code>df</code>。</li>
+<li><strong>检查disk usage</strong>：使用 <code>du</code>。</li>
+</ul>
+<h2 id="10-文件系统修复"><a href="#10-文件系统修复" class="headerlink" title="10 文件系统修复"></a>10 文件系统修复</h2><p>在使用计算机过程中，文件系统可能会因为突发的断电或其他异常情况而受损，导致数据损坏。为了恢复系统的正常工作状态，可以利用 <code>fsck</code>（文件系统检查）命令来检查并尝试修复文件系统的错误。</p>
+<h4 id="使用-fsck-命令"><a href="#使用-fsck-命令" class="headerlink" title="使用 fsck 命令"></a>使用 <code>fsck</code> 命令</h4><p>通常情况下，当启动系统时，如果检测到文件系统可能存在不一致的问题，<code>fsck</code> 会自动运行以确保文件系统在挂载前处于良好状态。然而，在某些情况下，文件系统的损坏程度较高，需要用户手动干预进行修复。</p>
+<p>执行以下命令以手动检查和修复文件系统：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo fsck /dev/sda<br></code></pre></td></tr></table></figure>
+
+<p>请注意，执行 <code>fsck</code> 操作时应确保目标文件系统未被挂载，以免造成进一步的数据损坏。建议在救援模式或通过其他可访问文件系统但不挂载的方式下运行此命令。</p>
+<h2 id="11-索引节点（Inodes）"><a href="#11-索引节点（Inodes）" class="headerlink" title="11 索引节点（Inodes）"></a>11 索引节点（Inodes）</h2><p>文件系统不仅包含了实际的文件数据，还包含一个用于管理这些文件的数据库，即索引节点表。</p>
+<h4 id="什么是索引节点？"><a href="#什么是索引节点？" class="headerlink" title="什么是索引节点？"></a>什么是索引节点？</h4><p>索引节点（inode）是该表中的一个条目，每个文件都有一个对应的索引节点。它记录了除文件名和文件内容外的所有信息，包括：</p>
+<ul>
+<li>文件类型：普通文件、目录、字符设备等</li>
+<li>所有者</li>
+<li>用户组</li>
+<li>访问权限</li>
+<li>时间戳：最后一次修改时间（mtime）、最后一次属性更改时间（ctime）、最后一次访问时间（atime）</li>
+<li>文件的硬链接数</li>
+<li>文件大小</li>
+<li>分配给文件的数据块数量</li>
+<li>指向文件数据块的指针——这是最为关键的部分</li>
+</ul>
+<h4 id="索引节点的创建"><a href="#索引节点的创建" class="headerlink" title="索引节点的创建"></a>索引节点的创建</h4><p>在文件系统创建时，会为索引节点分配空间。分配的空间量基于磁盘容量和其他因素通过算法决定。尽管较为少见，但与磁盘空间一样，索引节点也可能耗尽，导致无法创建新文件。使用命令 <code>df -i</code> 可以查看系统中剩余的索引节点数量。</p>
+<h4 id="查看索引节点信息"><a href="#查看索引节点信息" class="headerlink" title="查看索引节点信息"></a>查看索引节点信息</h4><p>索引节点通过编号进行标识，新创建的文件会被分配一个顺序递增的索引节点号。然而，当删除文件后，其索引节点可以被重新使用，因此有时新文件可能会获得比其他现有文件更低的索引节点号。使用 <code>ls -li</code> 命令可查看索引节点号。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">pete@icebox:~$ ls -li<br>140 drwxr-xr-x 2 pete pete 6 Jan 20 20:13 Desktop<br>141 drwxr-xr-x 2 pete pete 6 Jan 20 20:01 Documents<br></code></pre></td></tr></table></figure>
+
+<p>上述命令的第一列显示的是索引节点号。此外，还可以使用 <code>stat</code> 命令获取文件的详细信息，包括其索引节点相关数据。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">pete@icebox:~$ stat ~/Desktop/<br>  File: ‘/home/pete/Desktop/’<br>  Size: 6               Blocks: 0          IO Block: 4096   directory<br>Device: 806h/2054d      Inode: 140         Links: 2<br>Access: (0755/drwxr-xr-x)  Uid: ( 1000/   pete)   Gid: ( 1000/   pete)<br>Access: 2016-01-20 20:13:50.647435982 -0800<br>Modify: 2016-01-20 20:13:06.191675843 -0800<br>Change: 2016-01-20 20:13:06.191675843 -0800<br> Birth: -<br></code></pre></td></tr></table></figure>
+
+<h4 id="索引节点如何定位文件？"><a href="#索引节点如何定位文件？" class="headerlink" title="索引节点如何定位文件？"></a>索引节点如何定位文件？</h4><p>索引节点指向实际存储文件数据的数据块。典型的文件系统中，每个索引节点包含15个指针。前12个直接指向文件的数据块；第13个指针指向一个包含更多指针的块；第14个指针指向另一个嵌套的指针块；第15个指针再次指向另一组指针块。这种结构使得无论文件大小如何，索引节点结构保持一致，同时能够有效地管理和引用不同大小的文件。较小的文件可通过前12个直接指针快速找到，较大的文件则需通过嵌套的指针链来定位。</p>
+<h2 id="12-符号链接（Symlinks）与硬链接（Hardlinks）"><a href="#12-符号链接（Symlinks）与硬链接（Hardlinks）" class="headerlink" title="12 符号链接（Symlinks）与硬链接（Hardlinks）"></a>12 符号链接（Symlinks）与硬链接（Hardlinks）</h2><p>在Linux文件系统中，有两种主要类型的链接：符号链接（symlinks）和硬链接（hardlinks）。</p>
+<h4 id="符号链接"><a href="#符号链接" class="headerlink" title="符号链接"></a>符号链接</h4><p>符号链接类似于Windows操作系统中的快捷方式。它是指向另一个文件名的别名。如果原始文件被删除或修改，可能会导致符号链接失效。创建符号链接时，使用<code>ln -s</code>命令指定目标文件和链接名称。</p>
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">pete@icebox:~/Desktop$ echo &#x27;myfile&#x27; &gt; myfile<br>pete@icebox:~/Desktop$ ln -s myfile myfilelink<br><br>pete@icebox:~/Desktop$ ls -li<br>93403 lrwxrwxrwx 1 pete pete 6 Jan 21 21:39 myfilelink -&gt; myfile<br></code></pre></td></tr></table></figure>
+
+<p>执行<code>ls -li</code>后，  <code>myfilelink</code> 是一个指向 <code>myfile</code> 的符号链接。值得注意的是，符号链接拥有独立的索引节点号，并且不依赖于索引节点来实现跨文件系统的引用。</p>
+<h4 id="硬链接"><a href="#硬链接" class="headerlink" title="硬链接"></a>硬链接</h4><p>硬链接则不同，它是直接指向同一索引节点的另一个文件。这意味着，如果你通过任何硬链接之一修改文件内容，所有相关联的硬链接都会反映这些更改。只有当与某个索引节点关联的所有硬链接都被删除时，该索引节点及其数据才会真正被删除。</p>
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell">pete@icebox:~/Desktop$ ln myfile2 myhardlink<br><br>pete@icebox:~/Desktop$ ls -li<br>total 16<br><br>  151 -rw-rw-r-- 1 pete pete 7 Jan 21 21:36 myfile<br><br>93401 -rw-rw-r-- 2 pete pete 8 Jan 21 21:36 myfile2<br><br>93402 -rw-rw-r-- 1 pete pete 8 Jan 21 21:36 myfile3<br><br>93403 lrwxrwxrwx 1 pete pete 6 Jan 21 21:39 myfilelink -&gt; myfile<br><br>93401 -rw-rw-r-- 2 pete pete 8 Jan 21 21:36 myhardlink<br></code></pre></td></tr></table></figure>
+
+<p>执行<code>ls -li</code>后，可以看到<code>myfile2</code>和<code>myhardlink</code>共享相同的索引节点号。这意味着无论你通过哪个硬链接进行修改，两个文件的内容都将同步更新。硬链接的数量可以通过<code>ls</code>命令输出中的链接计数字段查看。</p>
+<p>硬链接的一个关键限制是它们不能跨越不同的文件系统，因为每个文件系统的索引节点都是唯一的。相反，符号链接可以跨越文件系统，因为它们依赖于文件路径而非索引节点。</p>
+<h4 id="创建链接的命令"><a href="#创建链接的命令" class="headerlink" title="创建链接的命令"></a>创建链接的命令</h4><ul>
+<li><p><strong>创建符号链接</strong>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ln</span> -s myfile mylink</span><br></code></pre></td></tr></table></figure>
+<p>使用<code>ln</code>命令加上<code>-s</code>选项来创建一个指向<code>myfile</code>的符号链接<code>mylink</code>。</p>
+</li>
+<li><p><strong>创建硬链接</strong>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ln</span> somefile somelink</span><br></code></pre></td></tr></table></figure>
+<p>创建硬链接时省略<code>-s</code>选项，直接指定源文件和链接名称即可。</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[Linux]The Filesystem</div>
+      <div>https://erlsrnby04.github.io/2025/03/21/Linux-The-Filesystem/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/22/Linux-Boot-the-System/" title="[Linux]Boot the System">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[Linux]Boot the System</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/21/Linux-Devices/" title="[Linux]Devices">
+                        <span class="hidden-mobile">[Linux]Devices</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="linux"
+        id="heading-e206a54e97690cce50cc872dd70ee896" role="tab" data-toggle="collapse" href="#collapse-e206a54e97690cce50cc872dd70ee896"
+        aria-expanded="true"
+      >
+        linux
+        <span class="list-group-count">(20)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-e206a54e97690cce50cc872dd70ee896"
+           role="tabpanel" aria-labelledby="heading-e206a54e97690cce50cc872dd70ee896">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/22/Linux-Boot-the-System/" title="[Linux]Boot the System"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Boot the System</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/18/Linux-Command-Line/" title="[Linux]Command Line"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Command Line</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-DNS/" title="[Linux]DNS"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]DNS</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Devices/" title="[Linux]Devices"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Devices</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Init/" title="[Linux]Init"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Init</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Kernel/" title="[Linux]Kernel"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Kernel</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Logging/" title="[Linux]Logging"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Logging</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Basics/" title="[Linux]Network Basics"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Basics</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Config/" title="[Linux]Network Config"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Config</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Sharing/" title="[Linux]Network Sharing"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Sharing</span>
+        </a>
+      
+    
+      
+      
+        <a href="/categories/linux/" class="list-group-item list-group-item-action">
+          <span class="category-post">More...</span>
+        </a>
+        
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

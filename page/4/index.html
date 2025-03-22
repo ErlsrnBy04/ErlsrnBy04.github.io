@@ -243,23 +243,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/11/03/C-C-Primer-Chapter-17/" target="_self">
-          <img src="https://t.alcy.cc/fj?postId=25" srcset="/img/loading.gif" lazyload alt="[C++]C++Primer Chapter 17">
+        <a href="/2025/01/26/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter3/" target="_self">
+          <img src="https://t.alcy.cc/fj?postId=2" srcset="/img/loading.gif" lazyload alt="[C++]C++并发编程实战Chapter3">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/11/03/C-C-Primer-Chapter-17/" target="_self">
-          [C++]C++Primer Chapter 17
+        <a href="/2025/01/26/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter3/" target="_self">
+          [C++]C++并发编程实战Chapter3
         </a>
       </h2>
 
       
-      <a class="index-excerpt " href="/2024/11/03/C-C-Primer-Chapter-17/" target="_self">
+      <a class="index-excerpt " href="/2025/01/26/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter3/" target="_self">
         <div>
-          17 标准库特殊设施4 随机数定义在头文件random中的随机数库通过一组协作的类来生成随机数：  随机数引擎类（random-number engines） 随机数分布类（random-number distribution）  一个引擎类可以生成unsigned随机数序列，一个分布类使用一个引擎类生成指定类型的、在给定范围内的、服从特定概率分布的随机数。 4.1 随机数引擎和分布随机数引擎是函
+          3 在线程间共享数据3.1 线程间共享数据的问题             归根结底，多线程共享数据的问题多由数据改动引发。如果所有共享数据都是只读数据，就不会有问题。             不变量(invariant) 它是一个针对某一特定数据的断言，该断言总是成立的，例如“这个变量的值即为链表元素的数目”。数据更新往往会破坏这些不变量。 改动线程间的共享数据，可能导致不变量被破坏。例如对于双向
         </div>
       </a>
 
@@ -267,8 +267,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-03 13:56" pubdate>
-              2024-11-03
+            <time datetime="2025-01-26 12:14" pubdate>
+              2025-01-26
             </time>
           </div>
         
@@ -283,7 +283,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  <a href="/categories/C/" class="category-chain-item">C++</a>
   
   
 
@@ -300,6 +300,8 @@
             
               <a href="/tags/C/">#C++</a>
             
+              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">#多线程</a>
+            
           </div>
         
       </div>
@@ -310,23 +312,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-14/" target="_self">
-          <img src="https://t.alcy.cc/fj?postId=24" srcset="/img/loading.gif" lazyload alt="[OS]Three Easy Pieces Chapter 14">
+        <a href="/2025/01/24/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter2/" target="_self">
+          <img src="https://t.alcy.cc/fj?postId=1" srcset="/img/loading.gif" lazyload alt="[C++]C++并发编程实战Chapter2">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-14/" target="_self">
-          [OS]Three Easy Pieces Chapter 14
+        <a href="/2025/01/24/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter2/" target="_self">
+          [C++]C++并发编程实战Chapter2
         </a>
       </h2>
 
       
-      <a class="index-excerpt " href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-14/" target="_self">
+      <a class="index-excerpt " href="/2025/01/24/C-C-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98Chapter2/" target="_self">
         <div>
-          Interlude: Memory API本章介绍UNIX系统中内存相关的API。 1 Types of Memory在c程序中，有两种类型的内存  栈内存 栈内存，也被称为自动存储内存，由编译器隐式的申请和释放。  堆内存 由程序员手动的通过malloc和free申请和释放。   2 The malloc() Call1void *malloc(size_t size);  该函数比较简单，在堆
+          2 线程管控2.1 线程的基本管控每个C++程序都含有至少一个线程，即运行main()的线程，它由C++运行时（C++ runtime）系统启动。随后，程序就可以发起更多线程，它们以别的函数作为入口（entry point）。这些新线程连同起始线程并发运行。当main()返回时，程序就会退出；同样，当入口函数返回时，对应的线程随之终结。 2.1.1 发起线程线程通过构建 std::thread 对
         </div>
       </a>
 
@@ -334,8 +336,77 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-01 16:24" pubdate>
-              2024-11-01
+            <time datetime="2025-01-24 22:14" pubdate>
+              2025-01-24
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C/" class="category-chain-item">C++</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">#C++</a>
+            
+              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">#多线程</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/11/22/OS-Three-Easy-Pieces-Chapter-21/" target="_self">
+          <img src="https://t.alcy.cc/fj?postId=36" srcset="/img/loading.gif" lazyload alt="[OS]Three Easy Pieces Chapter 21">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/11/22/OS-Three-Easy-Pieces-Chapter-21/" target="_self">
+          [OS]Three Easy Pieces Chapter 21
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/11/22/OS-Three-Easy-Pieces-Chapter-21/" target="_self">
+        <div>
+          Beyond Physical Memory: Mechanisms如果某个进程的虚拟地址空间太大，或者整个系统所有进程的所有虚拟地址空间之和无法一次性放到物理内存中，操作系统通常需要将一些当前不常用的地址空间换出到硬盘中。 1 Swap Space磁盘中需要有一个交换区，用于和内存交换内存页。OS需要记录每个换出页的磁盘地址。  2 The Present Bit常规的地址转换过程： 进程提供虚
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-11-22 15:13" pubdate>
+              2024-11-22
             </time>
           </div>
         
@@ -377,23 +448,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-13/" target="_self">
-          <img src="https://t.alcy.cc/fj?postId=23" srcset="/img/loading.gif" lazyload alt="[OS]Three Easy Pieces Chapter 13">
+        <a href="/2024/11/22/OS-Three-Easy-Pieces-Chapter-20/" target="_self">
+          <img src="https://t.alcy.cc/fj?postId=35" srcset="/img/loading.gif" lazyload alt="[OS]Three Easy Pieces Chapter 20">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-13/" target="_self">
-          [OS]Three Easy Pieces Chapter 13
+        <a href="/2024/11/22/OS-Three-Easy-Pieces-Chapter-20/" target="_self">
+          [OS]Three Easy Pieces Chapter 20
         </a>
       </h2>
 
       
-      <a class="index-excerpt " href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-13/" target="_self">
+      <a class="index-excerpt " href="/2024/11/22/OS-Three-Easy-Pieces-Chapter-20/" target="_self">
         <div>
-          The Abstraction: Address Spaces1 Early Systems从内存的角度来看，早期的机器并没有为用户提供太多的抽象概念。基本上，操作系统是在内存中的程序（实际上是程序库），而有一个正在运行的程序（进程）当前位于物理内存中，并使用内存的其余部分。  2 The Address Space地址空间是操作系统提供给用户的一种抽象。在用户看来，它可以使用整个地址空间的内存。
+          Paging: Smaller Tables基本的页式内存存在的一个问题就是页表占据的空间太大了。 1 Simple Solution: Bigger Pages最简单的方法就是使用更大的页，这样可以减少页表项的个数，从而减少页表的大小。但是这种方法会导致内部内存碎片。 2 Hybrid Approach: Paging and Segments段页式内存，结合段式内存和页式内存。每个段由一对ba
         </div>
       </a>
 
@@ -401,8 +472,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-01 16:01" pubdate>
-              2024-11-01
+            <time datetime="2024-11-22 14:19" pubdate>
+              2024-11-22
             </time>
           </div>
         
@@ -444,23 +515,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-10/" target="_self">
-          <img src="https://t.alcy.cc/fj?postId=22" srcset="/img/loading.gif" lazyload alt="[OS]Three Easy Pieces Chapter 10">
+        <a href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-19/" target="_self">
+          <img src="https://t.alcy.cc/fj?postId=34" srcset="/img/loading.gif" lazyload alt="[OS]Three Easy Pieces Chapter 19">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-10/" target="_self">
-          [OS]Three Easy Pieces Chapter 10
+        <a href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-19/" target="_self">
+          [OS]Three Easy Pieces Chapter 19
         </a>
       </h2>
 
       
-      <a class="index-excerpt " href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-10/" target="_self">
+      <a class="index-excerpt " href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-19/" target="_self">
         <div>
-          Multiprocessor Scheduling (Advanced)
+          Paging: Faster Translations (TLBs)为了加速内存访问，OS需要硬件的帮助：translation-lookaside buffer（TLB）。TLB其实就是经常访问的PTE的硬件缓存。在每次访存之前，硬件首先去TLB中查看指定的PTE是否存在，如果存在，就不需要去内存中查找对应的PTE了。 1 TLB Basic Algorithm 2 Who Handles Th
         </div>
       </a>
 
@@ -468,8 +539,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-01 15:59" pubdate>
-              2024-11-01
+            <time datetime="2024-11-15 16:42" pubdate>
+              2024-11-15
             </time>
           </div>
         
@@ -511,23 +582,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-9/" target="_self">
-          <img src="https://t.alcy.cc/fj?postId=21" srcset="/img/loading.gif" lazyload alt="[OS]Three Easy Pieces Chapter 9">
+        <a href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-18/" target="_self">
+          <img src="https://t.alcy.cc/fj?postId=33" srcset="/img/loading.gif" lazyload alt="[OS]Three Easy Pieces Chapter 18">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-9/" target="_self">
-          [OS]Three Easy Pieces Chapter 9
+        <a href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-18/" target="_self">
+          [OS]Three Easy Pieces Chapter 18
         </a>
       </h2>
 
       
-      <a class="index-excerpt " href="/2024/11/01/OS-Three-Easy-Pieces-Chapter-9/" target="_self">
+      <a class="index-excerpt " href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-18/" target="_self">
         <div>
-          Scheduling: Proportional Share在本章中，将研究一种不同类型的调度程序，即比例共享（proportional share）调度程序，有时也称为公平共享（fair-share）调度程序。比例共享调度器基于一个简单的概念：调度器可以不对周转时间或响应时间进行优化，而是设法保证每个作业都能获得一定比例的 CPU 时间。其基本思想非常简单：每隔一段时间举行一次抽签，决定下一个运
+          Paging: Introduction1 Overview每个进程都有一个自己的页表(Page table)，用来进行虚拟地址到物理地址的转换。 虚拟地址分为两部分，虚拟页号（Virtual Page Number，VPN）和内页偏移（offset）。  MMU根据页表，将VPN转换为对应的物理页号（Physical Page Number，PPN），然后将PPN和offset组合，获得实际的物
         </div>
       </a>
 
@@ -535,8 +606,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-01 14:33" pubdate>
-              2024-11-01
+            <time datetime="2024-11-15 16:07" pubdate>
+              2024-11-15
             </time>
           </div>
         
@@ -578,23 +649,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-14/" target="_self">
-          <img src="https://t.alcy.cc/fj?postId=20" srcset="/img/loading.gif" lazyload alt="[C++]现代C++语言核心特性解析 Chapter 14">
+        <a href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-17/" target="_self">
+          <img src="https://t.alcy.cc/fj?postId=32" srcset="/img/loading.gif" lazyload alt="[OS]Three Easy Pieces Chapter 17">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-14/" target="_self">
-          [C++]现代C++语言核心特性解析 Chapter 14
+        <a href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-17/" target="_self">
+          [OS]Three Easy Pieces Chapter 17
         </a>
       </h2>
 
       
-      <a class="index-excerpt " href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-14/" target="_self">
+      <a class="index-excerpt " href="/2024/11/15/OS-Three-Easy-Pieces-Chapter-17/" target="_self">
         <div>
-          强枚举类型（C++11C++17 C++20）1 枚举类型的弊端类型问题 虽然枚举类型存在一定的安全检查功能，一个枚举类型不允许分配到另外一种枚举类型，而且整型也无法隐式转换成枚举类型。但是枚举类型却可以隐式转换为整型，因为C++标准文档提到“枚举类型可以采用整型提升的方法转换成整型”。 作用域问题 枚举类型会把其内部的枚举标识符导出到枚举被定义的作用域。也是就说，我们使用枚举标识符的时候，可以跳
+          Free-Space Management对于页式内存来说，空闲页管理很简单，只需要用链表来管理空闲页即可；但是对于像段式内存这种空闲内存单元大小不固定的方式来说，空闲内存管理变得更复杂。对于后者，最大的挑战是外部碎片问题。 1 Low-level MechanismsSplitting and Coalescing 管理空闲内存空间的数据结构在需要时需要进行相应的拆分或者合并。 Tracking
         </div>
       </a>
 
@@ -602,8 +673,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-01 14:17" pubdate>
-              2024-11-01
+            <time datetime="2024-11-15 14:19" pubdate>
+              2024-11-15
             </time>
           </div>
         
@@ -618,7 +689,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
   
   
 
@@ -633,7 +704,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/C/">#C++</a>
+              <a href="/tags/OS/">#OS</a>
             
           </div>
         
@@ -645,23 +716,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-13/" target="_self">
-          <img src="https://t.alcy.cc/fj?postId=19" srcset="/img/loading.gif" lazyload alt="[C++]现代C++语言核心特性解析 Chapter 13">
+        <a href="/2024/11/12/MIT-6-1810-Lab4-traps/" target="_self">
+          <img src="https://t.alcy.cc/fj?postId=31" srcset="/img/loading.gif" lazyload alt="[MIT 6.1810]Lab4 traps">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-13/" target="_self">
-          [C++]现代C++语言核心特性解析 Chapter 13
+        <a href="/2024/11/12/MIT-6-1810-Lab4-traps/" target="_self">
+          [MIT 6.1810]Lab4 traps
         </a>
       </h2>
 
       
-      <a class="index-excerpt " href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-13/" target="_self">
+      <a class="index-excerpt " href="/2024/11/12/MIT-6-1810-Lab4-traps/" target="_self">
         <div>
-          继承构造函数（C++11）1 使用继承构造函数C++中可以使用using关键字将基类的函数引入派生类 12345678910111213141516class Base &#123;public:  void foo(int) &#123;&#125;&#125;;class Derived : public Base &#123;public:  using Base::foo;  void f
+          1 RISC-V assembly (easy)             Which registers contain arguments to functions? For example, which register holds 13 in main’s call to printf?             在RISC-V中，函数的参数存放在寄存器 a0-a7 中，如果超过8个参数，可以
         </div>
       </a>
 
@@ -669,8 +740,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-01 14:09" pubdate>
-              2024-11-01
+            <time datetime="2024-11-12 19:13" pubdate>
+              2024-11-12
             </time>
           </div>
         
@@ -685,7 +756,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
   
   
 
@@ -700,7 +771,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/C/">#C++</a>
+              <a href="/tags/MIT-6-1810/">#MIT 6.1810</a>
             
           </div>
         
@@ -712,23 +783,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-12/" target="_self">
-          <img src="https://t.alcy.cc/fj?postId=18" srcset="/img/loading.gif" lazyload alt="[C++]现代C++语言核心特性解析 Chapter 12">
+        <a href="/2024/11/10/DB-Database-System-Concepts-Chapter-2/" target="_self">
+          <img src="https://t.alcy.cc/fj?postId=30" srcset="/img/loading.gif" lazyload alt="[DB]Database System Concepts Chapter 2">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-12/" target="_self">
-          [C++]现代C++语言核心特性解析 Chapter 12
+        <a href="/2024/11/10/DB-Database-System-Concepts-Chapter-2/" target="_self">
+          [DB]Database System Concepts Chapter 2
         </a>
       </h2>
 
       
-      <a class="index-excerpt " href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-12/" target="_self">
+      <a class="index-excerpt " href="/2024/11/10/DB-Database-System-Concepts-Chapter-2/" target="_self">
         <div>
-          委托构造函数（C++11）1 委托构造函数C++11标准支持了委托构造函数：某个类型的一个构造函数可以委托同类型的另一个构造函数对对象进行初始化。为了描述方便我们称前者为委托构造函数，后者为代理构造函数（英文直译为目标构造函数）。 123456789101112class X&#123;public:  X() : X(0, 0.) &#123;&#125;  X(int a) : X(a, 0.
+          Introduction to the Relational Model1 Structure of Relational Databases一个关系型数据库包含一组表，每个表都有一个独特的名字。  通常来说，表中的一行代表着一组值之间的关系。 术语  tuple：一组值的序列  n个值的关系用一个n-tuple来表示（表中的一行）  relation - 一张表  tuple - 表中的一行
         </div>
       </a>
 
@@ -736,8 +807,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-01 13:40" pubdate>
-              2024-11-01
+            <time datetime="2024-11-10 21:05" pubdate>
+              2024-11-10
             </time>
           </div>
         
@@ -752,7 +823,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
   
   
 
@@ -767,7 +838,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/C/">#C++</a>
+              <a href="/tags/Database/">#Database</a>
             
           </div>
         
@@ -779,23 +850,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-11/" target="_self">
-          <img src="https://t.alcy.cc/fj?postId=17" srcset="/img/loading.gif" lazyload alt="[C++]现代C++语言核心特性解析 Chapter 11">
+        <a href="/2024/11/10/OS-Three-Easy-Pieces-Chapter-16/" target="_self">
+          <img src="https://t.alcy.cc/fj?postId=29" srcset="/img/loading.gif" lazyload alt="[OS]Three Easy Pieces Chapter 16">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-11/" target="_self">
-          [C++]现代C++语言核心特性解析 Chapter 11
+        <a href="/2024/11/10/OS-Three-Easy-Pieces-Chapter-16/" target="_self">
+          [OS]Three Easy Pieces Chapter 16
         </a>
       </h2>
 
       
-      <a class="index-excerpt " href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-11/" target="_self">
+      <a class="index-excerpt " href="/2024/11/10/OS-Three-Easy-Pieces-Chapter-16/" target="_self">
         <div>
-          非受限联合类型（C++11）1 联合类型在C++中的局限性过去的C++标准规定，联合类型的成员变量的类型不能是一个非平凡类型，也就是说它的成员类型不能有自定义构造函数 123456union U&#123;  int x1;  float x2;  std::string x3;&#125;;  上面的代码是无法通过编译的，因为x3存在自定义的构造函数，所以它是一个非平凡类型。 2 使用非受限联合
+          Segmentation1 Segmentation: Generalized Base&#x2F;Bounds传统的动态重定位会导致内存空间的浪费（整个用户地址空间可能只有一小部分真正使用，大部分是空闲的）。因此，可以使用分段的方式，将用户地址空间按照逻辑分为不同的segment，每个segment都有一对base&#x2F;bound寄存器。需要注意的是，在进行地址转化的时候，必须将虚拟地址首
         </div>
       </a>
 
@@ -803,8 +874,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-01 13:31" pubdate>
-              2024-11-01
+            <time datetime="2024-11-10 19:41" pubdate>
+              2024-11-10
             </time>
           </div>
         
@@ -819,7 +890,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
   
   
 
@@ -834,74 +905,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/C/">#C++</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-10/" target="_self">
-          <img src="https://t.alcy.cc/fj?postId=16" srcset="/img/loading.gif" lazyload alt="[C++]现代C++语言核心特性解析 Chapter 10">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-10/" target="_self">
-          [C++]现代C++语言核心特性解析 Chapter 10
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt " href="/2024/11/01/C-%E7%8E%B0%E4%BB%A3C-%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7%E8%A7%A3%E6%9E%90-Chapter-10/" target="_self">
-        <div>
-          默认和删除函数（C++11）1 类的特殊成员函数 默认构造函数 析构函数 复制构造函数 复制赋值运算符函数 移动构造函数（C++11新增） 移动赋值运算符函数（C++11新增）  注意事项  声明任何构造函数都会抑制默认构造函数的添加。 一旦用自定义构造函数代替默认构造函数，类就将转变为非平凡类型。  2 显示默认和显示删除 C++11显式默认和显式删除的语法非常简单，只需要在声明函数的尾部添加&
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-01 13:20" pubdate>
-              2024-11-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/C/">#C++</a>
+              <a href="/tags/OS/">#OS</a>
             
           </div>
         
@@ -913,7 +917,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/3/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/#board">11</a><a class="extend next" rel="next" href="/page/5/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/3/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/5/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

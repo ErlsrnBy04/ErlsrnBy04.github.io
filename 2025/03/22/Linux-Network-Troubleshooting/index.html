@@ -1,0 +1,985 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Network TroubleShooting1 Internet Control Message Protocol (ICMP)Internet控制消息协议（ICMP）是TCP&#x2F;IP协议簇的一部分，用于发送更新和错误消息。它是调试网络问题（如数据包传输失败）的极为有用的工具。 每个ICMP消息包含类型、代码和校验和字段。类型字段表示ICMP消息的种类；代码作为子类型，提供有关消息的更多">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Linux]Network Troubleshooting">
+<meta property="og:url" content="https://erlsrnby04.github.io/2025/03/22/Linux-Network-Troubleshooting/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="Network TroubleShooting1 Internet Control Message Protocol (ICMP)Internet控制消息协议（ICMP）是TCP&#x2F;IP协议簇的一部分，用于发送更新和错误消息。它是调试网络问题（如数据包传输失败）的极为有用的工具。 每个ICMP消息包含类型、代码和校验和字段。类型字段表示ICMP消息的种类；代码作为子类型，提供有关消息的更多">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=31">
+<meta property="article:published_time" content="2025-03-22T10:00:02.000Z">
+<meta property="article:modified_time" content="2025-03-22T10:12:32.731Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=31">
+  
+  
+  
+  <title>[Linux]Network Troubleshooting - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[Linux]Network Troubleshooting"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-22 18:00" pubdate>
+          2025年3月22日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[Linux]Network Troubleshooting</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Network-TroubleShooting"><a href="#Network-TroubleShooting" class="headerlink" title="Network TroubleShooting"></a>Network TroubleShooting</h1><h2 id="1-Internet-Control-Message-Protocol-ICMP"><a href="#1-Internet-Control-Message-Protocol-ICMP" class="headerlink" title="1 Internet Control Message Protocol (ICMP)"></a>1 Internet Control Message Protocol (ICMP)</h2><p>Internet控制消息协议（ICMP）是TCP&#x2F;IP协议簇的一部分，用于发送更新和错误消息。它是调试网络问题（如数据包传输失败）的极为有用的工具。</p>
+<p>每个ICMP消息包含类型、代码和校验和字段。类型字段表示ICMP消息的种类；代码作为子类型，提供有关消息的更多信息；校验和用于检测消息完整性方面的问题。</p>
+<p>以下是一些常见的ICMP类型：</p>
+<ul>
+<li>类型0：Echo应答</li>
+<li>类型3：目标不可达</li>
+<li>类型8：Echo请求</li>
+<li>类型11：超时</li>
+</ul>
+<p>当数据包无法到达目的地时，会生成类型3的ICMP消息。在类型3中，有16个代码值进一步描述为何无法到达目的地：</p>
+<ul>
+<li>代码0：网络不可达</li>
+<li>代码1：主机不可达</li>
+<li>…</li>
+</ul>
+<h2 id="2-Ping工具介绍"><a href="#2-Ping工具介绍" class="headerlink" title="2 Ping工具介绍"></a>2 Ping工具介绍</h2><p>Ping是网络诊断中最基本的工具之一，用于测试数据包是否能够到达目标主机。它通过向目标主机发送ICMP Echo请求（类型8）数据包，并等待ICMP Echo应答（类型0）来工作。当主机发出请求数据包并收到目标返回的响应时，Ping操作成功。</p>
+<p>以下是一个示例：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs routeros">pete@icebox:~$<span class="hljs-built_in"> ping </span>-c 3 www.google.com<span class="hljs-built_in"></span><br><span class="hljs-built_in">PING </span>www.google.com (74.125.239.112) 56(84) bytes of data.<br>64 bytes <span class="hljs-keyword">from</span> nuq05s01-in-f16.1e100.net (74.125.239.112): <span class="hljs-attribute">icmp_seq</span>=1 <span class="hljs-attribute">ttl</span>=128 <span class="hljs-attribute">time</span>=29.0 ms<br>64 bytes <span class="hljs-keyword">from</span> nuq05s01-in-f16.1e100.net (74.125.239.112): <span class="hljs-attribute">icmp_seq</span>=2 <span class="hljs-attribute">ttl</span>=128 <span class="hljs-attribute">time</span>=23.7 ms<br>64 bytes <span class="hljs-keyword">from</span> nuq05s01-in-f16.1e100.net (74.125.239.112): <span class="hljs-attribute">icmp_seq</span>=3 <span class="hljs-attribute">ttl</span>=128 <span class="hljs-attribute">time</span>=15.1 ms<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，使用ping命令检查是否能访问<a target="_blank" rel="noopener" href="http://www.google.com.`-c`标志(计数)用于在达到指定数量后停止发送echo请求数据包./">www.google.com。`-c`标志（计数）用于在达到指定数量后停止发送Echo请求数据包。</a></p>
+<p>输出的第一部分表示正在向74.125.239.112（google.com）发送64字节的数据包，其余部分显示了这些数据包往返的详细信息。默认情况下，每秒发送一个数据包。</p>
+<h4 id="关键字段解释"><a href="#关键字段解释" class="headerlink" title="关键字段解释"></a>关键字段解释</h4><ul>
+<li><p><strong>icmp_seq</strong>：显示发送的数据包序列号。本例中，共发送了3个数据包，并且所有数据包都已返回。如果Ping过程中发现某些序列号缺失，则表明存在连接问题，不是所有数据包都能顺利通过。若序列号乱序，可能意味着连接速度非常慢，导致数据包超过了默认的一秒间隔。</p>
+</li>
+<li><p><strong>ttl</strong>：生存时间（Time To Live），作为跳数计数器。每次经过一跳，该值减一，直至变为零，此时数据包将被丢弃。这确保了数据包不会在网络中无限循环。</p>
+</li>
+<li><p><strong>time</strong>：从发送Echo请求到接收Echo应答的往返时间。</p>
+</li>
+</ul>
+<p>通过分析Ping命令的结果，可以有效地评估网络连接的质量和稳定性。</p>
+<h2 id="3-Traceroute工具介绍"><a href="#3-Traceroute工具介绍" class="headerlink" title="3 Traceroute工具介绍"></a>3 Traceroute工具介绍</h2><p>Traceroute命令用于查看数据包的路由路径。它通过发送具有递增TTL（生存时间）值的数据包来工作，从1开始。第一个路由器接收到数据包时会将TTL值减一，导致数据包被丢弃，并向源主机返回一个ICMP超时消息。然后，下一个数据包的TTL设置为2，这样它就能通过第一个路由器，但到达第二个路由器时TTL再次变为0，从而再次触发ICMP超时消息的返回。Traceroute以此方式运作，随着数据包的发送和丢弃，逐步构建出一条从源到目的地所经过的路由器列表，直到最终接收到目标主机的ICMP Echo应答。</p>
+<p>以下是Traceroute的一个示例输出：</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">$ traceroute google.com<br>traceroute to google.com (<span class="hljs-number">216.58</span>.<span class="hljs-number">216.174</span>), <span class="hljs-number">30</span> hops max, <span class="hljs-number">60</span> byte packets<br> <span class="hljs-number">1</span>  <span class="hljs-number">192.168</span>.<span class="hljs-number">4.254</span> (<span class="hljs-number">192.168</span>.<span class="hljs-number">4.254</span>)  <span class="hljs-number">0.028</span> <span class="hljs-keyword">ms</span>  <span class="hljs-title">0</span>.<span class="hljs-number">009</span> <span class="hljs-keyword">ms</span>  <span class="hljs-title">0</span>.<span class="hljs-number">008</span> <span class="hljs-keyword">ms</span><br> <span class="hljs-title">2</span>  <span class="hljs-number">100.64</span>.<span class="hljs-number">1.113</span> (<span class="hljs-number">100.64</span>.<span class="hljs-number">1.113</span>)  <span class="hljs-number">1.227</span> <span class="hljs-keyword">ms</span>  <span class="hljs-title">1</span>.<span class="hljs-number">226</span> <span class="hljs-keyword">ms</span> <span class="hljs-title">0</span>.<span class="hljs-number">920</span> <span class="hljs-keyword">ms</span><br> <span class="hljs-title">3</span>  <span class="hljs-number">100.64</span>.<span class="hljs-number">0.20</span> (<span class="hljs-number">100.64</span>.<span class="hljs-number">0.20</span>)  <span class="hljs-number">1.501</span> <span class="hljs-keyword">ms</span> <span class="hljs-title">1</span>.<span class="hljs-number">556</span> <span class="hljs-keyword">ms</span>  <span class="hljs-title">0</span>.<span class="hljs-number">855</span> ms<br></code></pre></td></tr></table></figure>
+
+<p>每行代表了从本地主机到目标主机之间的一个路由器或设备。它显示了该节点的名称及其IP地址，最后三列分别对应了数据包往返该节点所需的时间。默认情况下，Traceroute沿路由发送三个数据包以获取平均往返时间，从而帮助评估网络路径的质量与效率。通过分析这些信息，可以识别网络延迟的原因及可能存在的瓶颈。</p>
+<h2 id="4-netstat"><a href="#4-netstat" class="headerlink" title="4 netstat"></a>4 netstat</h2><h4 id="常见端口"><a href="#常见端口" class="headerlink" title="常见端口"></a>常见端口</h4><p>可以通过查看<code>/etc/services</code>文件来获取常见端口的列表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">ftp             21/tcp<br>ssh             22/tcp<br>smtp            25/tcp<br>domain          53/tcp  <span class="hljs-comment"># DNS</span><br>http            80/tcp<br>https           443/tcp<br></code></pre></td></tr></table></figure>
+
+<p>第一列是服务名称，接着是端口号和所使用的传输层协议。</p>
+<h4 id="Netstat工具详解"><a href="#Netstat工具详解" class="headerlink" title="Netstat工具详解"></a>Netstat工具详解</h4><p>Netstat是一个非常实用的工具，可以提供详细的网络信息，包括网络连接、路由表、网络接口信息等。</p>
+<p><strong>套接字和端口</strong></p>
+<p>套接字是允许程序发送和接收数据的接口，而端口用于标识哪个应用程序应发送或接收数据。套接字地址是IP地址和端口的组合。主机与目标之间的每个连接都需要一个唯一的套接字。例如，HTTP服务运行在80端口上，但可以拥有多个HTTP连接，为了维护每个连接，每建立一个连接就会创建一个套接字。</p>
+<p>以下是一个使用<code>netstat -at</code>命令的输出示例：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Proto</span> Recv-Q Send-Q Local Address           Foreign Address         State      <br><span class="hljs-attribute">tcp</span>        <span class="hljs-number">0</span>      <span class="hljs-number">0</span> icebox:domain           *:*                     LISTEN     <br><span class="hljs-attribute">tcp</span>        <span class="hljs-number">0</span>      <span class="hljs-number">0</span> localhost:ipp           *:*                     LISTEN     <br><span class="hljs-attribute">tcp</span>        <span class="hljs-number">0</span>      <span class="hljs-number">0</span> icebox.lan:<span class="hljs-number">44468</span>        <span class="hljs-number">124.28.28.50</span>:http       TIME_WAIT  <br><span class="hljs-attribute">tcp</span>        <span class="hljs-number">0</span>      <span class="hljs-number">0</span> icebox.lan:<span class="hljs-number">34751</span>        <span class="hljs-number">124.28.29.50</span>:http       TIME_WAIT  <br><span class="hljs-attribute">tcp6</span>       <span class="hljs-number">0</span>      <span class="hljs-number">0</span> ip6-localhost:ipp      <span class="hljs-meta"> [::]:*                  LISTEN     </span><br><span class="hljs-meta">tcp6       1      0 ip6-localhost:35094     ip6-localhost:ipp       CLOSE_WAIT </span><br><span class="hljs-meta">tcp6       0      0 ip6-localhost:ipp       ip6-localhost:35094     FIN_WAIT2</span><br></code></pre></td></tr></table></figure>
+
+<p><code>netstat -a</code>命令显示了所有监听和非监听的网络套接字，<code>-t</code>标志仅展示TCP连接。各列含义如下：</p>
+<ul>
+<li><strong>Proto</strong>：使用的协议，TCP或UDP。</li>
+<li><strong>Recv-Q</strong>：已排队等待接收的数据量。</li>
+<li><strong>Send-Q</strong>：已排队等待发送的数据量。</li>
+<li><strong>Local Address</strong>：本地连接的主机地址。</li>
+<li><strong>Foreign Address</strong>：远程连接的主机地址。</li>
+<li><strong>State</strong>：套接字的状态。</li>
+</ul>
+<p>常见的套接字状态包括：</p>
+<ul>
+<li><strong>LISTENING</strong>：套接字正在监听传入连接。</li>
+<li><strong>SYN_SENT</strong>：套接字正尝试主动建立连接。</li>
+<li><strong>ESTABLISHED</strong>：套接字已经建立了连接。</li>
+<li><strong>CLOSE_WAIT</strong>：远程主机已关闭连接，等待本地套接字关闭。</li>
+<li><strong>TIME_WAIT</strong>：套接字在关闭后仍处于等待状态，以处理网络中可能残留的数据包。</li>
+</ul>
+<h2 id="5-数据包分析简介"><a href="#5-数据包分析简介" class="headerlink" title="5 数据包分析简介"></a>5 数据包分析简介</h2><p>Wireshark和tcpdump是两种非常流行的数据包分析工具。它们能够扫描网络接口、捕获数据包活动、解析数据包并输出信息供我们查看，使我们能够深入进行网络分析，触及底层细节。</p>
+<h4 id="安装tcpdump"><a href="#安装tcpdump" class="headerlink" title="安装tcpdump"></a>安装tcpdump</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> apt install tcpdump<br></code></pre></td></tr></table></figure>
+
+<h4 id="在指定接口上捕获数据包"><a href="#在指定接口上捕获数据包" class="headerlink" title="在指定接口上捕获数据包"></a>在指定接口上捕获数据包</h4><p>以下是在<code>wlan0</code>接口上捕获数据包的示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">pete@icebox:~$ <span class="hljs-built_in">sudo</span> tcpdump -i wlan0<br><br>tcpdump: verbose output suppressed, use -v or -vv <span class="hljs-keyword">for</span> full protocol decode<br><br>listening on wlan0, link-type EN10MB (Ethernet), capture size 65535 bytes<br><br>11:28:23.958840 IP icebox.lan &gt; nuq04s29-in-f4.1e100.net: ICMP <span class="hljs-built_in">echo</span> request, <span class="hljs-built_in">id</span> 1901, <span class="hljs-built_in">seq</span> 2, length 64<br><br>11:28:23.970928 IP nuq04s29-in-f4.1e100.net &gt; icebox.lan: ICMP <span class="hljs-built_in">echo</span> reply, <span class="hljs-built_in">id</span> 1901, <span class="hljs-built_in">seq</span> 2, length 64<br></code></pre></td></tr></table></figure>
+
+<p>运行数据包捕获时，会注意到大量的网络活动。</p>
+<h4 id="理解输出"><a href="#理解输出" class="headerlink" title="理解输出"></a>理解输出</h4><ul>
+<li><strong>时间戳</strong>：记录网络活动的时间。</li>
+<li><strong>IP</strong>：包含协议信息。</li>
+<li><strong>源地址与目的地址</strong>：例如<code>icebox.lan &gt; nuq04s29-in-f4.1e100.net</code>。</li>
+<li><strong>序列号（seq）</strong>：TCP数据包的起始和结束序列号。</li>
+<li><strong>长度</strong>：数据包长度（字节）。</li>
+</ul>
+<h4 id="将tcpdump输出写入文件"><a href="#将tcpdump输出写入文件" class="headerlink" title="将tcpdump输出写入文件"></a>将tcpdump输出写入文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> tcpdump -w /some/file<br></code></pre></td></tr></table></figure>
+
+<p>这将把捕获的数据直接写入指定文件，便于后续分析。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[Linux]Network Troubleshooting</div>
+      <div>https://erlsrnby04.github.io/2025/03/22/Linux-Network-Troubleshooting/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/22/Linux-DNS/" title="[Linux]DNS">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[Linux]DNS</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/22/Linux-Network-Config/" title="[Linux]Network Config">
+                        <span class="hidden-mobile">[Linux]Network Config</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="linux"
+        id="heading-e206a54e97690cce50cc872dd70ee896" role="tab" data-toggle="collapse" href="#collapse-e206a54e97690cce50cc872dd70ee896"
+        aria-expanded="true"
+      >
+        linux
+        <span class="list-group-count">(20)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-e206a54e97690cce50cc872dd70ee896"
+           role="tabpanel" aria-labelledby="heading-e206a54e97690cce50cc872dd70ee896">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/22/Linux-Boot-the-System/" title="[Linux]Boot the System"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Boot the System</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/18/Linux-Command-Line/" title="[Linux]Command Line"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Command Line</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-DNS/" title="[Linux]DNS"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]DNS</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Devices/" title="[Linux]Devices"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Devices</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Init/" title="[Linux]Init"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Init</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Kernel/" title="[Linux]Kernel"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Kernel</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Logging/" title="[Linux]Logging"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Logging</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Basics/" title="[Linux]Network Basics"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Basics</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Config/" title="[Linux]Network Config"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Config</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Sharing/" title="[Linux]Network Sharing"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Sharing</span>
+        </a>
+      
+    
+      
+      
+        <a href="/categories/linux/" class="list-group-item list-group-item-action">
+          <span class="category-post">More...</span>
+        </a>
+        
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

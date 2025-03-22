@@ -1,0 +1,953 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/snake.svg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="author" content="ErlsrnBy04">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Subnetting1 IPv4在网络中，每个主机都有一个独一无二的地址，即IP地址，用于标识其在网络中的位置。IPv4地址的形式如下所示： 1204.23.124.23  此地址由两部分组成：网络部分和主机部分。网络部分指明了该地址所属的网络，而主机部分则标识了该网络中的具体主机。 IPv4地址被点号分隔为四个八位字节（octet）。每个八位字节包含8个比特，等于1字节。因此，IPv4地址也可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Linux]Subnetting">
+<meta property="og:url" content="https://erlsrnby04.github.io/2025/03/22/Linux-Subnetting/index.html">
+<meta property="og:site_name" content="ErlsrnBy04">
+<meta property="og:description" content="Subnetting1 IPv4在网络中，每个主机都有一个独一无二的地址，即IP地址，用于标识其在网络中的位置。IPv4地址的形式如下所示： 1204.23.124.23  此地址由两部分组成：网络部分和主机部分。网络部分指明了该地址所属的网络，而主机部分则标识了该网络中的具体主机。 IPv4地址被点号分隔为四个八位字节（octet）。每个八位字节包含8个比特，等于1字节。因此，IPv4地址也可以">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t.alcy.cc/fj?postId=28">
+<meta property="article:published_time" content="2025-03-22T08:18:30.000Z">
+<meta property="article:modified_time" content="2025-03-22T08:32:01.069Z">
+<meta property="article:author" content="ErlsrnBy04">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://t.alcy.cc/fj?postId=28">
+  
+  
+  
+  <title>[Linux]Subnetting - ErlsrnBy04</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/cloudedGlass.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"erlsrnby04.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":50,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>ErlsrnBy04</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://t.alcy.cc/fj') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[Linux]Subnetting"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        ErlsrnBy04
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-22 16:18" pubdate>
+          2025年3月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">[Linux]Subnetting</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Subnetting"><a href="#Subnetting" class="headerlink" title="Subnetting"></a>Subnetting</h1><h2 id="1-IPv4"><a href="#1-IPv4" class="headerlink" title="1 IPv4"></a>1 IPv4</h2><p>在网络中，每个主机都有一个独一无二的地址，即IP地址，用于标识其在网络中的位置。IPv4地址的形式如下所示：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">204.23.124.23</span><br></code></pre></td></tr></table></figure>
+
+<p>此地址由两部分组成：网络部分和主机部分。网络部分指明了该地址所属的网络，而主机部分则标识了该网络中的具体主机。</p>
+<p>IPv4地址被点号分隔为四个八位字节（octet）。每个八位字节包含8个比特，等于1字节。因此，IPv4地址也可以视为由4个字节构成。在处理子网和IP地址时，我们经常使用到比特的概念。</p>
+<p>要查看IP地址，可以使用<code>ifconfig -a</code>命令：</p>
+<p>示例输出如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">pete</span>@icebox:~$ ifconfig -a<br><br><span class="hljs-attribute">eth0</span>      Link encap:Ethernet  HWaddr <span class="hljs-number">1</span>d:<span class="hljs-number">3</span>a:<span class="hljs-number">32</span>:<span class="hljs-number">24</span>:<span class="hljs-number">4</span>d:ce  <br><br>          <span class="hljs-attribute">inet</span> addr:<span class="hljs-number">192.168.1.129</span>  Bcast:<span class="hljs-number">192.168.1.255</span>  Mask:<span class="hljs-number">255.255.255.0</span><br><br>          <span class="hljs-attribute">inet6</span> addr: fd60::<span class="hljs-number">21</span>c:<span class="hljs-number">29</span>ff:fe63:<span class="hljs-number">5</span>cdc/<span class="hljs-number">64</span> Scope:Link<br></code></pre></td></tr></table></figure>
+
+<p>从上述输出可见，IPv4地址是：192.168.1.129。</p>
+<h2 id="2-子网"><a href="#2-子网" class="headerlink" title="2 子网"></a>2 子网</h2><p>要判断是否与Patty位于同一网络，可以通过检查子网（subnetwork的简称）。子网是一组IP地址相似且通常地理位置相近的主机集合。在同一子网内的主机间传输数据更加简便。</p>
+<p>例如，所有以123.45.67开头的IP地址都属于同一子网。如果我的主机IP为123.45.67.8，而Patty的为123.45.67.9，则共同的部分即为网络前缀，而末尾数字代表各自的主机标识。因此，我们的网络是相同的。</p>
+<h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><p>子网掩码用于区分IP地址中的网络部分和主机部分。一个典型的子网掩码可能如下所示：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">255.255.255.0</span><br></code></pre></td></tr></table></figure>
+
+<p>常用网络前缀后跟斜杠及子网掩码来表示子网：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">123.234.0.0</span>/<span class="hljs-number">255</span>.<span class="hljs-number">255</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="为何进行子网划分？"><a href="#为何进行子网划分？" class="headerlink" title="为何进行子网划分？"></a>为何进行子网划分？</h4><p>子网划分用于分割网络并控制网络内流量。同时，也可以缓解IPv4地址空间的压力。这样，不同子网之间的主机无法直接交互。但如果想要连接至其他子网上的主机，比如yahoo.com，则需要通过路由器实现互联。在大多数使用255.255.255.0作为子网掩码的网络中，路由器通常位于子网的第一个地址，如192.168.1.1。某些IP地址（私有网络）不可见于互联网，为此需要采用NAT等技术。</p>
+<h2 id="3-子网计算"><a href="#3-子网计算" class="headerlink" title="3 子网计算"></a>3 子网计算</h2><p>理解子网掩码对于确定子网中可容纳的主机数量至关重要。以IP地址192.168.1.0和子网掩码255.255.255.0为例，将这些数值转换为二进制形式：</p>
+<ul>
+<li>IP地址：192.168.1. &#x3D; 11000000.10101000.00000001.00000001</li>
+<li>子网掩码：255.255.255.0 &#x3D; 11111111.11111111.11111111.00000000</li>
+</ul>
+<p>子网掩码标记了IP地址中的网络部分（对应位为1），而主机部分则由未被标记的部分表示（对应位为0）。在上述例子中，只有最后八位可以变化，代表可能的主机地址范围。</p>
+<p>由于一个八位字节有256种组合（从00000000到11111111），理论上存在256个可能的地址。然而，在实际应用中，需要排除两个特殊地址——全0和全1的地址分别代表子网地址和广播地址。因此，有效的主机地址范围是254个。</p>
+<p>例如，给定IP地址192.168.1.0与子网掩码255.255.255.0，有效主机IP地址范围是从192.168.1.1至192.168.1.254。</p>
+<h2 id="4-CIDR"><a href="#4-CIDR" class="headerlink" title="4 CIDR"></a>4 CIDR</h2><p>无类别域间路由（CIDR，Classless Inter-Domain Routing）提供了一种更为紧凑的子网掩码表示方法。在CIDR记法中，一个如10.42.3.0&#x2F;255.255.255.0的子网可简化写作10.42.3.0&#x2F;24，这里不仅包括了子网前缀，也隐含了子网掩码的信息。</p>
+<h4 id="IP地址与CIDR"><a href="#IP地址与CIDR" class="headerlink" title="IP地址与CIDR"></a>IP地址与CIDR</h4><p>IP地址由4个字节组成，共计32位。CIDR值表明了用于网络前缀的位数。例如，123.12.24.0&#x2F;23表示前23位用于网络部分。那么，这代表了多少主机呢？</p>
+<h5 id="计算可用主机数量的简易方法："><a href="#计算可用主机数量的简易方法：" class="headerlink" title="计算可用主机数量的简易方法："></a>计算可用主机数量的简易方法：</h5><ul>
+<li>从整个IP地址的总位数（32位）中减去CIDR值（如23），剩余9位。</li>
+<li>计算(2^9 &#x3D; 512)，但需扣除两个特殊地址（子网地址和广播地址），故实际可用主机数为510。</li>
+</ul>
+<p>通过CIDR记法，我们能更高效地进行IP地址规划与管理，同时准确计算出每个子网内的可用主机数目。这种方法对于优化网络配置和资源分配至关重要。</p>
+<h2 id="5-NAT"><a href="#5-NAT" class="headerlink" title="5 NAT"></a>5 NAT</h2><p>网络地址转换（NAT，Network Address Translation）使诸如路由器之类的设备充当互联网与私有网络之间的中介。这意味着只需要一个唯一的IP地址就可以代表整个计算机群组对外进行通信。</p>
+<p>可以把NAT想象成大型办公室中的总机接待员。如果有人想要联系你，他们只知道整个办公室的电话号码，而接待员则根据这个号码找到你的分机号并转接来电。</p>
+<h4 id="工作流程示例："><a href="#工作流程示例：" class="headerlink" title="工作流程示例："></a>工作流程示例：</h4><ul>
+<li>假设Patty想要连接<a target="_blank" rel="noopener" href="http://www.google.com,她的计算机会通过路由器发送请求./">www.google.com，她的计算机会通过路由器发送请求。</a></li>
+<li>路由器接收该请求，并自行建立与google.com的连接，然后在建立连接后转发Patty的请求。</li>
+<li>在此过程中，路由器作为Patty和<a target="_blank" rel="noopener" href="http://www.google.com之间的中介.google服务器仅能看到路由器的信息,而无法识别patty的设备./">www.google.com之间的中介。Google服务器仅能看到路由器的信息，而无法识别Patty的设备。</a></li>
+</ul>
+<p>通过采用NAT技术，不仅可以隐藏内部网络结构，保护内部网络安全，而且有助于节省公网IP地址资源，优化网络配置。</p>
+<h2 id="6-IPv6"><a href="#6-IPv6" class="headerlink" title="6 IPv6"></a>6 IPv6</h2><p>每一台接入互联网的设备都会获得一个独立的IP地址。然而，在这个数字化时代，可用的IP地址数量是有限的，IPv6正是为了允许更多主机连接到互联网而设计的。它虽然带来了更多的改进，但其采纳过程却相对缓慢。IPv6的设计初衷并非是要替代IPv4，而是与之互补，共同存在。</p>
+<p>IPv6和IPv4在协议层面非常相似，若已熟悉IPv4，则不难理解IPv6。两者间最显著的区别在于地址的书写方式。典型的IPv6地址格式如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">2dde</span>:<span class="hljs-number">1235</span>:<span class="hljs-number">1256</span>:<span class="hljs-number">3</span>:<span class="hljs-number">200</span>:f8ed:fe23:<span class="hljs-number">59</span>cf<br></code></pre></td></tr></table></figure>
+
+<p>IPv6通过提供几乎无限的地址空间，解决了IPv4地址资源枯竭的问题。此外，IPv6还引入了诸如简化头部格式、支持无状态地址自动配置（SLAAC）、增强的安全性等特性，为互联网的发展提供了更强大的支撑。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[Linux]Subnetting</div>
+      <div>https://erlsrnby04.github.io/2025/03/22/Linux-Subnetting/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ErlsrnBy04</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/22/Linux-Routing/" title="[Linux]Routing">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[Linux]Routing</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/22/Linux-Network-Basics/" title="[Linux]Network Basics">
+                        <span class="hidden-mobile">[Linux]Network Basics</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"ErlsrnBy04/comments","repo-id":"R_kgDOM1SRGQ","category":"Announcements","category-id":"DIC_kwDOM1SRGc4Cirkj","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-left: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="linux"
+        id="heading-e206a54e97690cce50cc872dd70ee896" role="tab" data-toggle="collapse" href="#collapse-e206a54e97690cce50cc872dd70ee896"
+        aria-expanded="true"
+      >
+        linux
+        <span class="list-group-count">(20)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-e206a54e97690cce50cc872dd70ee896"
+           role="tabpanel" aria-labelledby="heading-e206a54e97690cce50cc872dd70ee896">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/22/Linux-Boot-the-System/" title="[Linux]Boot the System"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Boot the System</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/18/Linux-Command-Line/" title="[Linux]Command Line"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Command Line</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-DNS/" title="[Linux]DNS"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]DNS</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/21/Linux-Devices/" title="[Linux]Devices"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Devices</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Init/" title="[Linux]Init"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Init</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Kernel/" title="[Linux]Kernel"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Kernel</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Logging/" title="[Linux]Logging"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Logging</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Basics/" title="[Linux]Network Basics"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Basics</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Config/" title="[Linux]Network Config"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Config</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/Linux-Network-Sharing/" title="[Linux]Network Sharing"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">[Linux]Network Sharing</span>
+        </a>
+      
+    
+      
+      
+        <a href="/categories/linux/" class="list-group-item list-group-item-action">
+          <span class="category-post">More...</span>
+        </a>
+        
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <span style="background: linear-gradient(to right, red, blue); -webkit-background-clip: text; color: transparent;">且淘淘,乐尽天真</span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
